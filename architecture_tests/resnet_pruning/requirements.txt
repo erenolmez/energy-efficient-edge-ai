@@ -1,0 +1,5 @@
+timm>=1.0
+torch-pruning==1.6.1
+
+# Install the CUDA-enabled torch build separately, as documented by the router
+# benchmark environment setup.

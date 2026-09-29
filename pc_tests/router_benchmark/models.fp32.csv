@@ -1,0 +1,11 @@
+model_id,checkpoint,precision,prune
+fp32_p0,all_precision_models_cifar100_distilled/fp32/distilled_resnet18_fp32_fp32.pth,fp32,0
+fp32_p10,all_precision_models_cifar100_distilled/fp32/structured_10_fp32.pth,fp32,10
+fp32_p20,all_precision_models_cifar100_distilled/fp32/structured_20_fp32.pth,fp32,20
+fp32_p30,all_precision_models_cifar100_distilled/fp32/structured_30_fp32.pth,fp32,30
+fp32_p40,all_precision_models_cifar100_distilled/fp32/structured_40_fp32.pth,fp32,40
+fp32_p50,all_precision_models_cifar100_distilled/fp32/structured_50_fp32.pth,fp32,50
+fp32_p60,all_precision_models_cifar100_distilled/fp32/structured_60_fp32.pth,fp32,60
+fp32_p70,all_precision_models_cifar100_distilled/fp32/structured_70_fp32.pth,fp32,70
+fp32_p80,all_precision_models_cifar100_distilled/fp32/structured_80_fp32.pth,fp32,80
+fp32_p90,all_precision_models_cifar100_distilled/fp32/structured_90_fp32.pth,fp32,90

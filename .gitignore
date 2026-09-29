@@ -151,6 +151,7 @@ activemq-data/
 .env
 .envrc
 .venv
+.cuda-venv/
 env/
 venv/
 ENV/
@@ -208,6 +209,11 @@ tempCodeRunnerFile.py
 
 # PyPI configuration file
 .pypirc
+
+# Local experiment artifacts and deployment engines
+**/artifacts/*
+jetson_tests/engines/
+jetson_tests/results/raw/
 
 # Marimo
 marimo/_static/
