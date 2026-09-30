@@ -34,6 +34,11 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--subset-size", type=int, default=2000)
     parser.add_argument("--batch-sizes", default="32")
     parser.add_argument("--profile-order-seed", type=int, default=42)
+    parser.add_argument(
+        "--mode-ids",
+        default=None,
+        help="Optional comma-separated nvpmodel IDs to run (useful across required reboots).",
+    )
     parser.add_argument("--settle-seconds", type=float, default=15.0)
     parser.add_argument("--no-lock-clocks", action="store_true")
     parser.add_argument("--dry-run", action="store_true")
@@ -177,10 +182,34 @@ def save_combined_outputs(frame, output_dir: Path) -> None:
         plt.close()
 
 
+def collect_existing_results(output_dir: Path):
+    """Load every completed profile/batch CSV so split runs combine safely."""
+    import pandas as pd
+
+    frames = []
+    for csv_path in sorted(output_dir.glob("mode_*/batch_*/tensorrt_results_all_runs.csv")):
+        frame = pd.read_csv(csv_path)
+        required = {"power_profile", "nvpmodel_id", "batch_size"}
+        if required.issubset(frame.columns):
+            frames.append(frame)
+    return frames
+
+
 def main() -> None:
     args = parse_args()
     base_dir = args.base_dir.resolve()
     profiles = load_profiles(args.profile_config.resolve())
+    if args.mode_ids:
+        selected_mode_ids = {
+            int(value.strip()) for value in args.mode_ids.split(",") if value.strip()
+        }
+        profiles = [
+            profile
+            for profile in profiles
+            if int(profile["nvpmodel_id"]) in selected_mode_ids
+        ]
+        if not profiles:
+            raise ValueError(f"No profiles match --mode-ids {sorted(selected_mode_ids)}")
     random.Random(args.profile_order_seed).shuffle(profiles)
     batch_sizes = sorted(
         {int(value.strip()) for value in args.batch_sizes.split(",") if value.strip()},
@@ -190,7 +219,6 @@ def main() -> None:
         raise ValueError("At least one batch size is required")
     evaluator = base_dir / "scripts" / "evaluate_trt.py"
     output_dir = base_dir / "results" / slug(args.experiment_name)
-    combined = []
     original_mode = current_nvpmodel_id() if not args.dry_run else None
 
     try:
@@ -232,8 +260,9 @@ def main() -> None:
 
                 run(command)
                 raw_csv = profile_dir / "tensorrt_results_all_runs.csv"
-                combined.append(annotate_results(raw_csv, profile, query, batch_size))
+                annotate_results(raw_csv, profile, query, batch_size)
 
+        combined = collect_existing_results(output_dir)
         if combined:
             import pandas as pd
 
