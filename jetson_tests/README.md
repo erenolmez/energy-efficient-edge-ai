@@ -103,3 +103,9 @@ python scripts/benchmark_dynamic_routing.py \
 Do not commit checkpoints, TensorRT engines, trained router artifacts, or raw
 bulk outputs. Only source, concise CSV summaries, plots, and documentation
 belong in Git.
+
+## Latest measured results
+
+The complete 2026-09-30 hardware sweep, mail-like reproduction, separate
+energy/latency routing tests, plots, and discussion are in
+[`reports/jetson_2026_09_30`](reports/jetson_2026_09_30/README.md).
