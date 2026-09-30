@@ -120,6 +120,7 @@ SUBSET_SIZE = 2000
 WARMUP_BATCHES = 10
 CALIB_BATCHES = 200
 PRECISIONS = ["fp32", "fp16", "int8"]
+MODEL_PATTERN = None
 FORCE_EXPORT_ONNX = False
 FORCE_BUILD_ENGINE = False
 ALLOW_TF32_FOR_FP32 = False
@@ -189,6 +190,11 @@ def parse_args():
         default="fp32,fp16,int8",
         help="Comma-separated precision list. Example: fp32,fp16,int8",
     )
+    parser.add_argument(
+        "--model-pattern",
+        default=None,
+        help="Optional regular expression applied to normalized model names.",
+    )
 
     parser.add_argument("--force-export-onnx", action="store_true")
     parser.add_argument("--force-build-engine", action="store_true")
@@ -227,7 +233,7 @@ def resolve_path(path_like, base_dir):
 def apply_args(args):
     global BASE_DIR, FP32_MODEL_DIR, TRT_DIR, ONNX_DIR, ENGINE_DIR, RESULTS_DIR, CIFAR_ROOT
     global IMAGE_SIZE, BATCH_SIZE, NUM_WORKERS, N_SUBSETS, SUBSET_SIZE, WARMUP_BATCHES, CALIB_BATCHES
-    global PRECISIONS, FORCE_EXPORT_ONNX, FORCE_BUILD_ENGINE, ALLOW_TF32_FOR_FP32, INT8_USE_FP16_FALLBACK
+    global PRECISIONS, MODEL_PATTERN, FORCE_EXPORT_ONNX, FORCE_BUILD_ENGINE, ALLOW_TF32_FOR_FP32, INT8_USE_FP16_FALLBACK
     global CI_LEVEL, DOWNLOAD_DATA
     global ENABLE_SHELLY_POWER, SHELLY_POLL_INTERVAL_S, SHELLY_IP, PASSWORD, USERNAME
     global ENABLE_JETSON_STABILIZE, NVP_MODEL_SET
@@ -249,6 +255,7 @@ def apply_args(args):
     CALIB_BATCHES = args.calib_batches
 
     PRECISIONS = [p.strip().lower() for p in args.precisions.split(",") if p.strip()]
+    MODEL_PATTERN = args.model_pattern
     invalid = [p for p in PRECISIONS if p not in {"fp32", "fp16", "int8"}]
     if invalid:
         raise ValueError(f"Invalid precision(s): {invalid}. Use fp32, fp16, int8.")
@@ -367,14 +374,24 @@ class PowerMonitor:
         compute_match = re.search(r"VDD_CPU_GPU_CV\s+(\d+)mW", line)
         total_mw = int(total_match.group(1)) if total_match else None
         compute_mw = int(compute_match.group(1)) if compute_match else None
+        gpu_temp_match = re.search(r"gpu@([0-9.]+)C", line)
+        gpu_temp_c = float(gpu_temp_match.group(1)) if gpu_temp_match else None
 
         if total_mw is not None:
-            return {"vdd_in_mW": total_mw, "cpu_gpu_cv_mW": compute_mw}
+            return {
+                "vdd_in_mW": total_mw,
+                "cpu_gpu_cv_mW": compute_mw,
+                "gpu_temp_c": gpu_temp_c,
+            }
 
         # Fallback for some tegrastats variants.
         m = re.search(r"POM_5V_IN\s+(\d+)mW", line)
         if m:
-            return {"vdd_in_mW": int(m.group(1)), "cpu_gpu_cv_mW": None}
+            return {
+                "vdd_in_mW": int(m.group(1)),
+                "cpu_gpu_cv_mW": None,
+                "gpu_temp_c": gpu_temp_c,
+            }
 
         return None
 
@@ -444,6 +461,23 @@ class PowerMonitor:
             for s in self.power_samples
             if t_start <= s["timestamp"] <= t_end and s["cpu_gpu_cv_mW"] is not None
         ]
+        temperature_window = [
+            s["gpu_temp_c"]
+            for s in self.power_samples
+            if t_start <= s["timestamp"] <= t_end and s["gpu_temp_c"] is not None
+        ]
+
+        def integrate_joules(key):
+            points = [
+                (s["timestamp"], s[key] / 1000.0)
+                for s in self.power_samples
+                if t_start <= s["timestamp"] <= t_end and s[key] is not None
+            ]
+            if len(points) < 2:
+                return 0.0
+            times = np.asarray([point[0] for point in points], dtype=float)
+            watts = np.asarray([point[1] for point in points], dtype=float)
+            return float(np.trapz(watts, times))
 
         total_w = 0.0
         compute_w = 0.0
@@ -452,7 +486,19 @@ class PowerMonitor:
         if len(compute_window) >= 2:
             compute_w = float(np.mean(np.asarray(compute_window, dtype=float)) / 1000.0)
 
-        return total_w, compute_w
+        total_energy_j = integrate_joules("vdd_in_mW")
+        compute_energy_j = integrate_joules("cpu_gpu_cv_mW")
+        gpu_temp_mean_c = float(np.mean(temperature_window)) if temperature_window else float("nan")
+        gpu_temp_max_c = float(np.max(temperature_window)) if temperature_window else float("nan")
+
+        return (
+            total_w,
+            compute_w,
+            total_energy_j,
+            compute_energy_j,
+            gpu_temp_mean_c,
+            gpu_temp_max_c,
+        )
 
 
 # ============================================================
@@ -701,6 +747,9 @@ def find_fp32_models():
         raise RuntimeError(f"FP32_MODEL_DIR does not exist: {FP32_MODEL_DIR}")
 
     paths = sorted(FP32_MODEL_DIR.glob("*.pth"))
+    if MODEL_PATTERN:
+        matcher = re.compile(MODEL_PATTERN)
+        paths = [path for path in paths if matcher.search(clean_model_name(path))]
 
     def sort_key(p):
         name = clean_model_name(p)
@@ -1119,7 +1168,14 @@ def evaluate_runner_on_subset(runner, subset, loader):
 
     time.sleep(0.2)
 
-    power_tegra, power_cpu_gpu_cv = tegra_monitor.stop_window(t0_e2e, t1_e2e)
+    (
+        power_tegra,
+        power_cpu_gpu_cv,
+        energy_tegra_j,
+        energy_cpu_gpu_cv_j,
+        gpu_temp_mean_c,
+        gpu_temp_max_c,
+    ) = tegra_monitor.stop_window(t0_e2e, t1_e2e)
 
     if ENABLE_SHELLY_POWER and shelly_monitor is not None:
         power_shelly = shelly_monitor.stop_window(t0_e2e, t1_e2e)
@@ -1148,6 +1204,10 @@ def evaluate_runner_on_subset(runner, subset, loader):
         latency_e2e,
         power_tegra,
         power_cpu_gpu_cv,
+        1000.0 * energy_tegra_j / n_images,
+        1000.0 * energy_cpu_gpu_cv_j / n_images,
+        gpu_temp_mean_c,
+        gpu_temp_max_c,
         power_shelly,
     )
 
@@ -1166,6 +1226,10 @@ def evaluate_engine(engine_path):
     latency_e2e_list = []
     power_tegra_list = []
     power_cpu_gpu_cv_list = []
+    energy_tegra_list = []
+    energy_cpu_gpu_cv_list = []
+    gpu_temp_mean_list = []
+    gpu_temp_max_list = []
     power_shelly_list = []
 
     for i, (subset, loader) in enumerate(subset_loaders):
@@ -1179,6 +1243,10 @@ def evaluate_engine(engine_path):
             latency_e2e,
             power_tegra,
             power_cpu_gpu_cv,
+            energy_tegra_mj_per_image,
+            energy_cpu_gpu_cv_mj_per_image,
+            gpu_temp_mean_c,
+            gpu_temp_max_c,
             power_shelly,
         ) = evaluate_runner_on_subset(runner, subset, loader)
 
@@ -1189,6 +1257,10 @@ def evaluate_engine(engine_path):
         latency_e2e_list.append(latency_e2e)
         power_tegra_list.append(power_tegra)
         power_cpu_gpu_cv_list.append(power_cpu_gpu_cv)
+        energy_tegra_list.append(energy_tegra_mj_per_image)
+        energy_cpu_gpu_cv_list.append(energy_cpu_gpu_cv_mj_per_image)
+        gpu_temp_mean_list.append(gpu_temp_mean_c)
+        gpu_temp_max_list.append(gpu_temp_max_c)
         power_shelly_list.append(power_shelly)
 
         print(
@@ -1199,6 +1271,8 @@ def evaluate_engine(engine_path):
             f"E2E_LAT={latency_e2e:.2f} ms | "
             f"PWR_VDD_IN={power_tegra:.2f} W | "
             f"PWR_CPU_GPU_CV={power_cpu_gpu_cv:.2f} W | "
+            f"ENERGY={energy_tegra_mj_per_image:.3f} mJ/img | "
+            f"GPU_TEMP={gpu_temp_mean_c:.1f}/{gpu_temp_max_c:.1f} C mean/max | "
             f"PWR_shelly={power_shelly:.2f} W"
         )
 
@@ -1210,6 +1284,10 @@ def evaluate_engine(engine_path):
         latency_e2e_list,
         power_tegra_list,
         power_cpu_gpu_cv_list,
+        energy_tegra_list,
+        energy_cpu_gpu_cv_list,
+        gpu_temp_mean_list,
+        gpu_temp_max_list,
         power_shelly_list,
     )
 
@@ -1437,6 +1515,10 @@ def main():
                 latency_e2e_list,
                 power_tegra_list,
                 power_cpu_gpu_cv_list,
+                energy_tegra_list,
+                energy_cpu_gpu_cv_list,
+                gpu_temp_mean_list,
+                gpu_temp_max_list,
                 power_shelly_list,
             ) = evaluate_engine(engine_path)
 
@@ -1461,8 +1543,10 @@ def main():
                     "latency_e2e": latency_e2e_list[run_idx],
                     "power_tegra": power_tegra_list[run_idx],
                     "power_cpu_gpu_cv": power_cpu_gpu_cv_list[run_idx],
-                    "energy_e2e_mj_per_image": power_tegra_list[run_idx] * latency_e2e_list[run_idx],
-                    "energy_cpu_gpu_cv_mj_per_image": power_cpu_gpu_cv_list[run_idx] * latency_e2e_list[run_idx],
+                    "energy_e2e_mj_per_image": energy_tegra_list[run_idx],
+                    "energy_cpu_gpu_cv_mj_per_image": energy_cpu_gpu_cv_list[run_idx],
+                    "gpu_temp_mean_c": gpu_temp_mean_list[run_idx],
+                    "gpu_temp_max_c": gpu_temp_max_list[run_idx],
                     "power_shelly": power_shelly_list[run_idx],
                     "engine_size_mb": engine_size_mb,
                     "engine_path": str(engine_path),
@@ -1514,6 +1598,8 @@ def main():
             energy_e2e_mj_per_image_std=("energy_e2e_mj_per_image", "std"),
             energy_cpu_gpu_cv_mj_per_image_mean=("energy_cpu_gpu_cv_mj_per_image", "mean"),
             energy_cpu_gpu_cv_mj_per_image_std=("energy_cpu_gpu_cv_mj_per_image", "std"),
+            gpu_temp_mean_c=("gpu_temp_mean_c", "mean"),
+            gpu_temp_max_c=("gpu_temp_max_c", "max"),
             power_shelly_mean=("power_shelly", "mean"),
             power_shelly_std=("power_shelly", "std"),
             engine_size_mb=("engine_size_mb", "mean"),

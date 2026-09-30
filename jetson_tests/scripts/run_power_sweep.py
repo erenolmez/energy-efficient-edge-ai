@@ -11,6 +11,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import random
 import re
 import subprocess
 import sys
@@ -27,9 +28,12 @@ def parse_args() -> argparse.Namespace:
         default=root / "manifests" / "power_profiles.jetson.json",
     )
     parser.add_argument("--precisions", default="fp32,fp16,int8")
+    parser.add_argument("--model-pattern", default=None)
+    parser.add_argument("--experiment-name", default="power_sweep")
     parser.add_argument("--n-subsets", type=int, default=5)
     parser.add_argument("--subset-size", type=int, default=2000)
-    parser.add_argument("--batch-size", type=int, default=32)
+    parser.add_argument("--batch-sizes", default="32")
+    parser.add_argument("--profile-order-seed", type=int, default=42)
     parser.add_argument("--settle-seconds", type=float, default=15.0)
     parser.add_argument("--no-lock-clocks", action="store_true")
     parser.add_argument("--dry-run", action="store_true")
@@ -94,7 +98,7 @@ def set_gpu_frequency(freq_hz: int) -> None:
     run(["sudo", "tee", str(base / "min_freq")], input_text=f"{freq_hz}\n")
 
 
-def annotate_results(csv_path: Path, profile: dict, mode_query: str):
+def annotate_results(csv_path: Path, profile: dict, mode_query: str, batch_size: int):
     import pandas as pd
 
     frame = pd.read_csv(csv_path)
@@ -103,9 +107,11 @@ def annotate_results(csv_path: Path, profile: dict, mode_query: str):
     frame.insert(2, "requested_watts", profile.get("requested_watts"))
     frame.insert(3, "gpu_freq_hz", profile.get("gpu_freq_hz"))
     frame.insert(4, "nvpmodel_query", " ".join(mode_query.split()))
-    frame["energy_e2e_mj_per_image"] = frame["power_tegra"] * frame["latency_e2e"]
+    frame.insert(5, "batch_size", batch_size)
+    if "energy_e2e_mj_per_image" not in frame:
+        frame["energy_e2e_mj_per_image"] = frame["power_tegra"] * frame["latency_e2e"]
     frame["energy_pure_mj_per_image"] = frame["power_tegra"] * frame["latency_trt"]
-    if "power_cpu_gpu_cv" in frame:
+    if "power_cpu_gpu_cv" in frame and "energy_cpu_gpu_cv_mj_per_image" not in frame:
         frame["energy_cpu_gpu_cv_mj_per_image"] = frame["power_cpu_gpu_cv"] * frame["latency_e2e"]
     frame.to_csv(csv_path, index=False)
     return frame
@@ -120,7 +126,7 @@ def save_combined_outputs(frame, output_dir: Path) -> None:
 
     output_dir.mkdir(parents=True, exist_ok=True)
     frame.to_csv(output_dir / "power_sweep_all_runs.csv", index=False)
-    group_columns = ["power_profile", "nvpmodel_id", "requested_watts", "gpu_freq_hz", "precision", "prune", "model_name"]
+    group_columns = ["power_profile", "nvpmodel_id", "requested_watts", "gpu_freq_hz", "batch_size", "precision", "prune", "model_name"]
     summary = (
         frame.groupby(group_columns, dropna=False)
         .agg(
@@ -131,6 +137,8 @@ def save_combined_outputs(frame, output_dir: Path) -> None:
             compute_rail_power_w_mean=("power_cpu_gpu_cv", "mean"),
             energy_e2e_mj_per_image_mean=("energy_e2e_mj_per_image", "mean"),
             compute_rail_energy_mj_per_image_mean=("energy_cpu_gpu_cv_mj_per_image", "mean"),
+            gpu_temp_mean_c=("gpu_temp_mean_c", "mean"),
+            gpu_temp_max_c=("gpu_temp_max_c", "max"),
         )
         .reset_index()
     )
@@ -146,16 +154,17 @@ def save_combined_outputs(frame, output_dir: Path) -> None:
         ("energy_e2e_mj_per_image_mean", "End-to-end energy (mJ/image)", "energy_by_power.png"),
         ("compute_rail_energy_mj_per_image_mean", "CPU/GPU/CV rail energy (mJ/image)", "compute_rail_energy.png"),
     ):
-        plot_data = summary[summary["precision"] == "fp32"]
+        plot_data = summary.copy()
         plt.figure(figsize=(11, 6))
         sns.lineplot(
             data=plot_data,
-            x="prune",
+            x="gpu_freq_hz",
             y=metric,
-            hue="power_profile",
+            hue="batch_size",
+            style="requested_watts",
             marker="o",
         )
-        plt.xlabel("Structured pruning ratio (%)")
+        plt.xlabel("Fixed GPU frequency (Hz)")
         plt.ylabel(ylabel)
         plt.tight_layout()
         plt.savefig(output_dir / filename, dpi=200)
@@ -166,7 +175,15 @@ def main() -> None:
     args = parse_args()
     base_dir = args.base_dir.resolve()
     profiles = load_profiles(args.profile_config.resolve())
+    random.Random(args.profile_order_seed).shuffle(profiles)
+    batch_sizes = sorted(
+        {int(value.strip()) for value in args.batch_sizes.split(",") if value.strip()},
+        reverse=True,
+    )
+    if not batch_sizes:
+        raise ValueError("At least one batch size is required")
     evaluator = base_dir / "scripts" / "evaluate_trt.py"
+    output_dir = base_dir / "results" / slug(args.experiment_name)
     combined = []
     original_mode = current_nvpmodel_id() if not args.dry_run else None
 
@@ -174,8 +191,6 @@ def main() -> None:
         for profile in profiles:
             mode_id = int(profile["nvpmodel_id"])
             label = str(profile["label"])
-            profile_dir = base_dir / "results" / "power_sweep" / f"mode_{mode_id}_{slug(label)}"
-
             if not args.dry_run:
                 run(["sudo", "nvpmodel", "-m", str(mode_id)])
                 if not args.no_lock_clocks:
@@ -187,32 +202,36 @@ def main() -> None:
             else:
                 query = f"DRY RUN mode {mode_id}"
 
-            command = [
-                sys.executable,
-                str(evaluator),
-                "--base-dir", str(base_dir),
-                "--fp32-dir", "models/fp32",
-                "--trt-dir", "outputs/tensorrt",
-                "--results-dir", str(profile_dir),
-                "--data-dir", "data",
-                "--precisions", args.precisions,
-                "--n-subsets", str(args.n_subsets),
-                "--subset-size", str(args.subset_size),
-                "--batch-size", str(args.batch_size),
-                "--no-download",
-            ]
-            if args.dry_run:
-                print("+", " ".join(command))
-                continue
+            for batch_size in batch_sizes:
+                profile_dir = output_dir / f"mode_{mode_id}_{slug(label)}" / f"batch_{batch_size}"
+                command = [
+                    sys.executable,
+                    str(evaluator),
+                    "--base-dir", str(base_dir),
+                    "--fp32-dir", "models/fp32",
+                    "--trt-dir", "outputs/tensorrt",
+                    "--results-dir", str(profile_dir),
+                    "--data-dir", "data",
+                    "--precisions", args.precisions,
+                    "--n-subsets", str(args.n_subsets),
+                    "--subset-size", str(args.subset_size),
+                    "--batch-size", str(batch_size),
+                    "--no-download",
+                ]
+                if args.model_pattern:
+                    command.extend(["--model-pattern", args.model_pattern])
+                if args.dry_run:
+                    print("+", " ".join(command))
+                    continue
 
-            run(command)
-            raw_csv = profile_dir / "tensorrt_results_all_runs.csv"
-            combined.append(annotate_results(raw_csv, profile, query))
+                run(command)
+                raw_csv = profile_dir / "tensorrt_results_all_runs.csv"
+                combined.append(annotate_results(raw_csv, profile, query, batch_size))
 
         if combined:
             import pandas as pd
 
-            save_combined_outputs(pd.concat(combined, ignore_index=True), base_dir / "results" / "power_sweep")
+            save_combined_outputs(pd.concat(combined, ignore_index=True), output_dir)
     finally:
         if original_mode is not None and not args.dry_run:
             print(f"Restoring original nvpmodel mode {original_mode}.")
