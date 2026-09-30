@@ -13,6 +13,9 @@ from pathlib import Path
 sys.modules.setdefault("onnxruntime", None)
 
 import joblib
+import matplotlib
+matplotlib.use("Agg")
+import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 import torch
@@ -28,6 +31,63 @@ from router_features import extract_feature_vector
 
 
 MODELS = [f"fp32_p{prune}" for prune in range(0, 100, 10)]
+
+
+def save_reports(raw, objective, output_dir):
+    """Write a flat baseline-relative table and publication-ready plots."""
+    numeric = [column for column in raw.columns if column not in {"system", "repeat"}]
+    means = raw.groupby("system", sort=False)[numeric].mean()
+    stds = raw.groupby("system", sort=False)[numeric].std().fillna(0)
+    baseline = means.loc["fp32_p0_baseline"]
+    report = means.copy()
+    report["accuracy_delta_vs_p0_pp"] = (
+        report["accuracy_percent"] - baseline["accuracy_percent"]
+    )
+    report["latency_saving_vs_p0_percent"] = 100 * (
+        baseline["latency_e2e_ms_per_image"] - report["latency_e2e_ms_per_image"]
+    ) / baseline["latency_e2e_ms_per_image"]
+    report["energy_saving_vs_p0_percent"] = 100 * (
+        baseline["vdd_in_energy_mj_per_image"] - report["vdd_in_energy_mj_per_image"]
+    ) / baseline["vdd_in_energy_mj_per_image"]
+    report.to_csv(output_dir / f"{objective}_baseline_comparison.csv")
+
+    labels = list(means.index)
+    x = np.arange(len(labels))
+    fig, axes = plt.subplots(1, 3, figsize=(16, 5), constrained_layout=True)
+    panels = [
+        ("accuracy_percent", "Accuracy (%)", "Accuracy"),
+        ("latency_e2e_ms_per_image", "Latency (ms/image)", "End-to-end latency"),
+        ("vdd_in_energy_mj_per_image", "Energy (mJ/image)", "VDD_IN energy"),
+    ]
+    for axis, (metric, ylabel, title) in zip(axes, panels):
+        axis.bar(x, means[metric], yerr=stds[metric], capsize=3, color="#2878B5")
+        axis.axhline(baseline[metric], color="#D95319", linestyle="--",
+                     linewidth=1.5, label="p0 baseline")
+        axis.set_ylabel(ylabel)
+        axis.set_title(title)
+        axis.set_xticks(x, labels, rotation=40, ha="right")
+        axis.grid(axis="y", alpha=0.25)
+        axis.legend()
+    fig.suptitle(f"Dynamic routing ({objective} objective): same 2,000 CIFAR-100 images")
+    fig.savefig(output_dir / f"{objective}_system_comparison.png", dpi=180)
+    plt.close(fig)
+
+    selected = [f"selected_{model}" for model in MODELS]
+    selection_means = means[selected]
+    fig, axis = plt.subplots(figsize=(12, 6), constrained_layout=True)
+    bottom = np.zeros(len(labels))
+    colors = plt.cm.viridis(np.linspace(0.05, 0.95, len(MODELS)))
+    for model, column, color in zip(MODELS, selected, colors):
+        values = selection_means[column].to_numpy()
+        axis.bar(x, values, bottom=bottom, label=model, color=color)
+        bottom += values
+    axis.set_ylabel("Images selected (out of 2,000)")
+    axis.set_title(f"Model selections for the {objective} routing test")
+    axis.set_xticks(x, labels, rotation=40, ha="right")
+    axis.legend(ncol=5, fontsize=8)
+    axis.grid(axis="y", alpha=0.25)
+    fig.savefig(output_dir / f"{objective}_model_selection_counts.png", dpi=180)
+    plt.close(fig)
 
 
 class TinyCNN(nn.Module):
@@ -209,6 +269,7 @@ def main():
     metrics = [column for column in raw.columns if column not in {"system", "repeat"}]
     summary = raw.groupby("system", sort=False)[metrics].agg(["mean", "std"])
     summary.to_csv(args.output_dir / f"{objective}_summary.csv")
+    save_reports(raw, objective, args.output_dir)
 
 
 if __name__ == "__main__":
