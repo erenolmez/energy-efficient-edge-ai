@@ -1399,9 +1399,37 @@ def save_plots(df):
 
     lineplot(
         "power_tegra",
-        "Power (W)",
-        f"CIFAR-100 TensorRT tegrastats Power vs Pruning Ratio [95% CI, n={N_SUBSETS}]",
+        "VDD_IN Power (W)",
+        f"CIFAR-100 TensorRT VDD_IN Power vs Pruning Ratio [95% CI, n={N_SUBSETS}]",
         "power_tegra_trt.png",
+    )
+
+    lineplot(
+        "power_cpu_gpu_cv",
+        "CPU/GPU/CV Rail Power (W)",
+        f"CIFAR-100 TensorRT Compute-Rail Power vs Pruning Ratio [95% CI, n={N_SUBSETS}]",
+        "power_compute_rail_trt.png",
+    )
+
+    lineplot(
+        "energy_e2e_mj_per_image",
+        "End-to-End Energy (mJ/image)",
+        f"CIFAR-100 TensorRT VDD_IN Energy vs Pruning Ratio [95% CI, n={N_SUBSETS}]",
+        "energy_e2e_trt.png",
+    )
+
+    lineplot(
+        "energy_cpu_gpu_cv_mj_per_image",
+        "Compute-Rail Energy (mJ/image)",
+        f"CIFAR-100 TensorRT Compute-Rail Energy vs Pruning Ratio [95% CI, n={N_SUBSETS}]",
+        "energy_compute_rail_trt.png",
+    )
+
+    lineplot(
+        "gpu_temp_mean_c",
+        "Mean GPU Temperature (°C)",
+        f"CIFAR-100 TensorRT GPU Temperature vs Pruning Ratio [95% CI, n={N_SUBSETS}]",
+        "gpu_temperature_trt.png",
     )
 
     if ENABLE_SHELLY_POWER:

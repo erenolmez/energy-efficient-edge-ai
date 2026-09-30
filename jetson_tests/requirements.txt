@@ -5,6 +5,9 @@ seaborn==0.13.2
 requests==2.32.5
 timm
 onnx
+joblib
+scikit-learn
+xgboost
 
 # PyTorch, torchvision, CUDA and TensorRT must come from the JetPack-compatible
 # NVIDIA installation. Do not replace them with generic PyPI wheels on Jetson.

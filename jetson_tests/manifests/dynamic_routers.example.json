@@ -1,0 +1,11 @@
+{
+  "objective": "energy",
+  "costs_csv": "/absolute/path/to/energy_costs.csv",
+  "routers": [
+    {
+      "name": "compact_xgb_shallow_s45",
+      "artifact": "/absolute/path/to/compact_xgb_shallow_s45_energy.joblib",
+      "metadata": "/absolute/path/to/compact_xgb_shallow_s45_energy.json"
+    }
+  ]
+}

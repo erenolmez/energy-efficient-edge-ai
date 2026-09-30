@@ -9,6 +9,7 @@ manifests/models.sha256.csv  Model provenance and integrity hashes
 manifests/power_profiles.*   Board-specific nvpmodel mappings
 scripts/evaluate_trt.py      ONNX export, TensorRT build, evaluation and plots
 scripts/run_power_sweep.py   Power-mode orchestration and combined results
+scripts/benchmark_dynamic_routing.py  Complete router + selected-engine benchmark
 outputs/tensorrt/            Generated ONNX/engines; ignored by Git
 results/power_sweep/         Generated CSVs and plots; raw outputs ignored
 ```
@@ -27,7 +28,7 @@ workspace and can be linked or copied into `jetson_tests/models/fp32`.
 
 ```bash
 source /home/project/Desktop/resnet_env/bin/activate
-cd /home/project/Desktop/brand_new_pearl/jetson_tests
+cd /home/project/Desktop/energy-efficient-edge-ai/jetson_tests
 python scripts/evaluate_trt.py --help
 ```
 
@@ -60,9 +61,45 @@ python scripts/run_power_sweep.py --dry-run
 Run only after reviewing the profile mapping:
 
 ```bash
-python scripts/run_power_sweep.py
+python scripts/run_power_sweep.py \
+  --experiment-name hardware_characterization \
+  --model-pattern '^distilled_resnet18$' \
+  --precisions fp16 --batch-sizes 1,32
 ```
 
 The default evaluation uses the complete CIFAR-100 test set as five fixed,
 non-overlapping subsets of 2,000 images. The sweep restores the original
 nvpmodel mode when it finishes or fails.
+
+Some mode changes require a reboot on Orin Nano. In that case run the modes in
+separate phases with `--mode-ids 1` and `--mode-ids 0`; completed profile CSVs
+are automatically recombined. TensorRT engines are isolated per clock profile.
+
+## Dynamic routing on Jetson
+
+`benchmark_dynamic_routing.py` evaluates the exact same fixed 2,000 CIFAR-100
+images used by the PC router evaluation. It measures the entire serial path:
+input-only router, routing decision, preprocessing, selected TensorRT FP32
+engine, and synchronization. It also runs p0 on those same images and reports:
+
+- p0-relative accuracy;
+- total latency and throughput;
+- measured VDD_IN and CPU/GPU/CV power;
+- integrated energy per image;
+- router overhead; and
+- p0/p10/.../p90 selection counts.
+
+Energy and latency remain separate experiments. Copy selected small router
+artifacts to an ignored directory, create a manifest from
+`manifests/dynamic_routers.example.json`, and run:
+
+```bash
+python scripts/benchmark_dynamic_routing.py \
+  --manifest manifests/dynamic_routers.energy.json \
+  --trt-engine-dir outputs/tensorrt/engines/fp32 \
+  --output-dir results/dynamic_routing_energy
+```
+
+Do not commit checkpoints, TensorRT engines, trained router artifacts, or raw
+bulk outputs. Only source, concise CSV summaries, plots, and documentation
+belong in Git.
