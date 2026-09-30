@@ -131,7 +131,9 @@ def save_combined_outputs(frame, output_dir: Path) -> None:
         frame.groupby(group_columns, dropna=False)
         .agg(
             accuracy_mean=("acc", "mean"),
+            latency_pure_ms_mean=("latency_trt", "mean"),
             latency_e2e_ms_mean=("latency_e2e", "mean"),
+            throughput_pure_mean=("throughput_trt", "mean"),
             throughput_e2e_mean=("throughput_e2e", "mean"),
             power_w_mean=("power_tegra", "mean"),
             compute_rail_power_w_mean=("power_cpu_gpu_cv", "mean"),
@@ -139,6 +141,7 @@ def save_combined_outputs(frame, output_dir: Path) -> None:
             compute_rail_energy_mj_per_image_mean=("energy_cpu_gpu_cv_mj_per_image", "mean"),
             gpu_temp_mean_c=("gpu_temp_mean_c", "mean"),
             gpu_temp_max_c=("gpu_temp_max_c", "max"),
+            engine_size_mb=("engine_size_mb", "mean"),
         )
         .reset_index()
     )
@@ -147,12 +150,15 @@ def save_combined_outputs(frame, output_dir: Path) -> None:
     sns.set_theme(style="whitegrid")
     for metric, ylabel, filename in (
         ("accuracy_mean", "Top-1 accuracy (%)", "accuracy_by_power.png"),
+        ("latency_pure_ms_mean", "Pure TensorRT latency (ms/image)", "latency_pure_by_power.png"),
         ("latency_e2e_ms_mean", "End-to-end latency (ms/image)", "latency_by_power.png"),
+        ("throughput_pure_mean", "Pure TensorRT throughput (images/s)", "throughput_pure_by_power.png"),
         ("throughput_e2e_mean", "End-to-end throughput (images/s)", "throughput_by_power.png"),
         ("power_w_mean", "Measured VDD_IN power (W)", "measured_power.png"),
         ("compute_rail_power_w_mean", "Measured CPU/GPU/CV rail power (W)", "compute_rail_power.png"),
         ("energy_e2e_mj_per_image_mean", "End-to-end energy (mJ/image)", "energy_by_power.png"),
         ("compute_rail_energy_mj_per_image_mean", "CPU/GPU/CV rail energy (mJ/image)", "compute_rail_energy.png"),
+        ("gpu_temp_mean_c", "Mean GPU temperature (°C)", "gpu_temperature.png"),
     ):
         plot_data = summary.copy()
         plt.figure(figsize=(11, 6))
@@ -209,7 +215,7 @@ def main() -> None:
                     str(evaluator),
                     "--base-dir", str(base_dir),
                     "--fp32-dir", "models/fp32",
-                    "--trt-dir", "outputs/tensorrt",
+                    "--trt-dir", f"outputs/power_modes/mode_{mode_id}",
                     "--results-dir", str(profile_dir),
                     "--data-dir", "data",
                     "--precisions", args.precisions,

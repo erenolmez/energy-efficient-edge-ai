@@ -475,6 +475,10 @@ class PowerMonitor:
             ]
             if len(points) < 2:
                 return 0.0
+            if points[0][0] > t_start:
+                points.insert(0, (t_start, points[0][1]))
+            if points[-1][0] < t_end:
+                points.append((t_end, points[-1][1]))
             times = np.asarray([point[0] for point in points], dtype=float)
             watts = np.asarray([point[1] for point in points], dtype=float)
             return float(np.trapz(watts, times))
