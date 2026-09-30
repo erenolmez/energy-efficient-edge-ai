@@ -237,13 +237,17 @@ def main() -> None:
                 query = f"DRY RUN mode {mode_id}"
 
             for batch_size in batch_sizes:
-                profile_dir = output_dir / f"mode_{mode_id}_{slug(label)}" / f"batch_{batch_size}"
+                profile_key = f"mode_{mode_id}_{slug(label)}"
+                profile_dir = output_dir / profile_key / f"batch_{batch_size}"
                 command = [
                     sys.executable,
                     str(evaluator),
                     "--base-dir", str(base_dir),
                     "--fp32-dir", "models/fp32",
-                    "--trt-dir", f"outputs/power_modes/mode_{mode_id}",
+                    # TensorRT tactics are compiled for the active device state.
+                    # Keep one engine set per clock profile to avoid cross-profile
+                    # plan warnings and frequency-dependent tactic contamination.
+                    "--trt-dir", f"outputs/power_profiles/{profile_key}",
                     "--results-dir", str(profile_dir),
                     "--data-dir", "data",
                     "--precisions", args.precisions,
