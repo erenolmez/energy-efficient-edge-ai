@@ -62,6 +62,7 @@ import os
 import random
 import re
 import subprocess
+import sys
 import threading
 import time
 from collections import deque
@@ -70,6 +71,12 @@ from pathlib import Path
 import numpy as np
 import pandas as pd
 import requests
+
+# This evaluator never uses ONNX Runtime.  Some Jetson Python environments have
+# an incompatible optional user-site onnxruntime wheel; PyTorch probes it while
+# torchvision is imported and that native wheel can abort the whole process.
+# Mark it unavailable while retaining the separate `onnx` package used by export.
+sys.modules.setdefault("onnxruntime", None)
 
 import torch
 import torch.nn as nn
