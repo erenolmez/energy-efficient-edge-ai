@@ -1,0 +1,10 @@
+{
+  "note": "Replace these placeholders only with mode IDs reported by sudo nvpmodel -q --verbose on the target Jetson. nvpmodel limits total module power, not exact GPU-only power.",
+  "profiles": [
+    {
+      "nvpmodel_id": 0,
+      "label": "example-mode",
+      "requested_watts": null
+    }
+  ]
+}

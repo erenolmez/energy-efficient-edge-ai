@@ -1,0 +1,10 @@
+numpy==1.26.1
+pandas==2.3.3
+matplotlib==3.10.7
+seaborn==0.13.2
+requests==2.32.5
+timm
+onnx
+
+# PyTorch, torchvision, CUDA and TensorRT must come from the JetPack-compatible
+# NVIDIA installation. Do not replace them with generic PyPI wheels on Jetson.

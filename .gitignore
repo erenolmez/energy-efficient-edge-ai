@@ -214,6 +214,10 @@ tempCodeRunnerFile.py
 **/artifacts/*
 jetson_tests/engines/
 jetson_tests/results/raw/
+jetson_tests/outputs/
+jetson_tests/results/power_sweep/
+jetson_tests/manifests/power_profiles.jetson.json
+jetson_tests/models/
 
 # Marimo
 marimo/_static/
