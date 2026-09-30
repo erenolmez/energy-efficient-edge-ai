@@ -362,15 +362,19 @@ class PowerMonitor:
         self._thread = None
 
     def _parse_power(self, line):
-        # Common Jetson format: VDD_IN 3746mW/3752mW
-        m = re.search(r"VDD_IN\s+(\d+)mW", line)
-        if m:
-            return int(m.group(1))
+        # Orin Nano exposes total module input and a combined CPU/GPU/CV rail.
+        total_match = re.search(r"VDD_IN\s+(\d+)mW", line)
+        compute_match = re.search(r"VDD_CPU_GPU_CV\s+(\d+)mW", line)
+        total_mw = int(total_match.group(1)) if total_match else None
+        compute_mw = int(compute_match.group(1)) if compute_match else None
+
+        if total_mw is not None:
+            return {"vdd_in_mW": total_mw, "cpu_gpu_cv_mW": compute_mw}
 
         # Fallback for some tegrastats variants.
         m = re.search(r"POM_5V_IN\s+(\d+)mW", line)
         if m:
-            return int(m.group(1))
+            return {"vdd_in_mW": int(m.group(1)), "cpu_gpu_cv_mW": None}
 
         return None
 
@@ -392,12 +396,10 @@ class PowerMonitor:
             if not self._running:
                 break
 
-            p_mw = self._parse_power(line)
+            rails = self._parse_power(line)
 
-            if p_mw is not None:
-                self.power_samples.append(
-                    {"timestamp": time.time(), "power_mW": p_mw}
-                )
+            if rails is not None:
+                self.power_samples.append({"timestamp": time.time(), **rails})
 
         if self._process:
             try:
@@ -432,16 +434,25 @@ class PowerMonitor:
         if self._thread:
             self._thread.join(timeout=2)
 
-        window = [
-            s["power_mW"]
+        total_window = [
+            s["vdd_in_mW"]
             for s in self.power_samples
             if t_start <= s["timestamp"] <= t_end
         ]
+        compute_window = [
+            s["cpu_gpu_cv_mW"]
+            for s in self.power_samples
+            if t_start <= s["timestamp"] <= t_end and s["cpu_gpu_cv_mW"] is not None
+        ]
 
-        if len(window) < 2:
-            return 0.0
+        total_w = 0.0
+        compute_w = 0.0
+        if len(total_window) >= 2:
+            total_w = float(np.mean(np.asarray(total_window, dtype=float)) / 1000.0)
+        if len(compute_window) >= 2:
+            compute_w = float(np.mean(np.asarray(compute_window, dtype=float)) / 1000.0)
 
-        return float(np.mean(np.asarray(window, dtype=float)) / 1000.0)
+        return total_w, compute_w
 
 
 # ============================================================
@@ -1108,7 +1119,7 @@ def evaluate_runner_on_subset(runner, subset, loader):
 
     time.sleep(0.2)
 
-    power_tegra = tegra_monitor.stop_window(t0_e2e, t1_e2e)
+    power_tegra, power_cpu_gpu_cv = tegra_monitor.stop_window(t0_e2e, t1_e2e)
 
     if ENABLE_SHELLY_POWER and shelly_monitor is not None:
         power_shelly = shelly_monitor.stop_window(t0_e2e, t1_e2e)
@@ -1136,6 +1147,7 @@ def evaluate_runner_on_subset(runner, subset, loader):
         throughput_e2e,
         latency_e2e,
         power_tegra,
+        power_cpu_gpu_cv,
         power_shelly,
     )
 
@@ -1153,6 +1165,7 @@ def evaluate_engine(engine_path):
     throughput_e2e_list = []
     latency_e2e_list = []
     power_tegra_list = []
+    power_cpu_gpu_cv_list = []
     power_shelly_list = []
 
     for i, (subset, loader) in enumerate(subset_loaders):
@@ -1165,6 +1178,7 @@ def evaluate_engine(engine_path):
             throughput_e2e,
             latency_e2e,
             power_tegra,
+            power_cpu_gpu_cv,
             power_shelly,
         ) = evaluate_runner_on_subset(runner, subset, loader)
 
@@ -1174,6 +1188,7 @@ def evaluate_engine(engine_path):
         throughput_e2e_list.append(throughput_e2e)
         latency_e2e_list.append(latency_e2e)
         power_tegra_list.append(power_tegra)
+        power_cpu_gpu_cv_list.append(power_cpu_gpu_cv)
         power_shelly_list.append(power_shelly)
 
         print(
@@ -1182,7 +1197,8 @@ def evaluate_engine(engine_path):
             f"TRT_LAT={latency_trt:.2f} ms | "
             f"E2E_THR={throughput_e2e:.1f} img/s | "
             f"E2E_LAT={latency_e2e:.2f} ms | "
-            f"PWR_tegra={power_tegra:.2f} W | "
+            f"PWR_VDD_IN={power_tegra:.2f} W | "
+            f"PWR_CPU_GPU_CV={power_cpu_gpu_cv:.2f} W | "
             f"PWR_shelly={power_shelly:.2f} W"
         )
 
@@ -1193,6 +1209,7 @@ def evaluate_engine(engine_path):
         throughput_e2e_list,
         latency_e2e_list,
         power_tegra_list,
+        power_cpu_gpu_cv_list,
         power_shelly_list,
     )
 
@@ -1419,6 +1436,7 @@ def main():
                 throughput_e2e_list,
                 latency_e2e_list,
                 power_tegra_list,
+                power_cpu_gpu_cv_list,
                 power_shelly_list,
             ) = evaluate_engine(engine_path)
 
@@ -1442,6 +1460,9 @@ def main():
                     "throughput_e2e": throughput_e2e_list[run_idx],
                     "latency_e2e": latency_e2e_list[run_idx],
                     "power_tegra": power_tegra_list[run_idx],
+                    "power_cpu_gpu_cv": power_cpu_gpu_cv_list[run_idx],
+                    "energy_e2e_mj_per_image": power_tegra_list[run_idx] * latency_e2e_list[run_idx],
+                    "energy_cpu_gpu_cv_mj_per_image": power_cpu_gpu_cv_list[run_idx] * latency_e2e_list[run_idx],
                     "power_shelly": power_shelly_list[run_idx],
                     "engine_size_mb": engine_size_mb,
                     "engine_path": str(engine_path),
@@ -1455,6 +1476,7 @@ def main():
         print(f"    E2E THR:      {np.mean(throughput_e2e_list):.1f} img/s ± {np.std(throughput_e2e_list):.1f}")
         print(f"    E2E LAT:      {np.mean(latency_e2e_list):.2f} ms ± {np.std(latency_e2e_list):.2f}")
         print(f"    POWER tegra:  {np.mean(power_tegra_list):.2f} W ± {np.std(power_tegra_list):.2f}")
+        print(f"    CPU/GPU/CV:   {np.mean(power_cpu_gpu_cv_list):.2f} W ± {np.std(power_cpu_gpu_cv_list):.2f}")
         if ENABLE_SHELLY_POWER:
             print(f"    POWER shelly: {np.mean(power_shelly_list):.2f} W ± {np.std(power_shelly_list):.2f}")
         print(f"    ENGINE SIZE:  {engine_size_mb:.2f} MB")
@@ -1486,6 +1508,12 @@ def main():
             latency_e2e_std=("latency_e2e", "std"),
             power_tegra_mean=("power_tegra", "mean"),
             power_tegra_std=("power_tegra", "std"),
+            power_cpu_gpu_cv_mean=("power_cpu_gpu_cv", "mean"),
+            power_cpu_gpu_cv_std=("power_cpu_gpu_cv", "std"),
+            energy_e2e_mj_per_image_mean=("energy_e2e_mj_per_image", "mean"),
+            energy_e2e_mj_per_image_std=("energy_e2e_mj_per_image", "std"),
+            energy_cpu_gpu_cv_mj_per_image_mean=("energy_cpu_gpu_cv_mj_per_image", "mean"),
+            energy_cpu_gpu_cv_mj_per_image_std=("energy_cpu_gpu_cv_mj_per_image", "std"),
             power_shelly_mean=("power_shelly", "mean"),
             power_shelly_std=("power_shelly", "std"),
             engine_size_mb=("engine_size_mb", "mean"),

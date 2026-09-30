@@ -1,0 +1,13 @@
+{
+  "board": "NVIDIA Jetson Orin Nano Developer Kit",
+  "note": "Supported configurations discovered on 2026-09-30. Labels describe official nvpmodel mode and fixed GPU clock, not guaranteed GPU wattage. Use measured rails for analysis.",
+  "profiles": [
+    {"nvpmodel_id": 1, "label": "7W-306MHz", "requested_watts": 7, "gpu_freq_hz": 306000000},
+    {"nvpmodel_id": 1, "label": "7W-408MHz", "requested_watts": 7, "gpu_freq_hz": 408000000},
+    {"nvpmodel_id": 0, "label": "15W-306MHz", "requested_watts": 15, "gpu_freq_hz": 306000000},
+    {"nvpmodel_id": 0, "label": "15W-408MHz", "requested_watts": 15, "gpu_freq_hz": 408000000},
+    {"nvpmodel_id": 0, "label": "15W-510MHz", "requested_watts": 15, "gpu_freq_hz": 510000000},
+    {"nvpmodel_id": 0, "label": "15W-612MHz", "requested_watts": 15, "gpu_freq_hz": 612000000},
+    {"nvpmodel_id": 0, "label": "15W-624.75MHz", "requested_watts": 15, "gpu_freq_hz": 624750000}
+  ]
+}

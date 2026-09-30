@@ -36,9 +36,21 @@ def parse_args() -> argparse.Namespace:
     return parser.parse_args()
 
 
-def run(command: list[str], *, check: bool = True, capture: bool = False) -> subprocess.CompletedProcess:
+def run(
+    command: list[str],
+    *,
+    check: bool = True,
+    capture: bool = False,
+    input_text: str | None = None,
+) -> subprocess.CompletedProcess:
     print("+", " ".join(str(part) for part in command), flush=True)
-    return subprocess.run(command, check=check, text=True, capture_output=capture)
+    return subprocess.run(
+        command,
+        check=check,
+        text=True,
+        capture_output=capture,
+        input=input_text,
+    )
 
 
 def current_nvpmodel_id() -> int | None:
@@ -70,6 +82,18 @@ def slug(value: str) -> str:
     return re.sub(r"[^a-z0-9]+", "_", value.lower()).strip("_")
 
 
+def set_gpu_frequency(freq_hz: int) -> None:
+    base = Path("/sys/devices/platform/17000000.gpu/devfreq_dev")
+    available = [int(value) for value in (base / "available_frequencies").read_text().split()]
+    if freq_hz not in available:
+        raise ValueError(f"Unsupported GPU frequency {freq_hz}; available values: {available}")
+
+    # Lower min first so reducing max cannot conflict with the current bound.
+    run(["sudo", "tee", str(base / "min_freq")], input_text=f"{min(available)}\n")
+    run(["sudo", "tee", str(base / "max_freq")], input_text=f"{freq_hz}\n")
+    run(["sudo", "tee", str(base / "min_freq")], input_text=f"{freq_hz}\n")
+
+
 def annotate_results(csv_path: Path, profile: dict, mode_query: str):
     import pandas as pd
 
@@ -77,9 +101,12 @@ def annotate_results(csv_path: Path, profile: dict, mode_query: str):
     frame.insert(0, "power_profile", profile["label"])
     frame.insert(1, "nvpmodel_id", int(profile["nvpmodel_id"]))
     frame.insert(2, "requested_watts", profile.get("requested_watts"))
-    frame.insert(3, "nvpmodel_query", " ".join(mode_query.split()))
+    frame.insert(3, "gpu_freq_hz", profile.get("gpu_freq_hz"))
+    frame.insert(4, "nvpmodel_query", " ".join(mode_query.split()))
     frame["energy_e2e_mj_per_image"] = frame["power_tegra"] * frame["latency_e2e"]
     frame["energy_pure_mj_per_image"] = frame["power_tegra"] * frame["latency_trt"]
+    if "power_cpu_gpu_cv" in frame:
+        frame["energy_cpu_gpu_cv_mj_per_image"] = frame["power_cpu_gpu_cv"] * frame["latency_e2e"]
     frame.to_csv(csv_path, index=False)
     return frame
 
@@ -93,7 +120,7 @@ def save_combined_outputs(frame, output_dir: Path) -> None:
 
     output_dir.mkdir(parents=True, exist_ok=True)
     frame.to_csv(output_dir / "power_sweep_all_runs.csv", index=False)
-    group_columns = ["power_profile", "nvpmodel_id", "requested_watts", "precision", "prune", "model_name"]
+    group_columns = ["power_profile", "nvpmodel_id", "requested_watts", "gpu_freq_hz", "precision", "prune", "model_name"]
     summary = (
         frame.groupby(group_columns, dropna=False)
         .agg(
@@ -101,7 +128,9 @@ def save_combined_outputs(frame, output_dir: Path) -> None:
             latency_e2e_ms_mean=("latency_e2e", "mean"),
             throughput_e2e_mean=("throughput_e2e", "mean"),
             power_w_mean=("power_tegra", "mean"),
+            compute_rail_power_w_mean=("power_cpu_gpu_cv", "mean"),
             energy_e2e_mj_per_image_mean=("energy_e2e_mj_per_image", "mean"),
+            compute_rail_energy_mj_per_image_mean=("energy_cpu_gpu_cv_mj_per_image", "mean"),
         )
         .reset_index()
     )
@@ -113,7 +142,9 @@ def save_combined_outputs(frame, output_dir: Path) -> None:
         ("latency_e2e_ms_mean", "End-to-end latency (ms/image)", "latency_by_power.png"),
         ("throughput_e2e_mean", "End-to-end throughput (images/s)", "throughput_by_power.png"),
         ("power_w_mean", "Measured VDD_IN power (W)", "measured_power.png"),
+        ("compute_rail_power_w_mean", "Measured CPU/GPU/CV rail power (W)", "compute_rail_power.png"),
         ("energy_e2e_mj_per_image_mean", "End-to-end energy (mJ/image)", "energy_by_power.png"),
+        ("compute_rail_energy_mj_per_image_mean", "CPU/GPU/CV rail energy (mJ/image)", "compute_rail_energy.png"),
     ):
         plot_data = summary[summary["precision"] == "fp32"]
         plt.figure(figsize=(11, 6))
@@ -149,6 +180,8 @@ def main() -> None:
                 run(["sudo", "nvpmodel", "-m", str(mode_id)])
                 if not args.no_lock_clocks:
                     run(["sudo", "jetson_clocks"])
+                if profile.get("gpu_freq_hz") is not None:
+                    set_gpu_frequency(int(profile["gpu_freq_hz"]))
                 time.sleep(args.settle_seconds)
                 query = run(["sudo", "nvpmodel", "-q"], capture=True).stdout
             else:

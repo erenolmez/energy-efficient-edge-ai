@@ -41,8 +41,11 @@ sudo nvpmodel -q --verbose
 
 Create `manifests/power_profiles.jetson.json` from the example using only those
 reported IDs. An nvpmodel profile is a total-module power configuration—not an
-exact GPU-only watt limit. The experiment therefore records measured `VDD_IN`
-power from `tegrastats` and calculates end-to-end energy as:
+exact GPU-only watt limit. This Orin Nano exposes official 7 W and 15 W modes
+plus GPU clocks of 306, 408, 510, 612 and 624.75 MHz. The supplied Orin Nano
+manifest combines those supported settings. The experiment records both total
+`VDD_IN` and combined `VDD_CPU_GPU_CV` rail power from `tegrastats`, then
+calculates end-to-end energy as:
 
 ```text
 energy (mJ/image) = measured power (W) × end-to-end latency (ms/image)
