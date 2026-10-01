@@ -20,11 +20,9 @@ import numpy as np
 import pandas as pd
 import torch
 import torch.nn.functional as F
-from PIL import Image
 from sklearn.model_selection import train_test_split
 from torch import nn
 from torchvision.datasets import CIFAR100
-from torchvision import transforms
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from evaluate_trt import CIFAR100_MEAN, CIFAR100_STD, PowerMonitor, TRTInfer
 from router_features import extract_feature_vector
@@ -35,24 +33,30 @@ MODELS = [f"fp32_p{prune}" for prune in range(0, 100, 10)]
 
 def save_reports(raw, objective, output_dir):
     """Write a flat baseline-relative table and publication-ready plots."""
-    numeric = [column for column in raw.columns if column not in {"system", "repeat"}]
-    means = raw.groupby("system", sort=False)[numeric].mean()
-    stds = raw.groupby("system", sort=False)[numeric].std().fillna(0)
-    baseline = means.loc["fp32_p0_baseline"]
-    report = means.copy()
-    report["accuracy_delta_vs_p0_pp"] = (
-        report["accuracy_percent"] - baseline["accuracy_percent"]
-    )
-    report["latency_saving_vs_p0_percent"] = 100 * (
-        baseline["latency_e2e_ms_per_image"] - report["latency_e2e_ms_per_image"]
-    ) / baseline["latency_e2e_ms_per_image"]
-    report["energy_saving_vs_p0_percent"] = 100 * (
-        baseline["vdd_in_energy_mj_per_image"] - report["vdd_in_energy_mj_per_image"]
-    ) / baseline["vdd_in_energy_mj_per_image"]
-    report.to_csv(output_dir / f"{objective}_baseline_comparison.csv")
+    excluded = {"system", "repeat", "batch_size"}
+    numeric = [column for column in raw.columns if column not in excluded]
+    keys = ["batch_size", "system"]
+    means = raw.groupby(keys, sort=False)[numeric].mean().reset_index()
+    reports = []
+    for batch_size, group in means.groupby("batch_size", sort=False):
+        baseline = group.loc[group["system"] == "fp32_p0_baseline"].iloc[0]
+        group = group.copy()
+        group["accuracy_delta_vs_p0_pp"] = (
+            group["accuracy_percent"] - baseline["accuracy_percent"]
+        )
+        group["latency_saving_vs_p0_percent"] = 100 * (
+            baseline["latency_e2e_ms_per_image"] - group["latency_e2e_ms_per_image"]
+        ) / baseline["latency_e2e_ms_per_image"]
+        group["energy_saving_vs_p0_percent"] = 100 * (
+            baseline["vdd_in_energy_mj_per_image"] - group["vdd_in_energy_mj_per_image"]
+        ) / baseline["vdd_in_energy_mj_per_image"]
+        reports.append(group)
+    report = pd.concat(reports, ignore_index=True)
+    report.to_csv(output_dir / f"{objective}_baseline_comparison.csv", index=False)
 
-    labels = list(means.index)
-    x = np.arange(len(labels))
+    labels = list(dict.fromkeys(means["system"]))
+    batch_sizes = list(dict.fromkeys(means["batch_size"]))
+    x = np.arange(len(batch_sizes))
     fig, axes = plt.subplots(1, 3, figsize=(16, 5), constrained_layout=True)
     panels = [
         ("accuracy_percent", "Accuracy (%)", "Accuracy"),
@@ -60,30 +64,35 @@ def save_reports(raw, objective, output_dir):
         ("vdd_in_energy_mj_per_image", "Energy (mJ/image)", "VDD_IN energy"),
     ]
     for axis, (metric, ylabel, title) in zip(axes, panels):
-        axis.bar(x, means[metric], yerr=stds[metric], capsize=3, color="#2878B5")
-        axis.axhline(baseline[metric], color="#D95319", linestyle="--",
-                     linewidth=1.5, label="p0 baseline")
+        for label in labels:
+            values = means.loc[means["system"] == label].set_index("batch_size").loc[batch_sizes]
+            axis.plot(x, values[metric], marker="o", label=label)
         axis.set_ylabel(ylabel)
         axis.set_title(title)
-        axis.set_xticks(x, labels, rotation=40, ha="right")
+        axis.set_xticks(x, batch_sizes)
+        axis.set_xlabel("Batch size")
         axis.grid(axis="y", alpha=0.25)
-        axis.legend()
-    fig.suptitle(f"Dynamic routing ({objective} objective): same 2,000 CIFAR-100 images")
+    axes[-1].legend(fontsize=7, ncol=2)
+    fig.suptitle(
+        f"90th-percentile batch routing ({objective}): same 2,000 CIFAR-100 images"
+    )
     fig.savefig(output_dir / f"{objective}_system_comparison.png", dpi=180)
     plt.close(fig)
 
     selected = [f"selected_{model}" for model in MODELS]
-    selection_means = means[selected]
-    fig, axis = plt.subplots(figsize=(12, 6), constrained_layout=True)
-    bottom = np.zeros(len(labels))
+    routing = means.loc[means["system"] != "fp32_p0_baseline"].copy()
+    selection_labels = [f"B{int(row.batch_size)} {row.system}" for row in routing.itertuples()]
+    selection_x = np.arange(len(routing))
+    fig, axis = plt.subplots(figsize=(16, 7), constrained_layout=True)
+    bottom = np.zeros(len(routing))
     colors = plt.cm.viridis(np.linspace(0.05, 0.95, len(MODELS)))
     for model, column, color in zip(MODELS, selected, colors):
-        values = selection_means[column].to_numpy()
-        axis.bar(x, values, bottom=bottom, label=model, color=color)
+        values = routing[column].to_numpy()
+        axis.bar(selection_x, values, bottom=bottom, label=model, color=color)
         bottom += values
     axis.set_ylabel("Images selected (out of 2,000)")
-    axis.set_title(f"Model selections for the {objective} routing test")
-    axis.set_xticks(x, labels, rotation=40, ha="right")
+    axis.set_title(f"90th-percentile batch selections for the {objective} routing test")
+    axis.set_xticks(selection_x, selection_labels, rotation=55, ha="right")
     axis.legend(ncol=5, fontsize=8)
     axis.grid(axis="y", alpha=0.25)
     fig.savefig(output_dir / f"{objective}_model_selection_counts.png", dpi=180)
@@ -117,6 +126,10 @@ def parse_args():
     parser.add_argument("--output-dir", type=Path, default=root / "results/dynamic_routing")
     parser.add_argument("--repeats", type=int, default=3)
     parser.add_argument("--split-seed", type=int, default=42)
+    parser.add_argument("--batch-sizes", default="1",
+                        help="Comma-separated TensorRT batch sizes.")
+    parser.add_argument("--difficulty-percentile", type=float, default=90.0,
+                        help="Batch difficulty percentile used for one batch decision.")
     return parser.parse_args()
 
 
@@ -135,8 +148,8 @@ def model_engine_name(model_id):
     return f"{stem}_fp32.engine"
 
 
-def image_tensor(image, size):
-    value = torch.from_numpy(np.asarray(image).copy()).permute(2, 0, 1).float()[None] / 255
+def image_batch_tensor(image_batch, size):
+    value = torch.from_numpy(np.asarray(image_batch).copy()).permute(0, 3, 1, 2).float() / 255
     if size != 32:
         value = F.interpolate(value, size=(size, size), mode="bilinear",
                               align_corners=False, antialias=True)
@@ -155,23 +168,26 @@ def load_router(entry, objective):
         feature_set = package["feature_set"]
         columns = package.get("selected_columns")
 
-        def predict(image):
-            values = extract_feature_vector(image, feature_set).reshape(1, -1)
+        def predict_batch(images):
+            values = np.stack([
+                extract_feature_vector(image, feature_set) for image in images
+            ])
             if columns is not None:
                 values = values[:, columns]
-            return float(model.predict(values)[0])
+            return np.asarray(model.predict(values), dtype=float)
     elif artifact.suffix == ".pth":
         package = torch.load(artifact, map_location="cuda", weights_only=False)
         size = int(package["size"])
         model = TinyCNN().cuda().eval()
         model.load_state_dict(package["state_dict"])
 
-        def predict(image):
+        def predict_batch(images):
             with torch.inference_mode():
-                return float(model(image_tensor(image, size).cuda()).item())
+                values = image_batch_tensor(images, size).cuda(non_blocking=True)
+                return model(values).detach().cpu().numpy().astype(float)
     else:
         raise ValueError(f"Unsupported router artifact: {artifact}")
-    return predict, policy
+    return predict_batch, policy
 
 
 def choose_model(score, costs, policy):
@@ -182,44 +198,54 @@ def choose_model(score, costs, policy):
     return MODELS[int(order[np.digitize([score], thresholds)[0]])]
 
 
-def benchmark(name, predict, policy, costs, images, labels, positions, runners,
-              network_transform, repeats):
+def benchmark(name, predict_batch, policy, costs, images, labels, positions, runners,
+              batch_size, difficulty_percentile, repeats):
     rows = []
     for repeat in range(repeats):
         selections = Counter()
+        selected_batches = Counter()
         correct = 0
         router_seconds = 0.0
         torch.cuda.synchronize()
         monitor = PowerMonitor(interval_ms=50)
         monitor.start()
         start = time.time()
-        for position in positions:
-            image = images[position]
+        for offset in range(0, len(positions), batch_size):
+            batch_positions = positions[offset:offset + batch_size]
+            image_batch = images[batch_positions]
             router_start = time.perf_counter()
-            model_id = choose_model(predict(image), costs, policy)
+            scores = predict_batch(image_batch)
+            difficulty = float(np.percentile(scores, difficulty_percentile))
+            model_id = choose_model(difficulty, costs, policy)
             torch.cuda.synchronize()
             router_seconds += time.perf_counter() - router_start
-            selections[model_id] += 1
-            tensor = network_transform(Image.fromarray(image))[None]
+            selections[model_id] += len(batch_positions)
+            selected_batches[model_id] += 1
+            tensor = image_batch_tensor(image_batch, 128)
             output = runners[model_id].infer(tensor)
             torch.cuda.synchronize()
-            correct += int(output.argmax(1).item() == int(labels[position]))
+            predicted = output.argmax(1).detach().cpu().numpy()
+            correct += int((predicted == labels[batch_positions]).sum())
         torch.cuda.synchronize()
         end = time.time()
         power = monitor.stop_window(start, end)
         elapsed = end - start
         row = {
             "system": name, "repeat": repeat, "images": len(positions),
+            "batch_size": batch_size,
+            "difficulty_percentile": difficulty_percentile,
             "accuracy_percent": 100 * correct / len(positions),
             "latency_e2e_ms_per_image": 1000 * elapsed / len(positions),
             "throughput_e2e_images_s": len(positions) / elapsed,
             "router_ms_per_image": 1000 * router_seconds / len(positions),
+            "router_ms_per_batch": 1000 * router_seconds / int(np.ceil(len(positions) / batch_size)),
             "vdd_in_power_w": power[0], "compute_rail_power_w": power[1],
             "vdd_in_energy_mj_per_image": 1000 * power[2] / len(positions),
             "compute_rail_energy_mj_per_image": 1000 * power[3] / len(positions),
             "gpu_temp_mean_c": power[4], "gpu_temp_max_c": power[5],
         }
         row.update({f"selected_{model}": selections[model] for model in MODELS})
+        row.update({f"selected_batches_{model}": selected_batches[model] for model in MODELS})
         rows.append(row)
         print(json.dumps(row, indent=2), flush=True)
     return rows
@@ -227,6 +253,11 @@ def benchmark(name, predict, policy, costs, images, labels, positions, runners,
 
 def main():
     args = parse_args()
+    batch_sizes = [int(value) for value in args.batch_sizes.split(",")]
+    if not batch_sizes or any(value < 1 for value in batch_sizes):
+        raise ValueError("--batch-sizes must contain positive integers")
+    if not 0 <= args.difficulty_percentile <= 100:
+        raise ValueError("--difficulty-percentile must be between 0 and 100")
     manifest = json.loads(args.manifest.resolve().read_text(encoding="utf-8"))
     objective = manifest["objective"]
     costs_frame = pd.read_csv(Path(manifest["costs_csv"]))
@@ -235,39 +266,41 @@ def main():
     images = dataset.data
     labels = np.asarray(dataset.targets)
     positions = evaluation_positions(labels, args.split_seed)
-    network_transform = transforms.Compose([
-        transforms.Resize((128, 128)), transforms.ToTensor(),
-        transforms.Normalize(CIFAR100_MEAN, CIFAR100_STD),
-    ])
     runners = {}
     for model_id in MODELS:
         engine = args.trt_engine_dir / model_engine_name(model_id)
         if not engine.exists():
             raise FileNotFoundError(engine)
         runners[model_id] = TRTInfer(engine)
-    # Warm every engine outside the measured window.
-    warm = network_transform(Image.fromarray(images[positions[0]]))[None]
-    for runner in runners.values():
-        for _ in range(5):
-            runner.infer(warm)
-    torch.cuda.synchronize()
-
     all_rows = []
-    baseline_predict = lambda image: 1.0
+    baseline_predict = lambda image_batch: np.ones(len(image_batch), dtype=float)
     baseline_policy = {"fallback": True, "bias": 0.0}
-    all_rows.extend(benchmark("fp32_p0_baseline", baseline_predict, baseline_policy,
-                              costs, images, labels, positions, runners,
-                              network_transform, args.repeats))
-    for entry in manifest["routers"]:
-        predict, policy = load_router(entry, objective)
-        all_rows.extend(benchmark(entry["name"], predict, policy, costs, images,
-                                  labels, positions, runners, network_transform,
-                                  args.repeats))
+    loaded_routers = [(entry["name"], *load_router(entry, objective))
+                      for entry in manifest["routers"]]
+    for batch_size in batch_sizes:
+        # Warm every engine at the measured shape outside the power window.
+        warm_images = images[positions[:batch_size]]
+        warm = image_batch_tensor(warm_images, 128)
+        for runner in runners.values():
+            for _ in range(5):
+                runner.infer(warm)
+        torch.cuda.synchronize()
+        all_rows.extend(benchmark(
+            "fp32_p0_baseline", baseline_predict, baseline_policy, costs,
+            images, labels, positions, runners, batch_size,
+            args.difficulty_percentile, args.repeats,
+        ))
+        for name, predict_batch, policy in loaded_routers:
+            all_rows.extend(benchmark(
+                name, predict_batch, policy, costs, images, labels, positions,
+                runners, batch_size, args.difficulty_percentile, args.repeats,
+            ))
     args.output_dir.mkdir(parents=True, exist_ok=True)
     raw = pd.DataFrame(all_rows)
     raw.to_csv(args.output_dir / f"{objective}_runs.csv", index=False)
-    metrics = [column for column in raw.columns if column not in {"system", "repeat"}]
-    summary = raw.groupby("system", sort=False)[metrics].agg(["mean", "std"])
+    metrics = [column for column in raw.columns
+               if column not in {"system", "repeat", "batch_size"}]
+    summary = raw.groupby(["batch_size", "system"], sort=False)[metrics].agg(["mean", "std"])
     summary.to_csv(args.output_dir / f"{objective}_summary.csv")
     save_reports(raw, objective, args.output_dir)
 

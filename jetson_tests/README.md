@@ -78,16 +78,19 @@ are automatically recombined. TensorRT engines are isolated per clock profile.
 ## Dynamic routing on Jetson
 
 `benchmark_dynamic_routing.py` evaluates the exact same fixed 2,000 CIFAR-100
-images used by the PC router evaluation. It measures the entire serial path:
-input-only router, routing decision, preprocessing, selected TensorRT FP32
-engine, and synchronization. It also runs p0 on those same images and reports:
+images used by the PC router evaluation. It can route individual images or make
+one decision for a complete batch. For batch routing, it scores every image,
+aggregates the scores with a configurable difficulty percentile, and runs the
+entire batch through the selected TensorRT FP32 engine. It measures the complete
+path: input-only router, routing decision, preprocessing, selected engine, and
+synchronization. It also runs p0 with the same batch size and reports:
 
 - p0-relative accuracy;
 - total latency and throughput;
 - measured VDD_IN and CPU/GPU/CV power;
 - integrated energy per image;
 - router overhead; and
-- p0/p10/.../p90 selection counts.
+- p0/p10/.../p90 selection counts for both images and batches.
 
 Energy and latency remain separate experiments. Copy selected small router
 artifacts to an ignored directory, create a manifest from
@@ -97,8 +100,14 @@ artifacts to an ignored directory, create a manifest from
 python scripts/benchmark_dynamic_routing.py \
   --manifest manifests/dynamic_routers.energy.json \
   --trt-engine-dir outputs/tensorrt/engines/fp32 \
-  --output-dir results/dynamic_routing_energy
+  --output-dir results/dynamic_routing_energy \
+  --batch-sizes 8,16,32 \
+  --difficulty-percentile 90
 ```
+
+The p0 comparison is recomputed separately for every batch size. Existing
+engines in this project support batches up to 32; larger batches require
+rebuilding all engines with a larger optimization profile.
 
 Do not commit checkpoints, TensorRT engines, trained router artifacts, or raw
 bulk outputs. Only source, concise CSV summaries, plots, and documentation
@@ -109,3 +118,7 @@ belong in Git.
 The complete 2026-09-30 hardware sweep, mail-like reproduction, separate
 energy/latency routing tests, plots, and discussion are in
 [`reports/jetson_2026_09_30`](reports/jetson_2026_09_30/README.md).
+
+The 2026-10-01 follow-up with batch sizes 8/16/32 and 90th-percentile batch
+difficulty is in
+[`reports/jetson_batch90_2026_10_01`](reports/jetson_batch90_2026_10_01/README.md).
