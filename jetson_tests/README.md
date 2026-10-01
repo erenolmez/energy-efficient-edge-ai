@@ -9,6 +9,7 @@ manifests/models.sha256.csv  Model provenance and integrity hashes
 manifests/power_profiles.*   Board-specific nvpmodel mappings
 scripts/evaluate_trt.py      ONNX export, TensorRT build, evaluation and plots
 scripts/run_power_sweep.py   Power-mode orchestration and combined results
+scripts/benchmark_static_models.py  Fixed-image static batch/model sweep
 scripts/benchmark_dynamic_routing.py  Complete router + selected-engine benchmark
 outputs/tensorrt/            Generated ONNX/engines; ignored by Git
 results/power_sweep/         Generated CSVs and plots; raw outputs ignored
@@ -77,6 +78,20 @@ are automatically recombined. TensorRT engines are isolated per clock profile.
 
 ## Dynamic routing on Jetson
 
+Before routing, benchmark every candidate directly on the same fixed images:
+
+```bash
+python scripts/benchmark_static_models.py \
+  --trt-engine-dir outputs/tensorrt_batch128/engines/fp32 \
+  --output-dir results/static_models \
+  --models fp32_p0,fp32_p30,fp32_p50,fp32_p70 \
+  --batch-sizes 1,8,16,32,64,128 \
+  --repeats 3
+```
+
+The static summary marks Pareto-efficient candidates using measured accuracy,
+end-to-end latency, and VDD_IN energy.
+
 `benchmark_dynamic_routing.py` evaluates the exact same fixed 2,000 CIFAR-100
 images used by the PC router evaluation. It can route individual images or make
 one decision for a complete batch. For batch routing, it scores every image,
@@ -92,6 +107,14 @@ synchronization. It also runs p0 with the same batch size and reports:
 - router overhead; and
 - p0/p10/.../p90 selection counts for both images and batches.
 
+The p0 baseline bypasses both the router and percentile calculation. It is a
+direct, like-for-like p0 inference measurement at the same batch size.
+
+Build TensorRT engines under the GPU clock profile used by the measurement.
+On this Jetson, deserializing the 624.75 MHz plans while fixed at 612 MHz
+triggered TensorRT's cross-device-profile warning. Separate batch-128 engine
+directories were therefore built for the energy and latency profiles.
+
 Energy and latency remain separate experiments. Copy selected small router
 artifacts to an ignored directory, create a manifest from
 `manifests/dynamic_routers.example.json`, and run:
@@ -99,15 +122,18 @@ artifacts to an ignored directory, create a manifest from
 ```bash
 python scripts/benchmark_dynamic_routing.py \
   --manifest manifests/dynamic_routers.energy.json \
-  --trt-engine-dir outputs/tensorrt/engines/fp32 \
+  --trt-engine-dir outputs/tensorrt_batch128/engines/fp32 \
   --output-dir results/dynamic_routing_energy \
-  --batch-sizes 8,16,32 \
-  --difficulty-percentile 90
+  --batch-sizes 8,16,32,64,128 \
+  --difficulty-percentiles 50,70,80,90 \
+  --candidate-models fp32_p0,fp32_p30,fp32_p50,fp32_p70 \
+  --repeats 3
 ```
 
-The p0 comparison is recomputed separately for every batch size. Existing
-engines in this project support batches up to 32; larger batches require
-rebuilding all engines with a larger optimization profile.
+The p0 comparison is measured once for every batch size and reused for each
+percentile, so all percentile policies are compared with the identical p0
+observations. The current follow-up engines use a TensorRT optimization profile
+with maximum batch 128.
 
 Do not commit checkpoints, TensorRT engines, trained router artifacts, or raw
 bulk outputs. Only source, concise CSV summaries, plots, and documentation
@@ -122,3 +148,8 @@ energy/latency routing tests, plots, and discussion are in
 The 2026-10-01 follow-up with batch sizes 8/16/32 and 90th-percentile batch
 difficulty is in
 [`reports/jetson_batch90_2026_10_01`](reports/jetson_batch90_2026_10_01/README.md).
+
+The expanded follow-up with rebuilt batch-128 engines, static Pareto baselines,
+batches 8/16/32/64/128, difficulty percentiles 50/70/80/90, and separate energy
+and latency policies is in
+[`reports/jetson_batch_sweep_2026_10_01`](reports/jetson_batch_sweep_2026_10_01/README.md).

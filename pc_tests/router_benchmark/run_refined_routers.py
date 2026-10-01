@@ -205,6 +205,11 @@ def main():
     p.add_argument("--methods", default="all", help="Comma-separated names or all")
     p.add_argument("--objective", choices=("energy", "latency"), required=True,
                    help="Run energy and latency as separate experiments.")
+    p.add_argument(
+        "--candidate-models",
+        default=",".join(f"fp32_p{p}" for p in range(0, 100, 10)),
+        help="Comma-separated FP32 models used to train and calibrate the router.",
+    )
     args = p.parse_args()
     if not torch.cuda.is_available():
         raise RuntimeError("CUDA required for this experiment")
@@ -228,7 +233,12 @@ def main():
     predictions = pd.read_csv(ROOT/"artifacts/predictions_all_fp32.csv")
     if predictions.duplicated(["image_id", "model_id"]).any():
         raise ValueError("Duplicate predictions")
-    models = [f"fp32_p{p}" for p in range(0,100,10)]
+    models = [value.strip() for value in args.candidate_models.split(",") if value.strip()]
+    known_models = {f"fp32_p{p}" for p in range(0, 100, 10)}
+    if not models or len(models) != len(set(models)) or set(models) - known_models:
+        raise ValueError(f"Invalid candidate model list: {models}")
+    if "fp32_p0" not in models:
+        raise ValueError("Candidate models must include fp32_p0")
     p0 = models.index("fp32_p0")
     table = predictions.assign(correct=predictions.true_label == predictions.predicted_label).pivot(
         index="image_id", columns="model_id", values="correct").reindex(index=expected_ids, columns=models)
@@ -248,30 +258,39 @@ def main():
         c = pd.read_csv(ROOT/f"artifacts/costs_{objective}_all_fp32.csv").set_index("model_id")
         costs[objective] = c.loc[models,"cost"].to_numpy(float)
     print(f"CUDA {torch.cuda.get_device_name(0)}; fit/cal/eval {len(fit)}/{len(calibration)}/{len(evaluation)}; p0 accuracy {correct[evaluation,p0].mean():.2%}", flush=True)
+    requested_methods = set(args.methods.split(",")) if args.methods != "all" else None
+    neural_only = requested_methods is not None and all(
+        name.startswith("tinycnn") or name.startswith("thumbnail_mlp")
+        for name in requested_methods
+    )
     features = {}
-    for name in ("basic", "enhanced", "compact", "texture"):
-        features[name] = features_cached(images, name, out)
-        print(f"Feature set {name}: {features[name][0].shape[1]} values", flush=True)
-    # A frozen model already cached locally; embeddings are reused across seeds.
-    embed_path = out/"embeddings.npy"
-    embedder = MobileNetEmbedder().to(device).eval()
-    embed_transform = transforms.Compose([transforms.ToPILImage(),transforms.Resize((96,96)),
-        transforms.ToTensor(),transforms.Normalize((.485,.456,.406),(.229,.224,.225))])
-    if embed_path.exists():
-        embeddings = np.load(embed_path)
-    else:
-        blocks=[]
-        with torch.inference_mode():
-            for start in range(0,len(images),128):
-                batch = torch.stack([embed_transform(im) for im in images[start:start+128]]).to(device)
-                blocks.append(embedder(batch).cpu().numpy())
-        embeddings = np.concatenate(blocks)
-        np.save(embed_path, embeddings)
-    def extract_embedding(im):
-        with torch.inference_mode():
-            return embedder(embed_transform(im)[None].to(device)).cpu().numpy()[0]
-    features["embedding"] = (embeddings, extract_embedding)
-    tensors = {size:image_tensor(images,size) for size in (8,16,32)}
+    if not neural_only:
+        for name in ("basic", "enhanced", "compact", "texture"):
+            features[name] = features_cached(images, name, out)
+            print(f"Feature set {name}: {features[name][0].shape[1]} values", flush=True)
+        # A frozen model already cached locally; embeddings are reused across seeds.
+        embed_path = out/"embeddings.npy"
+        embedder = MobileNetEmbedder().to(device).eval()
+        embed_transform = transforms.Compose([transforms.ToPILImage(),transforms.Resize((96,96)),
+            transforms.ToTensor(),transforms.Normalize((.485,.456,.406),(.229,.224,.225))])
+        if embed_path.exists():
+            embeddings = np.load(embed_path)
+        else:
+            blocks=[]
+            with torch.inference_mode():
+                for start in range(0,len(images),128):
+                    batch = torch.stack([embed_transform(im) for im in images[start:start+128]]).to(device)
+                    blocks.append(embedder(batch).cpu().numpy())
+            embeddings = np.concatenate(blocks)
+            np.save(embed_path, embeddings)
+        def extract_embedding(im):
+            with torch.inference_mode():
+                return embedder(embed_transform(im)[None].to(device)).cpu().numpy()[0]
+        features["embedding"] = (embeddings, extract_embedding)
+    tensor_sizes = (8, 16, 32) if requested_methods is None else tuple(
+        size for size in (8, 16, 32) if any(str(size) in name for name in requested_methods)
+    )
+    tensors = {size:image_tensor(images,size) for size in tensor_sizes}
 
     method_specs = [
         ("basic_xgb_scalar", "basic", "scalar", 4,400,"balanced"),
@@ -306,6 +325,7 @@ def main():
         "split":{k:len(v) for k,v in split.items()}, "evaluation_sha256":split_hash,
         "epochs":args.epochs,"max_calibration_accuracy_drop":args.max_accuracy_drop,
         "methods":method_specs, "objective":args.objective,
+        "candidate_models":models,
         "gpu":torch.cuda.get_device_name(0), "torch":torch.__version__,
         "latency_scope":"PC batch1 RGB array -> features/thumbnail -> prediction -> routing decision; no file I/O or selected network",
         "energy_scope":"Prior Jetson power x E2E latency cost table; router energy NOT measured",

@@ -33,12 +33,14 @@ MODELS = [f"fp32_p{prune}" for prune in range(0, 100, 10)]
 
 def save_reports(raw, objective, output_dir):
     """Write a flat baseline-relative table and publication-ready plots."""
-    excluded = {"system", "repeat", "batch_size"}
+    excluded = {"system", "repeat", "batch_size", "difficulty_percentile"}
     numeric = [column for column in raw.columns if column not in excluded]
-    keys = ["batch_size", "system"]
+    keys = ["difficulty_percentile", "batch_size", "system"]
     means = raw.groupby(keys, sort=False)[numeric].mean().reset_index()
     reports = []
-    for batch_size, group in means.groupby("batch_size", sort=False):
+    for (_, _), group in means.groupby(
+        ["difficulty_percentile", "batch_size"], sort=False
+    ):
         baseline = group.loc[group["system"] == "fp32_p0_baseline"].iloc[0]
         group = group.copy()
         group["accuracy_delta_vs_p0_pp"] = (
@@ -54,49 +56,60 @@ def save_reports(raw, objective, output_dir):
     report = pd.concat(reports, ignore_index=True)
     report.to_csv(output_dir / f"{objective}_baseline_comparison.csv", index=False)
 
-    labels = list(dict.fromkeys(means["system"]))
-    batch_sizes = list(dict.fromkeys(means["batch_size"]))
-    x = np.arange(len(batch_sizes))
-    fig, axes = plt.subplots(1, 3, figsize=(16, 5), constrained_layout=True)
-    panels = [
-        ("accuracy_percent", "Accuracy (%)", "Accuracy"),
-        ("latency_e2e_ms_per_image", "Latency (ms/image)", "End-to-end latency"),
-        ("vdd_in_energy_mj_per_image", "Energy (mJ/image)", "VDD_IN energy"),
-    ]
-    for axis, (metric, ylabel, title) in zip(axes, panels):
-        for label in labels:
-            values = means.loc[means["system"] == label].set_index("batch_size").loc[batch_sizes]
-            axis.plot(x, values[metric], marker="o", label=label)
-        axis.set_ylabel(ylabel)
-        axis.set_title(title)
-        axis.set_xticks(x, batch_sizes)
-        axis.set_xlabel("Batch size")
-        axis.grid(axis="y", alpha=0.25)
-    axes[-1].legend(fontsize=7, ncol=2)
-    fig.suptitle(
-        f"90th-percentile batch routing ({objective}): same 2,000 CIFAR-100 images"
-    )
-    fig.savefig(output_dir / f"{objective}_system_comparison.png", dpi=180)
-    plt.close(fig)
+    for percentile, percentile_means in means.groupby(
+        "difficulty_percentile", sort=False
+    ):
+        labels = list(dict.fromkeys(percentile_means["system"]))
+        batch_sizes = list(dict.fromkeys(percentile_means["batch_size"]))
+        x = np.arange(len(batch_sizes))
+        fig, axes = plt.subplots(1, 3, figsize=(16, 5), constrained_layout=True)
+        panels = [
+            ("accuracy_percent", "Accuracy (%)", "Accuracy"),
+            ("latency_e2e_ms_per_image", "Latency (ms/image)", "End-to-end latency"),
+            ("vdd_in_energy_mj_per_image", "Energy (mJ/image)", "VDD_IN energy"),
+        ]
+        for axis, (metric, ylabel, title) in zip(axes, panels):
+            for label in labels:
+                values = (
+                    percentile_means.loc[percentile_means["system"] == label]
+                    .set_index("batch_size").loc[batch_sizes]
+                )
+                axis.plot(x, values[metric], marker="o", label=label)
+            axis.set_ylabel(ylabel)
+            axis.set_title(title)
+            axis.set_xticks(x, batch_sizes)
+            axis.set_xlabel("Batch size")
+            axis.grid(axis="y", alpha=0.25)
+        axes[-1].legend(fontsize=7, ncol=2)
+        fig.suptitle(
+            f"P{percentile:g} batch routing ({objective}): same 2,000 CIFAR-100 images"
+        )
+        stem = f"{objective}_p{percentile:g}"
+        fig.savefig(output_dir / f"{stem}_system_comparison.png", dpi=180)
+        plt.close(fig)
 
-    selected = [f"selected_{model}" for model in MODELS]
-    routing = means.loc[means["system"] != "fp32_p0_baseline"].copy()
-    selection_labels = [f"B{int(row.batch_size)} {row.system}" for row in routing.itertuples()]
-    selection_x = np.arange(len(routing))
-    fig, axis = plt.subplots(figsize=(16, 7), constrained_layout=True)
-    bottom = np.zeros(len(routing))
-    colors = plt.cm.viridis(np.linspace(0.05, 0.95, len(MODELS)))
-    for model, column, color in zip(MODELS, selected, colors):
-        values = routing[column].to_numpy()
-        axis.bar(selection_x, values, bottom=bottom, label=model, color=color)
-        bottom += values
-    axis.set_ylabel("Images selected (out of 2,000)")
-    axis.set_title(f"90th-percentile batch selections for the {objective} routing test")
-    axis.set_xticks(selection_x, selection_labels, rotation=55, ha="right")
-    axis.legend(ncol=5, fontsize=8)
-    axis.grid(axis="y", alpha=0.25)
-    fig.savefig(output_dir / f"{objective}_model_selection_counts.png", dpi=180)
-    plt.close(fig)
+        selected = [f"selected_{model}" for model in MODELS]
+        routing = percentile_means.loc[
+            percentile_means["system"] != "fp32_p0_baseline"
+        ].copy()
+        selection_labels = [
+            f"B{int(row.batch_size)} {row.system}" for row in routing.itertuples()
+        ]
+        selection_x = np.arange(len(routing))
+        fig, axis = plt.subplots(figsize=(16, 7), constrained_layout=True)
+        bottom = np.zeros(len(routing))
+        colors = plt.cm.viridis(np.linspace(0.05, 0.95, len(MODELS)))
+        for model, column, color in zip(MODELS, selected, colors):
+            values = routing[column].to_numpy()
+            axis.bar(selection_x, values, bottom=bottom, label=model, color=color)
+            bottom += values
+        axis.set_ylabel("Images selected (out of 2,000)")
+        axis.set_title(f"P{percentile:g} batch selections: {objective} objective")
+        axis.set_xticks(selection_x, selection_labels, rotation=55, ha="right")
+        axis.legend(ncol=5, fontsize=8)
+        axis.grid(axis="y", alpha=0.25)
+        fig.savefig(output_dir / f"{stem}_model_selection_counts.png", dpi=180)
+        plt.close(fig)
 
 
 class TinyCNN(nn.Module):
@@ -128,8 +141,10 @@ def parse_args():
     parser.add_argument("--split-seed", type=int, default=42)
     parser.add_argument("--batch-sizes", default="1",
                         help="Comma-separated TensorRT batch sizes.")
-    parser.add_argument("--difficulty-percentile", type=float, default=90.0,
-                        help="Batch difficulty percentile used for one batch decision.")
+    parser.add_argument("--difficulty-percentiles", default="90",
+                        help="Comma-separated batch difficulty percentiles.")
+    parser.add_argument("--candidate-models", default=",".join(MODELS),
+                        help="Comma-separated model IDs available to the policy.")
     return parser.parse_args()
 
 
@@ -190,15 +205,15 @@ def load_router(entry, objective):
     return predict_batch, policy
 
 
-def choose_model(score, costs, policy):
+def choose_model(score, candidate_models, costs, policy):
     if policy["fallback"]:
         return "fp32_p0"
     order = np.argsort(costs, kind="stable")
     thresholds = (np.arange(len(costs) - 1) + 0.5) / (len(costs) - 1) - policy["bias"]
-    return MODELS[int(order[np.digitize([score], thresholds)[0]])]
+    return candidate_models[int(order[np.digitize([score], thresholds)[0]])]
 
 
-def benchmark(name, predict_batch, policy, costs, images, labels, positions, runners,
+def benchmark(name, predict_batch, policy, candidate_models, costs, images, labels, positions, runners,
               batch_size, difficulty_percentile, repeats):
     rows = []
     for repeat in range(repeats):
@@ -213,12 +228,15 @@ def benchmark(name, predict_batch, policy, costs, images, labels, positions, run
         for offset in range(0, len(positions), batch_size):
             batch_positions = positions[offset:offset + batch_size]
             image_batch = images[batch_positions]
-            router_start = time.perf_counter()
-            scores = predict_batch(image_batch)
-            difficulty = float(np.percentile(scores, difficulty_percentile))
-            model_id = choose_model(difficulty, costs, policy)
-            torch.cuda.synchronize()
-            router_seconds += time.perf_counter() - router_start
+            if name == "fp32_p0_baseline":
+                model_id = "fp32_p0"
+            else:
+                router_start = time.perf_counter()
+                scores = predict_batch(image_batch)
+                difficulty = float(np.percentile(scores, difficulty_percentile))
+                model_id = choose_model(difficulty, candidate_models, costs, policy)
+                torch.cuda.synchronize()
+                router_seconds += time.perf_counter() - router_start
             selections[model_id] += len(batch_positions)
             selected_batches[model_id] += 1
             tensor = image_batch_tensor(image_batch, 128)
@@ -254,20 +272,36 @@ def benchmark(name, predict_batch, policy, costs, images, labels, positions, run
 def main():
     args = parse_args()
     batch_sizes = [int(value) for value in args.batch_sizes.split(",")]
+    difficulty_percentiles = [
+        float(value) for value in args.difficulty_percentiles.split(",")
+    ]
+    candidate_models = [value.strip() for value in args.candidate_models.split(",")]
     if not batch_sizes or any(value < 1 for value in batch_sizes):
         raise ValueError("--batch-sizes must contain positive integers")
-    if not 0 <= args.difficulty_percentile <= 100:
-        raise ValueError("--difficulty-percentile must be between 0 and 100")
+    if not difficulty_percentiles or any(
+        not 0 <= value <= 100 for value in difficulty_percentiles
+    ):
+        raise ValueError("--difficulty-percentiles must be between 0 and 100")
+    if (
+        not candidate_models
+        or len(candidate_models) != len(set(candidate_models))
+        or any(value not in MODELS for value in candidate_models)
+    ):
+        raise ValueError(f"--candidate-models must be selected from {MODELS}")
+    if "fp32_p0" not in candidate_models:
+        raise ValueError("--candidate-models must include fp32_p0")
     manifest = json.loads(args.manifest.resolve().read_text(encoding="utf-8"))
     objective = manifest["objective"]
     costs_frame = pd.read_csv(Path(manifest["costs_csv"]))
-    costs = costs_frame.set_index("model_id").loc[MODELS, "cost"].to_numpy(float)
+    costs = (
+        costs_frame.set_index("model_id").loc[candidate_models, "cost"].to_numpy(float)
+    )
     dataset = CIFAR100(root=args.data_dir, train=False, download=False)
     images = dataset.data
     labels = np.asarray(dataset.targets)
     positions = evaluation_positions(labels, args.split_seed)
     runners = {}
-    for model_id in MODELS:
+    for model_id in candidate_models:
         engine = args.trt_engine_dir / model_engine_name(model_id)
         if not engine.exists():
             raise FileNotFoundError(engine)
@@ -285,22 +319,32 @@ def main():
             for _ in range(5):
                 runner.infer(warm)
         torch.cuda.synchronize()
-        all_rows.extend(benchmark(
-            "fp32_p0_baseline", baseline_predict, baseline_policy, costs,
-            images, labels, positions, runners, batch_size,
-            args.difficulty_percentile, args.repeats,
-        ))
-        for name, predict_batch, policy in loaded_routers:
-            all_rows.extend(benchmark(
-                name, predict_batch, policy, costs, images, labels, positions,
-                runners, batch_size, args.difficulty_percentile, args.repeats,
-            ))
+        # The static p0 route is independent of the difficulty percentile. Measure
+        # it once per batch size, then reuse the same observations for every
+        # percentile so comparisons share an identical, non-duplicated baseline.
+        baseline_rows = benchmark(
+            "fp32_p0_baseline", baseline_predict, baseline_policy,
+            candidate_models, costs, images, labels, positions, runners,
+            batch_size, difficulty_percentiles[0], args.repeats,
+        )
+        for percentile in difficulty_percentiles:
+            all_rows.extend([
+                {**row, "difficulty_percentile": percentile}
+                for row in baseline_rows
+            ])
+            for name, predict_batch, policy in loaded_routers:
+                all_rows.extend(benchmark(
+                    name, predict_batch, policy, candidate_models, costs, images,
+                    labels, positions, runners, batch_size, percentile, args.repeats,
+                ))
     args.output_dir.mkdir(parents=True, exist_ok=True)
     raw = pd.DataFrame(all_rows)
     raw.to_csv(args.output_dir / f"{objective}_runs.csv", index=False)
     metrics = [column for column in raw.columns
-               if column not in {"system", "repeat", "batch_size"}]
-    summary = raw.groupby(["batch_size", "system"], sort=False)[metrics].agg(["mean", "std"])
+               if column not in {"system", "repeat", "batch_size", "difficulty_percentile"}]
+    summary = raw.groupby(
+        ["difficulty_percentile", "batch_size", "system"], sort=False
+    )[metrics].agg(["mean", "std"])
     summary.to_csv(args.output_dir / f"{objective}_summary.csv")
     save_reports(raw, objective, args.output_dir)
 

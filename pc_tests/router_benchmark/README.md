@@ -90,6 +90,19 @@ Use `--seeds`, `--methods`, `--epochs`, or `--latency-samples` to override the
 documented defaults. The runner saves after every router/seed and resumes
 completed work.
 
+Use `--candidate-models` when the deployment benchmark contains only a subset
+of pruning levels. Training and policy calibration then use exactly that same
+set; for example:
+
+```powershell
+python run_refined_routers.py `
+  --data-dir "C:\Users\Eren\Desktop\tez\pruning + quantization\data" `
+  --output-dir artifacts\tinycnn4_energy `
+  --objective energy `
+  --methods tinycnn8_scalar `
+  --candidate-models fp32_p0,fp32_p30,fp32_p50,fp32_p70
+```
+
 If seeds were produced in multiple directories, merge one objective with:
 
 ```powershell

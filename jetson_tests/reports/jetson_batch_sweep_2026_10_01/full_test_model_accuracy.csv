@@ -1,0 +1,5 @@
+model_id,structured_pruning_ratio,full_cifar100_top1_percent
+fp32_p0,0.0,73.70
+fp32_p30,0.3,71.51
+fp32_p50,0.5,69.89
+fp32_p70,0.7,66.09
