@@ -26,7 +26,7 @@ For single-image inference, 612 MHz produced the lowest latency and 624.75 MHz t
 
 At batch 32, 15 W / 612 MHz was again fastest (0.553 ms/image), while 15 W / 408 MHz used the least energy (5.257 mJ/image).
 
-## 2. Mail-like pruning and precision sweep
+## 2. Pruning and precision sweep
 
 The accuracy results reproduce the earlier email values:
 
@@ -84,7 +84,7 @@ The next technically justified steps are:
 5. use a smaller set of better-separated candidates such as p0, p30/p40, and p70/p80;
 6. rebuild the selected deployment engines on the current Jetson configuration before publication-quality performance reporting.
 
-TensorRT emitted a warning when loading some legacy engines about engine plans built for a different device model. Accuracy remained consistent, but absolute routing and mail-like performance should be confirmed after rebuilding the final selected engines.
+TensorRT warned that some legacy engine plans were built for a different device model. Accuracy remained consistent, but the absolute routing and performance measurements require engines rebuilt for the selected device profile.
 
 ## Files
 

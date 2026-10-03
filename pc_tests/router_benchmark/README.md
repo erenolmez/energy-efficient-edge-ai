@@ -113,6 +113,28 @@ python combine_seed_runs.py `
   --report ENERGY_RESULTS.md
 ```
 
+## Batch-level routers
+
+`train_batch_routers.py` trains one-decision-per-batch routers for the
+`p0/p10/p20/p30` candidate set. It creates a gradient stump, depth-3 tree,
+logistic model, shallow XGBoost model, and three direct TinyCNN seeds. Policies
+are calibrated separately for energy and latency at 0.5, 1.0, 1.5, and 2.0
+percentage-point accuracy budgets.
+
+```powershell
+python train_batch_routers.py `
+  --data-dir "C:\path\to\cifar100" `
+  --output-dir artifacts\batch_routers `
+  --batch-sizes 32,64,128 `
+  --budgets-pp 0.5,1.0,1.5,2.0 `
+  --seeds 45,48,51 `
+  --static-costs-energy artifacts\static_energy.csv `
+  --static-costs-latency artifacts\static_latency.csv
+```
+
+The optional static-cost files let policy calibration use the measured Jetson
+cost of each candidate at each batch size.
+
 ## Current reports
 
 - `ENERGY_RESULTS.md`: separate 10-seed candidate-energy experiment.

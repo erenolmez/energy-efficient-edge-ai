@@ -11,6 +11,8 @@ scripts/evaluate_trt.py      ONNX export, TensorRT build, evaluation and plots
 scripts/run_power_sweep.py   Power-mode orchestration and combined results
 scripts/benchmark_static_models.py  Fixed-image static batch/model sweep
 scripts/benchmark_dynamic_routing.py  Complete router + selected-engine benchmark
+scripts/benchmark_batch_routers.py  One-decision-per-batch router benchmark
+scripts/build_batch_router_engine.py  TinyCNN ONNX/TensorRT export
 outputs/tensorrt/            Generated ONNX/engines; ignored by Git
 results/power_sweep/         Generated CSVs and plots; raw outputs ignored
 ```
@@ -135,14 +137,51 @@ percentile, so all percentile policies are compared with the identical p0
 observations. The current follow-up engines use a TensorRT optimization profile
 with maximum batch 128.
 
+## Low-overhead batch routers
+
+The next-stage routers choose once per batch and use `p0`, `p10`, `p20`, or
+`p30`. The tested router types are a one-feature decision stump, depth-3 tree,
+logistic model, depth-2 XGBoost model, PyTorch batch TinyCNN, and TensorRT FP16
+batch TinyCNN. The TinyCNN input is a 4x4 grid of 8x8 thumbnails sampled from
+the batch.
+
+Build a TensorRT router engine on the clock profile used by the benchmark:
+
+```bash
+python scripts/build_batch_router_engine.py \
+  --checkpoint artifacts/routers/batch_routers/batch_tinycnn_s48.pth \
+  --onnx artifacts/routers/batch_routers/batch_tinycnn_s48.onnx \
+  --engine artifacts/routers/batch_routers/batch_tinycnn_s48_fp16.engine \
+  --precision fp16
+```
+
+Then run the measured accuracy-budget sweep:
+
+```bash
+python scripts/benchmark_batch_routers.py \
+  --manifest artifacts/routers/batch_routers/manifest_energy.json \
+  --trt-engine-dir outputs/tensorrt_batch128/engines/fp32 \
+  --output-dir results/batch_routers_energy \
+  --batch-sizes 32,64,128 \
+  --budgets-pp 0.5,1.0,1.5,2.0 \
+  --repeats 3
+```
+
+Run energy and latency separately with engines built under their respective GPU
+clock profiles.
+
+Each completed measurement is written to the runs CSV immediately. Repeating
+the same command resumes missing system, batch-size, budget, and repeat
+combinations. Use `--no-resume` only for an intentional clean sweep.
+
 Do not commit checkpoints, TensorRT engines, trained router artifacts, or raw
 bulk outputs. Only source, concise CSV summaries, plots, and documentation
 belong in Git.
 
 ## Latest measured results
 
-The complete 2026-09-30 hardware sweep, mail-like reproduction, separate
-energy/latency routing tests, plots, and discussion are in
+The 2026-09-30 hardware sweep, pruning and precision measurements, separate
+energy/latency routing tests, plots, and notes are in
 [`reports/jetson_2026_09_30`](reports/jetson_2026_09_30/README.md).
 
 The 2026-10-01 follow-up with batch sizes 8/16/32 and 90th-percentile batch
@@ -153,3 +192,8 @@ The expanded follow-up with rebuilt batch-128 engines, static Pareto baselines,
 batches 8/16/32/64/128, difficulty percentiles 50/70/80/90, and separate energy
 and latency policies is in
 [`reports/jetson_batch_sweep_2026_10_01`](reports/jetson_batch_sweep_2026_10_01/README.md).
+
+The 2026-10-03 comparison of low-overhead batch routers, `p10`/`p20` models,
+separate energy and latency policies, model-selection counts, and static-model
+baselines is in
+[`reports/jetson_batch_routers_2026_10_03`](reports/jetson_batch_routers_2026_10_03/README.md).

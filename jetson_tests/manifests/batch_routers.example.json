@@ -1,0 +1,16 @@
+{
+  "objective": "energy",
+  "costs_csv": "artifacts/routers/costs_energy.csv",
+  "routers": [
+    {
+      "name": "batch_tree_d3",
+      "artifact": "artifacts/routers/batch_routers/batch_tree_d3.joblib",
+      "metadata": "artifacts/routers/batch_routers/batch_tree_d3.json"
+    },
+    {
+      "name": "batch_tinycnn_tensorrt",
+      "artifact": "artifacts/routers/batch_routers/batch_tinycnn_s48_fp16.engine",
+      "metadata": "artifacts/routers/batch_routers/batch_tinycnn_s48.json"
+    }
+  ]
+}

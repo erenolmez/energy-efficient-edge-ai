@@ -32,7 +32,7 @@ MODELS = [f"fp32_p{prune}" for prune in range(0, 100, 10)]
 
 
 def save_reports(raw, objective, output_dir):
-    """Write a flat baseline-relative table and publication-ready plots."""
+    """Write a baseline-relative table and comparison plots."""
     excluded = {"system", "repeat", "batch_size", "difficulty_percentile"}
     numeric = [column for column in raw.columns if column not in excluded]
     keys = ["difficulty_percentile", "batch_size", "system"]

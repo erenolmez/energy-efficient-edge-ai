@@ -98,9 +98,8 @@ the final choice is `p0`.
 ## Conclusion and next experiment
 
 The current batch router is **not deployment-beneficial** under a 0.5-point
-accuracy budget. This is a useful negative result: it separates the large
-potential savings of the pruned models from the overhead and accuracy behavior
-of the actual routing system.
+accuracy budget. The pruned models are cheaper in isolation, but router overhead
+and conservative selections remove those savings in the full system.
 
 The next experiment should train a router directly on batch-level targets,
 measure a TensorRT-optimized TinyCNN, and include less aggressively pruned
