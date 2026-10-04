@@ -1,8 +1,9 @@
-# FP32 input-only router benchmark
+# PC input-only router benchmark
 
-This is the active CIFAR-100 experiment. It evaluates 22 input-only routing
-methods against the same unpruned `fp32_p0` baseline. Energy and latency are
-always separate experiments; the code does not combine them into one score.
+This directory contains the PC-side training and comparison code for 22
+input-only routing methods. Every method is evaluated against the same
+unpruned `fp32_p0` baseline. Energy and latency are separate experiments; the
+code does not combine them into a single score.
 
 ## Protocol
 

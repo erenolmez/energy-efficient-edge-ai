@@ -103,11 +103,10 @@ result rather than the recommended deployment at that constraint. Its clearest
 benefit is a small energy advantage at the 1.5-point limit for batches 64 and
 128.
 
-The next useful router experiment should increase model diversity rather than
-only adding router complexity. Candidate sets that mix architecture, precision,
-and pruning may create complementary accuracy/cost behavior that a router can
-exploit. Router feature extraction also needs to move into a fused GPU or
-TensorRT path if small batches remain important.
+The present candidates make similar errors and have limited cost separation.
+The next experiment will therefore add architecture and precision diversity
+before increasing router capacity. Small-batch deployment also requires a
+fused GPU or TensorRT feature path.
 
 ## Files
 

@@ -219,6 +219,14 @@ jetson_tests/results/power_sweep/
 jetson_tests/manifests/power_profiles.jetson.json
 jetson_tests/models/
 
+# LaTeX build files (compiled progress-report PDFs remain tracked)
+*.aux
+*.fdb_latexmk
+*.fls
+*.out
+*.synctex.gz
+*.toc
+
 # Marimo
 marimo/_static/
 marimo/_lsp/

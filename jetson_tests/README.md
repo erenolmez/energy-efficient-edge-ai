@@ -1,7 +1,8 @@
 # Jetson CIFAR-100 TensorRT power tests
 
-This folder contains only the material needed to reproduce the emailed
-CIFAR-100 ResNet-18 results and repeat them under controlled Jetson power modes.
+This folder contains the CIFAR-100 ResNet-18 deployment experiments run on the
+Jetson Orin Nano: TensorRT evaluation, controlled power/clock sweeps, static
+model measurements, and complete routed-system benchmarks.
 
 ```text
 models/fp32/                 Local p0 and p10-p90 checkpoints; not stored in Git
@@ -178,7 +179,7 @@ Do not commit checkpoints, TensorRT engines, trained router artifacts, or raw
 bulk outputs. Only source, concise CSV summaries, plots, and documentation
 belong in Git.
 
-## Latest measured results
+## Reports
 
 The 2026-09-30 hardware sweep, pruning and precision measurements, separate
 energy/latency routing tests, plots, and notes are in

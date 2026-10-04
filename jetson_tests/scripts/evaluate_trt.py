@@ -109,8 +109,8 @@ CIFAR100_STD = (0.2675, 0.2565, 0.2761)
 TRT_LOGGER = trt.Logger(trt.Logger.WARNING)
 
 
-# These are populated from argparse in main(). Keeping globals makes the rest
-# of the original script structure simple and stable.
+# Populated from argparse in main(); retained as globals for compatibility with
+# the existing evaluation functions.
 BASE_DIR = DEFAULT_BASE_DIR
 FP32_MODEL_DIR = None
 TRT_DIR = None
@@ -138,7 +138,7 @@ DOWNLOAD_DATA = True
 ENABLE_SHELLY_POWER = False
 SHELLY_POLL_INTERVAL_S = 0.5
 SHELLY_IP = "192.168.8.50"
-PASSWORD = "pearl"
+PASSWORD = ""
 USERNAME = "admin"
 
 ENABLE_JETSON_STABILIZE = False
@@ -727,7 +727,7 @@ def safe_torch_load(path, map_location="cpu"):
 def clean_model_name(path):
     stem = Path(path).stem
 
-    # Possible baseline names produced by your scripts.
+    # Baseline names produced by the training scripts.
     if stem in {"baseline_fp32", "baseline_fp32_fp32", "baseline"}:
         return "baseline"
 

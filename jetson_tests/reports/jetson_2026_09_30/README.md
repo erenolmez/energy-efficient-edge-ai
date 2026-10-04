@@ -7,7 +7,7 @@ These experiments were run on the user's Jetson Orin Nano 8 GB using the existin
 The work has three parts:
 
 1. characterize one representative TensorRT FP16 p0 model across native `nvpmodel` modes and supported GPU clocks;
-2. repeat the original mail-style FP32/FP16/INT8 pruning sweep with power, energy, and temperature added;
+2. repeat the FP32/FP16/INT8 pruning sweep with power, energy, and temperature added;
 3. run two separate dynamic-routing experiments, one calibrated for energy and one for latency, against the normal unpruned FP32 p0 baseline.
 
 ## 1. Hardware characterization
@@ -75,19 +75,19 @@ The fastest routed system was TinyCNN-8 seed 45. It selected p0 394 times, p10 9
 
 The earlier PC-side estimates showed potential model-only savings, but the complete Jetson system does not yet save latency or energy. This is not evidence that input-based routing is impossible. It shows that the present Python/per-image implementation has too much overhead and that the accuracy-constrained policies choose p10/p20 too often, whose measured cost gap from p0 is too small.
 
-The next technically justified steps are:
+Follow-up work identified from this experiment was:
 
 1. export the router to TensorRT or implement handcrafted features in optimized C++/CUDA;
 2. share preprocessing between router and selected model instead of converting/resizing the same image twice;
 3. train/calibrate policies with measured Jetson full-system costs, including router overhead;
 4. test batched routing for throughput/energy, where router overhead can be amortized;
 5. use a smaller set of better-separated candidates such as p0, p30/p40, and p70/p80;
-6. rebuild the selected deployment engines on the current Jetson configuration before publication-quality performance reporting.
+6. rebuild the selected deployment engines on the current Jetson configuration before comparing absolute performance.
 
 TensorRT warned that some legacy engine plans were built for a different device model. Accuracy remained consistent, but the absolute routing and performance measurements require engines rebuilt for the selected device profile.
 
 ## Files
 
 - `hardware/`: power-sweep summary and plots.
-- `mail_like/`: precision/pruning summary and mail-style plots with energy and temperature.
+- `precision_pruning_sweep/`: precision/pruning summary with energy and temperature.
 - `routing/`: raw repeat-level routing results, p0-relative tables, model-selection plots, and system comparison plots.
