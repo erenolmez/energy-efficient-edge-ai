@@ -20,7 +20,9 @@ Train the unpruned FP32 baselines:
 python train_baselines.py `
   --data-dir "C:\Users\Eren\Desktop\tez\pruning + quantization\data" `
   --output-dir artifacts\baselines `
-  --device cuda
+  --device cuda `
+  --amp `
+  --resume
 ```
 
 `--smoke-batches 1 --epochs 1` checks the complete data and checkpoint path
