@@ -134,6 +134,7 @@ ALLOW_TF32_FOR_FP32 = False
 INT8_USE_FP16_FALLBACK = True
 CI_LEVEL = 95
 DOWNLOAD_DATA = True
+SEED = 42
 
 ENABLE_SHELLY_POWER = False
 SHELLY_POLL_INTERVAL_S = 0.5
@@ -210,6 +211,7 @@ def parse_args():
     parser.set_defaults(int8_fp16_fallback=True)
 
     parser.add_argument("--ci-level", type=int, default=95)
+    parser.add_argument("--seed", type=int, default=42)
     parser.add_argument("--no-download", dest="download", action="store_false")
     parser.set_defaults(download=True)
 
@@ -241,7 +243,7 @@ def apply_args(args):
     global BASE_DIR, FP32_MODEL_DIR, TRT_DIR, ONNX_DIR, ENGINE_DIR, RESULTS_DIR, CIFAR_ROOT
     global IMAGE_SIZE, BATCH_SIZE, NUM_WORKERS, N_SUBSETS, SUBSET_SIZE, WARMUP_BATCHES, CALIB_BATCHES
     global PRECISIONS, MODEL_PATTERN, FORCE_EXPORT_ONNX, FORCE_BUILD_ENGINE, ALLOW_TF32_FOR_FP32, INT8_USE_FP16_FALLBACK
-    global CI_LEVEL, DOWNLOAD_DATA
+    global CI_LEVEL, DOWNLOAD_DATA, SEED
     global ENABLE_SHELLY_POWER, SHELLY_POLL_INTERVAL_S, SHELLY_IP, PASSWORD, USERNAME
     global ENABLE_JETSON_STABILIZE, NVP_MODEL_SET
 
@@ -273,6 +275,7 @@ def apply_args(args):
     INT8_USE_FP16_FALLBACK = args.int8_fp16_fallback
     CI_LEVEL = args.ci_level
     DOWNLOAD_DATA = args.download
+    SEED = args.seed
 
     ENABLE_SHELLY_POWER = args.enable_shelly_power
     SHELLY_IP = args.shelly_ip
@@ -631,7 +634,7 @@ class ShellyPowerMonitor:
 # DATA
 # ============================================================
 
-def make_loader(dataset, batch_size, shuffle, drop_last=False):
+def make_loader(dataset, batch_size, shuffle, drop_last=False, generator=None):
     return DataLoader(
         dataset,
         batch_size=batch_size,
@@ -639,6 +642,7 @@ def make_loader(dataset, batch_size, shuffle, drop_last=False):
         num_workers=NUM_WORKERS,
         pin_memory=True,
         drop_last=drop_last,
+        generator=generator,
     )
 
 
@@ -653,8 +657,8 @@ def create_subsets(dataset, n_subsets, subset_size):
     subsets = []
     indices = list(range(len(dataset)))
 
-    np.random.seed(42)
-    np.random.shuffle(indices)
+    rng = np.random.default_rng(SEED)
+    rng.shuffle(indices)
 
     for i in range(n_subsets):
         start_idx = i * subset_size
@@ -706,6 +710,7 @@ def build_data():
         batch_size=BATCH_SIZE,
         shuffle=True,
         drop_last=True,
+        generator=torch.Generator().manual_seed(SEED),
     )
 
     subset_loaders = create_subsets(test_ds_full, N_SUBSETS, SUBSET_SIZE)
@@ -726,6 +731,9 @@ def safe_torch_load(path, map_location="cpu"):
 
 def clean_model_name(path):
     stem = Path(path).stem
+
+    # Current convention: architecture__pXX__precision.pth.
+    stem = re.sub(r"__(fp32|fp16|int8)$", "", stem)
 
     # Baseline names produced by the training scripts.
     if stem in {"baseline_fp32", "baseline_fp32_fp32", "baseline"}:
@@ -750,7 +758,21 @@ def infer_prune_from_name(name):
     if m:
         return int(m.group(1))
 
+    m = re.search(r"__p(\d{1,2})(?:__|$)", name)
+
+    if m:
+        return int(m.group(1))
+
     return None
+
+
+def infer_architecture_from_name(name):
+    """Return an architecture identifier for current and legacy checkpoints."""
+    if "__p" in name:
+        return name.split("__p", 1)[0]
+    if name in {"baseline", "distilled_resnet18"} or name.startswith("structured_"):
+        return "resnet18"
+    return name
 
 
 def find_fp32_models():
@@ -1320,14 +1342,11 @@ def save_plots(df):
         }
     )
 
-    palette = {
-        "FP32": sns.color_palette("tab10")[0],
-        "FP16": sns.color_palette("tab10")[1],
-        "INT8": sns.color_palette("tab10")[2],
-    }
-
     plot_df = df.copy()
     plot_df["precision_label"] = plot_df["precision"].str.upper()
+    plot_df["configuration"] = (
+        plot_df["architecture"] + " / " + plot_df["precision_label"]
+    )
 
     def lineplot(metric, ylabel, title, filename):
         plt.figure(figsize=(10, 6))
@@ -1336,11 +1355,10 @@ def save_plots(df):
             data=plot_df,
             x="prune",
             y=metric,
-            hue="precision_label",
-            style="precision_label",
+            hue="configuration",
+            style="configuration",
             markers=True,
             dashes=False,
-            palette=palette,
             linewidth=2,
             markersize=8,
         )
@@ -1353,7 +1371,7 @@ def save_plots(df):
         plt.xlabel("Structured Pruning Ratio (%)")
         plt.ylabel(ylabel)
         plt.title(title)
-        plt.legend(title="Precision", loc="best")
+        plt.legend(title="Architecture / precision", loc="best")
         plt.tight_layout()
 
         out_path = RESULTS_DIR / filename
@@ -1441,12 +1459,15 @@ def save_plots(df):
         )
 
     size_df = (
-        df.groupby(["precision", "prune"])
+        df.groupby(["architecture", "precision", "prune"])
         .agg(size_mb=("engine_size_mb", "mean"))
         .reset_index()
     )
 
     size_df["precision_label"] = size_df["precision"].str.upper()
+    size_df["configuration"] = (
+        size_df["architecture"] + " / " + size_df["precision_label"]
+    )
 
     plt.figure(figsize=(10, 6))
 
@@ -1454,11 +1475,10 @@ def save_plots(df):
         data=size_df,
         x="prune",
         y="size_mb",
-        hue="precision_label",
-        style="precision_label",
+        hue="configuration",
+        style="configuration",
         markers=True,
         dashes=False,
-        palette=palette,
         linewidth=2,
         markersize=8,
     )
@@ -1466,7 +1486,7 @@ def save_plots(df):
     plt.xlabel("Structured Pruning Ratio (%)")
     plt.ylabel("TensorRT Engine Size (MB)")
     plt.title("CIFAR-100 TensorRT Engine Size vs Pruning Ratio")
-    plt.legend(title="Precision", loc="best")
+    plt.legend(title="Architecture / precision", loc="best")
     plt.tight_layout()
 
     out_path = RESULTS_DIR / "engine_size_trt.png"
@@ -1503,6 +1523,7 @@ def main():
     for model_path in model_paths:
         model_name = clean_model_name(model_path)
         prune = infer_prune_from_name(model_name)
+        architecture = infer_architecture_from_name(model_name)
 
         if prune is None:
             print(f"Skipping unknown model name: {model_path}")
@@ -1527,6 +1548,7 @@ def main():
             engine_jobs.append(
                 {
                     "model_name": model_name,
+                    "architecture": architecture,
                     "prune": prune,
                     "precision": precision,
                     "engine_path": engine_path,
@@ -1536,6 +1558,7 @@ def main():
     # 2. Evaluate TensorRT engines.
     for job in engine_jobs:
         model_name = job["model_name"]
+        architecture = job["architecture"]
         prune = job["prune"]
         precision = job["precision"]
         engine_path = job["engine_path"]
@@ -1572,6 +1595,7 @@ def main():
                 {
                     "dataset": "CIFAR-100",
                     "model_name": model_name,
+                    "architecture": architecture,
                     "precision": precision,
                     "prune": prune,
                     "run": run_idx + 1,
@@ -1617,7 +1641,7 @@ def main():
     print(f"\nSaved CSV: {csv_path}")
 
     summary_df = (
-        df.groupby(["precision", "prune", "model_name"])
+        df.groupby(["architecture", "precision", "prune", "model_name"])
         .agg(
             acc_mean=("acc", "mean"),
             acc_std=("acc", "std"),

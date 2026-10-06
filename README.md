@@ -5,8 +5,10 @@ inference on NVIDIA Jetson Orin Nano. The current study asks whether a small
 router can select a pre-trained model before inference and reduce measured
 energy or latency without exceeding an accuracy limit.
 
-The experiments use CIFAR-100 and a distilled ResNet-18 family with structured
-pruning. Energy and latency are treated as separate objectives. Deployment
+The first completed experiments use CIFAR-100 and a distilled ResNet-18 family
+with structured pruning. The next architecture study adds ResNet-34/50/101,
+MobileNetV3-Small/Large, EfficientNet-B0 and ShuffleNetV2 1.0x. Energy and
+latency are treated as separate objectives. Deployment
 claims use complete Jetson measurements, including input analysis, routing,
 transfers, synchronization, and selected-model inference.
 
@@ -27,6 +29,8 @@ for the complete tables and figures.
 
 ```text
 architecture_tests/resnet_pruning/  ResNet-34/50 structural pruning check
+model_pipeline/                      Shared architecture, data and seed definitions
+pc_tests/model_pipeline/             CIFAR-100 baseline training
 pc_tests/router_benchmark/           Router training and PC-side comparison
 jetson_tests/                        TensorRT, power, static and routed benchmarks
 progress_reports/                    Dated LaTeX reports and compiled PDFs

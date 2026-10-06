@@ -1,8 +1,10 @@
 # Jetson CIFAR-100 TensorRT power tests
 
-This folder contains the CIFAR-100 ResNet-18 deployment experiments run on the
-Jetson Orin Nano: TensorRT evaluation, controlled power/clock sweeps, static
-model measurements, and complete routed-system benchmarks.
+This folder contains the CIFAR-100 deployment experiments run on the Jetson
+Orin Nano: TensorRT evaluation, controlled power/clock sweeps, static model
+measurements, and complete routed-system benchmarks. The evaluator accepts the
+original ResNet-18 checkpoints and the architecture-aware names produced by
+`pc_tests/model_pipeline`.
 
 ```text
 models/fp32/                 Local p0 and p10-p90 checkpoints; not stored in Git
@@ -71,8 +73,11 @@ python scripts/run_power_sweep.py \
   --precisions fp16 --batch-sizes 1,32
 ```
 
-The default evaluation uses the complete CIFAR-100 test set as five fixed,
-non-overlapping subsets of 2,000 images. The sweep restores the original
+The default evaluation uses seed 42 and the complete CIFAR-100 test set as five
+fixed, non-overlapping subsets of 2,000 images. INT8 calibration order uses the
+same explicit seed. New checkpoints follow
+`architecture__pXX__fp32.pth`, for example `efficientnet_b0__p20__fp32.pth`.
+The sweep restores the original
 nvpmodel mode when it finishes or fails.
 
 Some mode changes require a reboot on Orin Nano. In that case run the modes in

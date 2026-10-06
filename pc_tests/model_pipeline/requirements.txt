@@ -1,0 +1,4 @@
+timm>=1.0
+torch-pruning==1.6.1
+
+# Install CUDA-enabled torch and torchvision separately.
