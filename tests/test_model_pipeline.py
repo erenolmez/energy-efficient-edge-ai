@@ -8,6 +8,7 @@ sys.path.insert(0, str(REPOSITORY_ROOT))
 from model_pipeline.data import split_fingerprint, stratified_indices  # noqa: E402
 from model_pipeline.models import ARCHITECTURES, normalize_architecture  # noqa: E402
 from model_pipeline.naming import model_name, parse_model_name  # noqa: E402
+from pc_tests.model_pipeline.prune_finetune import parse_levels  # noqa: E402
 
 
 class ModelPipelineTests(unittest.TestCase):
@@ -45,6 +46,12 @@ class ModelPipelineTests(unittest.TestCase):
             split_fingerprint(train_a, validation_a),
             split_fingerprint(train_b, validation_b),
         )
+
+    def test_pruning_levels_are_validated(self):
+        self.assertEqual(parse_levels("10,20,90"), [10, 20, 90])
+        for invalid in ("", "0", "100", "10,10"):
+            with self.assertRaises(ValueError):
+                parse_levels(invalid)
 
 
 if __name__ == "__main__":
