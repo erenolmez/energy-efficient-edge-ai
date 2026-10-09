@@ -14,6 +14,14 @@ transfers, synchronization, and selected-model inference.
 
 ## Current result
 
+The PC architecture study has trained eight CIFAR-100 baselines and recovered
+63 pruned variants across seven supported architectures. All 71 FP32 sources
+have ONNX exports. See [PC architecture results](pc_tests/model_pipeline/TASK4_PC_RESULTS.md)
+for export checks, accuracy screening and the deployment preparation status.
+FP16 and INT8 targets are defined, but their conversions and hardware results
+are pending. The Jetson results below belong to the earlier distilled
+ResNet-18 study and must not be mixed with the new architecture baselines.
+
 Under a maximum accuracy loss of 0.5 percentage points, static `p10` is the
 best tested deployment. Across batches 32, 64, and 128 it saves 8.80--10.13%
 energy and 7.16--7.98% latency relative to the unpruned FP32 `p0` baseline.

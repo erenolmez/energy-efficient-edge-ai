@@ -12,6 +12,11 @@ from pathlib import Path
 import torch
 import torch.nn as nn
 import torch_pruning as tp
+
+try:
+    from .summarize_pruning import generate_report
+except ImportError:
+    from summarize_pruning import generate_report
 from torch.utils.data import DataLoader
 
 REPOSITORY_ROOT = Path(__file__).resolve().parents[2]
@@ -284,7 +289,6 @@ def main():
         args.data_dir, args.image_size, args.validation_size, args.seed, args.download
     )
     split_hash = split_fingerprint(train_indices, validation_indices)
-    summaries = []
     for architecture in architectures:
         for level in levels:
             seed_everything(args.seed)
@@ -295,10 +299,8 @@ def main():
                 ),
                 "test": make_loader(test, args.batch_size, args.num_workers, False, args.seed + 2),
             }
-            summaries.append(fine_tune(architecture, level, args, loaders, split_hash))
-            (args.output_dir / "pruning_summary.json").write_text(
-                json.dumps(summaries, indent=2), encoding="utf-8"
-            )
+            fine_tune(architecture, level, args, loaders, split_hash)
+            generate_report(args.output_dir)
 
 
 if __name__ == "__main__":
