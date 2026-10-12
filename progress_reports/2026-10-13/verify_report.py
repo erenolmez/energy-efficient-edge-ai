@@ -12,7 +12,7 @@ assert len(rows) == len({r["id"] for r in rows}) == 120
 assert sum(r["test_budget_passed"] for r in rows) == 53
 for metric in ("latency", "energy"):
     assert sum(r["test_budget_passed"] and r[metric + "_saving_vs_best_eligible_static_percent"] > 0 for r in rows) == 31
-section = tex.split("4. Complete correctness matrix:", 1)[1].split("5. What the completed", 1)[0]
+section = tex.split("% BEGIN_CORRECTNESS_MATRIX", 1)[1].split("% END_CORRECTNESS_MATRIX", 1)[0]
 objective = None
 checked = 0
 for line in section.splitlines():
@@ -32,7 +32,7 @@ for line in section.splitlines():
         checked += 1
 assert checked == 120, checked
 pdf = PdfReader(root / "progress_report.pdf")
-assert len(pdf.pages) == 6, len(pdf.pages)
+assert len(pdf.pages) == 5, len(pdf.pages)
 assert all(str(i) in page.extract_text() for i, page in enumerate(pdf.pages, 1))
 assert "References" in pdf.pages[-1].extract_text()
-print("PASS: six PDF pages; all 120 matrix cells, failure markers, 53 passes and 31/31 positive counts match saved records.")
+print("PASS: five PDF pages; all 120 matrix cells, failure markers, 53 passes and 31/31 positive counts match saved records.")

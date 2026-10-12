@@ -20,8 +20,8 @@
 {\small Results saved through 12 October 2026; update to the previous 1 October report.}
 \end{center}
 \vspace{-0.6em}
-\pagehead{1. Completed deployment work and numerical status}
-\textbf{Main change.} The study expanded from one ResNet-18 pruning family to eight architectures and \textbf{213 deployment configurations}. A completed small-data correctness-routing baseline now shows some measured advantages over accuracy-matched static inference, but neither consistent superiority nor the full PC/Jetson study is established. The general motivation and introductory literature survey from the previous report are omitted here.
+\pagehead{1. Model deployment and static measurements}
+Since the previous report, the candidate pool has grown from one ResNet-18 pruning family to eight architectures and 213 deployment configurations. PC static measurements are complete, as is the first 213-output correctness-router experiment. Some routed configurations reduced measured latency and energy relative to an accuracy-matched static model, although the improvement did not hold consistently across seeds. The Jetson study remains unfinished.
 
 \begin{tabularx}{\linewidth}{@{}Xrl@{}}
 \toprule Stage & Saved progress & Interpretation \\
@@ -37,9 +37,9 @@ Jetson fully measured static targets & 74/213 & 2,232/6,390 saved repetitions \\
 \bottomrule
 \end{tabularx}
 
-\textbf{Export and accuracy checks.} All 71 ONNX sources passed 213 PyTorch/ONNX checks at batches 1, 8 and 128; maximum absolute logit error was 0.000280, with matching top-1 predictions on the checked sample (67.31\,s total). Sources occupy 1.70\,GB. Fixed INT8 calibration used 1,024 training images. Each PC TensorRT target has full 5,000-image validation and 10,000-image test predictions; batches 1/8/16/32/64/128 each have five static repetitions. Execution success did not imply accuracy success.
+All 71 ONNX sources passed PyTorch/ONNX comparisons at batches 1, 8 and 128: 213 checks in 67.31\,s. The maximum absolute logit difference was 0.000280, and top-1 predictions agreed on the checked sample. The source graphs occupy 1.70\,GB. INT8 calibration used a fixed set of 1,024 training images. Each TensorRT target was evaluated on 5,000 validation and 10,000 test images, with five static repetitions at batches 1/8/16/32/64/128.
 
-\textbf{Unpruned deployment results.} Test top-1 accuracies below are actual PC TensorRT measurements. FP16 latency is normalized-host-input to logits, \emph{per batch of 32}; energy is GPU mJ/image. These static boundaries are narrower than the routed RGB-to-prediction boundary. Values are arithmetic means of the five saved repeats, not directly comparable with Jetson measurements.
+The table reports TensorRT test accuracy for the unpruned models. FP16 latency measures normalized host input to output logits \emph{per batch of 32}; GPU energy is in mJ/image. Timing and energy values are means of five repeats. This static timing excludes RGB normalization and routing, so it should not be confused with the full routed measurement or with Jetson results.
 
 \begin{center}\small
 \begin{tabular}{@{}lrrrrrr@{}}
@@ -58,13 +58,15 @@ ShuffleNetV2 x1.0 &75.64&75.66&74.66&7.597&7.637&29.12\\
 \end{center}
 {\footnotesize $^{a}$ Original classifier baseline training durations, not router training or precision conversion. Classifier checkpoints are retained rather than retrained for each precision.}
 
-\textbf{Findings.} FP16 generally preserves accuracy; the diagnostic, non-uniform-runtime precision study found a mean FP16 loss of 0.08\pp and an INT8 loss of 21.08\pp relative to matched FP32 pruning levels. These are diagnostic accuracy statistics, \emph{not} GPU speedup statistics. EfficientNet-B0's diagnostic p0 INT8 loss was 69.16\pp; its actual TensorRT p0 INT8 accuracy is only 13.59\%. Integer compute was independently inspected: p0 INT8 integer-layer counts are 16/26/54/105 for ResNet-18/34/50/101, 54/64 for MobileNet Small/Large, 82 for EfficientNet and 57 for ShuffleNet. Integer execution does not guarantee useful quantization accuracy.
+FP16 generally preserved accuracy. The earlier diagnostic precision study, which used different runtimes for different precisions, found mean losses of 0.08\pp for FP16 and 21.08\pp for INT8. These describe accuracy, not comparable GPU speedups. EfficientNet-B0 p0 lost 69.16\pp in that diagnostic INT8 test; its TensorRT INT8 accuracy was also poor, at 13.59\%. Engine inspection confirmed integer compute: p0 INT8 integer-layer counts were 16/26/54/105 for ResNet-18/34/50/101, 54/64 for MobileNet Small/Large, 82 for EfficientNet and 57 for ShuffleNet. Thus, successful INT8 execution did not necessarily produce a usable classifier.
 
 \newpage
-\pagehead{2. Approaches stopped or superseded: what they showed}
-\textbf{Pruning and screening.} All sources remain available, but the initial strict-accuracy shortlist was not useful as a global routing pool. At a 2\pp test-accuracy screening allowance, only MobileNetV3-Small p10 joined the eight p0 sources: p0 62.44\%, p10 60.82\%, loss 1.62\pp, MAC reduction 27.11\%. No pruned ResNet, EfficientNet or MobileNet-Large qualified under that screening. The nine-source/27-target shortlist was \emph{superseded}, not used to restrict the eventual 213 choices. Screening used historical test accuracy and is therefore descriptive, not a valid independent selection procedure; runtime policies now select/calibrate on validation data. More aggressive pruning and failed quantization are preserved in the catalogue, not silently discarded.
+\pagehead{2. Earlier routing tests and the change in method}
+\textit{Screening} was a preliminary accuracy check, not a learning method. Each pruned model was compared with its own unpruned model (p0) to see whether its accuracy loss stayed below 0.5, 1, 1.5 or 2 percentage points. For example, MobileNetV3-Small p10 scored 60.82\% against p0's 62.44\%: a loss of 1.62 points, so it passed the 2-point check but not the 1.5-point check. Its MAC count was 27.11\% lower. No pruned ResNet, EfficientNet or MobileNet-Large passed even the 2-point check. This left nine source models, or 27 precision configurations.
 
-\textbf{Scalar controls.} Scalar supervision compresses cheapest-correct, cost-ordered candidate behavior into one score. It is not a vector estimating each model's correctness. Direct scalar methods were the gradient stump, batch depth-3 tree, batch logistic, depth-2 XGBoost and batch TinyCNN. Image-tree controls aggregated scalar scores with mean or percentiles 10/25/50/70/80/90. Scalar logistic predicted a binary rank-related target, \emph{not} 213 independent correctness probabilities.
+That shortlist was abandoned as a restriction on routing. A model can have lower overall accuracy yet correctly classify images that another model gets wrong. All 213 configurations therefore remain selectable. The original screening used historical test accuracy and is only descriptive; current policy selection uses validation data. The rejected pruning and quantization results remain recorded.
+
+The earlier scalar routers predicted a single score derived from the cheapest correct candidate's position in a cost ordering. Methods included a gradient stump, depth-3 tree, logistic regression, depth-2 XGBoost and TinyCNN. Image-tree scores were combined using the mean or percentiles 10/25/50/70/80/90. The logistic target was a binary rank-related target, rather than a separate correctness estimate for every candidate.
 
 \begin{center}\small
 \begin{tabular}{@{}lrrrr@{}}
@@ -89,7 +91,7 @@ Total &1,941&1,598&594&536\\
 \end{center}
 {\footnotesize $^{b}$ Positive savings among accuracy-compliant rows against the recorded eligible static comparator. Rows pool architectures, budgets, objectives and seeds; cached comparators and timing variation make these \emph{control observations}, not confirmed independent wins.}
 
-\textbf{Why stop within-architecture tests?} They could not answer the revised research question: choosing between \emph{all} architectures, precisions and pruning configurations. Their 1,941 measurements were retained as controls, never added to global completion counts. The global scalar protocol instead exposed all 213 logical choices with a capacity-two resident engine cache and fresh static comparators.
+The within-architecture run stopped after 1,941 configurations because it could not test selection across architectures. These results remain controls. The subsequent global scalar run allowed all 213 choices, kept at most two classifier engines resident, and measured fresh static comparators.
 
 \begin{center}\small
 \begin{tabular}{@{}lrrrr@{}}
@@ -104,13 +106,13 @@ Batch logistic &12&5&0&0\\
 \end{center}
 {\footnotesize $^{c}$ Same count definition as above; fresh but sequential comparators. XGBoost, TinyCNN and image aggregates had no saved global measured routes at the priority switch. The 52 rows are only 3.61\% of the originally planned 1,440-case global matrix.}
 
-\textbf{Why switch to correctness?} A scalar rank can obscure non-monotonic model strengths: a model with worse total accuracy may rescue specific errors of the best model. Scalar routing was stopped at an atomic completed configuration on user request, not declared fully evaluated or universally inferior. Apparent scalar wins also exposed nonstationarity: one batch-64 policy selected ResNet-101 FP16 for \emph{every} image, while five routed passes were approximately 22.00/22.04/15.21/14.58/14.59\,s and preceding same-model static passes about 21.26/21.24/21.32/21.28/21.34\,s. Such a win cannot be attributed to model selection. A later same-model comparison had 3.21\% \emph{more} routed energy. Timing diagnostics/interleaved confirmation remain necessary.
+The global scalar run was stopped after 52 complete configurations to test per-model correctness instead. It was not fully evaluated. Some apparent gains also came from timing variation: one batch-64 policy selected ResNet-101 FP16 for every image, but routed passes took about 22.00/22.04/15.21/14.58/14.59\,s, compared with preceding same-model static passes of 21.26/21.24/21.32/21.28/21.34\,s. This cannot demonstrate a benefit from model selection. A later same-model comparison used 3.21\% more routed energy. Alternating static and routed measurements is needed to investigate this variation.
 
 \newpage
-\pagehead{3. Complementarity audit and the 213-output router}
-\textbf{Validation-only means no held-out test supervision.} The 5,000 classifier-validation images supplied offline correctness labels; for each seed 42/45/48, 3,000 images fitted the router and 2,000 calibrated its policy. The router therefore \emph{was trained}; this is not a validation-only accuracy check without learning. Calibration did not train weights, and 10,000 held-out test images were opened only for final evaluation. The base classifiers' validation set had already informed their checkpoint selection, which remains a methodological limitation.
+\pagehead{3. Model complementarity and correctness-router training}
+For each seed (42/45/48), the 5,000 classifier-validation images were divided into 3,000 router-training and 2,000 policy-calibration images. ``Validation-only'' refers to the source of this supervision: the router was trained, but no held-out test labels were used to fit its weights or choose its policy. The 10,000 test images were used for final evaluation. One limitation is that the same 5,000-image validation set had already informed classifier checkpoint selection.
 
-\textbf{Audit results.} Validation-selected ResNet-101 p0 FP32 obtained 85.88\%. A label-aware per-image oracle over all 213 candidates obtained 99.28\%: only 36/5,000 images were wrong for every candidate. The eight unpruned FP32 architectures alone gave an oracle accuracy of 95.68\%. These are upper bounds that know the true labels, not deployable results or energy savings. MobileNet-Large p0 FP16 rescued 250 reference errors but introduced 441 errors; EfficientNet p0 FP16 rescued 246 and introduced 383. This explains why unconditional replacement can hurt while conditional selection could help.
+The validation-selected reference, ResNet-101 p0 FP32, obtained 85.88\%. An oracle that knows the correct label and can choose per image obtained 99.28\% over all 213 candidates: only 36 of 5,000 images were wrong for every model. Restricting this oracle to the eight unpruned FP32 models gave 95.68\%. These are upper bounds, not measured learned-router performance. MobileNet-Large p0 FP16 corrected 250 reference errors but made 441 errors on images the reference got right; EfficientNet p0 FP16 corrected 246 and introduced 383. Their lower total accuracy therefore does not imply that their predictions are redundant.
 
 \begin{center}
 \begin{tikzpicture}[x=0.09cm,y=0.055cm]
@@ -123,16 +125,16 @@ Batch logistic &12&5&0&0\\
 \node[anchor=west,font=\scriptsize] at (127,5.88) {85.88\%};
 \end{tikzpicture}
 \end{center}
-{\small Ideal one-model-per-batch accuracy for one fixed validation shuffle. Bars start at 80\%; dashed line is the best static validation accuracy. Batching amortizes overhead but removes most of the per-image oracle headroom: b128 gives only 0.78\pp above the reference, versus 13.40\pp for per-image selection.}
+{\small Oracle accuracy when one model is selected per batch, using one fixed validation shuffle. Bars start at 80\%; the dashed line marks the reference. At batch 128, the possible accuracy improvement is only 0.78\pp, compared with 13.40\pp for per-image selection.}
 
-\textbf{Implemented model.} A 16$\times$16 input thumbnail feeds a lightweight depthwise encoder with a shared 213-logit head. Independent binary cross-entropy targets indicate whether \emph{each} candidate predicts the true label; multiple heads can be correct. Training used 20 fixed epochs, Adam at 0.001, no test-based checkpoint selection. For a real batch $B$, selection uses
+The router uses a 16$\times$16 image thumbnail, a small depthwise CNN and 213 output logits. Each output learns whether its corresponding classifier is correct, using binary cross-entropy; several outputs can be correct on the same image. Training used 20 fixed epochs and Adam with learning rate 0.001. For batch $B$, the selected model is
 \[
 q_m(B)=|B|^{-1}\sum_{x\in B}\sigma(z_m(x)),\qquad
 m^*(B)=\arg\max_{m\in\{1,\ldots,213\}}\left[q_m(B)-\lambda\frac{C_m(B)}{\max_j C_j(B)}\right].
 \]
-The accuracy allowance constrains the \emph{overall calibrated policy}, not each individual model's global accuracy. No candidate shortlist prevents a weaker specialist from being selected. Latency and energy have independent calibration; allowances are 0.5/1/1.5/2\pp. Nominal static costs guide policy calibration; end-to-end measurement is required to learn whether the resulting system actually saves cost.
+Here $q_m(B)$ is the mean predicted correctness of model $m$ over the batch, and $C_m(B)$ is its measured static cost. The penalty $\lambda$ is calibrated separately for latency and energy under allowances of 0.5/1/1.5/2\pp. The accuracy constraint applies to the resulting policy, not to every model individually. A lower-accuracy model can therefore be selected for a batch if the router predicts that it will perform well on those inputs.
 
-\textbf{Verified fit/export milestone.} Three shared fits and six objective/seed calibration groups completed. Each seed has six fixed-shape TensorRT router engines including the genuine tail batch of 16. Maximum PyTorch/TensorRT output discrepancy was $2.3842\times10^{-7}$ (seed 48: $1.7881\times10^{-7}$); epoch, weights, source/split and engine provenance were retained. Stage times below include fitting/export/calibration, not classifier training. Lower fitting BCE does not by itself establish generalization or end-to-end savings.
+Three router fits and six objective/seed calibration groups completed. Each seed was exported to six fixed-shape TensorRT engines, including the true final batch of 16. Maximum PyTorch/TensorRT output differences were $2.3842\times10^{-7}$ for seeds 42/45 and $1.7881\times10^{-7}$ for seed 48. The times below cover fitting, export and calibration, not classifier training. The reduction in fitting loss does not, on its own, establish test accuracy or runtime savings.
 \begin{center}\small
 \begin{tabular}{@{}rrrr@{}}
 \toprule Seed & Stage seconds & Epoch-1 fitting BCE & Epoch-20 fitting BCE\\
@@ -140,9 +142,10 @@ The accuracy allowance constrains the \emph{overall calibrated policy}, not each
 \end{tabular}
 \end{center}
 
-\textbf{Relationship to prior work.} Correctness-style supervision was already implemented in the earlier 10-candidate router benchmark; the new work expands it to 213 measured deployment choices and a stricter held-out/runtime protocol. PERTINENCE is the closest input-based model-selection neighbor \cite{pertinence}; Taylor et al. also select models before inference on embedded systems \cite{taylor}. Benefit-aware rather than appearance-only difficulty is consistent with DynamicDet \cite{dynamicdet}; CARN and adaptive-inference policies provide related alternatives \cite{carn,adaptive}. The novelty claim must concern the measured joint architecture/precision/pruning system, not the existence of a router or an oracle.
+Per-model correctness supervision was already present in the earlier 10-candidate benchmark. The current experiment extends it to 213 architecture/precision/pruning choices with measured cache and inference costs. PERTINENCE \cite{pertinence} and Taylor et al. \cite{taylor} are closely related input-based model-selection studies. DynamicDet \cite{dynamicdet} motivates defining difficulty through the benefit of additional computation; CARN \cite{carn} and adaptive-inference policies \cite{adaptive} provide other relevant comparisons.
 
 \newpage
+% BEGIN_CORRECTNESS_MATRIX
 \pagehead{4. Complete correctness matrix: all 120 saved tests}
 {\small Each cell is \textbf{accuracy loss (pp) / latency saving (\%) / GPU-energy saving (\%)} for one seed. Savings are against that row's frozen validation-eligible, freshly measured static comparator; negative values mean slower/more energy. A superscript $*$ marks a held-out accuracy-budget failure, even if savings are positive. Five full 10,000-image repeats per cell. Results are descriptive, never used to retune the policy.}
 \begin{center}
@@ -194,21 +197,14 @@ Energy&8&0.5&0.28 / -109.5 / -117.8&0.28 / +0.4 / +0.3&0.77 / -118.8 / -125.5$^*
 \bottomrule
 \end{tabular}
 \end{center}
-\textbf{Reading the table.} A larger allowance can yield \emph{worse savings} without worse routed accuracy because a cheaper static model becomes eligible. Conversely, large positive savings with $*$ do not satisfy the experiment's objective. A rounded +0.0\% is a tiny recorded positive value, not meaningful evidence of an energy benefit.
+A larger allowance can reduce savings even when routed accuracy is unchanged, because it permits comparison with a cheaper static model. Savings marked $*$ do not meet the stated accuracy requirement. A rounded +0.0\% is a very small recorded positive value, not evidence of a practically useful benefit.
+
+Across the 120 tests, 53 met the accuracy allowance; 31 of these saved latency and 31 saved energy. By batch size 8/16/32/64/128, accuracy-pass counts were 10/8/13/11/11 out of 24 tests each. The corresponding counts with both an accuracy pass and positive latency savings were 2/2/9/9/9; energy counts were also 2/2/9/9/9. Counts include different objectives, allowances and seeds, so they are not independent discoveries.
+% END_CORRECTNESS_MATRIX
 
 \newpage
-\pagehead{5. What the completed router tests establish}
-\textbf{Aggregate outcome.} The full matrix is $3\times2\times5\times4=120$ configurations, each with five full test passes: 600 routed passes, or 6,000,000 held-out image evaluations before extra energy-window work. Exactly \textbf{53/120 (44.17\%)} met their held-out accuracy allowance. Of those, \textbf{31} had positive latency savings and \textbf{31} positive energy savings against their recorded eligible static comparator. These counts pool seeds/objectives/allowances, are not 31 independent robust discoveries, and do not replace statistical or interleaved confirmation.
-
-\begin{center}\small
-\begin{tabular}{@{}rrrrr@{}}
-\toprule Batch & Complete & Accuracy pass & Pass + latency saving & Pass + energy saving\\
-\midrule
-8&24&10&2&2\\16&24&8&2&2\\32&24&13&9&9\\64&24&11&9&9\\128&24&11&9&9\\
-\bottomrule
-\end{tabular}
-\end{center}
-\textbf{Promising but non-universal examples at batch 128.} The following are illustrative rows, \emph{not test-selected policies for deployment}. FP16 comparator identities are R101 except row 4 and row 6, which use R50. Latency is wall-time ms/image and energy is GPU mJ/image, means of five full-test repetitions.
+\pagehead{5. Discussion and remaining work}
+The $3\times2\times5\times4$ matrix required 600 full routed test passes, or 6 million image evaluations, plus fresh static comparisons. Of 120 configurations, 53 (44.17\%) met the accuracy allowance. The batch-128 examples below show both improvements and failures. Latency is wall-time ms/image and energy is GPU mJ/image, averaged over five repeats. The static comparator is ResNet-101 FP16 except in rows 4 and 6, where it is ResNet-50 FP16.
 \begin{center}\small
 \begin{tabular}{@{}llrrrrrr@{}}
 \toprule Objective/seed &Budget &Acc.\%&Loss pp&ms/img&mJ/img&L saving\%&E saving\%\\
@@ -222,27 +218,15 @@ Latency/48&2.0&82.25&3.55$^*$&0.653&20.376&24.49&24.61\\
 \bottomrule
 \end{tabular}
 \end{center}
-\textbf{Selection is real, but often concentrated.} Latency/42/b128/2\pp selected R101 FP16 for 5,136 images and R34 FP16 for 4,864. Latency/45/b128/1\pp selected R101 FP16 for 7,040 and EfficientNet FP16 for 2,960. Latency/48/b128/1\pp selected R101 FP16 for 7,424 and R34 FP16 for 2,576. All 213 models were available: selection of only two is a learned/calibrated outcome, not a two-model shortlist. These examples needed two classifier loads and zero evictions per cold-cache repeat. Other configurations can incur many more loads/evictions; every row retains those counts.
+In latency/42/b128/2\pp, the router selected R101 FP16 for 5,136 images and R34 FP16 for 4,864. The corresponding 1\pp settings selected R101/EfficientNet for 7,040/2,960 images (seed 45), and R101/R34 for 7,424/2,576 (seed 48). These examples used two loads and no evictions per repeat. All 213 models were available; the concentration on two models was the policy's outcome, not an imposed shortlist. However, 67 tests failed the accuracy allowance, and no latency setting both passed and improved on its comparator for all three seeds.
 
-\textbf{Measured boundary and why testing took longer.} Each pass includes fresh RGB transfer, GPU normalization, thumbnail/router execution, probability extraction/selection, classifier engine verification/loading/eviction, chosen inference and synchronization. Decode/resize and batch pinning are excluded equally from static and routed paths. Resident capacity two bounds GPU memory, not candidate choice. Fresh reference and eligible-static comparators precede \emph{each} configuration, five repeats each (one measured path if their identities coincide). The router training stage took seconds; millions of actual classifier executions plus fresh comparators and cache work dominated elapsed time. Older screening studies used smaller evaluation sets and/or predicted candidate-only costs, not this boundary.
+Timing includes RGB transfer, GPU normalization, the router, selection, engine loading/eviction, inference and synchronization. Decode/resize and batch pinning are excluded equally from both paths. The example routers spent about 1.30--1.34\,ms/batch on the GPU decision component. Training took seconds; five full passes and fresh static comparisons per configuration accounted for much of the testing time. NVML measures GPU energy, including idle/display load, not whole-PC energy. Sequential timing and temperature/load changes remain possible sources of variation, so alternating static/routed tests is a priority.
 
-At b128 the GPU decision component in the examples is approximately 1.30--1.34\,ms/batch; this excludes some host/cache dispatch costs already included in total wall time. NVML energy includes idle/display GPU consumption and excludes CPU/rest-of-PC power. Static costs were gathered earlier and may vary with clocks, temperature and host load; sequential comparisons are not interleaved. Very large b8/b16 slowdowns are retained, not clipped or converted into wins.
+\textit{Jetson.} The study is paused with 75/213 engines built and accuracy-validated, 74/213 fully measured static targets, and 2,232/6,390 energy repetitions. EfficientNet and MobileNet-Large account for 60 targets/1,800 repeats; MobileNet-Small p40 INT8 has 12/30 repeats saved, ending at batch 16, repeat 1. Three architectures are staged; five still need transfer. The last saved target reached 54.375$^{\circ}$C. No new global Jetson routing has run. Detailed target results remain on the paused device; the local update uses its verified checkpoint counts. Engines must be built with Jetson TensorRT 8.6.2, not reused from the PC.
 
-\textbf{Conclusion.} There are genuine saved \emph{measured positive rows}, including batch 128; the blanket statement ``routing never helps'' is unsupported. The stronger statement ``correctness routing reliably beats the best static alternative'' is also unsupported: 67 budget failures, seed variation and comparator changes remain. No latency setting in this table passes and improves over its comparator for all three seeds. Oracle bounds must not be confused with learned performance.
+\textit{Next experiments.} The eight classifiers used the same 45,000 training and 5,000 validation images, with no unused reserved pool. More router supervision would require either explicitly exploratory predictions on classifier-training images, or slower classifier retraining/out-of-fold predictions. This choice is still pending. Seven additional correctness routers are prepared: depth-1/depth-3 trees, logistic heads, depth-2 XGBoost (32 trees per candidate), and TinyCNN inputs 8/16/32. The current smaller CNN remains a separate baseline. Eleven CPU tests passed in 15.699\,s; real-data GPU fitting, export and runtime evaluation are unfinished.
 
-\newpage
-\pagehead{6. Jetson checkpoint, unfinished work and next priorities}
-\textbf{New Jetson architecture study: paused, not finished.} TensorRT 8.6.2 engines are built on Jetson, not copied from PC TensorRT 10.13.3.9 engines. EfficientNet-B0 and MobileNet-Large completed 60 precision targets and 1,800 static repeats. MobileNet-Small then progressed to 15 additional engines/full-accuracy evaluations and 14 fully measured targets. At the preserved shutdown checkpoint there are 75 built/accuracy-validated targets (35.21\%), 74 fully measured targets (34.74\%), and 2,232/6,390 static energy repeats (34.93\%). MobileNet-Small p40 INT8 has 12/30 saved repeats; the last saved point is batch 16, repeat 1. Resume only the remaining repetitions. Three architectures' 60 source/prepared graphs were staged with verified hashes; five architectures still need source transfer.
-
-All completed Jetson accuracy stages use 5,000 validation and 10,000 test images; static targets use batches 1/8/16/32/64/128 with five repetitions and tegrastats energy. The last saved target's GPU maximum was 54.375$^{\circ}$C, \emph{not a live post-shutdown reading}. At user-requested shutdown the exact worker/child were stopped, atomic reports preserved and files synchronized; shutdown was requested successfully and SSH subsequently timed out. Physical power-off was not independently instrumented. \textbf{No new all-architecture/global Jetson routing has been executed}. Older single-family Jetson results in the previous report remain historical controls, not progress toward this new matrix. Full remote per-target numerical reports remain on the paused device; this update uses the verified local count/hash checkpoint rather than inventing unavailable Jetson accuracy/cost values.
-
-\textbf{Why the larger-data stage has not started.} The split audit found exactly 45,000 classifier-training indices and 5,000 validation indices; overlap zero, union all 50,000 training images, \textbf{zero unused reserved images}. All eight classifier summaries share the same split identity. Training a router on the 45,000 images would provide more samples, but correctness supervision would be in-sample for the base classifiers, potentially optimistic. The options are (i) clearly labelled exploratory in-sample supervision with separate validation calibration and test-only final evaluation, or (ii) classifier retraining with a larger reserved router split/out-of-fold predictions, which is cleaner but substantially slower. The choice is pending; neither option has started. Validation-only supervision can be data-limited, but using test labels is not a legitimate remedy.
-
-\textbf{Comprehensive router comparison: implementation prepared, GPU tests pending.} Seven additional 213-output families are implemented: shared depth-1/depth-3 correctness trees, independent logistic heads, depth-2 XGBoost (32 trees per candidate), and restored TinyCNN inputs 8/16/32. The current lightweight 16-input CNN remains a separate baseline, not overwritten. Five suite tests and six related correctness/global-pool tests passed (11 total; 15.699\,s). This proves CPU policy/parity/shape behavior only, not GPU export or savings. In particular, 213 XGBoost ensembles may not be lightweight in deployment.
-
-\textbf{Time-bounded next stage.} After the data-protocol choice: seed 42, objectives latency/energy, batches 32/128, allowances 1/2\pp, one full-test repeat with fresh matched comparators and complete cache/router overhead. Seven methods give 56 preliminary configurations; a newly fitted current-CNN baseline adds eight, giving 64. Label single-repeat findings preliminary. Multi-seed/five-repeat confirmation would expand the seven-method matrix to 840 tests, or 960 including the existing 120-case baseline. Frozen training/tuning/calibration and explicit export/parity checks remain mandatory; never tune from the completed held-out matrix.
-
-\textbf{Reproducibility and scope.} Counts above were recomputed from the saved JSON, not stale progress summaries. The companion \code{numerical\_results.json} preserves all saved PC static/precision rows, 1,941 legacy routes, 52 global scalar routes and 120 correctness routes with per-repeat numbers, selection counts, comparator identities and source SHA256 hashes. It is the numerical supplement to this six-page report. Jetson checkpoint hashes are preserved in \code{jetson\_tests/STAGE\_CHECKPOINT.md}. No abandoned approach is treated as complete, no negative savings/accuracy failures are removed, and no experiment was restarted to produce this document. PC thermal stopping uses two consecutive 85$^{\circ}$C checks at 60-second intervals; CPU temperature is unavailable.
+The proposed first comparison uses seed 42, batches 32/128, latency/energy objectives and 1/2\pp allowances, with one full-test repeat: 56 configurations, or 64 with a newly trained current-CNN baseline. Full confirmation would add multiple seeds and five repeats, giving 840 additional tests (960 including the existing 120). No parameters will be selected from the completed test results. Per-configuration numbers and source hashes remain in \code{numerical\_summary.json}; full repetitions are retained locally in \code{numerical\_results.json}. Automation is paused, and this revision did not restart any experiments.
 
 \vspace{-0.5em}
 \begin{thebibliography}{9}\footnotesize\setlength{\itemsep}{0pt}

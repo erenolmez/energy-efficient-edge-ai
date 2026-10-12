@@ -1,6 +1,6 @@
 # Progress update for 13 October 2026
 
-Six-page update to the supplied previous progress report. Styling follows the
+Five-page update to the supplied previous progress report. Styling follows the
 tracked GitHub LaTeX report in `progress_reports/2026-10-01`, with general
 introductory sections removed. Numerical cutoff: saved results on 12 October.
 
@@ -18,7 +18,8 @@ The 1,941 partial legacy and 52 stopped global scalar routes are summarized by
 family inside the page limit and retained individually in the supplement.
 The paused Jetson's remote per-target accuracy/cost files are not locally
 available; only verified count/hash checkpoints are reported, explicitly.
-No experiments, remote devices or existing report files were modified.
+No experiments or remote devices were modified. The 1 October report is unchanged.
+The five-page revision was approved for publication by the user on 13 October.
 
 The LaTeX is standalone and can be compiled with a normal TeX installation or
 Tectonic. `verify_report.py` additionally validates the 120 matrix cells against
