@@ -1,0 +1,92 @@
+# Fixed p80 static controls: batches8,32,64,128
+
+Status: COMPLETE; 440/440 sweeps.
+
+21 p80 configurations (7architectures x FP32/FP16/INT8), five10000-image repeats per batch size plus five R101 p0 FP32 references at each size. No router. Seed42+batch shuffle; real tail16 at32/64/128, no tail at8. Accuracy=repeat mean; latency and GPU-only NVML energy=repeat medians. Savings use the fresh R101 p0 FP32 reference at the SAME batch size, not eligible-static routing comparators. Cold capacity2 engine loading/hash/inference, RGB128 transfer/normalization and sync included; decode/resize/pinning excluded. All failures/negative savings retained. Prior GPU throttling and temporal drift limit strong cross-study latency/energy claims. Prior p90 and random outputs are unchanged.
+
+| Batch | Architecture | Pruning | Precision | Accuracy | Loss pp | Passing allowances | ms/image | mJ/image | L saving % | E saving % |
+|---:|---|---:|---|---:|---:|---|---:|---:|---:|---:|
+| 8 | efficientnet_b0 | p80 | FP32 | 22.49% | 63.31 | none | 0.544 | 18.672 | +84.02 | +86.17 |
+| 8 | efficientnet_b0 | p80 | FP16 | 22.55% | 63.25 | none | 0.499 | 15.631 | +85.35 | +88.42 |
+| 8 | efficientnet_b0 | p80 | INT8 | 2.78% | 83.02 | none | 0.721 | 25.238 | +78.83 | +81.31 |
+| 8 | mobilenetv3_large | p80 | FP32 | 12.96% | 72.84 | none | 0.363 | 11.245 | +89.34 | +91.67 |
+| 8 | mobilenetv3_large | p80 | FP16 | 12.98% | 72.82 | none | 0.342 | 10.600 | +89.97 | +92.15 |
+| 8 | mobilenetv3_large | p80 | INT8 | 5.98% | 79.82 | none | 0.454 | 15.301 | +86.69 | +88.67 |
+| 8 | mobilenetv3_small | p80 | FP32 | 20.94% | 64.86 | none | 0.347 | 11.352 | +89.82 | +91.59 |
+| 8 | mobilenetv3_small | p80 | FP16 | 20.97% | 64.83 | none | 0.329 | 10.407 | +90.35 | +92.29 |
+| 8 | mobilenetv3_small | p80 | INT8 | 10.09% | 75.71 | none | 0.426 | 13.521 | +87.49 | +89.98 |
+| 8 | resnet101 | p80 | FP32 | 1.84% | 83.96 | none | 0.699 | 22.763 | +79.48 | +83.14 |
+| 8 | resnet101 | p80 | FP16 | 1.84% | 83.96 | none | 0.414 | 13.268 | +87.85 | +90.17 |
+| 8 | resnet101 | p80 | INT8 | 0.93% | 84.87 | none | 0.492 | 15.302 | +85.55 | +88.67 |
+| 8 | resnet18 | p80 | FP32 | 5.07% | 80.73 | none | 0.213 | 7.775 | +93.74 | +94.24 |
+| 8 | resnet18 | p80 | FP16 | 5.06% | 80.74 | none | 0.150 | 4.994 | +95.59 | +96.30 |
+| 8 | resnet18 | p80 | INT8 | 4.97% | 80.83 | none | 0.184 | 6.426 | +94.61 | +95.24 |
+| 8 | resnet34 | p80 | FP32 | 5.47% | 80.33 | none | 0.288 | 10.281 | +91.54 | +92.39 |
+| 8 | resnet34 | p80 | FP16 | 5.45% | 80.35 | none | 0.201 | 6.717 | +94.09 | +95.02 |
+| 8 | resnet34 | p80 | INT8 | 4.68% | 81.12 | none | 0.242 | 7.625 | +92.90 | +94.35 |
+| 8 | resnet50 | p80 | FP32 | 6.01% | 79.79 | none | 0.371 | 12.459 | +89.12 | +90.77 |
+| 8 | resnet50 | p80 | FP16 | 6.02% | 79.78 | none | 0.249 | 8.152 | +92.69 | +93.96 |
+| 8 | resnet50 | p80 | INT8 | 4.70% | 81.10 | none | 0.309 | 9.558 | +90.93 | +92.92 |
+| 32 | efficientnet_b0 | p80 | FP32 | 22.49% | 63.31 | none | 0.162 | 6.541 | +91.50 | +93.02 |
+| 32 | efficientnet_b0 | p80 | FP16 | 22.55% | 63.25 | none | 0.127 | 4.829 | +93.35 | +94.85 |
+| 32 | efficientnet_b0 | p80 | INT8 | 2.78% | 83.02 | none | 0.171 | 5.933 | +91.01 | +93.67 |
+| 32 | mobilenetv3_large | p80 | FP32 | 12.96% | 72.84 | none | 0.100 | 3.680 | +94.78 | +96.07 |
+| 32 | mobilenetv3_large | p80 | FP16 | 12.98% | 72.82 | none | 0.084 | 2.767 | +95.62 | +97.05 |
+| 32 | mobilenetv3_large | p80 | INT8 | 5.98% | 79.82 | none | 0.110 | 3.621 | +94.25 | +96.14 |
+| 32 | mobilenetv3_small | p80 | FP32 | 20.94% | 64.86 | none | 0.084 | 2.769 | +95.59 | +97.05 |
+| 32 | mobilenetv3_small | p80 | FP16 | 20.97% | 64.83 | none | 0.083 | 2.554 | +95.64 | +97.27 |
+| 32 | mobilenetv3_small | p80 | INT8 | 10.09% | 75.71 | none | 0.110 | 3.413 | +94.22 | +96.36 |
+| 32 | resnet101 | p80 | FP32 | 1.84% | 83.96 | none | 0.291 | 11.165 | +84.72 | +88.08 |
+| 32 | resnet101 | p80 | FP16 | 1.84% | 83.96 | none | 0.124 | 4.681 | +93.49 | +95.00 |
+| 32 | resnet101 | p80 | INT8 | 0.93% | 84.87 | none | 0.128 | 4.618 | +93.27 | +95.07 |
+| 32 | resnet18 | p80 | FP32 | 5.07% | 80.73 | none | 0.106 | 4.158 | +94.47 | +95.56 |
+| 32 | resnet18 | p80 | FP16 | 5.06% | 80.74 | none | 0.048 | 1.772 | +97.46 | +98.11 |
+| 32 | resnet18 | p80 | INT8 | 4.97% | 80.83 | none | 0.065 | 2.443 | +96.59 | +97.39 |
+| 32 | resnet34 | p80 | FP32 | 5.47% | 80.33 | none | 0.115 | 4.625 | +93.98 | +95.06 |
+| 32 | resnet34 | p80 | FP16 | 5.45% | 80.35 | none | 0.069 | 2.585 | +96.40 | +97.24 |
+| 32 | resnet34 | p80 | INT8 | 4.68% | 81.12 | none | 0.069 | 2.417 | +96.36 | +97.42 |
+| 32 | resnet50 | p80 | FP32 | 6.01% | 79.79 | none | 0.152 | 6.748 | +92.02 | +92.80 |
+| 32 | resnet50 | p80 | FP16 | 6.02% | 79.78 | none | 0.080 | 3.036 | +95.78 | +96.76 |
+| 32 | resnet50 | p80 | INT8 | 4.70% | 81.10 | none | 0.089 | 3.234 | +95.33 | +96.55 |
+| 64 | efficientnet_b0 | p80 | FP32 | 22.49% | 63.31 | none | 0.583 | 18.366 | +84.56 | +84.44 |
+| 64 | efficientnet_b0 | p80 | FP16 | 22.55% | 63.25 | none | 0.374 | 11.766 | +90.10 | +90.03 |
+| 64 | efficientnet_b0 | p80 | INT8 | 2.78% | 83.02 | none | 0.334 | 10.716 | +91.16 | +90.92 |
+| 64 | mobilenetv3_large | p80 | FP32 | 12.96% | 72.84 | none | 0.267 | 8.466 | +92.93 | +92.83 |
+| 64 | mobilenetv3_large | p80 | FP16 | 12.98% | 72.82 | none | 0.190 | 5.937 | +94.97 | +94.97 |
+| 64 | mobilenetv3_large | p80 | INT8 | 5.98% | 79.82 | none | 0.174 | 5.380 | +95.39 | +95.44 |
+| 64 | mobilenetv3_small | p80 | FP32 | 20.94% | 64.86 | none | 0.170 | 5.333 | +95.50 | +95.48 |
+| 64 | mobilenetv3_small | p80 | FP16 | 20.97% | 64.83 | none | 0.141 | 4.262 | +96.26 | +96.39 |
+| 64 | mobilenetv3_small | p80 | INT8 | 10.09% | 75.71 | none | 0.147 | 4.938 | +96.10 | +95.82 |
+| 64 | resnet101 | p80 | FP32 | 1.84% | 83.96 | none | 0.524 | 16.220 | +86.13 | +86.26 |
+| 64 | resnet101 | p80 | FP16 | 1.84% | 83.96 | none | 0.256 | 7.169 | +93.23 | +93.93 |
+| 64 | resnet101 | p80 | INT8 | 0.93% | 84.87 | none | 0.216 | 6.428 | +94.28 | +94.56 |
+| 64 | resnet18 | p80 | FP32 | 5.07% | 80.73 | none | 0.183 | 5.307 | +95.16 | +95.50 |
+| 64 | resnet18 | p80 | FP16 | 5.06% | 80.74 | none | 0.125 | 3.957 | +96.70 | +96.65 |
+| 64 | resnet18 | p80 | INT8 | 4.97% | 80.83 | none | 0.139 | 4.468 | +96.31 | +96.22 |
+| 64 | resnet34 | p80 | FP32 | 5.47% | 80.33 | none | 0.185 | 5.388 | +95.10 | +95.44 |
+| 64 | resnet34 | p80 | FP16 | 5.45% | 80.35 | none | 0.129 | 3.801 | +96.59 | +96.78 |
+| 64 | resnet34 | p80 | INT8 | 4.68% | 81.12 | none | 0.130 | 3.802 | +96.55 | +96.78 |
+| 64 | resnet50 | p80 | FP32 | 6.01% | 79.79 | none | 0.364 | 11.209 | +90.35 | +90.50 |
+| 64 | resnet50 | p80 | FP16 | 6.02% | 79.78 | none | 0.212 | 6.590 | +94.39 | +94.42 |
+| 64 | resnet50 | p80 | INT8 | 4.70% | 81.10 | none | 0.181 | 5.755 | +95.22 | +95.12 |
+| 128 | efficientnet_b0 | p80 | FP32 | 22.49% | 63.31 | none | 0.607 | 19.240 | +84.59 | +84.25 |
+| 128 | efficientnet_b0 | p80 | FP16 | 22.55% | 63.25 | none | 0.381 | 11.898 | +90.32 | +90.26 |
+| 128 | efficientnet_b0 | p80 | INT8 | 2.78% | 83.02 | none | 0.341 | 10.726 | +91.35 | +91.22 |
+| 128 | mobilenetv3_large | p80 | FP32 | 12.96% | 72.84 | none | 0.279 | 8.679 | +92.93 | +92.90 |
+| 128 | mobilenetv3_large | p80 | FP16 | 12.98% | 72.82 | none | 0.193 | 6.120 | +95.10 | +94.99 |
+| 128 | mobilenetv3_large | p80 | INT8 | 5.98% | 79.82 | none | 0.173 | 5.387 | +95.60 | +95.59 |
+| 128 | mobilenetv3_small | p80 | FP32 | 20.94% | 64.86 | none | 0.172 | 5.475 | +95.62 | +95.52 |
+| 128 | mobilenetv3_small | p80 | FP16 | 20.97% | 64.83 | none | 0.135 | 4.249 | +96.56 | +96.52 |
+| 128 | mobilenetv3_small | p80 | INT8 | 10.09% | 75.71 | none | 0.140 | 4.312 | +96.44 | +96.47 |
+| 128 | resnet101 | p80 | FP32 | 1.84% | 83.96 | none | 0.526 | 16.364 | +86.65 | +86.60 |
+| 128 | resnet101 | p80 | FP16 | 1.84% | 83.96 | none | 0.289 | 8.893 | +92.67 | +92.72 |
+| 128 | resnet101 | p80 | INT8 | 0.93% | 84.87 | none | 0.237 | 7.475 | +93.97 | +93.88 |
+| 128 | resnet18 | p80 | FP32 | 5.07% | 80.73 | none | 0.171 | 5.208 | +95.67 | +95.74 |
+| 128 | resnet18 | p80 | FP16 | 5.06% | 80.74 | none | 0.123 | 3.775 | +96.88 | +96.91 |
+| 128 | resnet18 | p80 | INT8 | 4.97% | 80.83 | none | 0.138 | 4.151 | +96.49 | +96.60 |
+| 128 | resnet34 | p80 | FP32 | 5.47% | 80.33 | none | 0.178 | 5.494 | +95.49 | +95.50 |
+| 128 | resnet34 | p80 | FP16 | 5.45% | 80.35 | none | 0.125 | 3.774 | +96.82 | +96.91 |
+| 128 | resnet34 | p80 | INT8 | 4.68% | 81.12 | none | 0.123 | 3.891 | +96.89 | +96.81 |
+| 128 | resnet50 | p80 | FP32 | 6.01% | 79.79 | none | 0.364 | 11.301 | +90.76 | +90.75 |
+| 128 | resnet50 | p80 | FP16 | 6.02% | 79.78 | none | 0.220 | 6.931 | +94.41 | +94.33 |
+| 128 | resnet50 | p80 | INT8 | 4.70% | 81.10 | none | 0.190 | 5.846 | +95.18 | +95.22 |

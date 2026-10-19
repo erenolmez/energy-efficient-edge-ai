@@ -1,0 +1,84 @@
+{
+  "complete": true,
+  "unique_sweeps": 440,
+  "sweeps_per_batch": 110,
+  "summary_rows": 84,
+  "all_source_input_engine_protected_hashes_verified": true,
+  "frozen_validation_choices_verified": true,
+  "null_validation_choices": 96,
+  "cached_prediction_disagreements": 1420,
+  "evaluations": 4400000,
+  "accuracy_range": [
+    0.9299999999999999,
+    22.55
+  ],
+  "latency_saving_range": [
+    78.82838946904718,
+    97.45748087096632
+  ],
+  "energy_saving_range": [
+    81.30596481507955,
+    98.1094743986656
+  ],
+  "accuracy_passing_model_batch_rows": 0,
+  "negative_latency_rows": 0,
+  "negative_energy_rows": 0,
+  "original_oct13_fixed_fp32_comparison": {
+    "8": {
+      "latency_saving_vs_p0_fp32_percent": [
+        -336.1933005969693,
+        61.084417767567174
+      ],
+      "energy_saving_vs_p0_fp32_percent": [
+        -160.68304980586052,
+        60.43082054756627
+      ],
+      "accuracy_range": [
+        82.36,
+        85.54
+      ]
+    },
+    "32": {
+      "latency_saving_vs_p0_fp32_percent": [
+        60.85856635027163,
+        76.29310045262284
+      ],
+      "energy_saving_vs_p0_fp32_percent": [
+        61.32783865138455,
+        76.49026625927543
+      ],
+      "accuracy_range": [
+        83.49,
+        85.35000000000001
+      ]
+    },
+    "64": {
+      "latency_saving_vs_p0_fp32_percent": [
+        61.536712185333336,
+        87.39064031654631
+      ],
+      "energy_saving_vs_p0_fp32_percent": [
+        63.60575629549371,
+        87.50150211710151
+      ],
+      "accuracy_range": [
+        81.86,
+        85.64
+      ]
+    },
+    "128": {
+      "latency_saving_vs_p0_fp32_percent": [
+        60.041731248500824,
+        81.83919565725895
+      ],
+      "energy_saving_vs_p0_fp32_percent": [
+        60.52807252674082,
+        81.97912247809649
+      ],
+      "accuracy_range": [
+        82.25,
+        85.39
+      ]
+    }
+  }
+}
