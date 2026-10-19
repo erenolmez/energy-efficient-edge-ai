@@ -1,0 +1,5 @@
+\subsection*{Per-class strengths of the unpruned FP32 models}
+Class accuracy is recall on 100 test images per class. Values below use verified saved predictions, without new inference. All best/worst ties are shown; middle classes occupy ranks 50/51 (ties by class ID).
+\begin{center}\footnotesize\renewcommand{\arraystretch}{1.03}\ClassTable\end{center}
+\textbf{Complementarity example.} Forest accuracy is 62\% for R101, 71\% for R18 and 76\% for MobileNetV3-Large despite their lower overall scores. Their prior FP32 batch-32 times were 131.28,13.64,6.92 ms (static boundary, not full routing). This supports PERTINENCE's motivation, not proof of routing gains; the true class is unknown at inference.\footnote{Shende et al., PERTINENCE, \emph{IEEE Access}, 2026; \href{https://doi.org/10.1109/ACCESS.2026.3707342}{paper}.}
+{\footnotesize The separate 71-row supplement covers all213 variants. Frozen numerical results/source hashes remain in \texttt{numerical\_snapshot.json}.}

@@ -1,0 +1,155 @@
+{
+  "source_sha256": {
+    "C:\\Users\\Eren\\Desktop\\tez\\energy-efficient-edge-ai\\pc_tests\\model_pipeline\\reports\\random_b64\\random_comparison_summary.json": "8b8cc3531e0c5d2806bba6ddb6f1fa909f0ff01dbdee207ff6f34785eb701b50",
+    "C:\\Users\\Eren\\Desktop\\tez\\energy-efficient-edge-ai\\progress_reports\\2026-10-20\\numerical_snapshot.json": "06ecbc349282cd2f5c375132129d9b9a3dbcabb1aa0eff105531a42d29be4484"
+  },
+  "batch64_original_accuracy_comparison": [
+    {
+      "case": "correctness_latency_seed42_b64_loss0.5",
+      "previous_accuracy": 84.93,
+      "fresh_accuracy": 84.93,
+      "difference_pp": 0.0
+    },
+    {
+      "case": "correctness_latency_seed42_b64_loss1.0",
+      "previous_accuracy": 84.02,
+      "fresh_accuracy": 84.02,
+      "difference_pp": 0.0
+    },
+    {
+      "case": "correctness_latency_seed42_b64_loss1.5",
+      "previous_accuracy": 84.02,
+      "fresh_accuracy": 84.02,
+      "difference_pp": 0.0
+    },
+    {
+      "case": "correctness_latency_seed42_b64_loss2.0",
+      "previous_accuracy": 83.08,
+      "fresh_accuracy": 83.08,
+      "difference_pp": 0.0
+    },
+    {
+      "case": "correctness_latency_seed45_b64_loss0.5",
+      "previous_accuracy": 85.52,
+      "fresh_accuracy": 85.52,
+      "difference_pp": 0.0
+    },
+    {
+      "case": "correctness_latency_seed45_b64_loss1.0",
+      "previous_accuracy": 85.17,
+      "fresh_accuracy": 85.17,
+      "difference_pp": 0.0
+    },
+    {
+      "case": "correctness_latency_seed45_b64_loss1.5",
+      "previous_accuracy": 84.58,
+      "fresh_accuracy": 84.58,
+      "difference_pp": 0.0
+    },
+    {
+      "case": "correctness_latency_seed45_b64_loss2.0",
+      "previous_accuracy": 83.23,
+      "fresh_accuracy": 83.23,
+      "difference_pp": 0.0
+    },
+    {
+      "case": "correctness_latency_seed48_b64_loss0.5",
+      "previous_accuracy": 85.41,
+      "fresh_accuracy": 85.41,
+      "difference_pp": 0.0
+    },
+    {
+      "case": "correctness_latency_seed48_b64_loss1.0",
+      "previous_accuracy": 84.84,
+      "fresh_accuracy": 84.84,
+      "difference_pp": 0.0
+    },
+    {
+      "case": "correctness_latency_seed48_b64_loss1.5",
+      "previous_accuracy": 84.84,
+      "fresh_accuracy": 84.84,
+      "difference_pp": 0.0
+    },
+    {
+      "case": "correctness_latency_seed48_b64_loss2.0",
+      "previous_accuracy": 81.86,
+      "fresh_accuracy": 81.86,
+      "difference_pp": 0.0
+    },
+    {
+      "case": "correctness_energy_seed42_b64_loss0.5",
+      "previous_accuracy": 85.22999999999999,
+      "fresh_accuracy": 85.22999999999999,
+      "difference_pp": 0.0
+    },
+    {
+      "case": "correctness_energy_seed42_b64_loss1.0",
+      "previous_accuracy": 84.44,
+      "fresh_accuracy": 84.44,
+      "difference_pp": 0.0
+    },
+    {
+      "case": "correctness_energy_seed42_b64_loss1.5",
+      "previous_accuracy": 84.44,
+      "fresh_accuracy": 84.44,
+      "difference_pp": 0.0
+    },
+    {
+      "case": "correctness_energy_seed42_b64_loss2.0",
+      "previous_accuracy": 83.50999999999999,
+      "fresh_accuracy": 83.50999999999999,
+      "difference_pp": 0.0
+    },
+    {
+      "case": "correctness_energy_seed45_b64_loss0.5",
+      "previous_accuracy": 85.27,
+      "fresh_accuracy": 85.27,
+      "difference_pp": 0.0
+    },
+    {
+      "case": "correctness_energy_seed45_b64_loss1.0",
+      "previous_accuracy": 84.74000000000001,
+      "fresh_accuracy": 84.74000000000001,
+      "difference_pp": 0.0
+    },
+    {
+      "case": "correctness_energy_seed45_b64_loss1.5",
+      "previous_accuracy": 84.34,
+      "fresh_accuracy": 84.34,
+      "difference_pp": 0.0
+    },
+    {
+      "case": "correctness_energy_seed45_b64_loss2.0",
+      "previous_accuracy": 83.49,
+      "fresh_accuracy": 83.49,
+      "difference_pp": 0.0
+    },
+    {
+      "case": "correctness_energy_seed48_b64_loss0.5",
+      "previous_accuracy": 85.64,
+      "fresh_accuracy": 85.64,
+      "difference_pp": 0.0
+    },
+    {
+      "case": "correctness_energy_seed48_b64_loss1.0",
+      "previous_accuracy": 85.18,
+      "fresh_accuracy": 85.18,
+      "difference_pp": 0.0
+    },
+    {
+      "case": "correctness_energy_seed48_b64_loss1.5",
+      "previous_accuracy": 84.66,
+      "fresh_accuracy": 84.66,
+      "difference_pp": 0.0
+    },
+    {
+      "case": "correctness_energy_seed48_b64_loss2.0",
+      "previous_accuracy": 83.65,
+      "fresh_accuracy": 83.65,
+      "difference_pp": 0.0
+    }
+  ],
+  "batch64_max_absolute_accuracy_difference_pp": 0.0,
+  "comparison_cases_per_batch": 24,
+  "table_rows": 24
+}

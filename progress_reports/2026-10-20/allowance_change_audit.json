@@ -1,0 +1,1412 @@
+{
+  "source_sha256": "4e645a0a1398fc5df130ee2c84a182ae8ffe30f9e57157661b4fd8c8c2755783",
+  "positive_1_negative_1_5_cases": 8,
+  "positive_again_at_2_cases": 3,
+  "all_recoveries_fail_accuracy": true,
+  "cases": [
+    {
+      "objective": "latency",
+      "seed": 42,
+      "batch": 8,
+      "triplet": [
+        {
+          "budget": 1.0,
+          "comparator": "resnet101__p0__fp16",
+          "penalty": 0.0501187233627272,
+          "route_ms": 6.946028690019739,
+          "static_ms": 1.1314297199773136,
+          "median_loads": 217,
+          "median_evictions": 215,
+          "accuracy": 85.05,
+          "accuracy_pass": true,
+          "latency_saving": -513.9160539427065,
+          "energy_saving": -430.54771126296697
+        },
+        {
+          "budget": 1.5,
+          "comparator": "resnet101__p0__fp16",
+          "penalty": 0.05559042572704037,
+          "route_ms": 9.98089970011497,
+          "static_ms": 1.2278485499497038,
+          "median_loads": 313,
+          "median_evictions": 311,
+          "accuracy": 84.47,
+          "accuracy_pass": true,
+          "latency_saving": -712.8771012128341,
+          "energy_saving": -472.7015150668083
+        },
+        {
+          "budget": 2.0,
+          "comparator": "resnet50__p0__fp32",
+          "penalty": 0.059566214352901034,
+          "route_ms": 11.551940029943943,
+          "static_ms": 1.4196527199674165,
+          "median_loads": 357,
+          "median_evictions": 355,
+          "accuracy": 83.97,
+          "accuracy_pass": true,
+          "latency_saving": -713.715908649059,
+          "energy_saving": -350.7462168712919
+        }
+      ]
+    },
+    {
+      "objective": "latency",
+      "seed": 42,
+      "batch": 16,
+      "triplet": [
+        {
+          "budget": 1.0,
+          "comparator": "resnet101__p0__fp16",
+          "penalty": 0.046773514128719815,
+          "route_ms": 2.1551938199962026,
+          "static_ms": 0.7387628500175197,
+          "median_loads": 54,
+          "median_evictions": 52,
+          "accuracy": 84.92,
+          "accuracy_pass": true,
+          "latency_saving": -191.73012962753774,
+          "energy_saving": -129.10881317153044
+        },
+        {
+          "budget": 1.5,
+          "comparator": "resnet101__p0__fp16",
+          "penalty": 0.0518800038928961,
+          "route_ms": 2.3857421600172533,
+          "static_ms": 0.7399622000084491,
+          "median_loads": 62,
+          "median_evictions": 60,
+          "accuracy": 83.8,
+          "accuracy_pass": false,
+          "latency_saving": -222.4140584465006,
+          "energy_saving": -150.98388440435497
+        },
+        {
+          "budget": 2.0,
+          "comparator": "resnet50__p0__fp32",
+          "penalty": 0.05559042572704037,
+          "route_ms": 2.9689875200099776,
+          "static_ms": 1.6040000699693338,
+          "median_loads": 68,
+          "median_evictions": 66,
+          "accuracy": 82.98,
+          "accuracy_pass": false,
+          "latency_saving": -85.09896449485446,
+          "energy_saving": -50.211875753656095
+        }
+      ]
+    },
+    {
+      "objective": "latency",
+      "seed": 42,
+      "batch": 32,
+      "triplet": [
+        {
+          "budget": 1.0,
+          "comparator": "resnet101__p0__fp16",
+          "penalty": 0.09332543007969905,
+          "route_ms": 1.1543846099666553,
+          "static_ms": 1.2278841899940744,
+          "median_loads": 4,
+          "median_evictions": 2,
+          "accuracy": 84.96000000000001,
+          "accuracy_pass": true,
+          "latency_saving": 5.985872334407518,
+          "energy_saving": 5.360969307367497
+        },
+        {
+          "budget": 1.5,
+          "comparator": "resnet101__p0__fp16",
+          "penalty": 0.09660508789898131,
+          "route_ms": 1.0237073000200325,
+          "static_ms": 1.227589039990562,
+          "median_loads": 2,
+          "median_evictions": 0,
+          "accuracy": 84.42,
+          "accuracy_pass": true,
+          "latency_saving": 16.60830565676091,
+          "energy_saving": 16.250835112723838
+        },
+        {
+          "budget": 2.0,
+          "comparator": "resnet50__p0__fp32",
+          "penalty": 0.10351421666793431,
+          "route_ms": 0.8996408499981045,
+          "static_ms": 2.1660850099870004,
+          "median_loads": 5,
+          "median_evictions": 3,
+          "accuracy": 83.5,
+          "accuracy_pass": false,
+          "latency_saving": 58.46696478438288,
+          "energy_saving": 57.93461861845888
+        }
+      ]
+    },
+    {
+      "objective": "latency",
+      "seed": 42,
+      "batch": 64,
+      "triplet": [
+        {
+          "budget": 1.0,
+          "comparator": "resnet101__p0__fp16",
+          "penalty": 0.07852356346100718,
+          "route_ms": 0.9976872899977024,
+          "static_ms": 1.3607722799992188,
+          "median_loads": 2,
+          "median_evictions": 0,
+          "accuracy": 84.02,
+          "accuracy_pass": false,
+          "latency_saving": 26.68227412758032,
+          "energy_saving": 26.231646241985057
+        },
+        {
+          "budget": 1.5,
+          "comparator": "resnet101__p0__fp16",
+          "penalty": 0.07852356346100718,
+          "route_ms": 0.9978461499966216,
+          "static_ms": 1.3612334899953566,
+          "median_loads": 2,
+          "median_evictions": 0,
+          "accuracy": 84.02,
+          "accuracy_pass": false,
+          "latency_saving": 26.695445173037484,
+          "energy_saving": 26.57525757590093
+        },
+        {
+          "budget": 2.0,
+          "comparator": "resnet101__p0__fp16",
+          "penalty": 0.08128305161640986,
+          "route_ms": 0.766548660004628,
+          "static_ms": 1.361414069982129,
+          "median_loads": 2,
+          "median_evictions": 0,
+          "accuracy": 83.08,
+          "accuracy_pass": false,
+          "latency_saving": 43.69467181908219,
+          "energy_saving": 43.219964716468255
+        }
+      ]
+    },
+    {
+      "objective": "latency",
+      "seed": 42,
+      "batch": 128,
+      "triplet": [
+        {
+          "budget": 1.0,
+          "comparator": "resnet101__p0__fp16",
+          "penalty": 0.07585775750291836,
+          "route_ms": 1.033155399991665,
+          "static_ms": 1.5228007799974876,
+          "median_loads": 2,
+          "median_evictions": 0,
+          "accuracy": 84.02,
+          "accuracy_pass": false,
+          "latency_saving": 32.154263803741316,
+          "energy_saving": 32.37092628070404
+        },
+        {
+          "budget": 1.5,
+          "comparator": "resnet101__p0__fp16",
+          "penalty": 0.07585775750291836,
+          "route_ms": 1.0337441700132333,
+          "static_ms": 1.522555879992433,
+          "median_loads": 2,
+          "median_evictions": 0,
+          "accuracy": 84.02,
+          "accuracy_pass": false,
+          "latency_saving": 32.10468110908541,
+          "energy_saving": 32.455448433954565
+        },
+        {
+          "budget": 2.0,
+          "comparator": "resnet101__p0__fp16",
+          "penalty": 0.07585775750291836,
+          "route_ms": 1.0345446400140643,
+          "static_ms": 1.5224360500171314,
+          "median_loads": 2,
+          "median_evictions": 0,
+          "accuracy": 84.02,
+          "accuracy_pass": true,
+          "latency_saving": 32.04675887683932,
+          "energy_saving": 32.559156780789195
+        }
+      ]
+    },
+    {
+      "objective": "latency",
+      "seed": 45,
+      "batch": 8,
+      "triplet": [
+        {
+          "budget": 1.0,
+          "comparator": "resnet101__p0__fp16",
+          "penalty": 0.046773514128719815,
+          "route_ms": 2.152120180008933,
+          "static_ms": 1.576625429984415,
+          "median_loads": 37,
+          "median_evictions": 35,
+          "accuracy": 84.28999999999999,
+          "accuracy_pass": false,
+          "latency_saving": -36.50167878049555,
+          "energy_saving": -39.069662749732196
+        },
+        {
+          "budget": 1.5,
+          "comparator": "resnet101__p0__fp16",
+          "penalty": 0.04841723675840994,
+          "route_ms": 2.4376398600317772,
+          "static_ms": 1.57304437001294,
+          "median_loads": 48,
+          "median_evictions": 46,
+          "accuracy": 84.09,
+          "accuracy_pass": false,
+          "latency_saving": -54.9631978919784,
+          "energy_saving": -58.872837596190585
+        },
+        {
+          "budget": 2.0,
+          "comparator": "resnet101__p0__fp16",
+          "penalty": 0.0518800038928961,
+          "route_ms": 3.056821180004045,
+          "static_ms": 1.5744553699914832,
+          "median_loads": 75,
+          "median_evictions": 73,
+          "accuracy": 83.65,
+          "accuracy_pass": false,
+          "latency_saving": -94.15102125254779,
+          "energy_saving": -101.91455244724332
+        }
+      ]
+    },
+    {
+      "objective": "latency",
+      "seed": 45,
+      "batch": 16,
+      "triplet": [
+        {
+          "budget": 1.0,
+          "comparator": "resnet101__p0__fp16",
+          "penalty": 0.04073802778041126,
+          "route_ms": 1.0990069300256438,
+          "static_ms": 1.3460776400344912,
+          "median_loads": 2,
+          "median_evictions": 0,
+          "accuracy": 84.28,
+          "accuracy_pass": false,
+          "latency_saving": 18.35486324566811,
+          "energy_saving": 18.516551392185374
+        },
+        {
+          "budget": 1.5,
+          "comparator": "resnet101__p0__fp16",
+          "penalty": 0.042169650342858224,
+          "route_ms": 1.0309444600192366,
+          "static_ms": 1.3456093599816086,
+          "median_loads": 2,
+          "median_evictions": 0,
+          "accuracy": 83.91,
+          "accuracy_pass": false,
+          "latency_saving": 23.38456533675367,
+          "energy_saving": 23.689986867867987
+        },
+        {
+          "budget": 2.0,
+          "comparator": "resnet101__p0__fp16",
+          "penalty": 0.04518559443749222,
+          "route_ms": 0.9347205400059465,
+          "static_ms": 1.3458925599581562,
+          "median_loads": 2,
+          "median_evictions": 0,
+          "accuracy": 83.39999999999999,
+          "accuracy_pass": false,
+          "latency_saving": 30.550136926605273,
+          "energy_saving": 30.45294681871471
+        }
+      ]
+    },
+    {
+      "objective": "latency",
+      "seed": 45,
+      "batch": 32,
+      "triplet": [
+        {
+          "budget": 1.0,
+          "comparator": "resnet101__p0__fp16",
+          "penalty": 0.07328245331389037,
+          "route_ms": 1.1401011900132287,
+          "static_ms": 1.2283806600025855,
+          "median_loads": 2,
+          "median_evictions": 0,
+          "accuracy": 85.00999999999999,
+          "accuracy_pass": true,
+          "latency_saving": 7.18665417519442,
+          "energy_saving": 6.769131522497325
+        },
+        {
+          "budget": 1.5,
+          "comparator": "resnet101__p0__fp16",
+          "penalty": 0.07585775750291836,
+          "route_ms": 1.101547499993467,
+          "static_ms": 1.2276811699906829,
+          "median_loads": 2,
+          "median_evictions": 0,
+          "accuracy": 84.75,
+          "accuracy_pass": true,
+          "latency_saving": 10.27413900941182,
+          "energy_saving": 9.831083209104081
+        },
+        {
+          "budget": 2.0,
+          "comparator": "resnet101__p0__fp16",
+          "penalty": 0.08128305161640986,
+          "route_ms": 1.0039464000117733,
+          "static_ms": 1.228311400001985,
+          "median_loads": 2,
+          "median_evictions": 0,
+          "accuracy": 84.23,
+          "accuracy_pass": true,
+          "latency_saving": 18.266133489426966,
+          "energy_saving": 17.60906378940635
+        }
+      ]
+    },
+    {
+      "objective": "latency",
+      "seed": 45,
+      "batch": 64,
+      "triplet": [
+        {
+          "budget": 1.0,
+          "comparator": "resnet101__p0__fp16",
+          "penalty": 0.057543993733715666,
+          "route_ms": 1.268364450018271,
+          "static_ms": 1.3606440799776465,
+          "median_loads": 2,
+          "median_evictions": 0,
+          "accuracy": 85.17,
+          "accuracy_pass": true,
+          "latency_saving": 6.782055007426456,
+          "energy_saving": 6.886877999017627
+        },
+        {
+          "budget": 1.5,
+          "comparator": "resnet101__p0__fp16",
+          "penalty": 0.059566214352901034,
+          "route_ms": 1.205674139992334,
+          "static_ms": 1.361429240004509,
+          "median_loads": 2,
+          "median_evictions": 0,
+          "accuracy": 84.58,
+          "accuracy_pass": true,
+          "latency_saving": 11.44055786635367,
+          "energy_saving": 10.928642130837767
+        },
+        {
+          "budget": 2.0,
+          "comparator": "resnet101__p0__fp16",
+          "penalty": 0.06606934480075957,
+          "route_ms": 0.9761279999976977,
+          "static_ms": 1.3620904300012624,
+          "median_loads": 2,
+          "median_evictions": 0,
+          "accuracy": 83.23,
+          "accuracy_pass": false,
+          "latency_saving": 28.336035662713453,
+          "energy_saving": 27.0988265133821
+        }
+      ]
+    },
+    {
+      "objective": "latency",
+      "seed": 45,
+      "batch": 128,
+      "triplet": [
+        {
+          "budget": 1.0,
+          "comparator": "resnet101__p0__fp16",
+          "penalty": 0.057543993733715666,
+          "route_ms": 1.3427896500070347,
+          "static_ms": 1.5230284600023878,
+          "median_loads": 2,
+          "median_evictions": 0,
+          "accuracy": 84.93,
+          "accuracy_pass": true,
+          "latency_saving": 11.834237818186972,
+          "energy_saving": 11.10321733727221
+        },
+        {
+          "budget": 1.5,
+          "comparator": "resnet101__p0__fp16",
+          "penalty": 0.06165950018614822,
+          "route_ms": 1.110636609981884,
+          "static_ms": 1.5225740599940765,
+          "median_loads": 2,
+          "median_evictions": 0,
+          "accuracy": 83.93,
+          "accuracy_pass": false,
+          "latency_saving": 27.055330892330765,
+          "energy_saving": 26.16255165836601
+        },
+        {
+          "budget": 2.0,
+          "comparator": "resnet101__p0__fp16",
+          "penalty": 0.06165950018614822,
+          "route_ms": 1.1129043299966723,
+          "static_ms": 1.522832879985799,
+          "median_loads": 2,
+          "median_evictions": 0,
+          "accuracy": 83.93,
+          "accuracy_pass": true,
+          "latency_saving": 26.91881396683196,
+          "energy_saving": 25.47984502374294
+        }
+      ]
+    },
+    {
+      "objective": "latency",
+      "seed": 48,
+      "batch": 8,
+      "triplet": [
+        {
+          "budget": 1.0,
+          "comparator": "resnet101__p0__fp16",
+          "penalty": 0.04841723675840994,
+          "route_ms": 1.8794955199962715,
+          "static_ms": 1.576681990045472,
+          "median_loads": 25,
+          "median_evictions": 23,
+          "accuracy": 83.97,
+          "accuracy_pass": false,
+          "latency_saving": -19.205745474524395,
+          "energy_saving": -21.856357762298984
+        },
+        {
+          "budget": 1.5,
+          "comparator": "resnet50__p0__fp16",
+          "penalty": 0.05370317963702527,
+          "route_ms": 2.8181209799600766,
+          "static_ms": 0.9450175899866736,
+          "median_loads": 67,
+          "median_evictions": 65,
+          "accuracy": 83.21,
+          "accuracy_pass": false,
+          "latency_saving": -198.20830954054696,
+          "energy_saving": -210.3028802564094
+        },
+        {
+          "budget": 2.0,
+          "comparator": "resnet50__p0__fp16",
+          "penalty": 0.057543993733715666,
+          "route_ms": 3.0389472099981507,
+          "static_ms": 0.9410066800046479,
+          "median_loads": 79,
+          "median_evictions": 77,
+          "accuracy": 82.69999999999999,
+          "accuracy_pass": false,
+          "latency_saving": -222.946401398887,
+          "energy_saving": -240.25535186758938
+        }
+      ]
+    },
+    {
+      "objective": "latency",
+      "seed": 48,
+      "batch": 16,
+      "triplet": [
+        {
+          "budget": 1.0,
+          "comparator": "resnet101__p0__fp16",
+          "penalty": 0.038018939632056124,
+          "route_ms": 1.261165809974773,
+          "static_ms": 1.343895660023554,
+          "median_loads": 2,
+          "median_evictions": 0,
+          "accuracy": 84.99,
+          "accuracy_pass": true,
+          "latency_saving": 6.155972707533811,
+          "energy_saving": 5.850614930921016
+        },
+        {
+          "budget": 1.5,
+          "comparator": "resnet50__p0__fp16",
+          "penalty": 0.04365158322401656,
+          "route_ms": 1.0305234399565961,
+          "static_ms": 0.8690440600126749,
+          "median_loads": 4,
+          "median_evictions": 2,
+          "accuracy": 83.77,
+          "accuracy_pass": false,
+          "latency_saving": -18.581265021426656,
+          "energy_saving": -18.350247601531215
+        },
+        {
+          "budget": 2.0,
+          "comparator": "resnet50__p0__fp16",
+          "penalty": 0.04365158322401656,
+          "route_ms": 1.031095809963881,
+          "static_ms": 0.8684918399783783,
+          "median_loads": 4,
+          "median_evictions": 2,
+          "accuracy": 83.77,
+          "accuracy_pass": false,
+          "latency_saving": -18.722567386419072,
+          "energy_saving": -19.604155372888314
+        }
+      ]
+    },
+    {
+      "objective": "latency",
+      "seed": 48,
+      "batch": 32,
+      "triplet": [
+        {
+          "budget": 1.0,
+          "comparator": "resnet101__p0__fp16",
+          "penalty": 0.08128305161640986,
+          "route_ms": 0.9622739500104217,
+          "static_ms": 1.2276255799893987,
+          "median_loads": 2,
+          "median_evictions": 0,
+          "accuracy": 84.38,
+          "accuracy_pass": false,
+          "latency_saving": 21.615029395303786,
+          "energy_saving": 21.177629390175852
+        },
+        {
+          "budget": 1.5,
+          "comparator": "resnet50__p0__fp16",
+          "penalty": 0.08128305161640986,
+          "route_ms": 0.9624255199887557,
+          "static_ms": 0.813223029972869,
+          "median_loads": 2,
+          "median_evictions": 0,
+          "accuracy": 84.38,
+          "accuracy_pass": true,
+          "latency_saving": -18.347056651957395,
+          "energy_saving": -18.348952732114505
+        },
+        {
+          "budget": 2.0,
+          "comparator": "resnet50__p0__fp16",
+          "penalty": 0.08413951416451948,
+          "route_ms": 0.860519589978503,
+          "static_ms": 0.813009500017506,
+          "median_loads": 2,
+          "median_evictions": 0,
+          "accuracy": 83.49,
+          "accuracy_pass": false,
+          "latency_saving": -5.8437312183896974,
+          "energy_saving": -6.2624046592195866
+        }
+      ]
+    },
+    {
+      "objective": "latency",
+      "seed": 48,
+      "batch": 64,
+      "triplet": [
+        {
+          "budget": 1.0,
+          "comparator": "resnet101__p0__fp16",
+          "penalty": 0.06165950018614822,
+          "route_ms": 1.2069122599932598,
+          "static_ms": 1.3624827900173841,
+          "median_loads": 2,
+          "median_evictions": 0,
+          "accuracy": 84.84,
+          "accuracy_pass": true,
+          "latency_saving": 11.418164777122753,
+          "energy_saving": 11.073529446548237
+        },
+        {
+          "budget": 1.5,
+          "comparator": "resnet50__p0__fp16",
+          "penalty": 0.06165950018614822,
+          "route_ms": 1.2119323800085111,
+          "static_ms": 0.8317378100357019,
+          "median_loads": 2,
+          "median_evictions": 0,
+          "accuracy": 84.84,
+          "accuracy_pass": true,
+          "latency_saving": -45.71086770198529,
+          "energy_saving": -44.89434040814439
+        },
+        {
+          "budget": 2.0,
+          "comparator": "resnet50__p0__fp16",
+          "penalty": 0.34673685045253166,
+          "route_ms": 0.45319542998913676,
+          "static_ms": 0.8307196400040994,
+          "median_loads": 2,
+          "median_evictions": 0,
+          "accuracy": 81.86,
+          "accuracy_pass": false,
+          "latency_saving": 45.44544173929722,
+          "energy_saving": 45.01927920644298
+        }
+      ]
+    },
+    {
+      "objective": "latency",
+      "seed": 48,
+      "batch": 128,
+      "triplet": [
+        {
+          "budget": 1.0,
+          "comparator": "resnet101__p0__fp16",
+          "penalty": 0.06165950018614822,
+          "route_ms": 1.2791617999930167,
+          "static_ms": 1.5228005099925213,
+          "median_loads": 2,
+          "median_evictions": 0,
+          "accuracy": 84.94,
+          "accuracy_pass": true,
+          "latency_saving": 15.999384581287082,
+          "energy_saving": 15.766261703217818
+        },
+        {
+          "budget": 1.5,
+          "comparator": "resnet50__p0__fp16",
+          "penalty": 0.06165950018614822,
+          "route_ms": 1.2773406600084853,
+          "static_ms": 0.865026410005521,
+          "median_loads": 2,
+          "median_evictions": 0,
+          "accuracy": 84.94,
+          "accuracy_pass": true,
+          "latency_saving": -47.66493198749074,
+          "energy_saving": -48.206750267008225
+        },
+        {
+          "budget": 2.0,
+          "comparator": "resnet50__p0__fp16",
+          "penalty": 0.06606934480075957,
+          "route_ms": 0.6529828400030965,
+          "static_ms": 0.8647772100084694,
+          "median_loads": 2,
+          "median_evictions": 0,
+          "accuracy": 82.25,
+          "accuracy_pass": false,
+          "latency_saving": 24.49120623834417,
+          "energy_saving": 24.60623575835046
+        }
+      ]
+    },
+    {
+      "objective": "energy",
+      "seed": 42,
+      "batch": 8,
+      "triplet": [
+        {
+          "budget": 1.0,
+          "comparator": "resnet101__p0__fp16",
+          "penalty": 0.07852356346100718,
+          "route_ms": 6.805684940019273,
+          "static_ms": 1.5738158899912378,
+          "median_loads": 191,
+          "median_evictions": 189,
+          "accuracy": 85.11999999999999,
+          "accuracy_pass": true,
+          "latency_saving": -332.4320896300751,
+          "energy_saving": -329.1289440614749
+        },
+        {
+          "budget": 1.5,
+          "comparator": "resnet101__p0__fp16",
+          "penalty": 0.08709635899560805,
+          "route_ms": 10.166304589941866,
+          "static_ms": 1.5756019499822287,
+          "median_loads": 320,
+          "median_evictions": 318,
+          "accuracy": 84.73,
+          "accuracy_pass": true,
+          "latency_saving": -545.2330545831409,
+          "energy_saving": -418.89155813374254
+        },
+        {
+          "budget": 2.0,
+          "comparator": "resnet101__p0__fp16",
+          "penalty": 0.09015711376059571,
+          "route_ms": 11.897947520005982,
+          "static_ms": 1.1305473399872425,
+          "median_loads": 370,
+          "median_evictions": 368,
+          "accuracy": 84.37,
+          "accuracy_pass": true,
+          "latency_saving": -952.4059541054019,
+          "energy_saving": -573.4152637840967
+        }
+      ]
+    },
+    {
+      "objective": "energy",
+      "seed": 42,
+      "batch": 16,
+      "triplet": [
+        {
+          "budget": 1.0,
+          "comparator": "resnet101__p0__fp16",
+          "penalty": 0.07852356346100718,
+          "route_ms": 2.8086367399344456,
+          "static_ms": 0.7394467699428787,
+          "median_loads": 78,
+          "median_evictions": 76,
+          "accuracy": 84.95,
+          "accuracy_pass": true,
+          "latency_saving": -279.82946901660125,
+          "energy_saving": -212.20110224540943
+        },
+        {
+          "budget": 1.5,
+          "comparator": "resnet101__p0__fp16",
+          "penalty": 0.08709635899560805,
+          "route_ms": 3.6429954399529376,
+          "static_ms": 0.7402888299897313,
+          "median_loads": 106,
+          "median_evictions": 104,
+          "accuracy": 84.03,
+          "accuracy_pass": false,
+          "latency_saving": -392.1046073332581,
+          "energy_saving": -277.1590923585159
+        },
+        {
+          "budget": 2.0,
+          "comparator": "resnet101__p0__fp16",
+          "penalty": 0.09332543007969905,
+          "route_ms": 3.7609483499545604,
+          "static_ms": 0.7448369499470573,
+          "median_loads": 107,
+          "median_evictions": 105,
+          "accuracy": 83.02000000000001,
+          "accuracy_pass": false,
+          "latency_saving": -404.93579168190934,
+          "energy_saving": -280.7541402724955
+        }
+      ]
+    },
+    {
+      "objective": "energy",
+      "seed": 42,
+      "batch": 32,
+      "triplet": [
+        {
+          "budget": 1.0,
+          "comparator": "resnet101__p0__fp16",
+          "penalty": 0.10351421666793431,
+          "route_ms": 1.331855259972508,
+          "static_ms": 1.229576569981873,
+          "median_loads": 9,
+          "median_evictions": 7,
+          "accuracy": 85.13,
+          "accuracy_pass": true,
+          "latency_saving": -8.318204208473398,
+          "energy_saving": -10.745834050269341
+        },
+        {
+          "budget": 1.5,
+          "comparator": "resnet101__p0__fp16",
+          "penalty": 0.11091748152624009,
+          "route_ms": 1.2084782900288702,
+          "static_ms": 1.2297091799671762,
+          "median_loads": 10,
+          "median_evictions": 8,
+          "accuracy": 84.11999999999999,
+          "accuracy_pass": false,
+          "latency_saving": 1.7264968241411978,
+          "energy_saving": -0.1437268611577443
+        },
+        {
+          "budget": 2.0,
+          "comparator": "resnet101__p0__fp16",
+          "penalty": 0.1148153621496883,
+          "route_ms": 1.0634886299900246,
+          "static_ms": 1.2285528400039767,
+          "median_loads": 9,
+          "median_evictions": 7,
+          "accuracy": 83.63000000000001,
+          "accuracy_pass": false,
+          "latency_saving": 13.435662239274773,
+          "energy_saving": 12.738801616624524
+        }
+      ]
+    },
+    {
+      "objective": "energy",
+      "seed": 42,
+      "batch": 64,
+      "triplet": [
+        {
+          "budget": 1.0,
+          "comparator": "resnet101__p0__fp16",
+          "penalty": 0.08413951416451948,
+          "route_ms": 1.094635910022771,
+          "static_ms": 1.3609507200133522,
+          "median_loads": 2,
+          "median_evictions": 0,
+          "accuracy": 84.44,
+          "accuracy_pass": false,
+          "latency_saving": 19.568291935505815,
+          "energy_saving": 19.59212506526615
+        },
+        {
+          "budget": 1.5,
+          "comparator": "resnet101__p0__fp16",
+          "penalty": 0.08413951416451948,
+          "route_ms": 1.0941699100279947,
+          "static_ms": 1.3608712999994168,
+          "median_loads": 2,
+          "median_evictions": 0,
+          "accuracy": 84.44,
+          "accuracy_pass": true,
+          "latency_saving": 19.597840734207292,
+          "energy_saving": 19.70403012237808
+        },
+        {
+          "budget": 2.0,
+          "comparator": "resnet101__p0__fp16",
+          "penalty": 0.08709635899560805,
+          "route_ms": 1.1752371599985054,
+          "static_ms": 1.3634751200064783,
+          "median_loads": 11,
+          "median_evictions": 9,
+          "accuracy": 83.50999999999999,
+          "accuracy_pass": false,
+          "latency_saving": 13.805749532641169,
+          "energy_saving": 13.047371106743281
+        }
+      ]
+    },
+    {
+      "objective": "energy",
+      "seed": 42,
+      "batch": 128,
+      "triplet": [
+        {
+          "budget": 1.0,
+          "comparator": "resnet101__p0__fp16",
+          "penalty": 0.08128305161640986,
+          "route_ms": 1.2850962300028186,
+          "static_ms": 1.523091520013986,
+          "median_loads": 2,
+          "median_evictions": 0,
+          "accuracy": 84.50999999999999,
+          "accuracy_pass": false,
+          "latency_saving": 15.625803629251516,
+          "energy_saving": 15.219468985291028
+        },
+        {
+          "budget": 1.5,
+          "comparator": "resnet101__p0__fp16",
+          "penalty": 0.08128305161640986,
+          "route_ms": 1.142914100002963,
+          "static_ms": 1.5222185499995247,
+          "median_loads": 2,
+          "median_evictions": 0,
+          "accuracy": 84.50999999999999,
+          "accuracy_pass": true,
+          "latency_saving": 24.91787069581304,
+          "energy_saving": 24.640110327268868
+        },
+        {
+          "budget": 2.0,
+          "comparator": "resnet101__p0__fp16",
+          "penalty": 0.08413951416451948,
+          "route_ms": 0.8281361000117613,
+          "static_ms": 1.5228882699884707,
+          "median_loads": 2,
+          "median_evictions": 0,
+          "accuracy": 83.08,
+          "accuracy_pass": false,
+          "latency_saving": 45.62069218524936,
+          "energy_saving": 45.591553990221605
+        }
+      ]
+    },
+    {
+      "objective": "energy",
+      "seed": 45,
+      "batch": 8,
+      "triplet": [
+        {
+          "budget": 1.0,
+          "comparator": "resnet101__p0__fp16",
+          "penalty": 0.06839116472814293,
+          "route_ms": 1.6011609200388193,
+          "static_ms": 1.5754335799720138,
+          "median_loads": 15,
+          "median_evictions": 13,
+          "accuracy": 84.33,
+          "accuracy_pass": false,
+          "latency_saving": -1.6330323533704612,
+          "energy_saving": -3.4953940326263533
+        },
+        {
+          "budget": 1.5,
+          "comparator": "resnet101__p0__fp16",
+          "penalty": 0.07328245331389037,
+          "route_ms": 1.6831335399561795,
+          "static_ms": 1.5764246499777075,
+          "median_loads": 19,
+          "median_evictions": 17,
+          "accuracy": 83.94,
+          "accuracy_pass": false,
+          "latency_saving": -6.769044748188957,
+          "energy_saving": -9.443160530315645
+        },
+        {
+          "budget": 2.0,
+          "comparator": "resnet101__p0__fp16",
+          "penalty": 0.07852356346100718,
+          "route_ms": 1.7287693500315073,
+          "static_ms": 1.5777619299624348,
+          "median_loads": 23,
+          "median_evictions": 21,
+          "accuracy": 83.5,
+          "accuracy_pass": false,
+          "latency_saving": -9.570988956025055,
+          "energy_saving": -12.493785212933215
+        }
+      ]
+    },
+    {
+      "objective": "energy",
+      "seed": 45,
+      "batch": 16,
+      "triplet": [
+        {
+          "budget": 1.0,
+          "comparator": "resnet101__p0__fp16",
+          "penalty": 0.06606934480075957,
+          "route_ms": 1.0934319800115189,
+          "static_ms": 1.345209049974801,
+          "median_loads": 2,
+          "median_evictions": 0,
+          "accuracy": 84.25,
+          "accuracy_pass": false,
+          "latency_saving": 18.716575685243743,
+          "energy_saving": 18.00973318471809
+        },
+        {
+          "budget": 1.5,
+          "comparator": "resnet101__p0__fp16",
+          "penalty": 0.06839116472814293,
+          "route_ms": 1.0260795999784023,
+          "static_ms": 1.3447622999752638,
+          "median_loads": 2,
+          "median_evictions": 0,
+          "accuracy": 83.89999999999999,
+          "accuracy_pass": false,
+          "latency_saving": 23.698069168262943,
+          "energy_saving": 23.833631976639467
+        },
+        {
+          "budget": 2.0,
+          "comparator": "resnet101__p0__fp16",
+          "penalty": 0.07328245331389037,
+          "route_ms": 0.9334745299333008,
+          "static_ms": 1.344311189977452,
+          "median_loads": 2,
+          "median_evictions": 0,
+          "accuracy": 83.38,
+          "accuracy_pass": false,
+          "latency_saving": 30.561127743870244,
+          "energy_saving": 29.688157140126183
+        }
+      ]
+    },
+    {
+      "objective": "energy",
+      "seed": 45,
+      "batch": 32,
+      "triplet": [
+        {
+          "budget": 1.0,
+          "comparator": "resnet101__p0__fp16",
+          "penalty": 0.08128305161640986,
+          "route_ms": 1.1395522300008452,
+          "static_ms": 1.2270685499912362,
+          "median_loads": 2,
+          "median_evictions": 0,
+          "accuracy": 85.00999999999999,
+          "accuracy_pass": true,
+          "latency_saving": 7.132145958024592,
+          "energy_saving": 7.466714174181408
+        },
+        {
+          "budget": 1.5,
+          "comparator": "resnet101__p0__fp16",
+          "penalty": 0.08413951416451948,
+          "route_ms": 1.101343020008062,
+          "static_ms": 1.228734290014836,
+          "median_loads": 2,
+          "median_evictions": 0,
+          "accuracy": 84.75,
+          "accuracy_pass": true,
+          "latency_saving": 10.367682504020934,
+          "energy_saving": 10.396795016334302
+        },
+        {
+          "budget": 2.0,
+          "comparator": "resnet101__p0__fp16",
+          "penalty": 0.09015711376059571,
+          "route_ms": 1.0009866499894997,
+          "static_ms": 1.228014680033084,
+          "median_loads": 2,
+          "median_evictions": 0,
+          "accuracy": 84.19,
+          "accuracy_pass": true,
+          "latency_saving": 18.487403590115708,
+          "energy_saving": 17.87481934757919
+        }
+      ]
+    },
+    {
+      "objective": "energy",
+      "seed": 45,
+      "batch": 64,
+      "triplet": [
+        {
+          "budget": 1.0,
+          "comparator": "resnet101__p0__fp16",
+          "penalty": 0.06382634861905483,
+          "route_ms": 1.2324841999885392,
+          "static_ms": 1.362105470019742,
+          "median_loads": 2,
+          "median_evictions": 0,
+          "accuracy": 84.74000000000001,
+          "accuracy_pass": false,
+          "latency_saving": 9.516243263403377,
+          "energy_saving": 9.414754667025347
+        },
+        {
+          "budget": 1.5,
+          "comparator": "resnet101__p0__fp16",
+          "penalty": 0.06606934480075957,
+          "route_ms": 1.154151930005173,
+          "static_ms": 1.36562728000863,
+          "median_loads": 2,
+          "median_evictions": 0,
+          "accuracy": 84.34,
+          "accuracy_pass": true,
+          "latency_saving": 15.485583299282093,
+          "energy_saving": 15.568139971862104
+        },
+        {
+          "budget": 2.0,
+          "comparator": "resnet101__p0__fp16",
+          "penalty": 0.0707945784384138,
+          "route_ms": 0.9664795200136723,
+          "static_ms": 1.3625455700122984,
+          "median_loads": 2,
+          "median_evictions": 0,
+          "accuracy": 83.49,
+          "accuracy_pass": false,
+          "latency_saving": 29.068095681750385,
+          "energy_saving": 28.228872923427193
+        }
+      ]
+    },
+    {
+      "objective": "energy",
+      "seed": 45,
+      "batch": 128,
+      "triplet": [
+        {
+          "budget": 1.0,
+          "comparator": "resnet101__p0__fp16",
+          "penalty": 0.06382634861905483,
+          "route_ms": 1.230393890014966,
+          "static_ms": 1.6172721300041304,
+          "median_loads": 2,
+          "median_evictions": 0,
+          "accuracy": 84.50999999999999,
+          "accuracy_pass": false,
+          "latency_saving": 23.921653802825148,
+          "energy_saving": 23.158719520804706
+        },
+        {
+          "budget": 1.5,
+          "comparator": "resnet101__p0__fp16",
+          "penalty": 0.06606934480075957,
+          "route_ms": 1.1096215100027622,
+          "static_ms": 1.523590190007235,
+          "median_loads": 2,
+          "median_evictions": 0,
+          "accuracy": 83.93,
+          "accuracy_pass": false,
+          "latency_saving": 27.170605502684882,
+          "energy_saving": 25.73601227849868
+        },
+        {
+          "budget": 2.0,
+          "comparator": "resnet101__p0__fp16",
+          "penalty": 0.06606934480075957,
+          "route_ms": 1.1103069999953732,
+          "static_ms": 1.524286859994754,
+          "median_loads": 2,
+          "median_evictions": 0,
+          "accuracy": 83.93,
+          "accuracy_pass": true,
+          "latency_saving": 27.158920729711316,
+          "energy_saving": 26.425161708862763
+        }
+      ]
+    },
+    {
+      "objective": "energy",
+      "seed": 48,
+      "batch": 8,
+      "triplet": [
+        {
+          "budget": 1.0,
+          "comparator": "resnet101__p0__fp16",
+          "penalty": 0.07585775750291836,
+          "route_ms": 6.113927939976565,
+          "static_ms": 1.5802153200114843,
+          "median_loads": 179,
+          "median_evictions": 177,
+          "accuracy": 84.14,
+          "accuracy_pass": false,
+          "latency_saving": -286.90473776270767,
+          "energy_saving": -290.68116780810914
+        },
+        {
+          "budget": 1.5,
+          "comparator": "resnet50__p0__fp16",
+          "penalty": 0.08709635899560805,
+          "route_ms": 12.952267689994187,
+          "static_ms": 1.1233618300117088,
+          "median_loads": 370,
+          "median_evictions": 368,
+          "accuracy": 82.69999999999999,
+          "accuracy_pass": false,
+          "latency_saving": -1052.9916135622293,
+          "energy_saving": -959.4951834380657
+        },
+        {
+          "budget": 2.0,
+          "comparator": "resnet50__p0__fp16",
+          "penalty": 0.09332543007969905,
+          "route_ms": 10.54230496000056,
+          "static_ms": 0.7508701100006875,
+          "median_loads": 337,
+          "median_evictions": 335,
+          "accuracy": 82.36,
+          "accuracy_pass": false,
+          "latency_saving": -1304.0118017203947,
+          "energy_saving": -857.2398024777934
+        }
+      ]
+    },
+    {
+      "objective": "energy",
+      "seed": 48,
+      "batch": 16,
+      "triplet": [
+        {
+          "budget": 1.0,
+          "comparator": "resnet101__p0__fp16",
+          "penalty": 0.06382634861905483,
+          "route_ms": 1.3183428200004528,
+          "static_ms": 1.4100458900005834,
+          "median_loads": 2,
+          "median_evictions": 0,
+          "accuracy": 85.00999999999999,
+          "accuracy_pass": true,
+          "latency_saving": 6.503552164539312,
+          "energy_saving": 5.5510156703424265
+        },
+        {
+          "budget": 1.5,
+          "comparator": "resnet50__p0__fp16",
+          "penalty": 0.07328245331389037,
+          "route_ms": 2.0134626800006115,
+          "static_ms": 1.331415419998666,
+          "median_loads": 18,
+          "median_evictions": 16,
+          "accuracy": 83.84,
+          "accuracy_pass": false,
+          "latency_saving": -51.227231543001736,
+          "energy_saving": -53.88225683392804
+        },
+        {
+          "budget": 2.0,
+          "comparator": "resnet50__p0__fp16",
+          "penalty": 0.07852356346100718,
+          "route_ms": 1.4571953400011808,
+          "static_ms": 1.0246338800011472,
+          "median_loads": 20,
+          "median_evictions": 18,
+          "accuracy": 82.78999999999999,
+          "accuracy_pass": false,
+          "latency_saving": -42.21619726253335,
+          "energy_saving": -36.31610239471511
+        }
+      ]
+    },
+    {
+      "objective": "energy",
+      "seed": 48,
+      "batch": 32,
+      "triplet": [
+        {
+          "budget": 1.0,
+          "comparator": "resnet101__p0__fp16",
+          "penalty": 0.09015711376059571,
+          "route_ms": 1.494417900001008,
+          "static_ms": 1.8473859299996547,
+          "median_loads": 2,
+          "median_evictions": 0,
+          "accuracy": 84.53,
+          "accuracy_pass": false,
+          "latency_saving": 19.10635045264812,
+          "energy_saving": 19.062497808263373
+        },
+        {
+          "budget": 1.5,
+          "comparator": "resnet50__p0__fp16",
+          "penalty": 0.09015711376059571,
+          "route_ms": 1.5679127899993546,
+          "static_ms": 1.2874306099987736,
+          "median_loads": 2,
+          "median_evictions": 0,
+          "accuracy": 84.53,
+          "accuracy_pass": true,
+          "latency_saving": -21.786197859692678,
+          "energy_saving": -28.370052508191574
+        },
+        {
+          "budget": 2.0,
+          "comparator": "resnet50__p0__fp16",
+          "penalty": 0.09332543007969905,
+          "route_ms": 1.3811009299974104,
+          "static_ms": 1.2768851200007703,
+          "median_loads": 2,
+          "median_evictions": 0,
+          "accuracy": 83.83,
+          "accuracy_pass": true,
+          "latency_saving": -8.161721705753541,
+          "energy_saving": -9.474806895919608
+        }
+      ]
+    },
+    {
+      "objective": "energy",
+      "seed": 48,
+      "batch": 64,
+      "triplet": [
+        {
+          "budget": 1.0,
+          "comparator": "resnet101__p0__fp16",
+          "penalty": 0.06606934480075957,
+          "route_ms": 1.3125542000001587,
+          "static_ms": 2.155937109998922,
+          "median_loads": 2,
+          "median_evictions": 0,
+          "accuracy": 85.18,
+          "accuracy_pass": true,
+          "latency_saving": 39.119086827128505,
+          "energy_saving": 33.511503678674224
+        },
+        {
+          "budget": 1.5,
+          "comparator": "resnet50__p0__fp16",
+          "penalty": 0.06839116472814293,
+          "route_ms": 1.2123004500002934,
+          "static_ms": 0.8651571799997327,
+          "median_loads": 2,
+          "median_evictions": 0,
+          "accuracy": 84.66,
+          "accuracy_pass": true,
+          "latency_saving": -40.12487881111591,
+          "energy_saving": -40.42938184663536
+        },
+        {
+          "budget": 2.0,
+          "comparator": "resnet50__p0__fp16",
+          "penalty": 0.0707945784384138,
+          "route_ms": 0.9951632900014374,
+          "static_ms": 0.8625697099994796,
+          "median_loads": 2,
+          "median_evictions": 0,
+          "accuracy": 83.65,
+          "accuracy_pass": false,
+          "latency_saving": -15.371926287793933,
+          "energy_saving": -14.921731450746782
+        }
+      ]
+    },
+    {
+      "objective": "energy",
+      "seed": 48,
+      "batch": 128,
+      "triplet": [
+        {
+          "budget": 1.0,
+          "comparator": "resnet101__p0__fp16",
+          "penalty": 0.06606934480075957,
+          "route_ms": 1.357119220000277,
+          "static_ms": 1.5820002700003897,
+          "median_loads": 2,
+          "median_evictions": 0,
+          "accuracy": 85.11999999999999,
+          "accuracy_pass": true,
+          "latency_saving": 14.214981771150857,
+          "energy_saving": 14.526376982469934
+        },
+        {
+          "budget": 1.5,
+          "comparator": "resnet50__p0__fp16",
+          "penalty": 0.06606934480075957,
+          "route_ms": 1.354148170001099,
+          "static_ms": 0.9010439800000314,
+          "median_loads": 2,
+          "median_evictions": 0,
+          "accuracy": 85.11999999999999,
+          "accuracy_pass": true,
+          "latency_saving": -50.28657868632029,
+          "energy_saving": -50.1744674862609
+        },
+        {
+          "budget": 2.0,
+          "comparator": "resnet50__p0__fp16",
+          "penalty": 0.0707945784384138,
+          "route_ms": 0.7408811399993283,
+          "static_ms": 0.9012008400008199,
+          "median_loads": 2,
+          "median_evictions": 0,
+          "accuracy": 82.28999999999999,
+          "accuracy_pass": false,
+          "latency_saving": 17.789563977919254,
+          "energy_saving": 18.195158004795132
+        }
+      ]
+    }
+  ],
+  "fixed_reference_example": {
+    "name": "resnet101__p0__fp16",
+    "source_budget": 1,
+    "latency_ms_per_image": 1.5228005099925213,
+    "energy_mj_per_image": 47.230599999999995,
+    "interpretation": "Counterfactual renormalization against one held-constant measured benchmark, not fresh paired controls",
+    "rows": [
+      {
+        "budget": 1.0,
+        "fixed_latency_saving": 15.999384581287085,
+        "fixed_energy_saving": 15.766261703217817
+      },
+      {
+        "budget": 1.5,
+        "fixed_latency_saving": 16.11897608211606,
+        "fixed_energy_saving": 15.971637031924223
+      },
+      {
+        "budget": 2.0,
+        "fixed_latency_saving": 57.119607215898334,
+        "fixed_energy_saving": 56.91691403454539
+      }
+    ]
+  }
+}

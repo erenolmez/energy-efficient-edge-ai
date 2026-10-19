@@ -1,0 +1,169 @@
+\documentclass[10pt,a4paper]{article}
+\usepackage[margin=1.65cm]{geometry}
+\usepackage{tikz}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern,microtype,booktabs,tabularx,array,amsmath,enumitem,xcolor,hyperref}
+\hypersetup{colorlinks=true,urlcolor=blue,linkcolor=black,pdftitle={Thesis progress update, 20 October 2026},pdfauthor={Eren Olmez}}
+\setlength{\parindent}{0pt}\setlength{\parskip}{0.30em}
+\setlength{\emergencystretch}{2em}
+\renewcommand{\arraystretch}{1.13}
+\setlist[itemize]{leftmargin=1.3em,itemsep=0.1em,topsep=0.15em}
+\newcommand{\pp}{\,pp}
+\input{tables.tex}
+\begin{document}
+\begin{center}
+{\Large\bfseries Thesis Progress Update}\par
+{Eren Olmez}\par
+{20 October 2026}\par
+\end{center}
+\vspace{-0.6em}
+\section*{1. From scalar routing to correctness routing}
+We used classical predictors with handcrafted features and lightweight convolutional neural networks (CNNs) with learned image features. Initially these predicted one scalar score; we later used 213 correctness outputs to exploit PERTINENCE's motivation: \textbf{models have complementary strengths}. Lower overall accuracy need not mean lower accuracy on every input. The target changed from one cost rank to candidate-specific success.
+
+\textbf{Data.} Each router used a 5,000-image development pool with separate fitting/calibration subsets; 10,000 test images evaluated frozen policies. Classifiers used 45,000 training images. Deployed selection sees no test labels.
+
+\textbf{How we calculate the scalar training score.}
+\begin{enumerate}[leftmargin=1.5em,itemsep=.15em,topsep=.2em]
+\item Measure candidate costs at the chosen batch size. For latency, order models from fastest to slowest; for energy, order them from least to most GPU energy. This ordering uses \emph{cost}, not accuracy.
+\item For each labelled fitting image, run all candidates offline and compare their predicted classes with the true label. Mark each candidate correct or wrong.
+\item Find the \emph{cheapest candidate that was correct on that image}. If its zero-based position is $r$, the training target is $s=r/(M-1)$, where $M=213$. If every candidate fails, use the reference model's position as fallback.
+\item The direct batch target is the average of these per-image scores. The scalar CNN learns to predict that average using mean squared error (MSE); it does not receive the true labels at inference.
+\end{enumerate}
+\begin{center}\small
+\begin{tabular}{@{}lccccc@{}}\toprule
+Hypothetical candidates, cheapest first & A & B & C & D & E\\\midrule
+Zero-based cost position &0&1&2&3&4\\
+Correct on this fitting image? &No&No&Yes&Yes&No\\\bottomrule
+\end{tabular}
+\end{center}
+C is the cheapest correct model, so this image's target is $2/(5-1)=0.50$. This is \textbf{not 50\% confidence or accuracy}. Accuracy enters through the correct/wrong labels, and later through the overall accuracy constraint.
+
+\textbf{How the predicted score selects a model.} With the trained router fixed, calibration tries 1,601 adjustments $b\in[-1,1]$. A predicted score $z$ selects position $\operatorname{clip}(\lfloor(z+b)M\rfloor,0,M-1)$ in the cost list. For each $b$, count the selected models' correct predictions on calibration images and estimate their cost. Keep the cheapest mapping satisfying reference accuracy minus the allowance; otherwise select the reference alone. With five candidates, $z=0.46$ selects C when $b=0$ and B when $b=-0.10$. The adjustment is frozen before testing.
+
+\begin{center}
+\begin{tikzpicture}[>=stealth,b/.style={draw,rounded corners,align=center,font=\footnotesize,text width=3.4cm,minimum height=11mm}]
+\node[b,fill=blue!6] (a) at (0,0) {Input batch\\mosaic or 13 features};
+\node[b,fill=blue!6] (b) at (4.8,0) {Scalar router predicts $z$\\one number per batch};
+\node[b,fill=blue!6] (c) at (9.6,0) {Cost position from $z+b$\\run selected classifier};
+\draw[->] (a)--(b);\draw[->] (b)--(c);
+\node[b,fill=green!7] (d) at (0,-1.3) {Each input image\\normalized RGB $16\times16$};
+\node[b,fill=green!7] (e) at (4.8,-1.3) {Correctness CNN predicts\\213 success estimates};
+\node[b,fill=green!7] (f) at (9.6,-1.3) {Average over batch + cost\\run best-scoring classifier};
+\draw[->] (d)--(e);\draw[->] (e)--(f);
+\end{tikzpicture}
+\end{center}
+
+\textbf{Why change the target?} Wrong/right/right and wrong/right/wrong share the same cheapest-correct rank but different alternatives. Average ranks need not identify a good batch classifier. For image $x$ and candidate $m$, binary target $y_m(x)$ is 1 for correct, 0 for wrong. The CNN predicts success probability $p_m(x)$; $q_m$ is its mean over the batch. Let $C_m$ be candidate $m$'s measured latency or energy at this batch size, $C_{\max}$ the largest candidate cost, and $\lambda$ a calibrated cost penalty. Selection maximizes $q_m-\lambda C_m/C_{\max}$ over candidates. Sigmoid outputs estimate success, not CIFAR-100 classes, and need not sum to one.
+
+\textbf{Implemented architectures and fitting.} Classical scalar inputs are 13 statistics: RGB mean/std (6), grayscale mean/std (2), gradient mean/std (2), edge density, saturation proxy and between-image brightness variation. Scalar TinyCNN uses 16 sampled $8\times8$ image tiles in a $32\times32$ mosaic: convolution $3\to16$, depthwise/pointwise $16\to24\to32\to48$, batch normalization (BN) and rectified linear activation (ReLU), global average pooling and a linear layer from 48 features to \textbf{one scalar cost-rank score per batch}. A separate calibrated mapping converts that score into a model choice. Training uses MSE, AdamW 0.001, weight decay 0.005 and 20 epochs. The correctness CNN uses each $16\times16$ image: $3\to16\to24\to32$, strided depthwise/pointwise blocks, ReLU, global pooling, 213 outputs without BN; mean binary cross-entropy, Adam 0.001, minibatches 64, 20 epochs. Three correctness fits serve seeds 42/45/48 with separate latency/energy calibration. Global scalar measurements stopped at 52 settings (stump/tree/logistic); its CNN was fitted/exported, not globally measured. The previous report completed 120 correctness-CNN settings.
+
+\newpage
+\section*{2. Why the 1.5-point results change sharply}
+\textbf{The smaller model at 1.5 points is the static comparator, not necessarily the router's choice.} There are two separate decisions: the router chooses models for input batches; independently, validation chooses the cheapest eligible \emph{fixed} model as the benchmark. Savings compare these two measured costs. Accuracy allowances are percentage-point losses (pp). A stricter allowance can force the benchmark to be expensive; relaxing it can make a much faster benchmark eligible even when routing does not change.
+
+\textbf{Exact example: latency, seed 48, batch 128.} R101/R50/R34 denote ResNet-101/50/34; FP16/FP32 mean 16/32-bit floating point; b64 means batch size 64. At both 1 and 1.5 points, routing uses R101 FP16 for 7,424 images and R34 FP16 for 2,576. It does \emph{not} switch to R50 FP16 at 1.5. R50 is the new \emph{benchmark}: its calibration accuracy loss is 1.35 pp, so it first qualifies at 1.5 points.
+\begin{center}\footnotesize
+\begin{tabular}{@{}rrrlrr@{}}\toprule
+Allowance & Acc.\% & Route ms/mJ per image & Original benchmark & Original L\% / E\% & Fixed L\% / E\%\\\midrule
+1.0&84.94&1.279 / 39.78&R101 FP16&+16.00 / +15.77&+16.00 / +15.77\\
+1.5&84.94&1.277 / 39.69&R50 FP16&-47.66 / -48.21&+16.12 / +15.97\\
+2.0&82.25$^*$&0.653 / 20.35&R50 FP16&+24.49 / +24.61&+57.12 / +56.92\\\bottomrule
+\end{tabular}
+\end{center}
+\textbf{Fixed-benchmark columns:} hold the 1-point R101 FP16 benchmark at 1.52280 ms/image and 47.2306 mJ/image for all three rows. These are recalculated savings against one frozen measured reference, not new matched measurements. The 1/1.5-point savings then stay near 16\% for both costs: the large sign change in the original columns comes from the moving benchmark.
+At 1.5, $100(0.865-1.277)/0.865=-47.66\%$: routing takes about 1.48 times the benchmark's time. The negative value is real underperformance against a better static alternative, not an arithmetic error. At 2 points the router favours R34 more and becomes faster, but accuracy falls below the required $85.80-2=83.80\%$ ($*$). The positive saving therefore fails the accuracy requirement.
+
+\textbf{Why this repeats.} Across the original 120 rows, eight settings flip from positive savings at 1 point to negative at 1.5: both objectives, seed 48, batches 16/32/64/128. All eight replace R101 FP16 with R50 FP16 as benchmark. Three turn positive again at 2 points (latency b64/b128, energy b128); \emph{all three fail accuracy}. This is not a universal middle-budget anomaly: at b8 several budgets are negative throughout.
+
+\textbf{Other large changes have a measured runtime penalty.} For latency/seed42/b8, the benchmark stays R101 FP16 from 1 to 1.5 points, but engine loads rise 217$\to$313 and evictions 215$\to$311; median routed time rises 69.46$\to$99.81 s. Calibration uses static inference costs, which omit this load/eviction overhead. A looser allowance can thus select a worse end-to-end switching pattern. Smaller residual differences between identical policies remain unexplained measurement instability; they are not evidence of an improved policy.
+
+\section*{Why machine learning rather than scalar optimization?}
+\textbf{Answer: optimization chooses the action; machine learning (ML) supplies input-specific estimates.} If only average model accuracy and cost are known, a simple constrained optimizer can select one fixed model, or fixed proportions of models, without looking at images. That is a valid baseline and does not need a neural router.
+
+The extra question is: \emph{for this new input, which model is likely to be correct?} Global accuracy cannot answer it: a model can be best overall yet weak on forest images. A learned router tries to recognize useful input patterns before paying for a large classifier. Its success estimates then enter an ordinary numerical optimization. ML and optimization are therefore complementary, not mutually exclusive; our scalar-score router was itself an ML predictor.
+
+\begin{center}
+\begin{tikzpicture}[>=stealth,b/.style={draw,rounded corners,align=center,font=\footnotesize,text width=3.5cm,minimum height=11mm}]
+\node[b,fill=gray!7] (a) at (0,0) {Average accuracies + costs\\static optimization};
+\node[b,fill=gray!7] (b) at (9.6,0) {One fixed model/mixture\\no input adaptation};
+\draw[->] (a)--(b);
+\node[b,fill=green!7] (c) at (0,-1.25) {New image\\learned success estimates};
+\node[b,fill=green!7] (d) at (4.8,-1.25) {Estimated success + costs\\numerical selection rule};
+\node[b,fill=green!7] (e) at (9.6,-1.25) {Input-dependent choice\\run selected model};
+\draw[->] (c)--(d);\draw[->] (d)--(e);
+\end{tikzpicture}
+\end{center}
+\textbf{Justification must be empirical.} ML is useful only if better selections compensate for feature extraction, router execution and cache/loading overhead at the same required accuracy. It must beat a validation-selected static model and simple non-neural rules, not merely uniform random among weak candidates. Current results do not establish that general advantage. META-DES trained a meta-classifier to estimate candidate competence and reported improved classification accuracy against existing dynamic-selection techniques on small-sample tasks (30 classification problems in the paper). Thus learned competence estimation was useful in that study. It did not establish latency or GPU-energy savings for our CIFAR-100/TensorRT setup; those must be demonstrated by our own measurements.\footnote{Cruz et al., META-DES, \emph{Pattern Recognition}, 2015; \href{https://arxiv.org/abs/1810.01270}{author manuscript}.}
+
+\newpage
+\section*{3. Can a model be replaced without retraining the whole router?}
+\textbf{Short answer.} Deletion can avoid weight retraining; unseen additions are harder. The proposed shared scorer needs initial offline training and evidence about each new model. We have not demonstrated this extension.
+
+\textbf{Why the current router is tied to its candidates.} Its 213 outputs have fixed meanings, such as success of R101 FP16 or R34 FP16. Replacing B by B-new leaves its output predicting \emph{old B's} behaviour. Renaming the output does not teach it about B-new.
+
+\textbf{The proposed router has three parts.} Write $x$ for an input image and $m$ for a candidate model. (1) A small \emph{image encoder}, using machine learning (ML), returns learned image features $h(x)$. (2) A \emph{shared scorer}, also ML, receives $h(x)$ and the candidate's stored profile vector $d_m$. It outputs $p_m(x)$, the estimated chance that model $m$ predicts $x$ correctly. (3) A \emph{deterministic selector}, not ML, balances these estimates against measured costs. Together they form the router; the selected CIFAR-100 classifier is downstream. A, B-new and C below are example candidate identities.
+
+\begin{center}
+\begin{tikzpicture}[>=stealth,b/.style={draw,rounded corners,align=center,font=\footnotesize,text width=3.0cm,minimum height=12mm}]
+\node[b,fill=blue!6] (a) at (0,0) {Image $x$\\encoder (ML)\\features $h(x)$, computed once};
+\node[b,fill=orange!9] (b) at (0,-1.55) {Model profile vectors\\$d_A,\ d_{\rm Bnew},\ d_C$\\measured offline};
+\node[b,fill=green!7] (c) at (4.2,-.75) {Shared scorer (ML)\\same trained network\\one image--model pair/call};
+\node[b,fill=green!7] (d) at (8.4,-.75) {Success predictions\\$p_m(x)$\\one per candidate};
+\node[b,fill=gray!7] (e) at (12.6,-.75) {Selector (no ML)\\scores + measured costs\\run one classifier};
+\draw[->] (a.east)--(c.west);\draw[->] (b.east)--(c.west);\draw[->] (c)--(d);\draw[->] (d)--(e);
+\end{tikzpicture}
+\end{center}
+
+\textbf{What is a model profile?} The vector $d_m$ is a numerical description with the same fields for every candidate: for example, its validation accuracy on each of the 100 classes, its precision/pruning setting and measured latency/energy. It contains no label for the current unseen image. The same format lets the scorer process a new candidate without adding a model-specific output. A profile is only a summary; class-wise accuracy alone does not reveal exactly which individual images a model gets wrong.
+
+\textbf{How the scorer learns to produce a score.} Offline, take labelled development image $x_i$ (image number $i$) and run candidate A. If A predicts the correct class, assign $y_{iA}=1$; otherwise assign 0. Repeat for other images and candidates. The notation $[h(x_i),d_A]$ means joining the encoder's features for image $i$ with candidate A's profile; this combined vector is the scorer input. Its training target is $y_{iA}$. Fit the encoder/scorer with binary cross-entropy, using separate evidence to build profiles. Thus it learns associations between visual patterns, candidate characteristics and success. It does not calculate a reliable probability from a profile by itself, nor does it know unseen correctness.
+
+\textbf{Inference example (hypothetical).} Suppose predicted success is A:0.70, B-new:0.85, C:0.80, with costs normalized by the largest available cost: 1.0,0.6,0.3. With penalty $\lambda=0.10$, success minus penalized cost is 0.60,0.79,0.77. B-new wins and runs on the original input. For batch routing, average each candidate's image-success estimates before selection. Feature extraction and repeated scoring must count towards runtime.
+
+\textbf{If 50 models are removed.} The current router can mask those 50 outputs and select among 163; the proposed router instead removes 50 profile entries and scorer calls. Neither necessarily needs weight retraining for deletion. Both need policy validation/recalibration, and neither can recover accuracy if essential capabilities were removed. Deletion alone is therefore not the main advantage of the shared design.
+
+\textbf{If a new model is added.} Evaluate it on labelled development data, measure its costs, build its profile and insert it into the registry. The existing shared scorer can accept that profile without a new head; then validate its success predictions and recalibrate selection. This is \emph{profiling/calibration}, not necessarily weight retraining, but it is still offline work. The proposed benefit is reusing the learned image--model scoring rule, rather than fitting a new named output for every replacement.
+
+\textbf{Where this proposal comes from.} This is an adaptation of established pair-scoring and competence-estimation ideas, not a demonstrated new algorithm. Tornede et al.'s \href{https://arxiv.org/abs/2001.10741}{\emph{Extreme Algorithm Selection with Dyadic Feature Representation}} (2020) describes both problem instances and candidate algorithms using features. Our analogous pair is an image and a classifier profile. \href{https://arxiv.org/abs/1810.01270}{META-DES} learns classifier competence for a query; our proposed encoder, profiles and cost-aware single-model policy are not its original implementation.
+
+\textbf{Deep Sets: optional extension, not required for a changing list.} Our shared scorer evaluates each candidate independently. \href{https://arxiv.org/abs/1703.06114}{Deep Sets} (Zaheer et al., NeurIPS 2017) could additionally summarize the available profiles without depending on their order, then feed that summary to the scorer. It supplies collection context, not automatic knowledge of a new model. The extra profile transformation, aggregation and scoring inputs can add computation, but latency depends on network size, caching and hardware; no overhead has been measured here. Independent scoring is the simpler first experiment because deleting B does not itself change A's correctness.
+
+\textbf{Required validation.} Withhold entire candidate models during training, then introduce them through profiles. Test whether the frozen scorer remains accurate; otherwise fine-tune or retrain. Both designs require initial offline training and new-model profiling/calibration. Neither guarantees zero-retraining replacement, and neither has been implemented in this system.
+
+\newpage
+\section*{4. Does the learned router beat uniform random selection?}
+\textbf{Answer: yes on accuracy in all 24 settings at each batch size.} At batch 64, learned accuracy is 81.86--85.64\% versus 36.26\% for uniform random; at batch 128 it is 82.25--85.39\% versus 36.25\%. Learned median latency is lower in all 24 settings at each batch; GPU energy is lower in 24/24 at batch 64 and 21/24 at batch 128. Uniform draws from all 213 candidates, including severe pruning/quantization failures. Beating it does not establish an advantage over a good static model.
+
+\textbf{Comparison with the previous table.} Match objective, seed, batch and allowance to the 13 October correctness matrix. All 48 fresh learned accuracies equal the corresponding previous values, and fresh selection counts reproduce the frozen policies. Timings are remeasured, not copied. Each batch study comprises 495 full-test sweeps, with five trials per setting.
+
+\begin{center}
+\begin{tikzpicture}[>=stealth,b/.style={draw,rounded corners,align=center,font=\footnotesize,text width=3.5cm,minimum height=12mm}]
+\node[b,fill=blue!6] (a) at (0,0) {Learned path\\inspect input $\to$ model index};
+\node[b,fill=orange!9] (b) at (0,-1.3) {Uniform random path\\draw index with probability $1/213$};
+\node[b,fill=gray!7] (c) at (4.9,-.65) {Run selected candidate\\same input pipeline/cache};
+\node[b,fill=green!7] (d) at (9.8,-.65) {Compare accuracy\\latency and GPU energy};
+\draw[->] (a.east)--(c.west);\draw[->] (b.east)--(c.west);\draw[->] (c)--(d);
+\end{tikzpicture}
+\end{center}
+\textbf{Reading the table.} ML is learned routing; R is uniform random. Accuracy columns show ML / R percentages (five-trial means). In each cost cell the pair is latency saving \% / GPU-energy saving \%, not raw costs. $\delta$ is the allowed accuracy loss in percentage points (pp); $*$ marks learned mean accuracy failing its allowance against the 85.80\% R101 FP32 reference. Every uniform row fails. L/E in Obj./seed denotes the latency/energy calibration objective.
+
+\textbf{Savings baseline.} The Benchmark identity is the original 13 October validation-selected eligible static model, measured afresh per case. Saving is $100(C_{\rm benchmark}-C_{\rm method})/C_{\rm benchmark}$ for repeat-median latency or energy. Positive means cheaper; negative means worse. Identity is the same for the paired batch-64/128 rows, but its measured cost differs by batch and case.
+\begin{center}\scriptsize\setlength{\tabcolsep}{2.0pt}\renewcommand{\arraystretch}{1.15}\input{uniform_batches_savings.tex}\end{center}
+
+\textbf{Shared random trials and uncertainty.} Uniform controls are reused across objectives/allowances, not independent experiments per row. For seeds 42/45/48, accuracy mean $\pm$ sample standard deviation is respectively 36.36$\pm$2.64, 36.67$\pm$1.47, 35.76$\pm$2.12\% at batch 64, and 36.15$\pm$2.07, 37.28$\pm$4.22, 35.34$\pm$2.57\% at batch 128. Different row benchmarks explain why identical random measurements can have different savings.
+
+\textbf{Measurement boundary and caution.} Both paths include fresh GPU input preparation, selected-model load/eviction, inference and synchronization with cache capacity two. Learned routing additionally executes its CNN; random schedule generation is setup, but dispatch lookup is timed. NVIDIA reported thermal slowdown/power capping and a fixed R101 FP32 sweep varied from about 15.4 to 58 seconds. These observations prevent attributing every timing difference to routing. All accuracy failures and actual measured outcomes are retained; the policies were not retuned using these test results.
+
+\newpage
+\section*{5. Always using a fixed 90\%-pruned model}
+\textbf{Answer: lower cost, but unacceptable accuracy loss.} These completed p90 controls reach 2.17--15.49\% accuracy, versus 85.80\% for unpruned R101 FP32. None meets a 0.5/1/1.5/2-pp allowance. Here p90 means the nominal 90\% pruning setting, not a guarantee of 90\% fewer operations; INT8 is 8-bit integer precision. Seven architectures, three precisions, four batches and five repeats plus references give 440 sweeps. ShuffleNet has no pruned variant.
+
+\textbf{Comparison with 13 October.} Its correctness router reached 81.86--85.64\% across batches 64/128, far above p90. Against the same \emph{type} of fixed R101 FP32 reference, earlier routing latency/energy saving ranges were: b8 $-336.2$ to $+61.1$ / $-160.7$ to $+60.4$\%; b32 $+60.9$ to $+76.3$ / $+61.3$ to $+76.5$\%; b64 $+61.5$ to $+87.4$ / $+63.6$ to $+87.5$\%; b128 $+60.0$ to $+81.8$ / $+60.5$ to $+82.0$\%. These are separate ranges across policies, including accuracy failures, not one policy achieving every endpoint. P90 saves more cost in many rows, but sacrifices most classification accuracy.
+
+\textbf{Savings baseline.} Table pairs are latency saving \% / GPU-energy saving \% versus fresh, same-batch R101 FP32, matching the earlier \emph{vs-FP32} definition, not the routing table's eligible-static benchmark. Accuracy is the repeat mean; costs are repeat medians. Separate sessions and observed GPU throttling limit direct cross-study timing claims.
+\begin{center}\footnotesize\setlength{\tabcolsep}{3.5pt}\input{pruned_savings.tex}\end{center}
+
+% Preserve this independent class-statistics section.
+\input{class_statistics_section.tex}
+\end{document}
