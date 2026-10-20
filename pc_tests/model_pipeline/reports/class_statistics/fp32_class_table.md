@@ -1,0 +1,16 @@
+# Unpruned FP32 per-class test accuracy
+
+CIFAR-100 test set: 10,000 images, 100 images per true class. Accuracy is correct predictions divided by images belonging to that true class, not precision. All tied worst/best classes are shown. Median column shows ranks 50 and 51 (ascending accuracy; ties ordered by canonical class ID). This is descriptive test analysis, not policy selection. No router, inference or training was run.
+
+| Architecture | Overall FP32 | Worst class(es) | Best class(es) | Median-ranked class(es) and accuracy |
+|---|---:|---|---|---|
+| ResNet-18 | 79.16% | girl (45%) | motorcycle (96%) | kangaroo (82%); lion (82%) |
+| ResNet-34 | 81.82% | girl (48%) | motorcycle (100%) | rocket (84%); telephone (84%) |
+| ResNet-50 | 84.39% | girl (50%) | chimpanzee (98%); skunk (98%) | hamster (86%); leopard (86%) |
+| ResNet-101 | 85.80% | girl (56%) | skunk (98%) | hamster (89%); house (89%) |
+| MobileNetV3-Small | 62.38% | woman (30%) | road (93%) | fox (62%); telephone (62%) |
+| MobileNetV3-Large | 81.34% | girl (50%) | bicycle (96%); orange (96%); road (96%); tractor (96%) | house (83%); leopard (83%) |
+| EfficientNet-B0 | 82.73% | girl (53%) | road (97%); wardrobe (97%) | table (83%); bee (84%) |
+| ShuffleNetV2 x1.0 | 75.64% | otter (41%) | motorcycle (97%) | house (76%); poppy (76%) |
+
+These results support the motivation for input-dependent selection: despite lower overall accuracy than ResNet-101 (85.80%), ResNet-18 (79.16%) and MobileNetV3-Large (81.34%) achieve higher accuracy on forest images (71% and 76%, versus 62%); both are faster in the saved FP32 batch-32 static measurements (median 13.64 and 6.92 ms/batch, versus 131.28 ms/batch). These are descriptive results on 100 forest images, not proof of statistical significance or end-to-end routing gains.

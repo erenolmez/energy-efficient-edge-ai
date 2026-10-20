@@ -97,10 +97,9 @@ The report records input indices, input SHA-256, runtime versions, output
 differences, top-1 agreement and dynamic-batch execution. These equivalence
 checks do not replace a full test-set accuracy evaluation.
 
-TensorRT FP32, FP16 and INT8 engines are built from the same validated FP32
-ONNX graph. FP16 is selected by the TensorRT builder, while INT8 additionally
-uses a fixed calibration subset. Creating renamed FP16 or INT8 checkpoint
-copies would not perform quantization and is therefore avoided.
+Later TensorRT engines can be built from the validated FP32 ONNX graphs.
+The PC precision study below is separate: it creates actual half-precision
+weights and calibrated INT8 QDQ graphs, not renamed FP32 copies.
 
 Prepare the deployment manifest, deterministic calibration indices and a small
 ONNX smoke test:
@@ -156,3 +155,50 @@ The default uses hard links for ONNX models on the same filesystem, avoiding a
 second physical copy of large model data. `bundle_manifest.json` records file
 sizes and SHA-256 hashes. TensorRT engines must still be built on the target
 Jetson and are deliberately absent from this PC-only bundle.
+
+## PC precision conversion and accuracy
+
+Evaluate every source, including those outside the provisional shortlist:
+
+```powershell
+python run_precision_experiments.py `
+  --manifest artifacts\quantization\deployment_manifest.json `
+  --calibration-manifest artifacts\quantization\calibration_indices.json `
+  --data-dir "C:\Users\Eren\Desktop\tez\pruning + quantization\data" `
+  --output-dir artifacts\pc_precision --report-dir reports
+```
+
+The run covers 71 sources in FP32, FP16 and INT8 (213 full-test evaluations).
+FP16 checkpoints contain half-precision weights and have matching ONNX graphs.
+INT8 uses training-only MinMax calibration on 1,024 fixed images, symmetric
+signed activations and per-channel weights for Conv, Gemm and MatMul. Other
+operators remain floating point. Calibration settings are fixed before test
+evaluation; large accuracy losses are retained in the results.
+
+FP32 and INT8 run in ONNX Runtime on CPU; FP16 runs in PyTorch on CUDA.
+Evaluation duration must not be used as a precision speedup comparison across
+these runtimes. These artifacts are not TensorRT engines.
+
+Completed records include model hashes, accuracy on all 10,000 test images,
+conversion details and saved predictions. Restarting the command verifies
+hashes and skips completed records. Models, input caches and predictions stay
+under ignored artifact directories; small result tables and figures are tracked.
+
+Generate the final tables and plots after all evaluations finish:
+
+```powershell
+python summarize_precision.py --report-dir reports
+```
+
+The summary compares every result with the freshly evaluated FP32 p0 of its
+own architecture and separates pruning loss from conversion loss.
+
+## October 20 report code and measured controls
+
+The four-page report, code-to-table map, small evidence files, publication checks
+and replay limitations are documented in
+[`progress_reports/2026-10-20/README.md`](../../progress_reports/2026-10-20/README.md).
+Scalar/correctness router code, uniform-random comparisons, fixed p80/p90 controls
+and their runtime helpers live here; test modules live in `tests/`. Publishing
+these sources does not start or authorize another experiment. Large model,
+engine, image and prediction artifacts remain local and ignored.

@@ -1,0 +1,5 @@
+# Supplemental PC TensorRT runtime; install after requirements.txt.
+# NVIDIA's index provides the Windows library wheel directly.
+# python -m pip install --extra-index-url https://pypi.nvidia.com -r requirements-gpu.txt
+tensorrt-cu12==10.13.3.9.post1
+nvidia-ml-py>=12,<14

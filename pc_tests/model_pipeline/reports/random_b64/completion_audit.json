@@ -1,0 +1,30 @@
+{
+  "complete": true,
+  "unique_blocks": 495,
+  "paired_cases": 24,
+  "summary_rows": 72,
+  "protocols_and_source_hashes_verified": true,
+  "protected_b128_hash_verified": true,
+  "rgb_hash_verified_against_protected_p90": true,
+  "all_matched_counts_preserved": true,
+  "fresh_learned_count_mismatches": 0,
+  "cached_prediction_disagreements": 1359,
+  "uniform_accuracy_mean": 36.264,
+  "learned_accuracy_range": [
+    81.86,
+    85.64
+  ],
+  "learned_latency_range": [
+    0.4173880099937378,
+    1.4347137499979
+  ],
+  "uniform_latency_range": [
+    3.3965270900043834,
+    3.494163040001149
+  ],
+  "learned_minus_matched_mean_accuracy_pp": -0.05741666666666904,
+  "learned_better_accuracy_cases": 11,
+  "learned_accuracy_pass_cases": 11,
+  "matched_accuracy_pass_cases": 13,
+  "original_failures_and_negative_savings_retained": true
+}

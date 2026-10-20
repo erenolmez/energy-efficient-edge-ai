@@ -1,0 +1,316 @@
+{
+  "description": "SHA-256 of newly published experiment source, launch helpers, tests and snapshot generator. Paths are repository-relative. Existing tracked report generators remain in the report directory.",
+  "verification": {
+    "targeted_unit_tests_passed": 54,
+    "cuda_devices_hidden": true,
+    "random_b64_audit": "495 blocks; 24 paired cases; 72 summary rows",
+    "p80_audit": "440 sweeps; 84 summary rows"
+  },
+  "files": [
+    {
+      "path": "pc_tests/model_pipeline/audit_gpu_results.py",
+      "sha256": "e2f41ddf19626860975fc59652bb69162a7158b112f4a2d83605377d99c7bf44",
+      "bytes": 4284
+    },
+    {
+      "path": "pc_tests/model_pipeline/audit_p80_batches.py",
+      "sha256": "435e9c1f1a16c09026279d0d144c767986c5069740cc975892ccb3b4e2074c1c",
+      "bytes": 6300
+    },
+    {
+      "path": "pc_tests/model_pipeline/audit_random_b64.py",
+      "sha256": "28800b988182b1f56d333a66ba9b803f10917d907df47a46b5824729f7a451ce",
+      "bytes": 3894
+    },
+    {
+      "path": "pc_tests/model_pipeline/audit_validation_complementarity.py",
+      "sha256": "e2ac546b0d0cd944ad7dfeb990b330865e7335a58cf1731570fb6c8725e02d00",
+      "bytes": 7989
+    },
+    {
+      "path": "pc_tests/model_pipeline/batch_router_policy.py",
+      "sha256": "e73a6a5239d2bdc0f039efb15c78a5a62062333bcf4a9f39bd1a3947ffb18456",
+      "bytes": 3816
+    },
+    {
+      "path": "pc_tests/model_pipeline/correctness_policy.py",
+      "sha256": "fe21974acec6b2337b98fca645592058d8afec78666ce9543a16164a52861c6a",
+      "bytes": 2031
+    },
+    {
+      "path": "pc_tests/model_pipeline/correctness_router.py",
+      "sha256": "4a6adda7280a2927a4ad4073102572c7d3fedb0a00f75f03e4d82de5874cfde1",
+      "bytes": 1118
+    },
+    {
+      "path": "pc_tests/model_pipeline/correctness_router_suite.py",
+      "sha256": "30fd02b0604db78eb1492f8a9a7a75b359a1dd82a5f2a0e9368356eb84f851fc",
+      "bytes": 7746
+    },
+    {
+      "path": "pc_tests/model_pipeline/engine_precision_audit.py",
+      "sha256": "524b4abac88a3aee9cf75862eead81fb7bb8e9dfd679a51004c8facde1347ab7",
+      "bytes": 1167
+    },
+    {
+      "path": "pc_tests/model_pipeline/global_candidate_pool.py",
+      "sha256": "92d602c48dc149806afb04a178ae4f47335c2975faaf63f7c49982d3e644805b",
+      "bytes": 2360
+    },
+    {
+      "path": "pc_tests/model_pipeline/gpu_batch_inputs.py",
+      "sha256": "b22d41a9594a189ea95b60191e18c82037df1ef7881ebb470ec9d7a3b78324c0",
+      "bytes": 3240
+    },
+    {
+      "path": "pc_tests/model_pipeline/gpu_energy.py",
+      "sha256": "0b3f20031cddd831aedc91fb207e2a861ecbc6429dd04a36db649baafc7fe062",
+      "bytes": 2227
+    },
+    {
+      "path": "pc_tests/model_pipeline/gpu_engine_preflight.py",
+      "sha256": "19df3ee04764b4220effae314db7ca12baabebde9af33bd0df5e69540d4ac8db",
+      "bytes": 9428
+    },
+    {
+      "path": "pc_tests/model_pipeline/gpu_router_models.py",
+      "sha256": "319a65e2680329add144bb0b7c3df5bf7541b2fcd32c67d5a8d77034888f51da",
+      "bytes": 6010
+    },
+    {
+      "path": "pc_tests/model_pipeline/gpu_static_sweep.py",
+      "sha256": "4bc9b7d67d5383e9b748bc49102ad73178e827b1856695cde99e892af7b8829c",
+      "bytes": 10328
+    },
+    {
+      "path": "pc_tests/model_pipeline/measure_pc_routes.py",
+      "sha256": "3501c5e678aa45a8fa3f75b9e6a6e88bfd56bdb3bb79af117e12a2a457ad6acf",
+      "bytes": 6644
+    },
+    {
+      "path": "pc_tests/model_pipeline/prepare_router_data.py",
+      "sha256": "f7697e5a0c77b3ce9956a8d7919fa4d7414611fb2c9ed8e6b4429e5ed5c6ac01",
+      "bytes": 3319
+    },
+    {
+      "path": "pc_tests/model_pipeline/prepare_trt_graph.py",
+      "sha256": "b9303449a400849e1e28c51adbca86b35804e46cfb015a031d6be1439d952d06",
+      "bytes": 2431
+    },
+    {
+      "path": "pc_tests/model_pipeline/random_route_baselines.py",
+      "sha256": "e029a3fa2b5d727dae97f8b941095b1909cc2fbeb1b45438bdbcbdb2e18cdae8",
+      "bytes": 2377
+    },
+    {
+      "path": "pc_tests/model_pipeline/router_candidate_pool.py",
+      "sha256": "d232b11dfc08c09eab5e49fcd65a0f42759889cb3ea759b5ff2b4ead1d27032d",
+      "bytes": 2874
+    },
+    {
+      "path": "pc_tests/model_pipeline/router_onnx_preflight.py",
+      "sha256": "9d443667189d5eddea7493fbef6c4e656c5a1582fc4eecf0d915a1b2082498a9",
+      "bytes": 3311
+    },
+    {
+      "path": "pc_tests/model_pipeline/router_tensorrt.py",
+      "sha256": "ec5786605c1e9f17f6eaaf92b701a4b9e3d64b94a2401a6845c74f87c73ac880",
+      "bytes": 4175
+    },
+    {
+      "path": "pc_tests/model_pipeline/run_correctness_routes.py",
+      "sha256": "43d1a8837f9c93a595b0b3c3837a461a948d3814a53dddf2cf520c1f7d1fa5bc",
+      "bytes": 10527
+    },
+    {
+      "path": "pc_tests/model_pipeline/run_most_pruned.py",
+      "sha256": "b5c9f6258c1944cf46eae034256ab54645dfb4a69a6bc4d0d3929d8e6d59bbb2",
+      "bytes": 13179
+    },
+    {
+      "path": "pc_tests/model_pipeline/run_most_pruned_batches.py",
+      "sha256": "f8cb4ba196a64879e42c869b947a9b700c32ddedc54018109dfe4bfa76eb6737",
+      "bytes": 13596
+    },
+    {
+      "path": "pc_tests/model_pipeline/run_p80_batches.py",
+      "sha256": "15f62cf818e271b9cead00f298cce085b3a6a655739e07001e500932e7c64e7e",
+      "bytes": 15369
+    },
+    {
+      "path": "pc_tests/model_pipeline/run_pc_routes.py",
+      "sha256": "a686506e35bd2f35c3cf6ad5e99e90e1e86d138feafdea2fb3a85412b83bd3cd",
+      "bytes": 12358
+    },
+    {
+      "path": "pc_tests/model_pipeline/run_precision_experiments.py",
+      "sha256": "b78d833dcc185b2c66d53e2aa9e8f88f3d6f77be964c742a52b7caa52edb621f",
+      "bytes": 16035
+    },
+    {
+      "path": "pc_tests/model_pipeline/run_random_routes.py",
+      "sha256": "ef9a03b62547b95b95b8302734259e208b996123c94dd495c6c206caa6d7c186",
+      "bytes": 14796
+    },
+    {
+      "path": "pc_tests/model_pipeline/run_random_routes_b64.py",
+      "sha256": "298462a5ad1691e23ce859a77394fabb028e4519aba7e4d87b5922e0ef549c56",
+      "bytes": 15007
+    },
+    {
+      "path": "pc_tests/model_pipeline/start_most_pruned.ps1",
+      "sha256": "844daaf3c748bbf665d6b80b7741917a52d40802dffe3c04ea57afcab7ff3095",
+      "bytes": 3483
+    },
+    {
+      "path": "pc_tests/model_pipeline/start_p80_batches.ps1",
+      "sha256": "185c391dc3e99dac9ecdd6b689e5b3a540b42a2dfa98a388e5799e4ec5a8ad4a",
+      "bytes": 3917
+    },
+    {
+      "path": "pc_tests/model_pipeline/summarize_all_class_statistics.py",
+      "sha256": "0a528e42b6199cad7aa465b3defeeb4322d25899af6c656d608ee0f77b57f1c2",
+      "bytes": 6051
+    },
+    {
+      "path": "pc_tests/model_pipeline/summarize_fp32_classes.py",
+      "sha256": "3baca2739765e23ecf1841a6c834949b4467f9c16f3798d4dbc1ec900afb56f3",
+      "bytes": 7039
+    },
+    {
+      "path": "pc_tests/model_pipeline/summarize_gpu_results.py",
+      "sha256": "63c1b17f324e62139062ed89d6ff5614a4f1f178c025d3fd3dad8e65e40e6f42",
+      "bytes": 5426
+    },
+    {
+      "path": "pc_tests/model_pipeline/summarize_pc_routes.py",
+      "sha256": "ebd5d5d43c5a0a5fedfb827ec39baec14fd11eb2daae2f45f9a83a81925e4a0c",
+      "bytes": 11504
+    },
+    {
+      "path": "pc_tests/model_pipeline/summarize_precision.py",
+      "sha256": "5072b62e3b11eb4582f46c4622b3273565e4b3a1f9dacf5717feaf21cf7aa835",
+      "bytes": 7621
+    },
+    {
+      "path": "pc_tests/model_pipeline/summarize_random_routes.py",
+      "sha256": "8ecfce31f6482218b4274454ea73ef734e456f6bbd6456187c1c8928f9431450",
+      "bytes": 6654
+    },
+    {
+      "path": "pc_tests/model_pipeline/summarize_random_routes_b64.py",
+      "sha256": "ae08aa0b0c58b81fd26b8134d5819b6634e7d7e6f3fcd056794d67cb6d76160c",
+      "bytes": 6648
+    },
+    {
+      "path": "pc_tests/model_pipeline/test_p80_batches.py",
+      "sha256": "f235353c166cdc8e352bb8854b282578b04ba9417f0d238f58f590625978e38f",
+      "bytes": 1986
+    },
+    {
+      "path": "pc_tests/model_pipeline/train_correctness_router.py",
+      "sha256": "9e38f0ac48296d22b1581d4b55152db8f62a8f7a72f87405e7a73aa2e2dedc68",
+      "bytes": 10838
+    },
+    {
+      "path": "pc_tests/model_pipeline/train_pc_batch_routers.py",
+      "sha256": "049e704a0091eac0fe416e3286dc1035e4a50f2414c65127e15c5ba221844bd9",
+      "bytes": 15327
+    },
+    {
+      "path": "pc_tests/model_pipeline/watch_pc_thermals.ps1",
+      "sha256": "f623d9777b8ddd8409790aa621df75d1c8862f827911d88eac538bbe2583ded1",
+      "bytes": 4897
+    },
+    {
+      "path": "progress_reports/2026-10-20/build_snapshot.py",
+      "sha256": "bb0b7159fe3642191df7c37895a49f4dbd4548520c9065557113d83e0abc8aa8",
+      "bytes": 7612
+    },
+    {
+      "path": "tests/test_batch_router_policy.py",
+      "sha256": "cfdcb9e1fb9118b557fe600c20cc8b100272117f0c3038108ce2bc4ca4dd35f3",
+      "bytes": 1417
+    },
+    {
+      "path": "tests/test_correctness_router_suite.py",
+      "sha256": "88b81930334965a888b57b9cdee4c750216a77069e6f7fbc6b51a4b9d2f69b52",
+      "bytes": 2327
+    },
+    {
+      "path": "tests/test_correctness_routing.py",
+      "sha256": "78d053157add4879ce2e232c3d71641b9fef91a861766dd8e9c96da7f7d77ecd",
+      "bytes": 1538
+    },
+    {
+      "path": "tests/test_engine_precision_audit.py",
+      "sha256": "4a8fce66af9baf5376dacaf2b2e1cefa9cbd804c5b9a70598f2f3b71f9c3cf1b",
+      "bytes": 920
+    },
+    {
+      "path": "tests/test_global_candidate_pool.py",
+      "sha256": "530acbfee79d113c08e2913d1dd5ed9de2eb623373261c0415504e73c605be19",
+      "bytes": 1953
+    },
+    {
+      "path": "tests/test_gpu_batch_inputs.py",
+      "sha256": "801c7ac3b0a7351c40ae7b88b64e22d267671417ca6954e43e4d1af40a15b365",
+      "bytes": 1511
+    },
+    {
+      "path": "tests/test_gpu_energy.py",
+      "sha256": "278472545f8dadec56b6f729bfcbec21bb389a9bc6601e9e912031daf9351112",
+      "bytes": 587
+    },
+    {
+      "path": "tests/test_gpu_reporting.py",
+      "sha256": "8c39bc668937dce76e1d9a9a606ded4ef7f0f1a35680029672dbced3fbdfc0cd",
+      "bytes": 1086
+    },
+    {
+      "path": "tests/test_gpu_result_audit.py",
+      "sha256": "a1055418891bf0fc427706c51f6c4cb0da669465820193ffbd41012ae2b20307",
+      "bytes": 1325
+    },
+    {
+      "path": "tests/test_gpu_router_models.py",
+      "sha256": "c34ff181d63487822efdb4bd08e0f28190a53eb67c30774c9df3d6df3c8d4133",
+      "bytes": 2517
+    },
+    {
+      "path": "tests/test_most_pruned_batches.py",
+      "sha256": "c9e14e7006c1b35bdf48ba9ad700c71943b249a10efa9c17b6891c5785928e45",
+      "bytes": 2514
+    },
+    {
+      "path": "tests/test_pc_route_reporting.py",
+      "sha256": "02df15eb39148826f081299700d3e51696a3c7ef9f691db24d16f15f7f13afa2",
+      "bytes": 2159
+    },
+    {
+      "path": "tests/test_precision_reporting.py",
+      "sha256": "4b6c7e9249c01630e8b1a123fa03dc1224d16b5c1c771fc357c445c776eb6419",
+      "bytes": 1217
+    },
+    {
+      "path": "tests/test_prepare_trt_graph.py",
+      "sha256": "12588ab1c673bcdb6bf69e334caf842e456da198acbf1e11c81b7c4b17e56c8b",
+      "bytes": 1895
+    },
+    {
+      "path": "tests/test_random_route_baselines.py",
+      "sha256": "77b10ed71d09105cb51d7a76eacb126ca21abb709ac8e0f688d02f6226a7689f",
+      "bytes": 1864
+    },
+    {
+      "path": "tests/test_router_candidate_pool.py",
+      "sha256": "908951a2194adfb8fd513badaeae9566726f6b714a17dae1e844b5b29912114d",
+      "bytes": 1030
+    },
+    {
+      "path": "tests/test_router_input_cache.py",
+      "sha256": "dee78aa896c0e5228933be5a2d3b07a94300454c0a8b51c9c8fe7a7d41fb9a8e",
+      "bytes": 692
+    }
+  ]
+}

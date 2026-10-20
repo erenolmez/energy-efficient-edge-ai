@@ -1,0 +1,6001 @@
+{
+  "note": "CIFAR-100 test set: 10,000 images, 100 images per true class. Accuracy is correct predictions divided by images belonging to that true class, not precision. All tied worst/best classes are shown. Median column shows ranks 50 and 51 (ascending accuracy; ties ordered by canonical class ID). This is descriptive test analysis, not policy selection. No router, inference or training was run.",
+  "interpretation": "These results support the motivation for input-dependent selection: despite lower overall accuracy than ResNet-101 (85.80%), ResNet-18 (79.16%) and MobileNetV3-Large (81.34%) achieve higher accuracy on forest images (71% and 76%, versus 62%); both are faster in the saved FP32 batch-32 static measurements (median 13.64 and 6.92 ms/batch, versus 131.28 ms/batch). These are descriptive results on 100 forest images, not proof of statistical significance or end-to-end routing gains.",
+  "examples": [
+    {
+      "model": "ResNet-18",
+      "overall_accuracy_percent": 79.16,
+      "forest_accuracy_percent": 71.0,
+      "fp32_batch32_median_ms": 13.642077272710264
+    },
+    {
+      "model": "MobileNetV3-Large",
+      "overall_accuracy_percent": 81.34,
+      "forest_accuracy_percent": 76.0,
+      "fp32_batch32_median_ms": 6.923188248851155
+    }
+  ],
+  "test_labels_sha256": "7827272d0fbeee517a81b235f35fae2128af64393371c2fdde1c8f9a638e4a1a",
+  "static_report_sha256": "8f8cca5bcd16fee896377af2fe5d0a42576d76d7e9ccedef3263aa9b47e87119",
+  "models": [
+    {
+      "architecture": "resnet18",
+      "display_name": "ResNet-18",
+      "overall_accuracy_percent": 79.16,
+      "worst": [
+        {
+          "class_id": 35,
+          "class_name": "girl",
+          "correct": 45,
+          "images": 100,
+          "accuracy_percent": 45.0
+        }
+      ],
+      "best": [
+        {
+          "class_id": 48,
+          "class_name": "motorcycle",
+          "correct": 96,
+          "images": 100,
+          "accuracy_percent": 96.0
+        }
+      ],
+      "middle_ranked_classes": [
+        {
+          "class_id": 38,
+          "class_name": "kangaroo",
+          "correct": 82,
+          "images": 100,
+          "accuracy_percent": 82.0
+        },
+        {
+          "class_id": 43,
+          "class_name": "lion",
+          "correct": 82,
+          "images": 100,
+          "accuracy_percent": 82.0
+        }
+      ],
+      "median_class_accuracy_percent": 82.0,
+      "classes": [
+        {
+          "class_id": 0,
+          "class_name": "apple",
+          "correct": 91,
+          "images": 100,
+          "accuracy_percent": 91.0
+        },
+        {
+          "class_id": 1,
+          "class_name": "aquarium_fish",
+          "correct": 84,
+          "images": 100,
+          "accuracy_percent": 84.0
+        },
+        {
+          "class_id": 2,
+          "class_name": "baby",
+          "correct": 62,
+          "images": 100,
+          "accuracy_percent": 62.0
+        },
+        {
+          "class_id": 3,
+          "class_name": "bear",
+          "correct": 63,
+          "images": 100,
+          "accuracy_percent": 63.0
+        },
+        {
+          "class_id": 4,
+          "class_name": "beaver",
+          "correct": 65,
+          "images": 100,
+          "accuracy_percent": 65.0
+        },
+        {
+          "class_id": 5,
+          "class_name": "bed",
+          "correct": 77,
+          "images": 100,
+          "accuracy_percent": 77.0
+        },
+        {
+          "class_id": 6,
+          "class_name": "bee",
+          "correct": 84,
+          "images": 100,
+          "accuracy_percent": 84.0
+        },
+        {
+          "class_id": 7,
+          "class_name": "beetle",
+          "correct": 85,
+          "images": 100,
+          "accuracy_percent": 85.0
+        },
+        {
+          "class_id": 8,
+          "class_name": "bicycle",
+          "correct": 93,
+          "images": 100,
+          "accuracy_percent": 93.0
+        },
+        {
+          "class_id": 9,
+          "class_name": "bottle",
+          "correct": 86,
+          "images": 100,
+          "accuracy_percent": 86.0
+        },
+        {
+          "class_id": 10,
+          "class_name": "bowl",
+          "correct": 59,
+          "images": 100,
+          "accuracy_percent": 59.0
+        },
+        {
+          "class_id": 11,
+          "class_name": "boy",
+          "correct": 62,
+          "images": 100,
+          "accuracy_percent": 62.0
+        },
+        {
+          "class_id": 12,
+          "class_name": "bridge",
+          "correct": 85,
+          "images": 100,
+          "accuracy_percent": 85.0
+        },
+        {
+          "class_id": 13,
+          "class_name": "bus",
+          "correct": 75,
+          "images": 100,
+          "accuracy_percent": 75.0
+        },
+        {
+          "class_id": 14,
+          "class_name": "butterfly",
+          "correct": 84,
+          "images": 100,
+          "accuracy_percent": 84.0
+        },
+        {
+          "class_id": 15,
+          "class_name": "camel",
+          "correct": 83,
+          "images": 100,
+          "accuracy_percent": 83.0
+        },
+        {
+          "class_id": 16,
+          "class_name": "can",
+          "correct": 86,
+          "images": 100,
+          "accuracy_percent": 86.0
+        },
+        {
+          "class_id": 17,
+          "class_name": "castle",
+          "correct": 90,
+          "images": 100,
+          "accuracy_percent": 90.0
+        },
+        {
+          "class_id": 18,
+          "class_name": "caterpillar",
+          "correct": 75,
+          "images": 100,
+          "accuracy_percent": 75.0
+        },
+        {
+          "class_id": 19,
+          "class_name": "cattle",
+          "correct": 78,
+          "images": 100,
+          "accuracy_percent": 78.0
+        },
+        {
+          "class_id": 20,
+          "class_name": "chair",
+          "correct": 92,
+          "images": 100,
+          "accuracy_percent": 92.0
+        },
+        {
+          "class_id": 21,
+          "class_name": "chimpanzee",
+          "correct": 92,
+          "images": 100,
+          "accuracy_percent": 92.0
+        },
+        {
+          "class_id": 22,
+          "class_name": "clock",
+          "correct": 90,
+          "images": 100,
+          "accuracy_percent": 90.0
+        },
+        {
+          "class_id": 23,
+          "class_name": "cloud",
+          "correct": 83,
+          "images": 100,
+          "accuracy_percent": 83.0
+        },
+        {
+          "class_id": 24,
+          "class_name": "cockroach",
+          "correct": 89,
+          "images": 100,
+          "accuracy_percent": 89.0
+        },
+        {
+          "class_id": 25,
+          "class_name": "couch",
+          "correct": 65,
+          "images": 100,
+          "accuracy_percent": 65.0
+        },
+        {
+          "class_id": 26,
+          "class_name": "crab",
+          "correct": 76,
+          "images": 100,
+          "accuracy_percent": 76.0
+        },
+        {
+          "class_id": 27,
+          "class_name": "crocodile",
+          "correct": 75,
+          "images": 100,
+          "accuracy_percent": 75.0
+        },
+        {
+          "class_id": 28,
+          "class_name": "cup",
+          "correct": 85,
+          "images": 100,
+          "accuracy_percent": 85.0
+        },
+        {
+          "class_id": 29,
+          "class_name": "dinosaur",
+          "correct": 80,
+          "images": 100,
+          "accuracy_percent": 80.0
+        },
+        {
+          "class_id": 30,
+          "class_name": "dolphin",
+          "correct": 65,
+          "images": 100,
+          "accuracy_percent": 65.0
+        },
+        {
+          "class_id": 31,
+          "class_name": "elephant",
+          "correct": 80,
+          "images": 100,
+          "accuracy_percent": 80.0
+        },
+        {
+          "class_id": 32,
+          "class_name": "flatfish",
+          "correct": 72,
+          "images": 100,
+          "accuracy_percent": 72.0
+        },
+        {
+          "class_id": 33,
+          "class_name": "forest",
+          "correct": 71,
+          "images": 100,
+          "accuracy_percent": 71.0
+        },
+        {
+          "class_id": 34,
+          "class_name": "fox",
+          "correct": 82,
+          "images": 100,
+          "accuracy_percent": 82.0
+        },
+        {
+          "class_id": 35,
+          "class_name": "girl",
+          "correct": 45,
+          "images": 100,
+          "accuracy_percent": 45.0
+        },
+        {
+          "class_id": 36,
+          "class_name": "hamster",
+          "correct": 83,
+          "images": 100,
+          "accuracy_percent": 83.0
+        },
+        {
+          "class_id": 37,
+          "class_name": "house",
+          "correct": 82,
+          "images": 100,
+          "accuracy_percent": 82.0
+        },
+        {
+          "class_id": 38,
+          "class_name": "kangaroo",
+          "correct": 82,
+          "images": 100,
+          "accuracy_percent": 82.0
+        },
+        {
+          "class_id": 39,
+          "class_name": "keyboard",
+          "correct": 88,
+          "images": 100,
+          "accuracy_percent": 88.0
+        },
+        {
+          "class_id": 40,
+          "class_name": "lamp",
+          "correct": 81,
+          "images": 100,
+          "accuracy_percent": 81.0
+        },
+        {
+          "class_id": 41,
+          "class_name": "lawn_mower",
+          "correct": 87,
+          "images": 100,
+          "accuracy_percent": 87.0
+        },
+        {
+          "class_id": 42,
+          "class_name": "leopard",
+          "correct": 79,
+          "images": 100,
+          "accuracy_percent": 79.0
+        },
+        {
+          "class_id": 43,
+          "class_name": "lion",
+          "correct": 82,
+          "images": 100,
+          "accuracy_percent": 82.0
+        },
+        {
+          "class_id": 44,
+          "class_name": "lizard",
+          "correct": 72,
+          "images": 100,
+          "accuracy_percent": 72.0
+        },
+        {
+          "class_id": 45,
+          "class_name": "lobster",
+          "correct": 76,
+          "images": 100,
+          "accuracy_percent": 76.0
+        },
+        {
+          "class_id": 46,
+          "class_name": "man",
+          "correct": 67,
+          "images": 100,
+          "accuracy_percent": 67.0
+        },
+        {
+          "class_id": 47,
+          "class_name": "maple_tree",
+          "correct": 63,
+          "images": 100,
+          "accuracy_percent": 63.0
+        },
+        {
+          "class_id": 48,
+          "class_name": "motorcycle",
+          "correct": 96,
+          "images": 100,
+          "accuracy_percent": 96.0
+        },
+        {
+          "class_id": 49,
+          "class_name": "mountain",
+          "correct": 90,
+          "images": 100,
+          "accuracy_percent": 90.0
+        },
+        {
+          "class_id": 50,
+          "class_name": "mouse",
+          "correct": 56,
+          "images": 100,
+          "accuracy_percent": 56.0
+        },
+        {
+          "class_id": 51,
+          "class_name": "mushroom",
+          "correct": 86,
+          "images": 100,
+          "accuracy_percent": 86.0
+        },
+        {
+          "class_id": 52,
+          "class_name": "oak_tree",
+          "correct": 74,
+          "images": 100,
+          "accuracy_percent": 74.0
+        },
+        {
+          "class_id": 53,
+          "class_name": "orange",
+          "correct": 94,
+          "images": 100,
+          "accuracy_percent": 94.0
+        },
+        {
+          "class_id": 54,
+          "class_name": "orchid",
+          "correct": 84,
+          "images": 100,
+          "accuracy_percent": 84.0
+        },
+        {
+          "class_id": 55,
+          "class_name": "otter",
+          "correct": 53,
+          "images": 100,
+          "accuracy_percent": 53.0
+        },
+        {
+          "class_id": 56,
+          "class_name": "palm_tree",
+          "correct": 89,
+          "images": 100,
+          "accuracy_percent": 89.0
+        },
+        {
+          "class_id": 57,
+          "class_name": "pear",
+          "correct": 84,
+          "images": 100,
+          "accuracy_percent": 84.0
+        },
+        {
+          "class_id": 58,
+          "class_name": "pickup_truck",
+          "correct": 92,
+          "images": 100,
+          "accuracy_percent": 92.0
+        },
+        {
+          "class_id": 59,
+          "class_name": "pine_tree",
+          "correct": 64,
+          "images": 100,
+          "accuracy_percent": 64.0
+        },
+        {
+          "class_id": 60,
+          "class_name": "plain",
+          "correct": 85,
+          "images": 100,
+          "accuracy_percent": 85.0
+        },
+        {
+          "class_id": 61,
+          "class_name": "plate",
+          "correct": 83,
+          "images": 100,
+          "accuracy_percent": 83.0
+        },
+        {
+          "class_id": 62,
+          "class_name": "poppy",
+          "correct": 80,
+          "images": 100,
+          "accuracy_percent": 80.0
+        },
+        {
+          "class_id": 63,
+          "class_name": "porcupine",
+          "correct": 72,
+          "images": 100,
+          "accuracy_percent": 72.0
+        },
+        {
+          "class_id": 64,
+          "class_name": "possum",
+          "correct": 63,
+          "images": 100,
+          "accuracy_percent": 63.0
+        },
+        {
+          "class_id": 65,
+          "class_name": "rabbit",
+          "correct": 77,
+          "images": 100,
+          "accuracy_percent": 77.0
+        },
+        {
+          "class_id": 66,
+          "class_name": "raccoon",
+          "correct": 84,
+          "images": 100,
+          "accuracy_percent": 84.0
+        },
+        {
+          "class_id": 67,
+          "class_name": "ray",
+          "correct": 70,
+          "images": 100,
+          "accuracy_percent": 70.0
+        },
+        {
+          "class_id": 68,
+          "class_name": "road",
+          "correct": 93,
+          "images": 100,
+          "accuracy_percent": 93.0
+        },
+        {
+          "class_id": 69,
+          "class_name": "rocket",
+          "correct": 84,
+          "images": 100,
+          "accuracy_percent": 84.0
+        },
+        {
+          "class_id": 70,
+          "class_name": "rose",
+          "correct": 74,
+          "images": 100,
+          "accuracy_percent": 74.0
+        },
+        {
+          "class_id": 71,
+          "class_name": "sea",
+          "correct": 82,
+          "images": 100,
+          "accuracy_percent": 82.0
+        },
+        {
+          "class_id": 72,
+          "class_name": "seal",
+          "correct": 58,
+          "images": 100,
+          "accuracy_percent": 58.0
+        },
+        {
+          "class_id": 73,
+          "class_name": "shark",
+          "correct": 73,
+          "images": 100,
+          "accuracy_percent": 73.0
+        },
+        {
+          "class_id": 74,
+          "class_name": "shrew",
+          "correct": 69,
+          "images": 100,
+          "accuracy_percent": 69.0
+        },
+        {
+          "class_id": 75,
+          "class_name": "skunk",
+          "correct": 93,
+          "images": 100,
+          "accuracy_percent": 93.0
+        },
+        {
+          "class_id": 76,
+          "class_name": "skyscraper",
+          "correct": 91,
+          "images": 100,
+          "accuracy_percent": 91.0
+        },
+        {
+          "class_id": 77,
+          "class_name": "snail",
+          "correct": 79,
+          "images": 100,
+          "accuracy_percent": 79.0
+        },
+        {
+          "class_id": 78,
+          "class_name": "snake",
+          "correct": 83,
+          "images": 100,
+          "accuracy_percent": 83.0
+        },
+        {
+          "class_id": 79,
+          "class_name": "spider",
+          "correct": 88,
+          "images": 100,
+          "accuracy_percent": 88.0
+        },
+        {
+          "class_id": 80,
+          "class_name": "squirrel",
+          "correct": 69,
+          "images": 100,
+          "accuracy_percent": 69.0
+        },
+        {
+          "class_id": 81,
+          "class_name": "streetcar",
+          "correct": 76,
+          "images": 100,
+          "accuracy_percent": 76.0
+        },
+        {
+          "class_id": 82,
+          "class_name": "sunflower",
+          "correct": 94,
+          "images": 100,
+          "accuracy_percent": 94.0
+        },
+        {
+          "class_id": 83,
+          "class_name": "sweet_pepper",
+          "correct": 73,
+          "images": 100,
+          "accuracy_percent": 73.0
+        },
+        {
+          "class_id": 84,
+          "class_name": "table",
+          "correct": 78,
+          "images": 100,
+          "accuracy_percent": 78.0
+        },
+        {
+          "class_id": 85,
+          "class_name": "tank",
+          "correct": 86,
+          "images": 100,
+          "accuracy_percent": 86.0
+        },
+        {
+          "class_id": 86,
+          "class_name": "telephone",
+          "correct": 85,
+          "images": 100,
+          "accuracy_percent": 85.0
+        },
+        {
+          "class_id": 87,
+          "class_name": "television",
+          "correct": 95,
+          "images": 100,
+          "accuracy_percent": 95.0
+        },
+        {
+          "class_id": 88,
+          "class_name": "tiger",
+          "correct": 86,
+          "images": 100,
+          "accuracy_percent": 86.0
+        },
+        {
+          "class_id": 89,
+          "class_name": "tractor",
+          "correct": 94,
+          "images": 100,
+          "accuracy_percent": 94.0
+        },
+        {
+          "class_id": 90,
+          "class_name": "train",
+          "correct": 87,
+          "images": 100,
+          "accuracy_percent": 87.0
+        },
+        {
+          "class_id": 91,
+          "class_name": "trout",
+          "correct": 88,
+          "images": 100,
+          "accuracy_percent": 88.0
+        },
+        {
+          "class_id": 92,
+          "class_name": "tulip",
+          "correct": 67,
+          "images": 100,
+          "accuracy_percent": 67.0
+        },
+        {
+          "class_id": 93,
+          "class_name": "turtle",
+          "correct": 77,
+          "images": 100,
+          "accuracy_percent": 77.0
+        },
+        {
+          "class_id": 94,
+          "class_name": "wardrobe",
+          "correct": 95,
+          "images": 100,
+          "accuracy_percent": 95.0
+        },
+        {
+          "class_id": 95,
+          "class_name": "whale",
+          "correct": 80,
+          "images": 100,
+          "accuracy_percent": 80.0
+        },
+        {
+          "class_id": 96,
+          "class_name": "willow_tree",
+          "correct": 51,
+          "images": 100,
+          "accuracy_percent": 51.0
+        },
+        {
+          "class_id": 97,
+          "class_name": "wolf",
+          "correct": 87,
+          "images": 100,
+          "accuracy_percent": 87.0
+        },
+        {
+          "class_id": 98,
+          "class_name": "woman",
+          "correct": 67,
+          "images": 100,
+          "accuracy_percent": 67.0
+        },
+        {
+          "class_id": 99,
+          "class_name": "worm",
+          "correct": 87,
+          "images": 100,
+          "accuracy_percent": 87.0
+        }
+      ],
+      "prediction_sha256": "c8be3183b615e5219de35d190d7163459508d2c5db2a6c3536aa428ff8fb2099"
+    },
+    {
+      "architecture": "resnet34",
+      "display_name": "ResNet-34",
+      "overall_accuracy_percent": 81.82000000000001,
+      "worst": [
+        {
+          "class_id": 35,
+          "class_name": "girl",
+          "correct": 48,
+          "images": 100,
+          "accuracy_percent": 48.0
+        }
+      ],
+      "best": [
+        {
+          "class_id": 48,
+          "class_name": "motorcycle",
+          "correct": 100,
+          "images": 100,
+          "accuracy_percent": 100.0
+        }
+      ],
+      "middle_ranked_classes": [
+        {
+          "class_id": 69,
+          "class_name": "rocket",
+          "correct": 84,
+          "images": 100,
+          "accuracy_percent": 84.0
+        },
+        {
+          "class_id": 86,
+          "class_name": "telephone",
+          "correct": 84,
+          "images": 100,
+          "accuracy_percent": 84.0
+        }
+      ],
+      "median_class_accuracy_percent": 84.0,
+      "classes": [
+        {
+          "class_id": 0,
+          "class_name": "apple",
+          "correct": 91,
+          "images": 100,
+          "accuracy_percent": 91.0
+        },
+        {
+          "class_id": 1,
+          "class_name": "aquarium_fish",
+          "correct": 92,
+          "images": 100,
+          "accuracy_percent": 92.0
+        },
+        {
+          "class_id": 2,
+          "class_name": "baby",
+          "correct": 72,
+          "images": 100,
+          "accuracy_percent": 72.0
+        },
+        {
+          "class_id": 3,
+          "class_name": "bear",
+          "correct": 78,
+          "images": 100,
+          "accuracy_percent": 78.0
+        },
+        {
+          "class_id": 4,
+          "class_name": "beaver",
+          "correct": 66,
+          "images": 100,
+          "accuracy_percent": 66.0
+        },
+        {
+          "class_id": 5,
+          "class_name": "bed",
+          "correct": 86,
+          "images": 100,
+          "accuracy_percent": 86.0
+        },
+        {
+          "class_id": 6,
+          "class_name": "bee",
+          "correct": 87,
+          "images": 100,
+          "accuracy_percent": 87.0
+        },
+        {
+          "class_id": 7,
+          "class_name": "beetle",
+          "correct": 87,
+          "images": 100,
+          "accuracy_percent": 87.0
+        },
+        {
+          "class_id": 8,
+          "class_name": "bicycle",
+          "correct": 92,
+          "images": 100,
+          "accuracy_percent": 92.0
+        },
+        {
+          "class_id": 9,
+          "class_name": "bottle",
+          "correct": 90,
+          "images": 100,
+          "accuracy_percent": 90.0
+        },
+        {
+          "class_id": 10,
+          "class_name": "bowl",
+          "correct": 74,
+          "images": 100,
+          "accuracy_percent": 74.0
+        },
+        {
+          "class_id": 11,
+          "class_name": "boy",
+          "correct": 59,
+          "images": 100,
+          "accuracy_percent": 59.0
+        },
+        {
+          "class_id": 12,
+          "class_name": "bridge",
+          "correct": 85,
+          "images": 100,
+          "accuracy_percent": 85.0
+        },
+        {
+          "class_id": 13,
+          "class_name": "bus",
+          "correct": 83,
+          "images": 100,
+          "accuracy_percent": 83.0
+        },
+        {
+          "class_id": 14,
+          "class_name": "butterfly",
+          "correct": 87,
+          "images": 100,
+          "accuracy_percent": 87.0
+        },
+        {
+          "class_id": 15,
+          "class_name": "camel",
+          "correct": 89,
+          "images": 100,
+          "accuracy_percent": 89.0
+        },
+        {
+          "class_id": 16,
+          "class_name": "can",
+          "correct": 84,
+          "images": 100,
+          "accuracy_percent": 84.0
+        },
+        {
+          "class_id": 17,
+          "class_name": "castle",
+          "correct": 86,
+          "images": 100,
+          "accuracy_percent": 86.0
+        },
+        {
+          "class_id": 18,
+          "class_name": "caterpillar",
+          "correct": 79,
+          "images": 100,
+          "accuracy_percent": 79.0
+        },
+        {
+          "class_id": 19,
+          "class_name": "cattle",
+          "correct": 80,
+          "images": 100,
+          "accuracy_percent": 80.0
+        },
+        {
+          "class_id": 20,
+          "class_name": "chair",
+          "correct": 94,
+          "images": 100,
+          "accuracy_percent": 94.0
+        },
+        {
+          "class_id": 21,
+          "class_name": "chimpanzee",
+          "correct": 94,
+          "images": 100,
+          "accuracy_percent": 94.0
+        },
+        {
+          "class_id": 22,
+          "class_name": "clock",
+          "correct": 91,
+          "images": 100,
+          "accuracy_percent": 91.0
+        },
+        {
+          "class_id": 23,
+          "class_name": "cloud",
+          "correct": 77,
+          "images": 100,
+          "accuracy_percent": 77.0
+        },
+        {
+          "class_id": 24,
+          "class_name": "cockroach",
+          "correct": 91,
+          "images": 100,
+          "accuracy_percent": 91.0
+        },
+        {
+          "class_id": 25,
+          "class_name": "couch",
+          "correct": 75,
+          "images": 100,
+          "accuracy_percent": 75.0
+        },
+        {
+          "class_id": 26,
+          "class_name": "crab",
+          "correct": 81,
+          "images": 100,
+          "accuracy_percent": 81.0
+        },
+        {
+          "class_id": 27,
+          "class_name": "crocodile",
+          "correct": 85,
+          "images": 100,
+          "accuracy_percent": 85.0
+        },
+        {
+          "class_id": 28,
+          "class_name": "cup",
+          "correct": 87,
+          "images": 100,
+          "accuracy_percent": 87.0
+        },
+        {
+          "class_id": 29,
+          "class_name": "dinosaur",
+          "correct": 78,
+          "images": 100,
+          "accuracy_percent": 78.0
+        },
+        {
+          "class_id": 30,
+          "class_name": "dolphin",
+          "correct": 70,
+          "images": 100,
+          "accuracy_percent": 70.0
+        },
+        {
+          "class_id": 31,
+          "class_name": "elephant",
+          "correct": 84,
+          "images": 100,
+          "accuracy_percent": 84.0
+        },
+        {
+          "class_id": 32,
+          "class_name": "flatfish",
+          "correct": 66,
+          "images": 100,
+          "accuracy_percent": 66.0
+        },
+        {
+          "class_id": 33,
+          "class_name": "forest",
+          "correct": 69,
+          "images": 100,
+          "accuracy_percent": 69.0
+        },
+        {
+          "class_id": 34,
+          "class_name": "fox",
+          "correct": 87,
+          "images": 100,
+          "accuracy_percent": 87.0
+        },
+        {
+          "class_id": 35,
+          "class_name": "girl",
+          "correct": 48,
+          "images": 100,
+          "accuracy_percent": 48.0
+        },
+        {
+          "class_id": 36,
+          "class_name": "hamster",
+          "correct": 86,
+          "images": 100,
+          "accuracy_percent": 86.0
+        },
+        {
+          "class_id": 37,
+          "class_name": "house",
+          "correct": 86,
+          "images": 100,
+          "accuracy_percent": 86.0
+        },
+        {
+          "class_id": 38,
+          "class_name": "kangaroo",
+          "correct": 82,
+          "images": 100,
+          "accuracy_percent": 82.0
+        },
+        {
+          "class_id": 39,
+          "class_name": "keyboard",
+          "correct": 94,
+          "images": 100,
+          "accuracy_percent": 94.0
+        },
+        {
+          "class_id": 40,
+          "class_name": "lamp",
+          "correct": 84,
+          "images": 100,
+          "accuracy_percent": 84.0
+        },
+        {
+          "class_id": 41,
+          "class_name": "lawn_mower",
+          "correct": 96,
+          "images": 100,
+          "accuracy_percent": 96.0
+        },
+        {
+          "class_id": 42,
+          "class_name": "leopard",
+          "correct": 85,
+          "images": 100,
+          "accuracy_percent": 85.0
+        },
+        {
+          "class_id": 43,
+          "class_name": "lion",
+          "correct": 87,
+          "images": 100,
+          "accuracy_percent": 87.0
+        },
+        {
+          "class_id": 44,
+          "class_name": "lizard",
+          "correct": 76,
+          "images": 100,
+          "accuracy_percent": 76.0
+        },
+        {
+          "class_id": 45,
+          "class_name": "lobster",
+          "correct": 74,
+          "images": 100,
+          "accuracy_percent": 74.0
+        },
+        {
+          "class_id": 46,
+          "class_name": "man",
+          "correct": 72,
+          "images": 100,
+          "accuracy_percent": 72.0
+        },
+        {
+          "class_id": 47,
+          "class_name": "maple_tree",
+          "correct": 62,
+          "images": 100,
+          "accuracy_percent": 62.0
+        },
+        {
+          "class_id": 48,
+          "class_name": "motorcycle",
+          "correct": 100,
+          "images": 100,
+          "accuracy_percent": 100.0
+        },
+        {
+          "class_id": 49,
+          "class_name": "mountain",
+          "correct": 94,
+          "images": 100,
+          "accuracy_percent": 94.0
+        },
+        {
+          "class_id": 50,
+          "class_name": "mouse",
+          "correct": 69,
+          "images": 100,
+          "accuracy_percent": 69.0
+        },
+        {
+          "class_id": 51,
+          "class_name": "mushroom",
+          "correct": 91,
+          "images": 100,
+          "accuracy_percent": 91.0
+        },
+        {
+          "class_id": 52,
+          "class_name": "oak_tree",
+          "correct": 69,
+          "images": 100,
+          "accuracy_percent": 69.0
+        },
+        {
+          "class_id": 53,
+          "class_name": "orange",
+          "correct": 93,
+          "images": 100,
+          "accuracy_percent": 93.0
+        },
+        {
+          "class_id": 54,
+          "class_name": "orchid",
+          "correct": 83,
+          "images": 100,
+          "accuracy_percent": 83.0
+        },
+        {
+          "class_id": 55,
+          "class_name": "otter",
+          "correct": 59,
+          "images": 100,
+          "accuracy_percent": 59.0
+        },
+        {
+          "class_id": 56,
+          "class_name": "palm_tree",
+          "correct": 89,
+          "images": 100,
+          "accuracy_percent": 89.0
+        },
+        {
+          "class_id": 57,
+          "class_name": "pear",
+          "correct": 87,
+          "images": 100,
+          "accuracy_percent": 87.0
+        },
+        {
+          "class_id": 58,
+          "class_name": "pickup_truck",
+          "correct": 89,
+          "images": 100,
+          "accuracy_percent": 89.0
+        },
+        {
+          "class_id": 59,
+          "class_name": "pine_tree",
+          "correct": 71,
+          "images": 100,
+          "accuracy_percent": 71.0
+        },
+        {
+          "class_id": 60,
+          "class_name": "plain",
+          "correct": 88,
+          "images": 100,
+          "accuracy_percent": 88.0
+        },
+        {
+          "class_id": 61,
+          "class_name": "plate",
+          "correct": 84,
+          "images": 100,
+          "accuracy_percent": 84.0
+        },
+        {
+          "class_id": 62,
+          "class_name": "poppy",
+          "correct": 79,
+          "images": 100,
+          "accuracy_percent": 79.0
+        },
+        {
+          "class_id": 63,
+          "class_name": "porcupine",
+          "correct": 74,
+          "images": 100,
+          "accuracy_percent": 74.0
+        },
+        {
+          "class_id": 64,
+          "class_name": "possum",
+          "correct": 60,
+          "images": 100,
+          "accuracy_percent": 60.0
+        },
+        {
+          "class_id": 65,
+          "class_name": "rabbit",
+          "correct": 82,
+          "images": 100,
+          "accuracy_percent": 82.0
+        },
+        {
+          "class_id": 66,
+          "class_name": "raccoon",
+          "correct": 84,
+          "images": 100,
+          "accuracy_percent": 84.0
+        },
+        {
+          "class_id": 67,
+          "class_name": "ray",
+          "correct": 74,
+          "images": 100,
+          "accuracy_percent": 74.0
+        },
+        {
+          "class_id": 68,
+          "class_name": "road",
+          "correct": 95,
+          "images": 100,
+          "accuracy_percent": 95.0
+        },
+        {
+          "class_id": 69,
+          "class_name": "rocket",
+          "correct": 84,
+          "images": 100,
+          "accuracy_percent": 84.0
+        },
+        {
+          "class_id": 70,
+          "class_name": "rose",
+          "correct": 76,
+          "images": 100,
+          "accuracy_percent": 76.0
+        },
+        {
+          "class_id": 71,
+          "class_name": "sea",
+          "correct": 86,
+          "images": 100,
+          "accuracy_percent": 86.0
+        },
+        {
+          "class_id": 72,
+          "class_name": "seal",
+          "correct": 67,
+          "images": 100,
+          "accuracy_percent": 67.0
+        },
+        {
+          "class_id": 73,
+          "class_name": "shark",
+          "correct": 80,
+          "images": 100,
+          "accuracy_percent": 80.0
+        },
+        {
+          "class_id": 74,
+          "class_name": "shrew",
+          "correct": 60,
+          "images": 100,
+          "accuracy_percent": 60.0
+        },
+        {
+          "class_id": 75,
+          "class_name": "skunk",
+          "correct": 97,
+          "images": 100,
+          "accuracy_percent": 97.0
+        },
+        {
+          "class_id": 76,
+          "class_name": "skyscraper",
+          "correct": 90,
+          "images": 100,
+          "accuracy_percent": 90.0
+        },
+        {
+          "class_id": 77,
+          "class_name": "snail",
+          "correct": 79,
+          "images": 100,
+          "accuracy_percent": 79.0
+        },
+        {
+          "class_id": 78,
+          "class_name": "snake",
+          "correct": 85,
+          "images": 100,
+          "accuracy_percent": 85.0
+        },
+        {
+          "class_id": 79,
+          "class_name": "spider",
+          "correct": 96,
+          "images": 100,
+          "accuracy_percent": 96.0
+        },
+        {
+          "class_id": 80,
+          "class_name": "squirrel",
+          "correct": 73,
+          "images": 100,
+          "accuracy_percent": 73.0
+        },
+        {
+          "class_id": 81,
+          "class_name": "streetcar",
+          "correct": 77,
+          "images": 100,
+          "accuracy_percent": 77.0
+        },
+        {
+          "class_id": 82,
+          "class_name": "sunflower",
+          "correct": 91,
+          "images": 100,
+          "accuracy_percent": 91.0
+        },
+        {
+          "class_id": 83,
+          "class_name": "sweet_pepper",
+          "correct": 76,
+          "images": 100,
+          "accuracy_percent": 76.0
+        },
+        {
+          "class_id": 84,
+          "class_name": "table",
+          "correct": 81,
+          "images": 100,
+          "accuracy_percent": 81.0
+        },
+        {
+          "class_id": 85,
+          "class_name": "tank",
+          "correct": 94,
+          "images": 100,
+          "accuracy_percent": 94.0
+        },
+        {
+          "class_id": 86,
+          "class_name": "telephone",
+          "correct": 84,
+          "images": 100,
+          "accuracy_percent": 84.0
+        },
+        {
+          "class_id": 87,
+          "class_name": "television",
+          "correct": 92,
+          "images": 100,
+          "accuracy_percent": 92.0
+        },
+        {
+          "class_id": 88,
+          "class_name": "tiger",
+          "correct": 88,
+          "images": 100,
+          "accuracy_percent": 88.0
+        },
+        {
+          "class_id": 89,
+          "class_name": "tractor",
+          "correct": 96,
+          "images": 100,
+          "accuracy_percent": 96.0
+        },
+        {
+          "class_id": 90,
+          "class_name": "train",
+          "correct": 89,
+          "images": 100,
+          "accuracy_percent": 89.0
+        },
+        {
+          "class_id": 91,
+          "class_name": "trout",
+          "correct": 89,
+          "images": 100,
+          "accuracy_percent": 89.0
+        },
+        {
+          "class_id": 92,
+          "class_name": "tulip",
+          "correct": 67,
+          "images": 100,
+          "accuracy_percent": 67.0
+        },
+        {
+          "class_id": 93,
+          "class_name": "turtle",
+          "correct": 85,
+          "images": 100,
+          "accuracy_percent": 85.0
+        },
+        {
+          "class_id": 94,
+          "class_name": "wardrobe",
+          "correct": 94,
+          "images": 100,
+          "accuracy_percent": 94.0
+        },
+        {
+          "class_id": 95,
+          "class_name": "whale",
+          "correct": 78,
+          "images": 100,
+          "accuracy_percent": 78.0
+        },
+        {
+          "class_id": 96,
+          "class_name": "willow_tree",
+          "correct": 57,
+          "images": 100,
+          "accuracy_percent": 57.0
+        },
+        {
+          "class_id": 97,
+          "class_name": "wolf",
+          "correct": 86,
+          "images": 100,
+          "accuracy_percent": 86.0
+        },
+        {
+          "class_id": 98,
+          "class_name": "woman",
+          "correct": 76,
+          "images": 100,
+          "accuracy_percent": 76.0
+        },
+        {
+          "class_id": 99,
+          "class_name": "worm",
+          "correct": 87,
+          "images": 100,
+          "accuracy_percent": 87.0
+        }
+      ],
+      "prediction_sha256": "ff202b9ae29fba62f9a18dbc42addc74d03bad2ca85d2feb79796b738ac1419c"
+    },
+    {
+      "architecture": "resnet50",
+      "display_name": "ResNet-50",
+      "overall_accuracy_percent": 84.39,
+      "worst": [
+        {
+          "class_id": 35,
+          "class_name": "girl",
+          "correct": 50,
+          "images": 100,
+          "accuracy_percent": 50.0
+        }
+      ],
+      "best": [
+        {
+          "class_id": 21,
+          "class_name": "chimpanzee",
+          "correct": 98,
+          "images": 100,
+          "accuracy_percent": 98.0
+        },
+        {
+          "class_id": 75,
+          "class_name": "skunk",
+          "correct": 98,
+          "images": 100,
+          "accuracy_percent": 98.0
+        }
+      ],
+      "middle_ranked_classes": [
+        {
+          "class_id": 36,
+          "class_name": "hamster",
+          "correct": 86,
+          "images": 100,
+          "accuracy_percent": 86.0
+        },
+        {
+          "class_id": 42,
+          "class_name": "leopard",
+          "correct": 86,
+          "images": 100,
+          "accuracy_percent": 86.0
+        }
+      ],
+      "median_class_accuracy_percent": 86.0,
+      "classes": [
+        {
+          "class_id": 0,
+          "class_name": "apple",
+          "correct": 94,
+          "images": 100,
+          "accuracy_percent": 94.0
+        },
+        {
+          "class_id": 1,
+          "class_name": "aquarium_fish",
+          "correct": 93,
+          "images": 100,
+          "accuracy_percent": 93.0
+        },
+        {
+          "class_id": 2,
+          "class_name": "baby",
+          "correct": 77,
+          "images": 100,
+          "accuracy_percent": 77.0
+        },
+        {
+          "class_id": 3,
+          "class_name": "bear",
+          "correct": 84,
+          "images": 100,
+          "accuracy_percent": 84.0
+        },
+        {
+          "class_id": 4,
+          "class_name": "beaver",
+          "correct": 72,
+          "images": 100,
+          "accuracy_percent": 72.0
+        },
+        {
+          "class_id": 5,
+          "class_name": "bed",
+          "correct": 82,
+          "images": 100,
+          "accuracy_percent": 82.0
+        },
+        {
+          "class_id": 6,
+          "class_name": "bee",
+          "correct": 88,
+          "images": 100,
+          "accuracy_percent": 88.0
+        },
+        {
+          "class_id": 7,
+          "class_name": "beetle",
+          "correct": 88,
+          "images": 100,
+          "accuracy_percent": 88.0
+        },
+        {
+          "class_id": 8,
+          "class_name": "bicycle",
+          "correct": 95,
+          "images": 100,
+          "accuracy_percent": 95.0
+        },
+        {
+          "class_id": 9,
+          "class_name": "bottle",
+          "correct": 94,
+          "images": 100,
+          "accuracy_percent": 94.0
+        },
+        {
+          "class_id": 10,
+          "class_name": "bowl",
+          "correct": 72,
+          "images": 100,
+          "accuracy_percent": 72.0
+        },
+        {
+          "class_id": 11,
+          "class_name": "boy",
+          "correct": 65,
+          "images": 100,
+          "accuracy_percent": 65.0
+        },
+        {
+          "class_id": 12,
+          "class_name": "bridge",
+          "correct": 92,
+          "images": 100,
+          "accuracy_percent": 92.0
+        },
+        {
+          "class_id": 13,
+          "class_name": "bus",
+          "correct": 82,
+          "images": 100,
+          "accuracy_percent": 82.0
+        },
+        {
+          "class_id": 14,
+          "class_name": "butterfly",
+          "correct": 92,
+          "images": 100,
+          "accuracy_percent": 92.0
+        },
+        {
+          "class_id": 15,
+          "class_name": "camel",
+          "correct": 92,
+          "images": 100,
+          "accuracy_percent": 92.0
+        },
+        {
+          "class_id": 16,
+          "class_name": "can",
+          "correct": 92,
+          "images": 100,
+          "accuracy_percent": 92.0
+        },
+        {
+          "class_id": 17,
+          "class_name": "castle",
+          "correct": 91,
+          "images": 100,
+          "accuracy_percent": 91.0
+        },
+        {
+          "class_id": 18,
+          "class_name": "caterpillar",
+          "correct": 87,
+          "images": 100,
+          "accuracy_percent": 87.0
+        },
+        {
+          "class_id": 19,
+          "class_name": "cattle",
+          "correct": 85,
+          "images": 100,
+          "accuracy_percent": 85.0
+        },
+        {
+          "class_id": 20,
+          "class_name": "chair",
+          "correct": 91,
+          "images": 100,
+          "accuracy_percent": 91.0
+        },
+        {
+          "class_id": 21,
+          "class_name": "chimpanzee",
+          "correct": 98,
+          "images": 100,
+          "accuracy_percent": 98.0
+        },
+        {
+          "class_id": 22,
+          "class_name": "clock",
+          "correct": 90,
+          "images": 100,
+          "accuracy_percent": 90.0
+        },
+        {
+          "class_id": 23,
+          "class_name": "cloud",
+          "correct": 83,
+          "images": 100,
+          "accuracy_percent": 83.0
+        },
+        {
+          "class_id": 24,
+          "class_name": "cockroach",
+          "correct": 88,
+          "images": 100,
+          "accuracy_percent": 88.0
+        },
+        {
+          "class_id": 25,
+          "class_name": "couch",
+          "correct": 72,
+          "images": 100,
+          "accuracy_percent": 72.0
+        },
+        {
+          "class_id": 26,
+          "class_name": "crab",
+          "correct": 85,
+          "images": 100,
+          "accuracy_percent": 85.0
+        },
+        {
+          "class_id": 27,
+          "class_name": "crocodile",
+          "correct": 84,
+          "images": 100,
+          "accuracy_percent": 84.0
+        },
+        {
+          "class_id": 28,
+          "class_name": "cup",
+          "correct": 88,
+          "images": 100,
+          "accuracy_percent": 88.0
+        },
+        {
+          "class_id": 29,
+          "class_name": "dinosaur",
+          "correct": 82,
+          "images": 100,
+          "accuracy_percent": 82.0
+        },
+        {
+          "class_id": 30,
+          "class_name": "dolphin",
+          "correct": 77,
+          "images": 100,
+          "accuracy_percent": 77.0
+        },
+        {
+          "class_id": 31,
+          "class_name": "elephant",
+          "correct": 83,
+          "images": 100,
+          "accuracy_percent": 83.0
+        },
+        {
+          "class_id": 32,
+          "class_name": "flatfish",
+          "correct": 71,
+          "images": 100,
+          "accuracy_percent": 71.0
+        },
+        {
+          "class_id": 33,
+          "class_name": "forest",
+          "correct": 67,
+          "images": 100,
+          "accuracy_percent": 67.0
+        },
+        {
+          "class_id": 34,
+          "class_name": "fox",
+          "correct": 91,
+          "images": 100,
+          "accuracy_percent": 91.0
+        },
+        {
+          "class_id": 35,
+          "class_name": "girl",
+          "correct": 50,
+          "images": 100,
+          "accuracy_percent": 50.0
+        },
+        {
+          "class_id": 36,
+          "class_name": "hamster",
+          "correct": 86,
+          "images": 100,
+          "accuracy_percent": 86.0
+        },
+        {
+          "class_id": 37,
+          "class_name": "house",
+          "correct": 88,
+          "images": 100,
+          "accuracy_percent": 88.0
+        },
+        {
+          "class_id": 38,
+          "class_name": "kangaroo",
+          "correct": 83,
+          "images": 100,
+          "accuracy_percent": 83.0
+        },
+        {
+          "class_id": 39,
+          "class_name": "keyboard",
+          "correct": 93,
+          "images": 100,
+          "accuracy_percent": 93.0
+        },
+        {
+          "class_id": 40,
+          "class_name": "lamp",
+          "correct": 88,
+          "images": 100,
+          "accuracy_percent": 88.0
+        },
+        {
+          "class_id": 41,
+          "class_name": "lawn_mower",
+          "correct": 94,
+          "images": 100,
+          "accuracy_percent": 94.0
+        },
+        {
+          "class_id": 42,
+          "class_name": "leopard",
+          "correct": 86,
+          "images": 100,
+          "accuracy_percent": 86.0
+        },
+        {
+          "class_id": 43,
+          "class_name": "lion",
+          "correct": 88,
+          "images": 100,
+          "accuracy_percent": 88.0
+        },
+        {
+          "class_id": 44,
+          "class_name": "lizard",
+          "correct": 85,
+          "images": 100,
+          "accuracy_percent": 85.0
+        },
+        {
+          "class_id": 45,
+          "class_name": "lobster",
+          "correct": 79,
+          "images": 100,
+          "accuracy_percent": 79.0
+        },
+        {
+          "class_id": 46,
+          "class_name": "man",
+          "correct": 73,
+          "images": 100,
+          "accuracy_percent": 73.0
+        },
+        {
+          "class_id": 47,
+          "class_name": "maple_tree",
+          "correct": 67,
+          "images": 100,
+          "accuracy_percent": 67.0
+        },
+        {
+          "class_id": 48,
+          "class_name": "motorcycle",
+          "correct": 97,
+          "images": 100,
+          "accuracy_percent": 97.0
+        },
+        {
+          "class_id": 49,
+          "class_name": "mountain",
+          "correct": 94,
+          "images": 100,
+          "accuracy_percent": 94.0
+        },
+        {
+          "class_id": 50,
+          "class_name": "mouse",
+          "correct": 71,
+          "images": 100,
+          "accuracy_percent": 71.0
+        },
+        {
+          "class_id": 51,
+          "class_name": "mushroom",
+          "correct": 88,
+          "images": 100,
+          "accuracy_percent": 88.0
+        },
+        {
+          "class_id": 52,
+          "class_name": "oak_tree",
+          "correct": 77,
+          "images": 100,
+          "accuracy_percent": 77.0
+        },
+        {
+          "class_id": 53,
+          "class_name": "orange",
+          "correct": 95,
+          "images": 100,
+          "accuracy_percent": 95.0
+        },
+        {
+          "class_id": 54,
+          "class_name": "orchid",
+          "correct": 91,
+          "images": 100,
+          "accuracy_percent": 91.0
+        },
+        {
+          "class_id": 55,
+          "class_name": "otter",
+          "correct": 66,
+          "images": 100,
+          "accuracy_percent": 66.0
+        },
+        {
+          "class_id": 56,
+          "class_name": "palm_tree",
+          "correct": 91,
+          "images": 100,
+          "accuracy_percent": 91.0
+        },
+        {
+          "class_id": 57,
+          "class_name": "pear",
+          "correct": 88,
+          "images": 100,
+          "accuracy_percent": 88.0
+        },
+        {
+          "class_id": 58,
+          "class_name": "pickup_truck",
+          "correct": 96,
+          "images": 100,
+          "accuracy_percent": 96.0
+        },
+        {
+          "class_id": 59,
+          "class_name": "pine_tree",
+          "correct": 71,
+          "images": 100,
+          "accuracy_percent": 71.0
+        },
+        {
+          "class_id": 60,
+          "class_name": "plain",
+          "correct": 94,
+          "images": 100,
+          "accuracy_percent": 94.0
+        },
+        {
+          "class_id": 61,
+          "class_name": "plate",
+          "correct": 82,
+          "images": 100,
+          "accuracy_percent": 82.0
+        },
+        {
+          "class_id": 62,
+          "class_name": "poppy",
+          "correct": 83,
+          "images": 100,
+          "accuracy_percent": 83.0
+        },
+        {
+          "class_id": 63,
+          "class_name": "porcupine",
+          "correct": 76,
+          "images": 100,
+          "accuracy_percent": 76.0
+        },
+        {
+          "class_id": 64,
+          "class_name": "possum",
+          "correct": 69,
+          "images": 100,
+          "accuracy_percent": 69.0
+        },
+        {
+          "class_id": 65,
+          "class_name": "rabbit",
+          "correct": 84,
+          "images": 100,
+          "accuracy_percent": 84.0
+        },
+        {
+          "class_id": 66,
+          "class_name": "raccoon",
+          "correct": 85,
+          "images": 100,
+          "accuracy_percent": 85.0
+        },
+        {
+          "class_id": 67,
+          "class_name": "ray",
+          "correct": 82,
+          "images": 100,
+          "accuracy_percent": 82.0
+        },
+        {
+          "class_id": 68,
+          "class_name": "road",
+          "correct": 97,
+          "images": 100,
+          "accuracy_percent": 97.0
+        },
+        {
+          "class_id": 69,
+          "class_name": "rocket",
+          "correct": 90,
+          "images": 100,
+          "accuracy_percent": 90.0
+        },
+        {
+          "class_id": 70,
+          "class_name": "rose",
+          "correct": 82,
+          "images": 100,
+          "accuracy_percent": 82.0
+        },
+        {
+          "class_id": 71,
+          "class_name": "sea",
+          "correct": 83,
+          "images": 100,
+          "accuracy_percent": 83.0
+        },
+        {
+          "class_id": 72,
+          "class_name": "seal",
+          "correct": 68,
+          "images": 100,
+          "accuracy_percent": 68.0
+        },
+        {
+          "class_id": 73,
+          "class_name": "shark",
+          "correct": 81,
+          "images": 100,
+          "accuracy_percent": 81.0
+        },
+        {
+          "class_id": 74,
+          "class_name": "shrew",
+          "correct": 65,
+          "images": 100,
+          "accuracy_percent": 65.0
+        },
+        {
+          "class_id": 75,
+          "class_name": "skunk",
+          "correct": 98,
+          "images": 100,
+          "accuracy_percent": 98.0
+        },
+        {
+          "class_id": 76,
+          "class_name": "skyscraper",
+          "correct": 92,
+          "images": 100,
+          "accuracy_percent": 92.0
+        },
+        {
+          "class_id": 77,
+          "class_name": "snail",
+          "correct": 89,
+          "images": 100,
+          "accuracy_percent": 89.0
+        },
+        {
+          "class_id": 78,
+          "class_name": "snake",
+          "correct": 89,
+          "images": 100,
+          "accuracy_percent": 89.0
+        },
+        {
+          "class_id": 79,
+          "class_name": "spider",
+          "correct": 94,
+          "images": 100,
+          "accuracy_percent": 94.0
+        },
+        {
+          "class_id": 80,
+          "class_name": "squirrel",
+          "correct": 76,
+          "images": 100,
+          "accuracy_percent": 76.0
+        },
+        {
+          "class_id": 81,
+          "class_name": "streetcar",
+          "correct": 85,
+          "images": 100,
+          "accuracy_percent": 85.0
+        },
+        {
+          "class_id": 82,
+          "class_name": "sunflower",
+          "correct": 94,
+          "images": 100,
+          "accuracy_percent": 94.0
+        },
+        {
+          "class_id": 83,
+          "class_name": "sweet_pepper",
+          "correct": 80,
+          "images": 100,
+          "accuracy_percent": 80.0
+        },
+        {
+          "class_id": 84,
+          "class_name": "table",
+          "correct": 84,
+          "images": 100,
+          "accuracy_percent": 84.0
+        },
+        {
+          "class_id": 85,
+          "class_name": "tank",
+          "correct": 95,
+          "images": 100,
+          "accuracy_percent": 95.0
+        },
+        {
+          "class_id": 86,
+          "class_name": "telephone",
+          "correct": 88,
+          "images": 100,
+          "accuracy_percent": 88.0
+        },
+        {
+          "class_id": 87,
+          "class_name": "television",
+          "correct": 95,
+          "images": 100,
+          "accuracy_percent": 95.0
+        },
+        {
+          "class_id": 88,
+          "class_name": "tiger",
+          "correct": 85,
+          "images": 100,
+          "accuracy_percent": 85.0
+        },
+        {
+          "class_id": 89,
+          "class_name": "tractor",
+          "correct": 95,
+          "images": 100,
+          "accuracy_percent": 95.0
+        },
+        {
+          "class_id": 90,
+          "class_name": "train",
+          "correct": 89,
+          "images": 100,
+          "accuracy_percent": 89.0
+        },
+        {
+          "class_id": 91,
+          "class_name": "trout",
+          "correct": 89,
+          "images": 100,
+          "accuracy_percent": 89.0
+        },
+        {
+          "class_id": 92,
+          "class_name": "tulip",
+          "correct": 73,
+          "images": 100,
+          "accuracy_percent": 73.0
+        },
+        {
+          "class_id": 93,
+          "class_name": "turtle",
+          "correct": 84,
+          "images": 100,
+          "accuracy_percent": 84.0
+        },
+        {
+          "class_id": 94,
+          "class_name": "wardrobe",
+          "correct": 95,
+          "images": 100,
+          "accuracy_percent": 95.0
+        },
+        {
+          "class_id": 95,
+          "class_name": "whale",
+          "correct": 80,
+          "images": 100,
+          "accuracy_percent": 80.0
+        },
+        {
+          "class_id": 96,
+          "class_name": "willow_tree",
+          "correct": 56,
+          "images": 100,
+          "accuracy_percent": 56.0
+        },
+        {
+          "class_id": 97,
+          "class_name": "wolf",
+          "correct": 92,
+          "images": 100,
+          "accuracy_percent": 92.0
+        },
+        {
+          "class_id": 98,
+          "class_name": "woman",
+          "correct": 80,
+          "images": 100,
+          "accuracy_percent": 80.0
+        },
+        {
+          "class_id": 99,
+          "class_name": "worm",
+          "correct": 89,
+          "images": 100,
+          "accuracy_percent": 89.0
+        }
+      ],
+      "prediction_sha256": "7d93462689a836c806460a98c7571e745035586586b410a31211c57e4bfac989"
+    },
+    {
+      "architecture": "resnet101",
+      "display_name": "ResNet-101",
+      "overall_accuracy_percent": 85.8,
+      "worst": [
+        {
+          "class_id": 35,
+          "class_name": "girl",
+          "correct": 56,
+          "images": 100,
+          "accuracy_percent": 56.0
+        }
+      ],
+      "best": [
+        {
+          "class_id": 75,
+          "class_name": "skunk",
+          "correct": 98,
+          "images": 100,
+          "accuracy_percent": 98.0
+        }
+      ],
+      "middle_ranked_classes": [
+        {
+          "class_id": 36,
+          "class_name": "hamster",
+          "correct": 89,
+          "images": 100,
+          "accuracy_percent": 89.0
+        },
+        {
+          "class_id": 37,
+          "class_name": "house",
+          "correct": 89,
+          "images": 100,
+          "accuracy_percent": 89.0
+        }
+      ],
+      "median_class_accuracy_percent": 89.0,
+      "classes": [
+        {
+          "class_id": 0,
+          "class_name": "apple",
+          "correct": 93,
+          "images": 100,
+          "accuracy_percent": 93.0
+        },
+        {
+          "class_id": 1,
+          "class_name": "aquarium_fish",
+          "correct": 94,
+          "images": 100,
+          "accuracy_percent": 94.0
+        },
+        {
+          "class_id": 2,
+          "class_name": "baby",
+          "correct": 80,
+          "images": 100,
+          "accuracy_percent": 80.0
+        },
+        {
+          "class_id": 3,
+          "class_name": "bear",
+          "correct": 84,
+          "images": 100,
+          "accuracy_percent": 84.0
+        },
+        {
+          "class_id": 4,
+          "class_name": "beaver",
+          "correct": 65,
+          "images": 100,
+          "accuracy_percent": 65.0
+        },
+        {
+          "class_id": 5,
+          "class_name": "bed",
+          "correct": 90,
+          "images": 100,
+          "accuracy_percent": 90.0
+        },
+        {
+          "class_id": 6,
+          "class_name": "bee",
+          "correct": 90,
+          "images": 100,
+          "accuracy_percent": 90.0
+        },
+        {
+          "class_id": 7,
+          "class_name": "beetle",
+          "correct": 93,
+          "images": 100,
+          "accuracy_percent": 93.0
+        },
+        {
+          "class_id": 8,
+          "class_name": "bicycle",
+          "correct": 96,
+          "images": 100,
+          "accuracy_percent": 96.0
+        },
+        {
+          "class_id": 9,
+          "class_name": "bottle",
+          "correct": 93,
+          "images": 100,
+          "accuracy_percent": 93.0
+        },
+        {
+          "class_id": 10,
+          "class_name": "bowl",
+          "correct": 75,
+          "images": 100,
+          "accuracy_percent": 75.0
+        },
+        {
+          "class_id": 11,
+          "class_name": "boy",
+          "correct": 63,
+          "images": 100,
+          "accuracy_percent": 63.0
+        },
+        {
+          "class_id": 12,
+          "class_name": "bridge",
+          "correct": 88,
+          "images": 100,
+          "accuracy_percent": 88.0
+        },
+        {
+          "class_id": 13,
+          "class_name": "bus",
+          "correct": 85,
+          "images": 100,
+          "accuracy_percent": 85.0
+        },
+        {
+          "class_id": 14,
+          "class_name": "butterfly",
+          "correct": 91,
+          "images": 100,
+          "accuracy_percent": 91.0
+        },
+        {
+          "class_id": 15,
+          "class_name": "camel",
+          "correct": 90,
+          "images": 100,
+          "accuracy_percent": 90.0
+        },
+        {
+          "class_id": 16,
+          "class_name": "can",
+          "correct": 90,
+          "images": 100,
+          "accuracy_percent": 90.0
+        },
+        {
+          "class_id": 17,
+          "class_name": "castle",
+          "correct": 87,
+          "images": 100,
+          "accuracy_percent": 87.0
+        },
+        {
+          "class_id": 18,
+          "class_name": "caterpillar",
+          "correct": 81,
+          "images": 100,
+          "accuracy_percent": 81.0
+        },
+        {
+          "class_id": 19,
+          "class_name": "cattle",
+          "correct": 90,
+          "images": 100,
+          "accuracy_percent": 90.0
+        },
+        {
+          "class_id": 20,
+          "class_name": "chair",
+          "correct": 91,
+          "images": 100,
+          "accuracy_percent": 91.0
+        },
+        {
+          "class_id": 21,
+          "class_name": "chimpanzee",
+          "correct": 97,
+          "images": 100,
+          "accuracy_percent": 97.0
+        },
+        {
+          "class_id": 22,
+          "class_name": "clock",
+          "correct": 97,
+          "images": 100,
+          "accuracy_percent": 97.0
+        },
+        {
+          "class_id": 23,
+          "class_name": "cloud",
+          "correct": 81,
+          "images": 100,
+          "accuracy_percent": 81.0
+        },
+        {
+          "class_id": 24,
+          "class_name": "cockroach",
+          "correct": 94,
+          "images": 100,
+          "accuracy_percent": 94.0
+        },
+        {
+          "class_id": 25,
+          "class_name": "couch",
+          "correct": 76,
+          "images": 100,
+          "accuracy_percent": 76.0
+        },
+        {
+          "class_id": 26,
+          "class_name": "crab",
+          "correct": 82,
+          "images": 100,
+          "accuracy_percent": 82.0
+        },
+        {
+          "class_id": 27,
+          "class_name": "crocodile",
+          "correct": 85,
+          "images": 100,
+          "accuracy_percent": 85.0
+        },
+        {
+          "class_id": 28,
+          "class_name": "cup",
+          "correct": 92,
+          "images": 100,
+          "accuracy_percent": 92.0
+        },
+        {
+          "class_id": 29,
+          "class_name": "dinosaur",
+          "correct": 87,
+          "images": 100,
+          "accuracy_percent": 87.0
+        },
+        {
+          "class_id": 30,
+          "class_name": "dolphin",
+          "correct": 73,
+          "images": 100,
+          "accuracy_percent": 73.0
+        },
+        {
+          "class_id": 31,
+          "class_name": "elephant",
+          "correct": 92,
+          "images": 100,
+          "accuracy_percent": 92.0
+        },
+        {
+          "class_id": 32,
+          "class_name": "flatfish",
+          "correct": 75,
+          "images": 100,
+          "accuracy_percent": 75.0
+        },
+        {
+          "class_id": 33,
+          "class_name": "forest",
+          "correct": 62,
+          "images": 100,
+          "accuracy_percent": 62.0
+        },
+        {
+          "class_id": 34,
+          "class_name": "fox",
+          "correct": 93,
+          "images": 100,
+          "accuracy_percent": 93.0
+        },
+        {
+          "class_id": 35,
+          "class_name": "girl",
+          "correct": 56,
+          "images": 100,
+          "accuracy_percent": 56.0
+        },
+        {
+          "class_id": 36,
+          "class_name": "hamster",
+          "correct": 89,
+          "images": 100,
+          "accuracy_percent": 89.0
+        },
+        {
+          "class_id": 37,
+          "class_name": "house",
+          "correct": 89,
+          "images": 100,
+          "accuracy_percent": 89.0
+        },
+        {
+          "class_id": 38,
+          "class_name": "kangaroo",
+          "correct": 88,
+          "images": 100,
+          "accuracy_percent": 88.0
+        },
+        {
+          "class_id": 39,
+          "class_name": "keyboard",
+          "correct": 95,
+          "images": 100,
+          "accuracy_percent": 95.0
+        },
+        {
+          "class_id": 40,
+          "class_name": "lamp",
+          "correct": 88,
+          "images": 100,
+          "accuracy_percent": 88.0
+        },
+        {
+          "class_id": 41,
+          "class_name": "lawn_mower",
+          "correct": 97,
+          "images": 100,
+          "accuracy_percent": 97.0
+        },
+        {
+          "class_id": 42,
+          "class_name": "leopard",
+          "correct": 89,
+          "images": 100,
+          "accuracy_percent": 89.0
+        },
+        {
+          "class_id": 43,
+          "class_name": "lion",
+          "correct": 93,
+          "images": 100,
+          "accuracy_percent": 93.0
+        },
+        {
+          "class_id": 44,
+          "class_name": "lizard",
+          "correct": 87,
+          "images": 100,
+          "accuracy_percent": 87.0
+        },
+        {
+          "class_id": 45,
+          "class_name": "lobster",
+          "correct": 83,
+          "images": 100,
+          "accuracy_percent": 83.0
+        },
+        {
+          "class_id": 46,
+          "class_name": "man",
+          "correct": 79,
+          "images": 100,
+          "accuracy_percent": 79.0
+        },
+        {
+          "class_id": 47,
+          "class_name": "maple_tree",
+          "correct": 65,
+          "images": 100,
+          "accuracy_percent": 65.0
+        },
+        {
+          "class_id": 48,
+          "class_name": "motorcycle",
+          "correct": 96,
+          "images": 100,
+          "accuracy_percent": 96.0
+        },
+        {
+          "class_id": 49,
+          "class_name": "mountain",
+          "correct": 94,
+          "images": 100,
+          "accuracy_percent": 94.0
+        },
+        {
+          "class_id": 50,
+          "class_name": "mouse",
+          "correct": 71,
+          "images": 100,
+          "accuracy_percent": 71.0
+        },
+        {
+          "class_id": 51,
+          "class_name": "mushroom",
+          "correct": 92,
+          "images": 100,
+          "accuracy_percent": 92.0
+        },
+        {
+          "class_id": 52,
+          "class_name": "oak_tree",
+          "correct": 76,
+          "images": 100,
+          "accuracy_percent": 76.0
+        },
+        {
+          "class_id": 53,
+          "class_name": "orange",
+          "correct": 96,
+          "images": 100,
+          "accuracy_percent": 96.0
+        },
+        {
+          "class_id": 54,
+          "class_name": "orchid",
+          "correct": 87,
+          "images": 100,
+          "accuracy_percent": 87.0
+        },
+        {
+          "class_id": 55,
+          "class_name": "otter",
+          "correct": 66,
+          "images": 100,
+          "accuracy_percent": 66.0
+        },
+        {
+          "class_id": 56,
+          "class_name": "palm_tree",
+          "correct": 91,
+          "images": 100,
+          "accuracy_percent": 91.0
+        },
+        {
+          "class_id": 57,
+          "class_name": "pear",
+          "correct": 93,
+          "images": 100,
+          "accuracy_percent": 93.0
+        },
+        {
+          "class_id": 58,
+          "class_name": "pickup_truck",
+          "correct": 96,
+          "images": 100,
+          "accuracy_percent": 96.0
+        },
+        {
+          "class_id": 59,
+          "class_name": "pine_tree",
+          "correct": 71,
+          "images": 100,
+          "accuracy_percent": 71.0
+        },
+        {
+          "class_id": 60,
+          "class_name": "plain",
+          "correct": 89,
+          "images": 100,
+          "accuracy_percent": 89.0
+        },
+        {
+          "class_id": 61,
+          "class_name": "plate",
+          "correct": 80,
+          "images": 100,
+          "accuracy_percent": 80.0
+        },
+        {
+          "class_id": 62,
+          "class_name": "poppy",
+          "correct": 86,
+          "images": 100,
+          "accuracy_percent": 86.0
+        },
+        {
+          "class_id": 63,
+          "class_name": "porcupine",
+          "correct": 83,
+          "images": 100,
+          "accuracy_percent": 83.0
+        },
+        {
+          "class_id": 64,
+          "class_name": "possum",
+          "correct": 66,
+          "images": 100,
+          "accuracy_percent": 66.0
+        },
+        {
+          "class_id": 65,
+          "class_name": "rabbit",
+          "correct": 87,
+          "images": 100,
+          "accuracy_percent": 87.0
+        },
+        {
+          "class_id": 66,
+          "class_name": "raccoon",
+          "correct": 86,
+          "images": 100,
+          "accuracy_percent": 86.0
+        },
+        {
+          "class_id": 67,
+          "class_name": "ray",
+          "correct": 89,
+          "images": 100,
+          "accuracy_percent": 89.0
+        },
+        {
+          "class_id": 68,
+          "class_name": "road",
+          "correct": 97,
+          "images": 100,
+          "accuracy_percent": 97.0
+        },
+        {
+          "class_id": 69,
+          "class_name": "rocket",
+          "correct": 90,
+          "images": 100,
+          "accuracy_percent": 90.0
+        },
+        {
+          "class_id": 70,
+          "class_name": "rose",
+          "correct": 85,
+          "images": 100,
+          "accuracy_percent": 85.0
+        },
+        {
+          "class_id": 71,
+          "class_name": "sea",
+          "correct": 90,
+          "images": 100,
+          "accuracy_percent": 90.0
+        },
+        {
+          "class_id": 72,
+          "class_name": "seal",
+          "correct": 70,
+          "images": 100,
+          "accuracy_percent": 70.0
+        },
+        {
+          "class_id": 73,
+          "class_name": "shark",
+          "correct": 83,
+          "images": 100,
+          "accuracy_percent": 83.0
+        },
+        {
+          "class_id": 74,
+          "class_name": "shrew",
+          "correct": 71,
+          "images": 100,
+          "accuracy_percent": 71.0
+        },
+        {
+          "class_id": 75,
+          "class_name": "skunk",
+          "correct": 98,
+          "images": 100,
+          "accuracy_percent": 98.0
+        },
+        {
+          "class_id": 76,
+          "class_name": "skyscraper",
+          "correct": 93,
+          "images": 100,
+          "accuracy_percent": 93.0
+        },
+        {
+          "class_id": 77,
+          "class_name": "snail",
+          "correct": 90,
+          "images": 100,
+          "accuracy_percent": 90.0
+        },
+        {
+          "class_id": 78,
+          "class_name": "snake",
+          "correct": 93,
+          "images": 100,
+          "accuracy_percent": 93.0
+        },
+        {
+          "class_id": 79,
+          "class_name": "spider",
+          "correct": 97,
+          "images": 100,
+          "accuracy_percent": 97.0
+        },
+        {
+          "class_id": 80,
+          "class_name": "squirrel",
+          "correct": 85,
+          "images": 100,
+          "accuracy_percent": 85.0
+        },
+        {
+          "class_id": 81,
+          "class_name": "streetcar",
+          "correct": 81,
+          "images": 100,
+          "accuracy_percent": 81.0
+        },
+        {
+          "class_id": 82,
+          "class_name": "sunflower",
+          "correct": 93,
+          "images": 100,
+          "accuracy_percent": 93.0
+        },
+        {
+          "class_id": 83,
+          "class_name": "sweet_pepper",
+          "correct": 84,
+          "images": 100,
+          "accuracy_percent": 84.0
+        },
+        {
+          "class_id": 84,
+          "class_name": "table",
+          "correct": 83,
+          "images": 100,
+          "accuracy_percent": 83.0
+        },
+        {
+          "class_id": 85,
+          "class_name": "tank",
+          "correct": 95,
+          "images": 100,
+          "accuracy_percent": 95.0
+        },
+        {
+          "class_id": 86,
+          "class_name": "telephone",
+          "correct": 90,
+          "images": 100,
+          "accuracy_percent": 90.0
+        },
+        {
+          "class_id": 87,
+          "class_name": "television",
+          "correct": 94,
+          "images": 100,
+          "accuracy_percent": 94.0
+        },
+        {
+          "class_id": 88,
+          "class_name": "tiger",
+          "correct": 87,
+          "images": 100,
+          "accuracy_percent": 87.0
+        },
+        {
+          "class_id": 89,
+          "class_name": "tractor",
+          "correct": 95,
+          "images": 100,
+          "accuracy_percent": 95.0
+        },
+        {
+          "class_id": 90,
+          "class_name": "train",
+          "correct": 87,
+          "images": 100,
+          "accuracy_percent": 87.0
+        },
+        {
+          "class_id": 91,
+          "class_name": "trout",
+          "correct": 92,
+          "images": 100,
+          "accuracy_percent": 92.0
+        },
+        {
+          "class_id": 92,
+          "class_name": "tulip",
+          "correct": 80,
+          "images": 100,
+          "accuracy_percent": 80.0
+        },
+        {
+          "class_id": 93,
+          "class_name": "turtle",
+          "correct": 93,
+          "images": 100,
+          "accuracy_percent": 93.0
+        },
+        {
+          "class_id": 94,
+          "class_name": "wardrobe",
+          "correct": 93,
+          "images": 100,
+          "accuracy_percent": 93.0
+        },
+        {
+          "class_id": 95,
+          "class_name": "whale",
+          "correct": 81,
+          "images": 100,
+          "accuracy_percent": 81.0
+        },
+        {
+          "class_id": 96,
+          "class_name": "willow_tree",
+          "correct": 62,
+          "images": 100,
+          "accuracy_percent": 62.0
+        },
+        {
+          "class_id": 97,
+          "class_name": "wolf",
+          "correct": 93,
+          "images": 100,
+          "accuracy_percent": 93.0
+        },
+        {
+          "class_id": 98,
+          "class_name": "woman",
+          "correct": 77,
+          "images": 100,
+          "accuracy_percent": 77.0
+        },
+        {
+          "class_id": 99,
+          "class_name": "worm",
+          "correct": 90,
+          "images": 100,
+          "accuracy_percent": 90.0
+        }
+      ],
+      "prediction_sha256": "f921c96312bf037d7ee73964540f519bfd109e68531378d30871f9759d866a8b"
+    },
+    {
+      "architecture": "mobilenetv3_small",
+      "display_name": "MobileNetV3-Small",
+      "overall_accuracy_percent": 62.38,
+      "worst": [
+        {
+          "class_id": 98,
+          "class_name": "woman",
+          "correct": 30,
+          "images": 100,
+          "accuracy_percent": 30.0
+        }
+      ],
+      "best": [
+        {
+          "class_id": 68,
+          "class_name": "road",
+          "correct": 93,
+          "images": 100,
+          "accuracy_percent": 93.0
+        }
+      ],
+      "middle_ranked_classes": [
+        {
+          "class_id": 34,
+          "class_name": "fox",
+          "correct": 62,
+          "images": 100,
+          "accuracy_percent": 62.0
+        },
+        {
+          "class_id": 86,
+          "class_name": "telephone",
+          "correct": 62,
+          "images": 100,
+          "accuracy_percent": 62.0
+        }
+      ],
+      "median_class_accuracy_percent": 62.0,
+      "classes": [
+        {
+          "class_id": 0,
+          "class_name": "apple",
+          "correct": 82,
+          "images": 100,
+          "accuracy_percent": 82.0
+        },
+        {
+          "class_id": 1,
+          "class_name": "aquarium_fish",
+          "correct": 79,
+          "images": 100,
+          "accuracy_percent": 79.0
+        },
+        {
+          "class_id": 2,
+          "class_name": "baby",
+          "correct": 52,
+          "images": 100,
+          "accuracy_percent": 52.0
+        },
+        {
+          "class_id": 3,
+          "class_name": "bear",
+          "correct": 38,
+          "images": 100,
+          "accuracy_percent": 38.0
+        },
+        {
+          "class_id": 4,
+          "class_name": "beaver",
+          "correct": 45,
+          "images": 100,
+          "accuracy_percent": 45.0
+        },
+        {
+          "class_id": 5,
+          "class_name": "bed",
+          "correct": 51,
+          "images": 100,
+          "accuracy_percent": 51.0
+        },
+        {
+          "class_id": 6,
+          "class_name": "bee",
+          "correct": 73,
+          "images": 100,
+          "accuracy_percent": 73.0
+        },
+        {
+          "class_id": 7,
+          "class_name": "beetle",
+          "correct": 74,
+          "images": 100,
+          "accuracy_percent": 74.0
+        },
+        {
+          "class_id": 8,
+          "class_name": "bicycle",
+          "correct": 78,
+          "images": 100,
+          "accuracy_percent": 78.0
+        },
+        {
+          "class_id": 9,
+          "class_name": "bottle",
+          "correct": 75,
+          "images": 100,
+          "accuracy_percent": 75.0
+        },
+        {
+          "class_id": 10,
+          "class_name": "bowl",
+          "correct": 44,
+          "images": 100,
+          "accuracy_percent": 44.0
+        },
+        {
+          "class_id": 11,
+          "class_name": "boy",
+          "correct": 45,
+          "images": 100,
+          "accuracy_percent": 45.0
+        },
+        {
+          "class_id": 12,
+          "class_name": "bridge",
+          "correct": 78,
+          "images": 100,
+          "accuracy_percent": 78.0
+        },
+        {
+          "class_id": 13,
+          "class_name": "bus",
+          "correct": 48,
+          "images": 100,
+          "accuracy_percent": 48.0
+        },
+        {
+          "class_id": 14,
+          "class_name": "butterfly",
+          "correct": 59,
+          "images": 100,
+          "accuracy_percent": 59.0
+        },
+        {
+          "class_id": 15,
+          "class_name": "camel",
+          "correct": 59,
+          "images": 100,
+          "accuracy_percent": 59.0
+        },
+        {
+          "class_id": 16,
+          "class_name": "can",
+          "correct": 71,
+          "images": 100,
+          "accuracy_percent": 71.0
+        },
+        {
+          "class_id": 17,
+          "class_name": "castle",
+          "correct": 77,
+          "images": 100,
+          "accuracy_percent": 77.0
+        },
+        {
+          "class_id": 18,
+          "class_name": "caterpillar",
+          "correct": 59,
+          "images": 100,
+          "accuracy_percent": 59.0
+        },
+        {
+          "class_id": 19,
+          "class_name": "cattle",
+          "correct": 55,
+          "images": 100,
+          "accuracy_percent": 55.0
+        },
+        {
+          "class_id": 20,
+          "class_name": "chair",
+          "correct": 82,
+          "images": 100,
+          "accuracy_percent": 82.0
+        },
+        {
+          "class_id": 21,
+          "class_name": "chimpanzee",
+          "correct": 77,
+          "images": 100,
+          "accuracy_percent": 77.0
+        },
+        {
+          "class_id": 22,
+          "class_name": "clock",
+          "correct": 52,
+          "images": 100,
+          "accuracy_percent": 52.0
+        },
+        {
+          "class_id": 23,
+          "class_name": "cloud",
+          "correct": 74,
+          "images": 100,
+          "accuracy_percent": 74.0
+        },
+        {
+          "class_id": 24,
+          "class_name": "cockroach",
+          "correct": 76,
+          "images": 100,
+          "accuracy_percent": 76.0
+        },
+        {
+          "class_id": 25,
+          "class_name": "couch",
+          "correct": 48,
+          "images": 100,
+          "accuracy_percent": 48.0
+        },
+        {
+          "class_id": 26,
+          "class_name": "crab",
+          "correct": 57,
+          "images": 100,
+          "accuracy_percent": 57.0
+        },
+        {
+          "class_id": 27,
+          "class_name": "crocodile",
+          "correct": 42,
+          "images": 100,
+          "accuracy_percent": 42.0
+        },
+        {
+          "class_id": 28,
+          "class_name": "cup",
+          "correct": 67,
+          "images": 100,
+          "accuracy_percent": 67.0
+        },
+        {
+          "class_id": 29,
+          "class_name": "dinosaur",
+          "correct": 61,
+          "images": 100,
+          "accuracy_percent": 61.0
+        },
+        {
+          "class_id": 30,
+          "class_name": "dolphin",
+          "correct": 55,
+          "images": 100,
+          "accuracy_percent": 55.0
+        },
+        {
+          "class_id": 31,
+          "class_name": "elephant",
+          "correct": 62,
+          "images": 100,
+          "accuracy_percent": 62.0
+        },
+        {
+          "class_id": 32,
+          "class_name": "flatfish",
+          "correct": 46,
+          "images": 100,
+          "accuracy_percent": 46.0
+        },
+        {
+          "class_id": 33,
+          "class_name": "forest",
+          "correct": 62,
+          "images": 100,
+          "accuracy_percent": 62.0
+        },
+        {
+          "class_id": 34,
+          "class_name": "fox",
+          "correct": 62,
+          "images": 100,
+          "accuracy_percent": 62.0
+        },
+        {
+          "class_id": 35,
+          "class_name": "girl",
+          "correct": 37,
+          "images": 100,
+          "accuracy_percent": 37.0
+        },
+        {
+          "class_id": 36,
+          "class_name": "hamster",
+          "correct": 57,
+          "images": 100,
+          "accuracy_percent": 57.0
+        },
+        {
+          "class_id": 37,
+          "class_name": "house",
+          "correct": 60,
+          "images": 100,
+          "accuracy_percent": 60.0
+        },
+        {
+          "class_id": 38,
+          "class_name": "kangaroo",
+          "correct": 54,
+          "images": 100,
+          "accuracy_percent": 54.0
+        },
+        {
+          "class_id": 39,
+          "class_name": "keyboard",
+          "correct": 79,
+          "images": 100,
+          "accuracy_percent": 79.0
+        },
+        {
+          "class_id": 40,
+          "class_name": "lamp",
+          "correct": 52,
+          "images": 100,
+          "accuracy_percent": 52.0
+        },
+        {
+          "class_id": 41,
+          "class_name": "lawn_mower",
+          "correct": 83,
+          "images": 100,
+          "accuracy_percent": 83.0
+        },
+        {
+          "class_id": 42,
+          "class_name": "leopard",
+          "correct": 59,
+          "images": 100,
+          "accuracy_percent": 59.0
+        },
+        {
+          "class_id": 43,
+          "class_name": "lion",
+          "correct": 66,
+          "images": 100,
+          "accuracy_percent": 66.0
+        },
+        {
+          "class_id": 44,
+          "class_name": "lizard",
+          "correct": 37,
+          "images": 100,
+          "accuracy_percent": 37.0
+        },
+        {
+          "class_id": 45,
+          "class_name": "lobster",
+          "correct": 56,
+          "images": 100,
+          "accuracy_percent": 56.0
+        },
+        {
+          "class_id": 46,
+          "class_name": "man",
+          "correct": 39,
+          "images": 100,
+          "accuracy_percent": 39.0
+        },
+        {
+          "class_id": 47,
+          "class_name": "maple_tree",
+          "correct": 60,
+          "images": 100,
+          "accuracy_percent": 60.0
+        },
+        {
+          "class_id": 48,
+          "class_name": "motorcycle",
+          "correct": 90,
+          "images": 100,
+          "accuracy_percent": 90.0
+        },
+        {
+          "class_id": 49,
+          "class_name": "mountain",
+          "correct": 77,
+          "images": 100,
+          "accuracy_percent": 77.0
+        },
+        {
+          "class_id": 50,
+          "class_name": "mouse",
+          "correct": 41,
+          "images": 100,
+          "accuracy_percent": 41.0
+        },
+        {
+          "class_id": 51,
+          "class_name": "mushroom",
+          "correct": 59,
+          "images": 100,
+          "accuracy_percent": 59.0
+        },
+        {
+          "class_id": 52,
+          "class_name": "oak_tree",
+          "correct": 71,
+          "images": 100,
+          "accuracy_percent": 71.0
+        },
+        {
+          "class_id": 53,
+          "class_name": "orange",
+          "correct": 89,
+          "images": 100,
+          "accuracy_percent": 89.0
+        },
+        {
+          "class_id": 54,
+          "class_name": "orchid",
+          "correct": 77,
+          "images": 100,
+          "accuracy_percent": 77.0
+        },
+        {
+          "class_id": 55,
+          "class_name": "otter",
+          "correct": 33,
+          "images": 100,
+          "accuracy_percent": 33.0
+        },
+        {
+          "class_id": 56,
+          "class_name": "palm_tree",
+          "correct": 78,
+          "images": 100,
+          "accuracy_percent": 78.0
+        },
+        {
+          "class_id": 57,
+          "class_name": "pear",
+          "correct": 70,
+          "images": 100,
+          "accuracy_percent": 70.0
+        },
+        {
+          "class_id": 58,
+          "class_name": "pickup_truck",
+          "correct": 70,
+          "images": 100,
+          "accuracy_percent": 70.0
+        },
+        {
+          "class_id": 59,
+          "class_name": "pine_tree",
+          "correct": 65,
+          "images": 100,
+          "accuracy_percent": 65.0
+        },
+        {
+          "class_id": 60,
+          "class_name": "plain",
+          "correct": 85,
+          "images": 100,
+          "accuracy_percent": 85.0
+        },
+        {
+          "class_id": 61,
+          "class_name": "plate",
+          "correct": 56,
+          "images": 100,
+          "accuracy_percent": 56.0
+        },
+        {
+          "class_id": 62,
+          "class_name": "poppy",
+          "correct": 68,
+          "images": 100,
+          "accuracy_percent": 68.0
+        },
+        {
+          "class_id": 63,
+          "class_name": "porcupine",
+          "correct": 54,
+          "images": 100,
+          "accuracy_percent": 54.0
+        },
+        {
+          "class_id": 64,
+          "class_name": "possum",
+          "correct": 45,
+          "images": 100,
+          "accuracy_percent": 45.0
+        },
+        {
+          "class_id": 65,
+          "class_name": "rabbit",
+          "correct": 46,
+          "images": 100,
+          "accuracy_percent": 46.0
+        },
+        {
+          "class_id": 66,
+          "class_name": "raccoon",
+          "correct": 68,
+          "images": 100,
+          "accuracy_percent": 68.0
+        },
+        {
+          "class_id": 67,
+          "class_name": "ray",
+          "correct": 47,
+          "images": 100,
+          "accuracy_percent": 47.0
+        },
+        {
+          "class_id": 68,
+          "class_name": "road",
+          "correct": 93,
+          "images": 100,
+          "accuracy_percent": 93.0
+        },
+        {
+          "class_id": 69,
+          "class_name": "rocket",
+          "correct": 74,
+          "images": 100,
+          "accuracy_percent": 74.0
+        },
+        {
+          "class_id": 70,
+          "class_name": "rose",
+          "correct": 69,
+          "images": 100,
+          "accuracy_percent": 69.0
+        },
+        {
+          "class_id": 71,
+          "class_name": "sea",
+          "correct": 83,
+          "images": 100,
+          "accuracy_percent": 83.0
+        },
+        {
+          "class_id": 72,
+          "class_name": "seal",
+          "correct": 36,
+          "images": 100,
+          "accuracy_percent": 36.0
+        },
+        {
+          "class_id": 73,
+          "class_name": "shark",
+          "correct": 48,
+          "images": 100,
+          "accuracy_percent": 48.0
+        },
+        {
+          "class_id": 74,
+          "class_name": "shrew",
+          "correct": 50,
+          "images": 100,
+          "accuracy_percent": 50.0
+        },
+        {
+          "class_id": 75,
+          "class_name": "skunk",
+          "correct": 86,
+          "images": 100,
+          "accuracy_percent": 86.0
+        },
+        {
+          "class_id": 76,
+          "class_name": "skyscraper",
+          "correct": 83,
+          "images": 100,
+          "accuracy_percent": 83.0
+        },
+        {
+          "class_id": 77,
+          "class_name": "snail",
+          "correct": 50,
+          "images": 100,
+          "accuracy_percent": 50.0
+        },
+        {
+          "class_id": 78,
+          "class_name": "snake",
+          "correct": 52,
+          "images": 100,
+          "accuracy_percent": 52.0
+        },
+        {
+          "class_id": 79,
+          "class_name": "spider",
+          "correct": 66,
+          "images": 100,
+          "accuracy_percent": 66.0
+        },
+        {
+          "class_id": 80,
+          "class_name": "squirrel",
+          "correct": 38,
+          "images": 100,
+          "accuracy_percent": 38.0
+        },
+        {
+          "class_id": 81,
+          "class_name": "streetcar",
+          "correct": 67,
+          "images": 100,
+          "accuracy_percent": 67.0
+        },
+        {
+          "class_id": 82,
+          "class_name": "sunflower",
+          "correct": 86,
+          "images": 100,
+          "accuracy_percent": 86.0
+        },
+        {
+          "class_id": 83,
+          "class_name": "sweet_pepper",
+          "correct": 66,
+          "images": 100,
+          "accuracy_percent": 66.0
+        },
+        {
+          "class_id": 84,
+          "class_name": "table",
+          "correct": 49,
+          "images": 100,
+          "accuracy_percent": 49.0
+        },
+        {
+          "class_id": 85,
+          "class_name": "tank",
+          "correct": 67,
+          "images": 100,
+          "accuracy_percent": 67.0
+        },
+        {
+          "class_id": 86,
+          "class_name": "telephone",
+          "correct": 62,
+          "images": 100,
+          "accuracy_percent": 62.0
+        },
+        {
+          "class_id": 87,
+          "class_name": "television",
+          "correct": 75,
+          "images": 100,
+          "accuracy_percent": 75.0
+        },
+        {
+          "class_id": 88,
+          "class_name": "tiger",
+          "correct": 68,
+          "images": 100,
+          "accuracy_percent": 68.0
+        },
+        {
+          "class_id": 89,
+          "class_name": "tractor",
+          "correct": 75,
+          "images": 100,
+          "accuracy_percent": 75.0
+        },
+        {
+          "class_id": 90,
+          "class_name": "train",
+          "correct": 70,
+          "images": 100,
+          "accuracy_percent": 70.0
+        },
+        {
+          "class_id": 91,
+          "class_name": "trout",
+          "correct": 77,
+          "images": 100,
+          "accuracy_percent": 77.0
+        },
+        {
+          "class_id": 92,
+          "class_name": "tulip",
+          "correct": 59,
+          "images": 100,
+          "accuracy_percent": 59.0
+        },
+        {
+          "class_id": 93,
+          "class_name": "turtle",
+          "correct": 39,
+          "images": 100,
+          "accuracy_percent": 39.0
+        },
+        {
+          "class_id": 94,
+          "class_name": "wardrobe",
+          "correct": 86,
+          "images": 100,
+          "accuracy_percent": 86.0
+        },
+        {
+          "class_id": 95,
+          "class_name": "whale",
+          "correct": 66,
+          "images": 100,
+          "accuracy_percent": 66.0
+        },
+        {
+          "class_id": 96,
+          "class_name": "willow_tree",
+          "correct": 44,
+          "images": 100,
+          "accuracy_percent": 44.0
+        },
+        {
+          "class_id": 97,
+          "class_name": "wolf",
+          "correct": 63,
+          "images": 100,
+          "accuracy_percent": 63.0
+        },
+        {
+          "class_id": 98,
+          "class_name": "woman",
+          "correct": 30,
+          "images": 100,
+          "accuracy_percent": 30.0
+        },
+        {
+          "class_id": 99,
+          "class_name": "worm",
+          "correct": 68,
+          "images": 100,
+          "accuracy_percent": 68.0
+        }
+      ],
+      "prediction_sha256": "155b5f16f684fcf6262d88e532716ce9dc43a4e7e41ad74b435f8d507b9d682e"
+    },
+    {
+      "architecture": "mobilenetv3_large",
+      "display_name": "MobileNetV3-Large",
+      "overall_accuracy_percent": 81.34,
+      "worst": [
+        {
+          "class_id": 35,
+          "class_name": "girl",
+          "correct": 50,
+          "images": 100,
+          "accuracy_percent": 50.0
+        }
+      ],
+      "best": [
+        {
+          "class_id": 8,
+          "class_name": "bicycle",
+          "correct": 96,
+          "images": 100,
+          "accuracy_percent": 96.0
+        },
+        {
+          "class_id": 53,
+          "class_name": "orange",
+          "correct": 96,
+          "images": 100,
+          "accuracy_percent": 96.0
+        },
+        {
+          "class_id": 68,
+          "class_name": "road",
+          "correct": 96,
+          "images": 100,
+          "accuracy_percent": 96.0
+        },
+        {
+          "class_id": 89,
+          "class_name": "tractor",
+          "correct": 96,
+          "images": 100,
+          "accuracy_percent": 96.0
+        }
+      ],
+      "middle_ranked_classes": [
+        {
+          "class_id": 37,
+          "class_name": "house",
+          "correct": 83,
+          "images": 100,
+          "accuracy_percent": 83.0
+        },
+        {
+          "class_id": 42,
+          "class_name": "leopard",
+          "correct": 83,
+          "images": 100,
+          "accuracy_percent": 83.0
+        }
+      ],
+      "median_class_accuracy_percent": 83.0,
+      "classes": [
+        {
+          "class_id": 0,
+          "class_name": "apple",
+          "correct": 92,
+          "images": 100,
+          "accuracy_percent": 92.0
+        },
+        {
+          "class_id": 1,
+          "class_name": "aquarium_fish",
+          "correct": 94,
+          "images": 100,
+          "accuracy_percent": 94.0
+        },
+        {
+          "class_id": 2,
+          "class_name": "baby",
+          "correct": 72,
+          "images": 100,
+          "accuracy_percent": 72.0
+        },
+        {
+          "class_id": 3,
+          "class_name": "bear",
+          "correct": 66,
+          "images": 100,
+          "accuracy_percent": 66.0
+        },
+        {
+          "class_id": 4,
+          "class_name": "beaver",
+          "correct": 63,
+          "images": 100,
+          "accuracy_percent": 63.0
+        },
+        {
+          "class_id": 5,
+          "class_name": "bed",
+          "correct": 76,
+          "images": 100,
+          "accuracy_percent": 76.0
+        },
+        {
+          "class_id": 6,
+          "class_name": "bee",
+          "correct": 88,
+          "images": 100,
+          "accuracy_percent": 88.0
+        },
+        {
+          "class_id": 7,
+          "class_name": "beetle",
+          "correct": 83,
+          "images": 100,
+          "accuracy_percent": 83.0
+        },
+        {
+          "class_id": 8,
+          "class_name": "bicycle",
+          "correct": 96,
+          "images": 100,
+          "accuracy_percent": 96.0
+        },
+        {
+          "class_id": 9,
+          "class_name": "bottle",
+          "correct": 88,
+          "images": 100,
+          "accuracy_percent": 88.0
+        },
+        {
+          "class_id": 10,
+          "class_name": "bowl",
+          "correct": 69,
+          "images": 100,
+          "accuracy_percent": 69.0
+        },
+        {
+          "class_id": 11,
+          "class_name": "boy",
+          "correct": 57,
+          "images": 100,
+          "accuracy_percent": 57.0
+        },
+        {
+          "class_id": 12,
+          "class_name": "bridge",
+          "correct": 83,
+          "images": 100,
+          "accuracy_percent": 83.0
+        },
+        {
+          "class_id": 13,
+          "class_name": "bus",
+          "correct": 72,
+          "images": 100,
+          "accuracy_percent": 72.0
+        },
+        {
+          "class_id": 14,
+          "class_name": "butterfly",
+          "correct": 87,
+          "images": 100,
+          "accuracy_percent": 87.0
+        },
+        {
+          "class_id": 15,
+          "class_name": "camel",
+          "correct": 89,
+          "images": 100,
+          "accuracy_percent": 89.0
+        },
+        {
+          "class_id": 16,
+          "class_name": "can",
+          "correct": 88,
+          "images": 100,
+          "accuracy_percent": 88.0
+        },
+        {
+          "class_id": 17,
+          "class_name": "castle",
+          "correct": 83,
+          "images": 100,
+          "accuracy_percent": 83.0
+        },
+        {
+          "class_id": 18,
+          "class_name": "caterpillar",
+          "correct": 79,
+          "images": 100,
+          "accuracy_percent": 79.0
+        },
+        {
+          "class_id": 19,
+          "class_name": "cattle",
+          "correct": 72,
+          "images": 100,
+          "accuracy_percent": 72.0
+        },
+        {
+          "class_id": 20,
+          "class_name": "chair",
+          "correct": 95,
+          "images": 100,
+          "accuracy_percent": 95.0
+        },
+        {
+          "class_id": 21,
+          "class_name": "chimpanzee",
+          "correct": 95,
+          "images": 100,
+          "accuracy_percent": 95.0
+        },
+        {
+          "class_id": 22,
+          "class_name": "clock",
+          "correct": 87,
+          "images": 100,
+          "accuracy_percent": 87.0
+        },
+        {
+          "class_id": 23,
+          "class_name": "cloud",
+          "correct": 83,
+          "images": 100,
+          "accuracy_percent": 83.0
+        },
+        {
+          "class_id": 24,
+          "class_name": "cockroach",
+          "correct": 92,
+          "images": 100,
+          "accuracy_percent": 92.0
+        },
+        {
+          "class_id": 25,
+          "class_name": "couch",
+          "correct": 72,
+          "images": 100,
+          "accuracy_percent": 72.0
+        },
+        {
+          "class_id": 26,
+          "class_name": "crab",
+          "correct": 85,
+          "images": 100,
+          "accuracy_percent": 85.0
+        },
+        {
+          "class_id": 27,
+          "class_name": "crocodile",
+          "correct": 78,
+          "images": 100,
+          "accuracy_percent": 78.0
+        },
+        {
+          "class_id": 28,
+          "class_name": "cup",
+          "correct": 90,
+          "images": 100,
+          "accuracy_percent": 90.0
+        },
+        {
+          "class_id": 29,
+          "class_name": "dinosaur",
+          "correct": 80,
+          "images": 100,
+          "accuracy_percent": 80.0
+        },
+        {
+          "class_id": 30,
+          "class_name": "dolphin",
+          "correct": 75,
+          "images": 100,
+          "accuracy_percent": 75.0
+        },
+        {
+          "class_id": 31,
+          "class_name": "elephant",
+          "correct": 80,
+          "images": 100,
+          "accuracy_percent": 80.0
+        },
+        {
+          "class_id": 32,
+          "class_name": "flatfish",
+          "correct": 73,
+          "images": 100,
+          "accuracy_percent": 73.0
+        },
+        {
+          "class_id": 33,
+          "class_name": "forest",
+          "correct": 76,
+          "images": 100,
+          "accuracy_percent": 76.0
+        },
+        {
+          "class_id": 34,
+          "class_name": "fox",
+          "correct": 85,
+          "images": 100,
+          "accuracy_percent": 85.0
+        },
+        {
+          "class_id": 35,
+          "class_name": "girl",
+          "correct": 50,
+          "images": 100,
+          "accuracy_percent": 50.0
+        },
+        {
+          "class_id": 36,
+          "class_name": "hamster",
+          "correct": 82,
+          "images": 100,
+          "accuracy_percent": 82.0
+        },
+        {
+          "class_id": 37,
+          "class_name": "house",
+          "correct": 83,
+          "images": 100,
+          "accuracy_percent": 83.0
+        },
+        {
+          "class_id": 38,
+          "class_name": "kangaroo",
+          "correct": 84,
+          "images": 100,
+          "accuracy_percent": 84.0
+        },
+        {
+          "class_id": 39,
+          "class_name": "keyboard",
+          "correct": 93,
+          "images": 100,
+          "accuracy_percent": 93.0
+        },
+        {
+          "class_id": 40,
+          "class_name": "lamp",
+          "correct": 77,
+          "images": 100,
+          "accuracy_percent": 77.0
+        },
+        {
+          "class_id": 41,
+          "class_name": "lawn_mower",
+          "correct": 92,
+          "images": 100,
+          "accuracy_percent": 92.0
+        },
+        {
+          "class_id": 42,
+          "class_name": "leopard",
+          "correct": 83,
+          "images": 100,
+          "accuracy_percent": 83.0
+        },
+        {
+          "class_id": 43,
+          "class_name": "lion",
+          "correct": 89,
+          "images": 100,
+          "accuracy_percent": 89.0
+        },
+        {
+          "class_id": 44,
+          "class_name": "lizard",
+          "correct": 70,
+          "images": 100,
+          "accuracy_percent": 70.0
+        },
+        {
+          "class_id": 45,
+          "class_name": "lobster",
+          "correct": 79,
+          "images": 100,
+          "accuracy_percent": 79.0
+        },
+        {
+          "class_id": 46,
+          "class_name": "man",
+          "correct": 64,
+          "images": 100,
+          "accuracy_percent": 64.0
+        },
+        {
+          "class_id": 47,
+          "class_name": "maple_tree",
+          "correct": 70,
+          "images": 100,
+          "accuracy_percent": 70.0
+        },
+        {
+          "class_id": 48,
+          "class_name": "motorcycle",
+          "correct": 95,
+          "images": 100,
+          "accuracy_percent": 95.0
+        },
+        {
+          "class_id": 49,
+          "class_name": "mountain",
+          "correct": 93,
+          "images": 100,
+          "accuracy_percent": 93.0
+        },
+        {
+          "class_id": 50,
+          "class_name": "mouse",
+          "correct": 68,
+          "images": 100,
+          "accuracy_percent": 68.0
+        },
+        {
+          "class_id": 51,
+          "class_name": "mushroom",
+          "correct": 87,
+          "images": 100,
+          "accuracy_percent": 87.0
+        },
+        {
+          "class_id": 52,
+          "class_name": "oak_tree",
+          "correct": 70,
+          "images": 100,
+          "accuracy_percent": 70.0
+        },
+        {
+          "class_id": 53,
+          "class_name": "orange",
+          "correct": 96,
+          "images": 100,
+          "accuracy_percent": 96.0
+        },
+        {
+          "class_id": 54,
+          "class_name": "orchid",
+          "correct": 92,
+          "images": 100,
+          "accuracy_percent": 92.0
+        },
+        {
+          "class_id": 55,
+          "class_name": "otter",
+          "correct": 56,
+          "images": 100,
+          "accuracy_percent": 56.0
+        },
+        {
+          "class_id": 56,
+          "class_name": "palm_tree",
+          "correct": 94,
+          "images": 100,
+          "accuracy_percent": 94.0
+        },
+        {
+          "class_id": 57,
+          "class_name": "pear",
+          "correct": 84,
+          "images": 100,
+          "accuracy_percent": 84.0
+        },
+        {
+          "class_id": 58,
+          "class_name": "pickup_truck",
+          "correct": 92,
+          "images": 100,
+          "accuracy_percent": 92.0
+        },
+        {
+          "class_id": 59,
+          "class_name": "pine_tree",
+          "correct": 73,
+          "images": 100,
+          "accuracy_percent": 73.0
+        },
+        {
+          "class_id": 60,
+          "class_name": "plain",
+          "correct": 86,
+          "images": 100,
+          "accuracy_percent": 86.0
+        },
+        {
+          "class_id": 61,
+          "class_name": "plate",
+          "correct": 71,
+          "images": 100,
+          "accuracy_percent": 71.0
+        },
+        {
+          "class_id": 62,
+          "class_name": "poppy",
+          "correct": 82,
+          "images": 100,
+          "accuracy_percent": 82.0
+        },
+        {
+          "class_id": 63,
+          "class_name": "porcupine",
+          "correct": 74,
+          "images": 100,
+          "accuracy_percent": 74.0
+        },
+        {
+          "class_id": 64,
+          "class_name": "possum",
+          "correct": 63,
+          "images": 100,
+          "accuracy_percent": 63.0
+        },
+        {
+          "class_id": 65,
+          "class_name": "rabbit",
+          "correct": 78,
+          "images": 100,
+          "accuracy_percent": 78.0
+        },
+        {
+          "class_id": 66,
+          "class_name": "raccoon",
+          "correct": 85,
+          "images": 100,
+          "accuracy_percent": 85.0
+        },
+        {
+          "class_id": 67,
+          "class_name": "ray",
+          "correct": 73,
+          "images": 100,
+          "accuracy_percent": 73.0
+        },
+        {
+          "class_id": 68,
+          "class_name": "road",
+          "correct": 96,
+          "images": 100,
+          "accuracy_percent": 96.0
+        },
+        {
+          "class_id": 69,
+          "class_name": "rocket",
+          "correct": 87,
+          "images": 100,
+          "accuracy_percent": 87.0
+        },
+        {
+          "class_id": 70,
+          "class_name": "rose",
+          "correct": 85,
+          "images": 100,
+          "accuracy_percent": 85.0
+        },
+        {
+          "class_id": 71,
+          "class_name": "sea",
+          "correct": 90,
+          "images": 100,
+          "accuracy_percent": 90.0
+        },
+        {
+          "class_id": 72,
+          "class_name": "seal",
+          "correct": 60,
+          "images": 100,
+          "accuracy_percent": 60.0
+        },
+        {
+          "class_id": 73,
+          "class_name": "shark",
+          "correct": 72,
+          "images": 100,
+          "accuracy_percent": 72.0
+        },
+        {
+          "class_id": 74,
+          "class_name": "shrew",
+          "correct": 67,
+          "images": 100,
+          "accuracy_percent": 67.0
+        },
+        {
+          "class_id": 75,
+          "class_name": "skunk",
+          "correct": 93,
+          "images": 100,
+          "accuracy_percent": 93.0
+        },
+        {
+          "class_id": 76,
+          "class_name": "skyscraper",
+          "correct": 93,
+          "images": 100,
+          "accuracy_percent": 93.0
+        },
+        {
+          "class_id": 77,
+          "class_name": "snail",
+          "correct": 86,
+          "images": 100,
+          "accuracy_percent": 86.0
+        },
+        {
+          "class_id": 78,
+          "class_name": "snake",
+          "correct": 85,
+          "images": 100,
+          "accuracy_percent": 85.0
+        },
+        {
+          "class_id": 79,
+          "class_name": "spider",
+          "correct": 86,
+          "images": 100,
+          "accuracy_percent": 86.0
+        },
+        {
+          "class_id": 80,
+          "class_name": "squirrel",
+          "correct": 75,
+          "images": 100,
+          "accuracy_percent": 75.0
+        },
+        {
+          "class_id": 81,
+          "class_name": "streetcar",
+          "correct": 81,
+          "images": 100,
+          "accuracy_percent": 81.0
+        },
+        {
+          "class_id": 82,
+          "class_name": "sunflower",
+          "correct": 95,
+          "images": 100,
+          "accuracy_percent": 95.0
+        },
+        {
+          "class_id": 83,
+          "class_name": "sweet_pepper",
+          "correct": 81,
+          "images": 100,
+          "accuracy_percent": 81.0
+        },
+        {
+          "class_id": 84,
+          "class_name": "table",
+          "correct": 79,
+          "images": 100,
+          "accuracy_percent": 79.0
+        },
+        {
+          "class_id": 85,
+          "class_name": "tank",
+          "correct": 89,
+          "images": 100,
+          "accuracy_percent": 89.0
+        },
+        {
+          "class_id": 86,
+          "class_name": "telephone",
+          "correct": 87,
+          "images": 100,
+          "accuracy_percent": 87.0
+        },
+        {
+          "class_id": 87,
+          "class_name": "television",
+          "correct": 92,
+          "images": 100,
+          "accuracy_percent": 92.0
+        },
+        {
+          "class_id": 88,
+          "class_name": "tiger",
+          "correct": 88,
+          "images": 100,
+          "accuracy_percent": 88.0
+        },
+        {
+          "class_id": 89,
+          "class_name": "tractor",
+          "correct": 96,
+          "images": 100,
+          "accuracy_percent": 96.0
+        },
+        {
+          "class_id": 90,
+          "class_name": "train",
+          "correct": 88,
+          "images": 100,
+          "accuracy_percent": 88.0
+        },
+        {
+          "class_id": 91,
+          "class_name": "trout",
+          "correct": 88,
+          "images": 100,
+          "accuracy_percent": 88.0
+        },
+        {
+          "class_id": 92,
+          "class_name": "tulip",
+          "correct": 75,
+          "images": 100,
+          "accuracy_percent": 75.0
+        },
+        {
+          "class_id": 93,
+          "class_name": "turtle",
+          "correct": 73,
+          "images": 100,
+          "accuracy_percent": 73.0
+        },
+        {
+          "class_id": 94,
+          "class_name": "wardrobe",
+          "correct": 95,
+          "images": 100,
+          "accuracy_percent": 95.0
+        },
+        {
+          "class_id": 95,
+          "class_name": "whale",
+          "correct": 81,
+          "images": 100,
+          "accuracy_percent": 81.0
+        },
+        {
+          "class_id": 96,
+          "class_name": "willow_tree",
+          "correct": 57,
+          "images": 100,
+          "accuracy_percent": 57.0
+        },
+        {
+          "class_id": 97,
+          "class_name": "wolf",
+          "correct": 87,
+          "images": 100,
+          "accuracy_percent": 87.0
+        },
+        {
+          "class_id": 98,
+          "class_name": "woman",
+          "correct": 71,
+          "images": 100,
+          "accuracy_percent": 71.0
+        },
+        {
+          "class_id": 99,
+          "class_name": "worm",
+          "correct": 85,
+          "images": 100,
+          "accuracy_percent": 85.0
+        }
+      ],
+      "prediction_sha256": "8bf145cb53e573553a4339566ad8d1c0aab061a9fccddfedd4e31ee9ceecea5b"
+    },
+    {
+      "architecture": "efficientnet_b0",
+      "display_name": "EfficientNet-B0",
+      "overall_accuracy_percent": 82.73,
+      "worst": [
+        {
+          "class_id": 35,
+          "class_name": "girl",
+          "correct": 53,
+          "images": 100,
+          "accuracy_percent": 53.0
+        }
+      ],
+      "best": [
+        {
+          "class_id": 68,
+          "class_name": "road",
+          "correct": 97,
+          "images": 100,
+          "accuracy_percent": 97.0
+        },
+        {
+          "class_id": 94,
+          "class_name": "wardrobe",
+          "correct": 97,
+          "images": 100,
+          "accuracy_percent": 97.0
+        }
+      ],
+      "middle_ranked_classes": [
+        {
+          "class_id": 84,
+          "class_name": "table",
+          "correct": 83,
+          "images": 100,
+          "accuracy_percent": 83.0
+        },
+        {
+          "class_id": 6,
+          "class_name": "bee",
+          "correct": 84,
+          "images": 100,
+          "accuracy_percent": 84.0
+        }
+      ],
+      "median_class_accuracy_percent": 83.5,
+      "classes": [
+        {
+          "class_id": 0,
+          "class_name": "apple",
+          "correct": 91,
+          "images": 100,
+          "accuracy_percent": 91.0
+        },
+        {
+          "class_id": 1,
+          "class_name": "aquarium_fish",
+          "correct": 96,
+          "images": 100,
+          "accuracy_percent": 96.0
+        },
+        {
+          "class_id": 2,
+          "class_name": "baby",
+          "correct": 66,
+          "images": 100,
+          "accuracy_percent": 66.0
+        },
+        {
+          "class_id": 3,
+          "class_name": "bear",
+          "correct": 73,
+          "images": 100,
+          "accuracy_percent": 73.0
+        },
+        {
+          "class_id": 4,
+          "class_name": "beaver",
+          "correct": 73,
+          "images": 100,
+          "accuracy_percent": 73.0
+        },
+        {
+          "class_id": 5,
+          "class_name": "bed",
+          "correct": 80,
+          "images": 100,
+          "accuracy_percent": 80.0
+        },
+        {
+          "class_id": 6,
+          "class_name": "bee",
+          "correct": 84,
+          "images": 100,
+          "accuracy_percent": 84.0
+        },
+        {
+          "class_id": 7,
+          "class_name": "beetle",
+          "correct": 83,
+          "images": 100,
+          "accuracy_percent": 83.0
+        },
+        {
+          "class_id": 8,
+          "class_name": "bicycle",
+          "correct": 91,
+          "images": 100,
+          "accuracy_percent": 91.0
+        },
+        {
+          "class_id": 9,
+          "class_name": "bottle",
+          "correct": 90,
+          "images": 100,
+          "accuracy_percent": 90.0
+        },
+        {
+          "class_id": 10,
+          "class_name": "bowl",
+          "correct": 66,
+          "images": 100,
+          "accuracy_percent": 66.0
+        },
+        {
+          "class_id": 11,
+          "class_name": "boy",
+          "correct": 62,
+          "images": 100,
+          "accuracy_percent": 62.0
+        },
+        {
+          "class_id": 12,
+          "class_name": "bridge",
+          "correct": 86,
+          "images": 100,
+          "accuracy_percent": 86.0
+        },
+        {
+          "class_id": 13,
+          "class_name": "bus",
+          "correct": 80,
+          "images": 100,
+          "accuracy_percent": 80.0
+        },
+        {
+          "class_id": 14,
+          "class_name": "butterfly",
+          "correct": 90,
+          "images": 100,
+          "accuracy_percent": 90.0
+        },
+        {
+          "class_id": 15,
+          "class_name": "camel",
+          "correct": 88,
+          "images": 100,
+          "accuracy_percent": 88.0
+        },
+        {
+          "class_id": 16,
+          "class_name": "can",
+          "correct": 88,
+          "images": 100,
+          "accuracy_percent": 88.0
+        },
+        {
+          "class_id": 17,
+          "class_name": "castle",
+          "correct": 89,
+          "images": 100,
+          "accuracy_percent": 89.0
+        },
+        {
+          "class_id": 18,
+          "class_name": "caterpillar",
+          "correct": 82,
+          "images": 100,
+          "accuracy_percent": 82.0
+        },
+        {
+          "class_id": 19,
+          "class_name": "cattle",
+          "correct": 83,
+          "images": 100,
+          "accuracy_percent": 83.0
+        },
+        {
+          "class_id": 20,
+          "class_name": "chair",
+          "correct": 96,
+          "images": 100,
+          "accuracy_percent": 96.0
+        },
+        {
+          "class_id": 21,
+          "class_name": "chimpanzee",
+          "correct": 93,
+          "images": 100,
+          "accuracy_percent": 93.0
+        },
+        {
+          "class_id": 22,
+          "class_name": "clock",
+          "correct": 87,
+          "images": 100,
+          "accuracy_percent": 87.0
+        },
+        {
+          "class_id": 23,
+          "class_name": "cloud",
+          "correct": 82,
+          "images": 100,
+          "accuracy_percent": 82.0
+        },
+        {
+          "class_id": 24,
+          "class_name": "cockroach",
+          "correct": 93,
+          "images": 100,
+          "accuracy_percent": 93.0
+        },
+        {
+          "class_id": 25,
+          "class_name": "couch",
+          "correct": 79,
+          "images": 100,
+          "accuracy_percent": 79.0
+        },
+        {
+          "class_id": 26,
+          "class_name": "crab",
+          "correct": 81,
+          "images": 100,
+          "accuracy_percent": 81.0
+        },
+        {
+          "class_id": 27,
+          "class_name": "crocodile",
+          "correct": 82,
+          "images": 100,
+          "accuracy_percent": 82.0
+        },
+        {
+          "class_id": 28,
+          "class_name": "cup",
+          "correct": 89,
+          "images": 100,
+          "accuracy_percent": 89.0
+        },
+        {
+          "class_id": 29,
+          "class_name": "dinosaur",
+          "correct": 80,
+          "images": 100,
+          "accuracy_percent": 80.0
+        },
+        {
+          "class_id": 30,
+          "class_name": "dolphin",
+          "correct": 77,
+          "images": 100,
+          "accuracy_percent": 77.0
+        },
+        {
+          "class_id": 31,
+          "class_name": "elephant",
+          "correct": 78,
+          "images": 100,
+          "accuracy_percent": 78.0
+        },
+        {
+          "class_id": 32,
+          "class_name": "flatfish",
+          "correct": 76,
+          "images": 100,
+          "accuracy_percent": 76.0
+        },
+        {
+          "class_id": 33,
+          "class_name": "forest",
+          "correct": 75,
+          "images": 100,
+          "accuracy_percent": 75.0
+        },
+        {
+          "class_id": 34,
+          "class_name": "fox",
+          "correct": 90,
+          "images": 100,
+          "accuracy_percent": 90.0
+        },
+        {
+          "class_id": 35,
+          "class_name": "girl",
+          "correct": 53,
+          "images": 100,
+          "accuracy_percent": 53.0
+        },
+        {
+          "class_id": 36,
+          "class_name": "hamster",
+          "correct": 86,
+          "images": 100,
+          "accuracy_percent": 86.0
+        },
+        {
+          "class_id": 37,
+          "class_name": "house",
+          "correct": 78,
+          "images": 100,
+          "accuracy_percent": 78.0
+        },
+        {
+          "class_id": 38,
+          "class_name": "kangaroo",
+          "correct": 82,
+          "images": 100,
+          "accuracy_percent": 82.0
+        },
+        {
+          "class_id": 39,
+          "class_name": "keyboard",
+          "correct": 94,
+          "images": 100,
+          "accuracy_percent": 94.0
+        },
+        {
+          "class_id": 40,
+          "class_name": "lamp",
+          "correct": 83,
+          "images": 100,
+          "accuracy_percent": 83.0
+        },
+        {
+          "class_id": 41,
+          "class_name": "lawn_mower",
+          "correct": 95,
+          "images": 100,
+          "accuracy_percent": 95.0
+        },
+        {
+          "class_id": 42,
+          "class_name": "leopard",
+          "correct": 87,
+          "images": 100,
+          "accuracy_percent": 87.0
+        },
+        {
+          "class_id": 43,
+          "class_name": "lion",
+          "correct": 93,
+          "images": 100,
+          "accuracy_percent": 93.0
+        },
+        {
+          "class_id": 44,
+          "class_name": "lizard",
+          "correct": 71,
+          "images": 100,
+          "accuracy_percent": 71.0
+        },
+        {
+          "class_id": 45,
+          "class_name": "lobster",
+          "correct": 78,
+          "images": 100,
+          "accuracy_percent": 78.0
+        },
+        {
+          "class_id": 46,
+          "class_name": "man",
+          "correct": 68,
+          "images": 100,
+          "accuracy_percent": 68.0
+        },
+        {
+          "class_id": 47,
+          "class_name": "maple_tree",
+          "correct": 69,
+          "images": 100,
+          "accuracy_percent": 69.0
+        },
+        {
+          "class_id": 48,
+          "class_name": "motorcycle",
+          "correct": 96,
+          "images": 100,
+          "accuracy_percent": 96.0
+        },
+        {
+          "class_id": 49,
+          "class_name": "mountain",
+          "correct": 90,
+          "images": 100,
+          "accuracy_percent": 90.0
+        },
+        {
+          "class_id": 50,
+          "class_name": "mouse",
+          "correct": 70,
+          "images": 100,
+          "accuracy_percent": 70.0
+        },
+        {
+          "class_id": 51,
+          "class_name": "mushroom",
+          "correct": 87,
+          "images": 100,
+          "accuracy_percent": 87.0
+        },
+        {
+          "class_id": 52,
+          "class_name": "oak_tree",
+          "correct": 78,
+          "images": 100,
+          "accuracy_percent": 78.0
+        },
+        {
+          "class_id": 53,
+          "class_name": "orange",
+          "correct": 96,
+          "images": 100,
+          "accuracy_percent": 96.0
+        },
+        {
+          "class_id": 54,
+          "class_name": "orchid",
+          "correct": 95,
+          "images": 100,
+          "accuracy_percent": 95.0
+        },
+        {
+          "class_id": 55,
+          "class_name": "otter",
+          "correct": 65,
+          "images": 100,
+          "accuracy_percent": 65.0
+        },
+        {
+          "class_id": 56,
+          "class_name": "palm_tree",
+          "correct": 91,
+          "images": 100,
+          "accuracy_percent": 91.0
+        },
+        {
+          "class_id": 57,
+          "class_name": "pear",
+          "correct": 83,
+          "images": 100,
+          "accuracy_percent": 83.0
+        },
+        {
+          "class_id": 58,
+          "class_name": "pickup_truck",
+          "correct": 92,
+          "images": 100,
+          "accuracy_percent": 92.0
+        },
+        {
+          "class_id": 59,
+          "class_name": "pine_tree",
+          "correct": 69,
+          "images": 100,
+          "accuracy_percent": 69.0
+        },
+        {
+          "class_id": 60,
+          "class_name": "plain",
+          "correct": 86,
+          "images": 100,
+          "accuracy_percent": 86.0
+        },
+        {
+          "class_id": 61,
+          "class_name": "plate",
+          "correct": 76,
+          "images": 100,
+          "accuracy_percent": 76.0
+        },
+        {
+          "class_id": 62,
+          "class_name": "poppy",
+          "correct": 83,
+          "images": 100,
+          "accuracy_percent": 83.0
+        },
+        {
+          "class_id": 63,
+          "class_name": "porcupine",
+          "correct": 75,
+          "images": 100,
+          "accuracy_percent": 75.0
+        },
+        {
+          "class_id": 64,
+          "class_name": "possum",
+          "correct": 66,
+          "images": 100,
+          "accuracy_percent": 66.0
+        },
+        {
+          "class_id": 65,
+          "class_name": "rabbit",
+          "correct": 80,
+          "images": 100,
+          "accuracy_percent": 80.0
+        },
+        {
+          "class_id": 66,
+          "class_name": "raccoon",
+          "correct": 89,
+          "images": 100,
+          "accuracy_percent": 89.0
+        },
+        {
+          "class_id": 67,
+          "class_name": "ray",
+          "correct": 73,
+          "images": 100,
+          "accuracy_percent": 73.0
+        },
+        {
+          "class_id": 68,
+          "class_name": "road",
+          "correct": 97,
+          "images": 100,
+          "accuracy_percent": 97.0
+        },
+        {
+          "class_id": 69,
+          "class_name": "rocket",
+          "correct": 86,
+          "images": 100,
+          "accuracy_percent": 86.0
+        },
+        {
+          "class_id": 70,
+          "class_name": "rose",
+          "correct": 86,
+          "images": 100,
+          "accuracy_percent": 86.0
+        },
+        {
+          "class_id": 71,
+          "class_name": "sea",
+          "correct": 91,
+          "images": 100,
+          "accuracy_percent": 91.0
+        },
+        {
+          "class_id": 72,
+          "class_name": "seal",
+          "correct": 61,
+          "images": 100,
+          "accuracy_percent": 61.0
+        },
+        {
+          "class_id": 73,
+          "class_name": "shark",
+          "correct": 75,
+          "images": 100,
+          "accuracy_percent": 75.0
+        },
+        {
+          "class_id": 74,
+          "class_name": "shrew",
+          "correct": 72,
+          "images": 100,
+          "accuracy_percent": 72.0
+        },
+        {
+          "class_id": 75,
+          "class_name": "skunk",
+          "correct": 95,
+          "images": 100,
+          "accuracy_percent": 95.0
+        },
+        {
+          "class_id": 76,
+          "class_name": "skyscraper",
+          "correct": 94,
+          "images": 100,
+          "accuracy_percent": 94.0
+        },
+        {
+          "class_id": 77,
+          "class_name": "snail",
+          "correct": 83,
+          "images": 100,
+          "accuracy_percent": 83.0
+        },
+        {
+          "class_id": 78,
+          "class_name": "snake",
+          "correct": 80,
+          "images": 100,
+          "accuracy_percent": 80.0
+        },
+        {
+          "class_id": 79,
+          "class_name": "spider",
+          "correct": 93,
+          "images": 100,
+          "accuracy_percent": 93.0
+        },
+        {
+          "class_id": 80,
+          "class_name": "squirrel",
+          "correct": 79,
+          "images": 100,
+          "accuracy_percent": 79.0
+        },
+        {
+          "class_id": 81,
+          "class_name": "streetcar",
+          "correct": 84,
+          "images": 100,
+          "accuracy_percent": 84.0
+        },
+        {
+          "class_id": 82,
+          "class_name": "sunflower",
+          "correct": 94,
+          "images": 100,
+          "accuracy_percent": 94.0
+        },
+        {
+          "class_id": 83,
+          "class_name": "sweet_pepper",
+          "correct": 82,
+          "images": 100,
+          "accuracy_percent": 82.0
+        },
+        {
+          "class_id": 84,
+          "class_name": "table",
+          "correct": 83,
+          "images": 100,
+          "accuracy_percent": 83.0
+        },
+        {
+          "class_id": 85,
+          "class_name": "tank",
+          "correct": 88,
+          "images": 100,
+          "accuracy_percent": 88.0
+        },
+        {
+          "class_id": 86,
+          "class_name": "telephone",
+          "correct": 86,
+          "images": 100,
+          "accuracy_percent": 86.0
+        },
+        {
+          "class_id": 87,
+          "class_name": "television",
+          "correct": 94,
+          "images": 100,
+          "accuracy_percent": 94.0
+        },
+        {
+          "class_id": 88,
+          "class_name": "tiger",
+          "correct": 90,
+          "images": 100,
+          "accuracy_percent": 90.0
+        },
+        {
+          "class_id": 89,
+          "class_name": "tractor",
+          "correct": 95,
+          "images": 100,
+          "accuracy_percent": 95.0
+        },
+        {
+          "class_id": 90,
+          "class_name": "train",
+          "correct": 86,
+          "images": 100,
+          "accuracy_percent": 86.0
+        },
+        {
+          "class_id": 91,
+          "class_name": "trout",
+          "correct": 86,
+          "images": 100,
+          "accuracy_percent": 86.0
+        },
+        {
+          "class_id": 92,
+          "class_name": "tulip",
+          "correct": 73,
+          "images": 100,
+          "accuracy_percent": 73.0
+        },
+        {
+          "class_id": 93,
+          "class_name": "turtle",
+          "correct": 85,
+          "images": 100,
+          "accuracy_percent": 85.0
+        },
+        {
+          "class_id": 94,
+          "class_name": "wardrobe",
+          "correct": 97,
+          "images": 100,
+          "accuracy_percent": 97.0
+        },
+        {
+          "class_id": 95,
+          "class_name": "whale",
+          "correct": 78,
+          "images": 100,
+          "accuracy_percent": 78.0
+        },
+        {
+          "class_id": 96,
+          "class_name": "willow_tree",
+          "correct": 61,
+          "images": 100,
+          "accuracy_percent": 61.0
+        },
+        {
+          "class_id": 97,
+          "class_name": "wolf",
+          "correct": 87,
+          "images": 100,
+          "accuracy_percent": 87.0
+        },
+        {
+          "class_id": 98,
+          "class_name": "woman",
+          "correct": 70,
+          "images": 100,
+          "accuracy_percent": 70.0
+        },
+        {
+          "class_id": 99,
+          "class_name": "worm",
+          "correct": 86,
+          "images": 100,
+          "accuracy_percent": 86.0
+        }
+      ],
+      "prediction_sha256": "cc8407256bd406524cae8235fe807b644021c04137b111738988bf70f0029496"
+    },
+    {
+      "architecture": "shufflenetv2_x1_0",
+      "display_name": "ShuffleNetV2 x1.0",
+      "overall_accuracy_percent": 75.64,
+      "worst": [
+        {
+          "class_id": 55,
+          "class_name": "otter",
+          "correct": 41,
+          "images": 100,
+          "accuracy_percent": 41.0
+        }
+      ],
+      "best": [
+        {
+          "class_id": 48,
+          "class_name": "motorcycle",
+          "correct": 97,
+          "images": 100,
+          "accuracy_percent": 97.0
+        }
+      ],
+      "middle_ranked_classes": [
+        {
+          "class_id": 37,
+          "class_name": "house",
+          "correct": 76,
+          "images": 100,
+          "accuracy_percent": 76.0
+        },
+        {
+          "class_id": 62,
+          "class_name": "poppy",
+          "correct": 76,
+          "images": 100,
+          "accuracy_percent": 76.0
+        }
+      ],
+      "median_class_accuracy_percent": 76.0,
+      "classes": [
+        {
+          "class_id": 0,
+          "class_name": "apple",
+          "correct": 83,
+          "images": 100,
+          "accuracy_percent": 83.0
+        },
+        {
+          "class_id": 1,
+          "class_name": "aquarium_fish",
+          "correct": 85,
+          "images": 100,
+          "accuracy_percent": 85.0
+        },
+        {
+          "class_id": 2,
+          "class_name": "baby",
+          "correct": 67,
+          "images": 100,
+          "accuracy_percent": 67.0
+        },
+        {
+          "class_id": 3,
+          "class_name": "bear",
+          "correct": 54,
+          "images": 100,
+          "accuracy_percent": 54.0
+        },
+        {
+          "class_id": 4,
+          "class_name": "beaver",
+          "correct": 61,
+          "images": 100,
+          "accuracy_percent": 61.0
+        },
+        {
+          "class_id": 5,
+          "class_name": "bed",
+          "correct": 73,
+          "images": 100,
+          "accuracy_percent": 73.0
+        },
+        {
+          "class_id": 6,
+          "class_name": "bee",
+          "correct": 86,
+          "images": 100,
+          "accuracy_percent": 86.0
+        },
+        {
+          "class_id": 7,
+          "class_name": "beetle",
+          "correct": 76,
+          "images": 100,
+          "accuracy_percent": 76.0
+        },
+        {
+          "class_id": 8,
+          "class_name": "bicycle",
+          "correct": 91,
+          "images": 100,
+          "accuracy_percent": 91.0
+        },
+        {
+          "class_id": 9,
+          "class_name": "bottle",
+          "correct": 90,
+          "images": 100,
+          "accuracy_percent": 90.0
+        },
+        {
+          "class_id": 10,
+          "class_name": "bowl",
+          "correct": 59,
+          "images": 100,
+          "accuracy_percent": 59.0
+        },
+        {
+          "class_id": 11,
+          "class_name": "boy",
+          "correct": 55,
+          "images": 100,
+          "accuracy_percent": 55.0
+        },
+        {
+          "class_id": 12,
+          "class_name": "bridge",
+          "correct": 81,
+          "images": 100,
+          "accuracy_percent": 81.0
+        },
+        {
+          "class_id": 13,
+          "class_name": "bus",
+          "correct": 72,
+          "images": 100,
+          "accuracy_percent": 72.0
+        },
+        {
+          "class_id": 14,
+          "class_name": "butterfly",
+          "correct": 78,
+          "images": 100,
+          "accuracy_percent": 78.0
+        },
+        {
+          "class_id": 15,
+          "class_name": "camel",
+          "correct": 80,
+          "images": 100,
+          "accuracy_percent": 80.0
+        },
+        {
+          "class_id": 16,
+          "class_name": "can",
+          "correct": 85,
+          "images": 100,
+          "accuracy_percent": 85.0
+        },
+        {
+          "class_id": 17,
+          "class_name": "castle",
+          "correct": 85,
+          "images": 100,
+          "accuracy_percent": 85.0
+        },
+        {
+          "class_id": 18,
+          "class_name": "caterpillar",
+          "correct": 66,
+          "images": 100,
+          "accuracy_percent": 66.0
+        },
+        {
+          "class_id": 19,
+          "class_name": "cattle",
+          "correct": 73,
+          "images": 100,
+          "accuracy_percent": 73.0
+        },
+        {
+          "class_id": 20,
+          "class_name": "chair",
+          "correct": 90,
+          "images": 100,
+          "accuracy_percent": 90.0
+        },
+        {
+          "class_id": 21,
+          "class_name": "chimpanzee",
+          "correct": 89,
+          "images": 100,
+          "accuracy_percent": 89.0
+        },
+        {
+          "class_id": 22,
+          "class_name": "clock",
+          "correct": 79,
+          "images": 100,
+          "accuracy_percent": 79.0
+        },
+        {
+          "class_id": 23,
+          "class_name": "cloud",
+          "correct": 77,
+          "images": 100,
+          "accuracy_percent": 77.0
+        },
+        {
+          "class_id": 24,
+          "class_name": "cockroach",
+          "correct": 92,
+          "images": 100,
+          "accuracy_percent": 92.0
+        },
+        {
+          "class_id": 25,
+          "class_name": "couch",
+          "correct": 63,
+          "images": 100,
+          "accuracy_percent": 63.0
+        },
+        {
+          "class_id": 26,
+          "class_name": "crab",
+          "correct": 75,
+          "images": 100,
+          "accuracy_percent": 75.0
+        },
+        {
+          "class_id": 27,
+          "class_name": "crocodile",
+          "correct": 62,
+          "images": 100,
+          "accuracy_percent": 62.0
+        },
+        {
+          "class_id": 28,
+          "class_name": "cup",
+          "correct": 84,
+          "images": 100,
+          "accuracy_percent": 84.0
+        },
+        {
+          "class_id": 29,
+          "class_name": "dinosaur",
+          "correct": 75,
+          "images": 100,
+          "accuracy_percent": 75.0
+        },
+        {
+          "class_id": 30,
+          "class_name": "dolphin",
+          "correct": 71,
+          "images": 100,
+          "accuracy_percent": 71.0
+        },
+        {
+          "class_id": 31,
+          "class_name": "elephant",
+          "correct": 76,
+          "images": 100,
+          "accuracy_percent": 76.0
+        },
+        {
+          "class_id": 32,
+          "class_name": "flatfish",
+          "correct": 65,
+          "images": 100,
+          "accuracy_percent": 65.0
+        },
+        {
+          "class_id": 33,
+          "class_name": "forest",
+          "correct": 76,
+          "images": 100,
+          "accuracy_percent": 76.0
+        },
+        {
+          "class_id": 34,
+          "class_name": "fox",
+          "correct": 80,
+          "images": 100,
+          "accuracy_percent": 80.0
+        },
+        {
+          "class_id": 35,
+          "class_name": "girl",
+          "correct": 45,
+          "images": 100,
+          "accuracy_percent": 45.0
+        },
+        {
+          "class_id": 36,
+          "class_name": "hamster",
+          "correct": 76,
+          "images": 100,
+          "accuracy_percent": 76.0
+        },
+        {
+          "class_id": 37,
+          "class_name": "house",
+          "correct": 76,
+          "images": 100,
+          "accuracy_percent": 76.0
+        },
+        {
+          "class_id": 38,
+          "class_name": "kangaroo",
+          "correct": 63,
+          "images": 100,
+          "accuracy_percent": 63.0
+        },
+        {
+          "class_id": 39,
+          "class_name": "keyboard",
+          "correct": 89,
+          "images": 100,
+          "accuracy_percent": 89.0
+        },
+        {
+          "class_id": 40,
+          "class_name": "lamp",
+          "correct": 71,
+          "images": 100,
+          "accuracy_percent": 71.0
+        },
+        {
+          "class_id": 41,
+          "class_name": "lawn_mower",
+          "correct": 82,
+          "images": 100,
+          "accuracy_percent": 82.0
+        },
+        {
+          "class_id": 42,
+          "class_name": "leopard",
+          "correct": 80,
+          "images": 100,
+          "accuracy_percent": 80.0
+        },
+        {
+          "class_id": 43,
+          "class_name": "lion",
+          "correct": 84,
+          "images": 100,
+          "accuracy_percent": 84.0
+        },
+        {
+          "class_id": 44,
+          "class_name": "lizard",
+          "correct": 66,
+          "images": 100,
+          "accuracy_percent": 66.0
+        },
+        {
+          "class_id": 45,
+          "class_name": "lobster",
+          "correct": 62,
+          "images": 100,
+          "accuracy_percent": 62.0
+        },
+        {
+          "class_id": 46,
+          "class_name": "man",
+          "correct": 61,
+          "images": 100,
+          "accuracy_percent": 61.0
+        },
+        {
+          "class_id": 47,
+          "class_name": "maple_tree",
+          "correct": 62,
+          "images": 100,
+          "accuracy_percent": 62.0
+        },
+        {
+          "class_id": 48,
+          "class_name": "motorcycle",
+          "correct": 97,
+          "images": 100,
+          "accuracy_percent": 97.0
+        },
+        {
+          "class_id": 49,
+          "class_name": "mountain",
+          "correct": 90,
+          "images": 100,
+          "accuracy_percent": 90.0
+        },
+        {
+          "class_id": 50,
+          "class_name": "mouse",
+          "correct": 69,
+          "images": 100,
+          "accuracy_percent": 69.0
+        },
+        {
+          "class_id": 51,
+          "class_name": "mushroom",
+          "correct": 74,
+          "images": 100,
+          "accuracy_percent": 74.0
+        },
+        {
+          "class_id": 52,
+          "class_name": "oak_tree",
+          "correct": 72,
+          "images": 100,
+          "accuracy_percent": 72.0
+        },
+        {
+          "class_id": 53,
+          "class_name": "orange",
+          "correct": 96,
+          "images": 100,
+          "accuracy_percent": 96.0
+        },
+        {
+          "class_id": 54,
+          "class_name": "orchid",
+          "correct": 87,
+          "images": 100,
+          "accuracy_percent": 87.0
+        },
+        {
+          "class_id": 55,
+          "class_name": "otter",
+          "correct": 41,
+          "images": 100,
+          "accuracy_percent": 41.0
+        },
+        {
+          "class_id": 56,
+          "class_name": "palm_tree",
+          "correct": 88,
+          "images": 100,
+          "accuracy_percent": 88.0
+        },
+        {
+          "class_id": 57,
+          "class_name": "pear",
+          "correct": 75,
+          "images": 100,
+          "accuracy_percent": 75.0
+        },
+        {
+          "class_id": 58,
+          "class_name": "pickup_truck",
+          "correct": 80,
+          "images": 100,
+          "accuracy_percent": 80.0
+        },
+        {
+          "class_id": 59,
+          "class_name": "pine_tree",
+          "correct": 64,
+          "images": 100,
+          "accuracy_percent": 64.0
+        },
+        {
+          "class_id": 60,
+          "class_name": "plain",
+          "correct": 87,
+          "images": 100,
+          "accuracy_percent": 87.0
+        },
+        {
+          "class_id": 61,
+          "class_name": "plate",
+          "correct": 72,
+          "images": 100,
+          "accuracy_percent": 72.0
+        },
+        {
+          "class_id": 62,
+          "class_name": "poppy",
+          "correct": 76,
+          "images": 100,
+          "accuracy_percent": 76.0
+        },
+        {
+          "class_id": 63,
+          "class_name": "porcupine",
+          "correct": 63,
+          "images": 100,
+          "accuracy_percent": 63.0
+        },
+        {
+          "class_id": 64,
+          "class_name": "possum",
+          "correct": 53,
+          "images": 100,
+          "accuracy_percent": 53.0
+        },
+        {
+          "class_id": 65,
+          "class_name": "rabbit",
+          "correct": 68,
+          "images": 100,
+          "accuracy_percent": 68.0
+        },
+        {
+          "class_id": 66,
+          "class_name": "raccoon",
+          "correct": 87,
+          "images": 100,
+          "accuracy_percent": 87.0
+        },
+        {
+          "class_id": 67,
+          "class_name": "ray",
+          "correct": 72,
+          "images": 100,
+          "accuracy_percent": 72.0
+        },
+        {
+          "class_id": 68,
+          "class_name": "road",
+          "correct": 94,
+          "images": 100,
+          "accuracy_percent": 94.0
+        },
+        {
+          "class_id": 69,
+          "class_name": "rocket",
+          "correct": 82,
+          "images": 100,
+          "accuracy_percent": 82.0
+        },
+        {
+          "class_id": 70,
+          "class_name": "rose",
+          "correct": 81,
+          "images": 100,
+          "accuracy_percent": 81.0
+        },
+        {
+          "class_id": 71,
+          "class_name": "sea",
+          "correct": 83,
+          "images": 100,
+          "accuracy_percent": 83.0
+        },
+        {
+          "class_id": 72,
+          "class_name": "seal",
+          "correct": 59,
+          "images": 100,
+          "accuracy_percent": 59.0
+        },
+        {
+          "class_id": 73,
+          "class_name": "shark",
+          "correct": 70,
+          "images": 100,
+          "accuracy_percent": 70.0
+        },
+        {
+          "class_id": 74,
+          "class_name": "shrew",
+          "correct": 62,
+          "images": 100,
+          "accuracy_percent": 62.0
+        },
+        {
+          "class_id": 75,
+          "class_name": "skunk",
+          "correct": 89,
+          "images": 100,
+          "accuracy_percent": 89.0
+        },
+        {
+          "class_id": 76,
+          "class_name": "skyscraper",
+          "correct": 89,
+          "images": 100,
+          "accuracy_percent": 89.0
+        },
+        {
+          "class_id": 77,
+          "class_name": "snail",
+          "correct": 70,
+          "images": 100,
+          "accuracy_percent": 70.0
+        },
+        {
+          "class_id": 78,
+          "class_name": "snake",
+          "correct": 68,
+          "images": 100,
+          "accuracy_percent": 68.0
+        },
+        {
+          "class_id": 79,
+          "class_name": "spider",
+          "correct": 79,
+          "images": 100,
+          "accuracy_percent": 79.0
+        },
+        {
+          "class_id": 80,
+          "class_name": "squirrel",
+          "correct": 72,
+          "images": 100,
+          "accuracy_percent": 72.0
+        },
+        {
+          "class_id": 81,
+          "class_name": "streetcar",
+          "correct": 77,
+          "images": 100,
+          "accuracy_percent": 77.0
+        },
+        {
+          "class_id": 82,
+          "class_name": "sunflower",
+          "correct": 89,
+          "images": 100,
+          "accuracy_percent": 89.0
+        },
+        {
+          "class_id": 83,
+          "class_name": "sweet_pepper",
+          "correct": 72,
+          "images": 100,
+          "accuracy_percent": 72.0
+        },
+        {
+          "class_id": 84,
+          "class_name": "table",
+          "correct": 77,
+          "images": 100,
+          "accuracy_percent": 77.0
+        },
+        {
+          "class_id": 85,
+          "class_name": "tank",
+          "correct": 89,
+          "images": 100,
+          "accuracy_percent": 89.0
+        },
+        {
+          "class_id": 86,
+          "class_name": "telephone",
+          "correct": 83,
+          "images": 100,
+          "accuracy_percent": 83.0
+        },
+        {
+          "class_id": 87,
+          "class_name": "television",
+          "correct": 86,
+          "images": 100,
+          "accuracy_percent": 86.0
+        },
+        {
+          "class_id": 88,
+          "class_name": "tiger",
+          "correct": 81,
+          "images": 100,
+          "accuracy_percent": 81.0
+        },
+        {
+          "class_id": 89,
+          "class_name": "tractor",
+          "correct": 82,
+          "images": 100,
+          "accuracy_percent": 82.0
+        },
+        {
+          "class_id": 90,
+          "class_name": "train",
+          "correct": 84,
+          "images": 100,
+          "accuracy_percent": 84.0
+        },
+        {
+          "class_id": 91,
+          "class_name": "trout",
+          "correct": 86,
+          "images": 100,
+          "accuracy_percent": 86.0
+        },
+        {
+          "class_id": 92,
+          "class_name": "tulip",
+          "correct": 73,
+          "images": 100,
+          "accuracy_percent": 73.0
+        },
+        {
+          "class_id": 93,
+          "class_name": "turtle",
+          "correct": 70,
+          "images": 100,
+          "accuracy_percent": 70.0
+        },
+        {
+          "class_id": 94,
+          "class_name": "wardrobe",
+          "correct": 93,
+          "images": 100,
+          "accuracy_percent": 93.0
+        },
+        {
+          "class_id": 95,
+          "class_name": "whale",
+          "correct": 72,
+          "images": 100,
+          "accuracy_percent": 72.0
+        },
+        {
+          "class_id": 96,
+          "class_name": "willow_tree",
+          "correct": 54,
+          "images": 100,
+          "accuracy_percent": 54.0
+        },
+        {
+          "class_id": 97,
+          "class_name": "wolf",
+          "correct": 80,
+          "images": 100,
+          "accuracy_percent": 80.0
+        },
+        {
+          "class_id": 98,
+          "class_name": "woman",
+          "correct": 56,
+          "images": 100,
+          "accuracy_percent": 56.0
+        },
+        {
+          "class_id": 99,
+          "class_name": "worm",
+          "correct": 80,
+          "images": 100,
+          "accuracy_percent": 80.0
+        }
+      ],
+      "prediction_sha256": "613b435af0f8943e72ab2aa356ba4493d3c8f9fced4287e7fd50f8c13038cb68"
+    }
+  ]
+}
