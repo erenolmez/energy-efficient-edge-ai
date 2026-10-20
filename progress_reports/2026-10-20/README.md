@@ -1,9 +1,11 @@
 # Thesis progress report: 20 October 2026
 
 Compile `progress_report.tex` with a TeX distribution supporting TikZ and the
-packages declared in its preamble. The checked PDF has four pages. The revised
-first page explicitly explains correctness targets, training, outputs, batch
-aggregation, model selection and accuracy-allowance calibration. The ML versus
+packages declared in its preamble. The checked PDF has four pages. The expanded
+first section explains scalar inputs and cost-rank mapping, and correctness
+targets, training, outputs, batch aggregation, model selection and calibration.
+Sections flow without forced page breaks. Per-class strengths is a separate
+section, explicitly using the full balanced 10,000-image test set. The ML versus
 optimization section is condensed; the adaptable-router proposal occupies
 approximately half a page.
 

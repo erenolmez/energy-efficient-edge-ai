@@ -27,18 +27,22 @@
 \section*{1. From scalar routing to correctness routing}
 We used classical feature-based predictors and lightweight convolutional neural networks (CNNs). We changed from a scalar cost-rank target to 213 correctness targets to exploit PERTINENCE's motivation: \textbf{models have complementary strengths}. A model with lower overall accuracy can outperform a stronger model on particular inputs.
 
-\textbf{Training data.} Base classifiers received 45,000 image/class-label pairs. Each router used a 5,000-image development pool with separate fitting/calibration subsets: scalar training paired batch mosaics/features with mean cost-rank targets; correctness training paired images with 213 correct/wrong targets derived from saved classifier predictions. Frozen policies were evaluated on 10,000 test images; no true labels enter deployed routing.
+\textbf{Training data.} Base classifiers used 45,000 labelled images; routers used a 5,000-image development pool with separate fitting/calibration subsets. Scalar targets are batch cost ranks; correctness targets are 213 correct/wrong indicators from saved predictions. Evaluation uses 10,000 test images; deployed routing never receives true labels.
 
 \textbf{Scalar routing: training target and model selection.}
+The classical predictors receive 13 statistics: RGB mean/std (six values), grayscale mean/std, gradient mean/std, edge density, a saturation proxy and between-image brightness variation. The scalar TinyCNN instead receives a $32\times32$ mosaic of 16 sampled $8\times8$ image tiles. Its convolutional channels are $3\to16\to24\to32\to48$, using depthwise/pointwise blocks with batch normalization/ReLU. Global average pooling gives 48 features; a linear layer produces \textbf{one scalar cost-rank score per batch}. A separate calibrated mapping converts that score into a model choice.
+
 \begin{enumerate}[leftmargin=1.5em,itemsep=.15em,topsep=.2em]
 \item Measure candidate costs at the chosen batch size. For latency, order models from fastest to slowest; for energy, order them from least to most GPU energy. This ordering uses \emph{cost}, not accuracy.
 \item Use all candidates' saved predictions on each labelled fitting image to mark them correct or wrong.
 \item Find the \emph{cheapest candidate that was correct on that image}. If its zero-based position is $r$, the training target is $s=r/(M-1)$, where $M=213$. If every candidate fails, use the reference model's position as fallback.
 \item Average the per-image ranks to obtain the batch target; train the scalar CNN with mean squared error (MSE). No true labels enter inference.
 \end{enumerate}
-For five cost-ordered candidates A--E, if A/B fail and C/D succeed, C has rank 2 and target $2/(5-1)=.50$. This is \textbf{not 50\% confidence}: it encodes the cheapest successful position.
+For five cost-ordered candidates A--E, if A/B fail and C/D succeed, C has rank 2 and target $2/(5-1)=.50$: \textbf{a position, not 50\% confidence}. Prior measurements create the list; the CNN does not generate it. One predicted score selects a position, whose model processes the original batch. More expensive does not guarantee more accurate on that input.
 
-\textbf{Scalar calibration: choosing the score-to-model mapping.} Calibration is a rehearsal, not more weight training. With the predictor fixed, try 1,601 biases $b\in[-1,1]$ on labelled calibration images. Each bias changes the selected cost position to $\operatorname{clip}(\lfloor(z+b)M\rfloor,0,M-1)$ for score $z$. Count the chosen classifiers' correct answers using saved predictions; estimate their cost. A reference accuracy of 86\% with a 1-point allowance requires 85\%. Keep the cheapest passing mapping, otherwise the reference alone. With five candidates, $z=.46$ selects C for $b=0$, B for $b=-.10$. Freeze $b$ before testing; no test labels enter calibration.
+\textbf{Scalar calibration: choosing the score-to-model mapping.} Calibration is a rehearsal, not more weight training. Fix the predictor and try 1,601 biases $b\in[-1,1]$. Each maps score $z$ to position $\operatorname{clip}(\lfloor(z+b)M\rfloor,0,M-1)$. Check actual accuracy using saved predictions and calibration labels, then estimate cost. An 86\% reference with a 1-point allowance requires 85\%. Keep the cheapest passing mapping, otherwise the reference alone. Freeze $b$ before testing; it is a shared policy adjustment, not another CNN output.
+
+\textbf{How one number selects a model.} Suppose four models have measured latencies A: 1 ms, B: 4 ms, C: 2 ms and D: 8 ms. Sorting gives the fixed list $[\mathrm{A},\mathrm{C},\mathrm{B},\mathrm{D}]$, with positions 0--3. For $z=.55$ and $b=0$, $\lfloor .55\times4\rfloor=2$: select B. With $b=.20$, the same score gives position 3: select D. Clipping prevents an index outside the list. Thus, the score neither creates the list nor specifies an accuracy percentage. Energy uses its own measured ordering and calibration; it need not order the models the same way.
 
 \begin{center}
 \begin{tikzpicture}[>=stealth,b/.style={draw,rounded corners,align=center,font=\footnotesize,text width=2.55cm,minimum height=10mm}]
@@ -54,11 +58,13 @@ For five cost-ordered candidates A--E, if A/B fail and C/D succeed, C has rank 2
 \textbf{Correctness routing: targets, training and model selection.}
 \begin{enumerate}[leftmargin=1.5em,itemsep=.1em,topsep=.15em]
 \item \emph{Targets:} for each labelled fitting image $x$ and candidate $m$, set $y_m(x)=1$ if the saved prediction equals the true class, otherwise 0. Each image has 213 binary targets. A wrong/B correct/C correct gives $(0,1,1)$: unlike scalar rank, it preserves both successful alternatives.
-\item \emph{Input and training:} the TinyCNN receives normalized RGB image content pooled to $16\times16$, not the true class or candidate predictions. Its 213 logits become probabilities $p_m(x)$ through sigmoid. Binary cross-entropy compares every output with its correct/wrong target; weights learn image patterns associated with candidate success.
+\item \emph{Input and training:} the TinyCNN receives normalized RGB image content pooled to $16\times16$, not the true class or candidate predictions. Channels $3\to16\to24\to32$ use strided depthwise/pointwise ReLU blocks, without batch normalization. Global average pooling gives 32 features; a linear layer produces 213 logits, one per candidate. Sigmoid converts these to probabilities $p_m(x)$. Binary cross-entropy compares every output with its correct/wrong target. Training uses 20 epochs, Adam at 0.001 and minibatches of 64, for seeds 42/45/48.
 \item \emph{Outputs:} $p_m(x)$ estimates the probability that candidate $m$ classifies image $x$ correctly, not its CIFAR-100 class. Outputs need not sum to one: several candidates can succeed. Average each candidate's probabilities over the batch to obtain $q_m$.
 \item \emph{Selection:} let $C_m$ be measured latency or GPU energy at this batch size, and $C_{\max}$ the largest cost. Choose the candidate maximizing $q_m-\lambda C_m/C_{\max}$. For hypothetical $q=(.70,.90,.85)$, normalized costs $(.20,1,.40)$ and $\lambda=.10$, scores are $(.68,.80,.81)$: C wins and predicts classes for the whole batch.
 \end{enumerate}
-\textbf{Correctness calibration: choosing the cost-preference dial.} Keep CNN weights fixed and try penalties $\lambda$: smaller favours predicted success, larger favours cheaper models. For each setting, select models for calibration batches and count their \emph{actual correct answers} using saved classifier predictions and calibration labels, not CNN confidence. Keep the lowest estimated-cost setting meeting reference accuracy minus the allowance; otherwise use the reference. Calibrate latency/energy separately, then freeze the policy. Passing calibration does not guarantee a test accuracy pass.
+\textbf{Correctness calibration: choosing the cost-preference dial.} Fix CNN weights and try penalties $\lambda$: smaller favours predicted success, larger favours cheaper models. Check selected models' \emph{actual correct answers} using saved predictions and calibration labels, not CNN confidence. Keep the lowest estimated-cost setting meeting reference accuracy minus the allowance; otherwise use the reference. Calibrate latency/energy separately and freeze the policy. Passing calibration does not guarantee a test accuracy pass.
+
+\textbf{Why change the target?} Scalar supervision keeps only the cheapest successful rank: it discards which other models succeeded. Correctness supervision retains those alternatives, so the cost rule can choose between candidates predicted to succeed. For example, $p_B(x)=.90$ means an estimated 90\% chance that B will classify this image correctly, not a prediction of CIFAR-100 class 90. Only the selected classifier supplies the final class label. These estimates can be wrong; the measured accuracy/cost comparison, not the richer output alone, determines whether routing helps.
 
 \begin{center}
 \begin{tikzpicture}[>=stealth,b/.style={draw,rounded corners,align=center,font=\footnotesize,text width=2.0cm,minimum height=10mm},o/.style={draw,rounded corners,fill=green!7,align=center,font=\footnotesize,text width=1.45cm,minimum height=5mm}]
@@ -76,7 +82,6 @@ For five cost-ordered candidates A--E, if A/B fail and C/D succeed, C has rank 2
 \draw[->] (q)--(c);\draw[->] (c)--(d);
 \end{tikzpicture}
 \end{center}
-\newpage
 \section*{2. Why the 1.5-point results change sharply}
 \textbf{The smaller model at 1.5 points is the static comparator, not necessarily the router's choice.} The router selects a model per batch; validation independently selects the cheapest eligible \emph{fixed} benchmark. Allowances are percentage-point losses (pp). Relaxing one can admit a much faster benchmark even if routing does not change.
 
@@ -127,26 +132,21 @@ Allowance & Acc.\% & Route ms/mJ per image & Original benchmark & Original L\% /
 
 \textbf{Related work (untested extensions here).} \href{https://arxiv.org/abs/2001.10741}{Tornede et al.\ (2020)} describes instance--algorithm pair scoring; \href{https://arxiv.org/abs/1810.01270}{META-DES} learns competence. \href{https://arxiv.org/abs/1703.06114}{Deep Sets} (Zaheer et al., 2017) could summarize model profiles, with extra computation; changing lists does not require it.
 
-\newpage
 \section*{4. Does the learned router beat uniform random selection?}
-\textbf{Answer: yes on accuracy in all 24 settings at each batch size.} At batch 64, learned accuracy is 81.86--85.64\% versus 36.26\% for uniform random; at batch 128 it is 82.25--85.39\% versus 36.25\%. Learned median latency is lower in all 24 settings at each batch; GPU energy is lower in 24/24 at batch 64 and 21/24 at batch 128. Uniform draws from all 213 candidates, including severe pruning/quantization failures. Beating it does not establish an advantage over a good static model.
+\textbf{Answer: yes in all 24 settings per batch size.} Learned accuracy is 81.86--85.64\% (b64) and 82.25--85.39\% (b128), versus uniform's 36.26\% and 36.25\%. Learned latency is lower in all settings; energy is lower in 24/24 and 21/24. Uniform samples all 213 candidates, including accuracy failures; it is not a strong static baseline.
 
-\textbf{Comparison with the previous table.} Match objective, seed, batch and allowance to the 13 October correctness matrix. All 48 fresh learned accuracies equal the corresponding previous values, and fresh selection counts reproduce the frozen policies. Timings are remeasured, not copied. Each batch study comprises 495 full-test sweeps, with five trials per setting. Historical coverage: 52 global scalar settings and 120 correctness settings; scalar CNN fitted/exported, not globally measured.
+\textbf{Comparison with 13 October.} All 48 learned accuracies and selection counts match the frozen policies. Costs were remeasured: five trials per setting, 495 sweeps per batch study.
 
-\textbf{Reading the table.} ML is learned routing; R is uniform random. Accuracy columns show ML / R percentages (five-trial means). In each cost cell the pair is latency saving \% / GPU-energy saving \%, not raw costs. $\delta$ is the allowed accuracy loss in percentage points (pp); $*$ marks learned mean accuracy failing its allowance against the 85.80\% R101 FP32 reference. Every uniform row fails. L/E in Obj./seed denotes the latency/energy calibration objective.
+\textbf{Table key.} ML/R = learned/uniform; accuracy is the repeat mean. Cost pairs = median latency / GPU-energy savings (\%): $100(C_{\rm benchmark}-C_{\rm method})/C_{\rm benchmark}$, using the freshly measured 13 October eligible static benchmark. Positive means cheaper. L/E = objective; $\delta$ = allowance (pp); $*$ = accuracy failure versus R101 FP32 (85.80\%). Every uniform row fails.
 
-\textbf{Savings baseline.} The Benchmark identity is the original 13 October validation-selected eligible static model, measured afresh per case. Saving is $100(C_{\rm benchmark}-C_{\rm method})/C_{\rm benchmark}$ for repeat-median latency or energy. Positive means cheaper; negative means worse. Identity is the same for the paired batch-64/128 rows, but its measured cost differs by batch and case.
 \begin{center}\footnotesize\setlength{\tabcolsep}{2.0pt}\renewcommand{\arraystretch}{1.25}\input{uniform_batches_savings.tex}\end{center}
 
-\textbf{Shared random trials and uncertainty.} Uniform controls are reused across objectives/allowances, not independent experiments per row. For seeds 42/45/48, accuracy mean $\pm$ sample standard deviation is respectively 36.36$\pm$2.64, 36.67$\pm$1.47, 35.76$\pm$2.12\% at batch 64, and 36.15$\pm$2.07, 37.28$\pm$4.22, 35.34$\pm$2.57\% at batch 128. Different row benchmarks explain why identical random measurements can have different savings.
+Uniform trials are shared across objectives/allowances; differing benchmarks explain differing savings for the same random control. GPU thermal/power limits constrain timing comparisons. No test-label tuning was used.
 
-{\small \textbf{Implementation details.} Scalar inputs: 13 statistics (RGB/grayscale/gradient mean/std, edge density, saturation proxy, brightness variation). Scalar TinyCNN: 16 sampled $8\times8$ tiles; $3\to16\to24\to32\to48$, depthwise/pointwise blocks, batch normalization/ReLU, global pooling, 48-to-1 linear layer. Correctness CNN: $3\to16\to24\to32$, strided depthwise/pointwise ReLU blocks, global pooling, 32-to-213 linear layer, no batch normalization; 20 epochs, Adam 0.001, minibatches 64; seeds 42/45/48.}
-
-\textbf{Timing boundary and caution.} Both paths include fresh GPU preprocessing, load/eviction, inference and synchronization (cache capacity 2). Learned routing also runs its CNN; random dispatch lookup is timed, schedule generation is not. Observed GPU thermal/power limits and R101 FP32 sweep times 15.4--58 s prevent attributing every timing change to routing. All accuracy failures remain; test results never retuned policies.
-
-\newpage
 \section*{5. Always using a fixed 80\%-pruned model}
-\textbf{Answer: lower cost, but unacceptable accuracy loss.} These completed p80 controls reach 0.93--22.55\% accuracy, versus 85.80\% for unpruned R101 FP32. None meets a 0.5/1/1.5/2-pp allowance. Here p80 means the nominal 80\% pruning setting, not a guarantee of 80\% fewer operations; INT8 is 8-bit integer precision. Seven architectures, three precisions, four batches and five repeats plus references give 440 sweeps. ShuffleNet has no pruned variant.
+\textbf{Answer: lower cost, but unacceptable accuracy loss.} These completed p80 controls reach 0.93--22.55\% accuracy, versus 85.80\% for unpruned R101 FP32. None meets a 0.5/1/1.5/2-pp allowance.
+
+\textbf{Protocol.} P80 is the nominal 80\% pruning setting, not a guarantee of 80\% fewer operations; INT8 is 8-bit integer precision. Seven architectures, three precisions, four batches and five repeats plus references give 440 sweeps. ShuffleNet has no pruned variant.
 
 \textbf{Comparison with 13 October.} Its correctness router reached 81.86--85.64\% across batches 64/128, far above p80. Against the same \emph{type} of fixed R101 FP32 reference, earlier routing latency/energy saving ranges were: b8 $-336.2$ to $+61.1$ / $-160.7$ to $+60.4$\%; b32 $+60.9$ to $+76.3$ / $+61.3$ to $+76.5$\%; b64 $+61.5$ to $+87.4$ / $+63.6$ to $+87.5$\%; b128 $+60.0$ to $+81.8$ / $+60.5$ to $+82.0$\%. These are separate ranges across policies, including accuracy failures, not one policy achieving every endpoint. P80 saves more cost in many rows, but sacrifices most classification accuracy.
 
