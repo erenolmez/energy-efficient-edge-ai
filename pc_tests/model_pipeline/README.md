@@ -1,5 +1,59 @@
 # Classifier pipeline
 
+## Start here: organized source layout
+
+Implementation code is grouped below. The small `.py` and `.ps1` files at this
+directory's root are compatibility entry points, not duplicate implementations.
+Existing commands and imports still work; new code should use the organized
+package paths. Presentation sources stay in `progress_reports/`, and unit tests
+stay in the repository's `tests/` directory.
+
+| Directory | Responsibility | Main entry points |
+|---|---|---|
+| `runtime/` | GPU preprocessing, TensorRT export/inference, engine caches, energy and deployment helpers | `gpu_batch_inputs.py`, `global_candidate_pool.py`, `gpu_energy.py` |
+| `routers/scalar/` | Historical scalar targets, fitting and calibrated rank selection | `train_pc_batch_routers.py`, `batch_router_policy.py` |
+| `routers/correctness/` | Per-candidate correctness outputs, fitting and cost-aware selection | `train_correctness_router.py`, `correctness_policy.py` |
+| `experiments/` | Baseline preparation and isolated measured study runners | `run_correctness_routes.py`, `run_random_routes{,_b64}.py`, `run_p80_batches.py` |
+| `analysis/` | Saved-result audits, tables and per-class statistics | `audit_random_b64.py`, `audit_p80_batches.py`, `summarize_*` |
+| `scripts/` | Machine-specific launchers and exact-process thermal guard | `start_p80_batches.ps1`, `watch_pc_thermals.ps1` |
+| `reports/` | Small numerical evidence and study-specific documentation | `random_b64/`, `random_b128/`, `p80_b8_32_64_128/` |
+| `provenance/` | Original-to-organized source hashes and verification | `structure_refactor.json` |
+
+**Status.** Correctness routing is the latest implemented routing method.
+Random selection and fixed p80 are completed controls; p90 and scalar routing
+are historical controls, not obsolete results to delete. Extra correctness
+families have source implementations but are not completed measured comparisons.
+The adaptable shared scorer and Deep Sets are proposals, not implemented studies.
+No experiment, monitor or GPU training is started by this reorganization.
+
+**Safe saved-result checks** (repository root; no inference):
+
+```powershell
+.\.cuda-venv\Scripts\python.exe pc_tests/model_pipeline/analysis/audit_random_b64.py
+.\.cuda-venv\Scripts\python.exe pc_tests/model_pipeline/analysis/audit_p80_batches.py
+```
+
+Both commands also work at their former root paths. Use package imports such as
+`from pc_tests.model_pipeline.routers.correctness.correctness_policy import calibrate_correctness`.
+For direct CLI entry points, the canonical file path or `python -m` package path
+works; historical root-level commands below remain compatible.
+
+**Provenance, not new measurements.** Frozen experiment reports and the October
+20 publication's `code_manifest.json` retain their original hashes. The refactor
+manifest separately records the original Git revision, organized source hashes
+and wrapper hashes. Saved-result audits verify the old measured source from that
+Git revision as well as the current refactor; they do not substitute current
+hashes into historical protocols. Keep full Git history for these audits.
+Runner protocol mismatch protections are unchanged: this refactor does not
+authorize resuming a frozen historical experiment with different source bytes.
+
+**Next, separately:** consolidate duplicated random/static runner machinery only
+after reviewing the structure-only change. Batch settings, frozen protocols,
+thermal rules and historical controls must remain separate. No such algorithm
+or runner consolidation is included here.
+
+## Baseline training and historical command reference
+
 This directory contains the shared CIFAR-100 baseline-training entry point for
 the architecture study. The selected models are ResNet-18/34/50/101,
 MobileNetV3-Small/Large, EfficientNet-B0 and ShuffleNetV2 1.0x.

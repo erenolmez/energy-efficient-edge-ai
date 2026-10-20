@@ -1,0 +1,21 @@
+{
+  "scope": "Structure-only cleanup; no experimental protocol or measured result changes",
+  "original_git_commit": "01b7651dd9d30d8f971ad465c1083d0d580e93fb",
+  "moved_python_implementations": 47,
+  "moved_test_modules": 1,
+  "moved_powershell_implementations": 3,
+  "compatibility_entry_points": 51,
+  "targeted_cpu_unit_tests_passed": 70,
+  "canonical_modules_imported_successfully": 47,
+  "scientific_python_bodies_ast_equivalent": 46,
+  "explicit_provenance_aware_audit_updates": 2,
+  "powershell_implementations_byte_identical": 3,
+  "powershell_implementations_and_wrappers_parsed": 6,
+  "saved_random64_audit": {"complete_blocks": 495, "paired_cases": 24, "summary_rows": 72},
+  "saved_p80_audit": {"complete_sweeps": 440, "summary_rows": 84},
+  "frozen_scientific_protocols_rewritten": false,
+  "historical_report_source_hashes_rewritten": false,
+  "cuda_devices_hidden_during_checks": true,
+  "experiments_or_launchers_started": false,
+  "runner_consolidation_performed": false
+}

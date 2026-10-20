@@ -1,0 +1,2 @@
+# This moved historical test is included in the structure provenance manifest.
+test_p80_batches.py text eol=lf
