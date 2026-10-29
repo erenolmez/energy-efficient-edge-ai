@@ -1,0 +1,8 @@
+*.aux
+*.log
+*.out
+*.xdv
+page-*.png
+final-page-*.png
+review-*.png
+tmp/

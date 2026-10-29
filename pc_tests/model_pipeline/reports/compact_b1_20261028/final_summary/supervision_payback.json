@@ -1,0 +1,325 @@
+{
+  "results": [
+    {
+      "case": "fit2000_epochs20__cal1000",
+      "baseline": "reference",
+      "training_gpu_j": 152.524,
+      "saved_gpu_j_per_image": 0.041409199999999924,
+      "accuracy_pass": true,
+      "valid": true,
+      "payback_images": 3684,
+      "reason": "valid GPU-fit-only estimate"
+    },
+    {
+      "case": "fit2000_epochs20__cal1000",
+      "baseline": "eligible",
+      "training_gpu_j": 152.524,
+      "saved_gpu_j_per_image": -0.07998539999999996,
+      "accuracy_pass": true,
+      "valid": false,
+      "payback_images": null,
+      "reason": "nonpositive GPU-energy saving"
+    },
+    {
+      "case": "internal_unweighted_epochs60__cal500",
+      "baseline": "reference",
+      "training_gpu_j": 631.624,
+      "saved_gpu_j_per_image": 0.10339259999999995,
+      "accuracy_pass": false,
+      "valid": false,
+      "payback_images": null,
+      "reason": "accuracy failure"
+    },
+    {
+      "case": "internal_unweighted_epochs60__cal500",
+      "baseline": "eligible",
+      "training_gpu_j": 631.624,
+      "saved_gpu_j_per_image": -0.07098460000000001,
+      "accuracy_pass": false,
+      "valid": false,
+      "payback_images": null,
+      "reason": "accuracy failure"
+    },
+    {
+      "case": "internal_unweighted_epochs60__cal2000",
+      "baseline": "reference",
+      "training_gpu_j": 631.624,
+      "saved_gpu_j_per_image": 0.12005229999999992,
+      "accuracy_pass": false,
+      "valid": false,
+      "payback_images": null,
+      "reason": "accuracy failure"
+    },
+    {
+      "case": "internal_unweighted_epochs60__cal2000",
+      "baseline": "eligible",
+      "training_gpu_j": 631.624,
+      "saved_gpu_j_per_image": 0.08773399999999995,
+      "accuracy_pass": false,
+      "valid": false,
+      "payback_images": null,
+      "reason": "accuracy failure"
+    },
+    {
+      "case": "fit2000_epochs20__cal500",
+      "baseline": "reference",
+      "training_gpu_j": 152.524,
+      "saved_gpu_j_per_image": 0.09414739999999994,
+      "accuracy_pass": true,
+      "valid": true,
+      "payback_images": 1621,
+      "reason": "valid GPU-fit-only estimate"
+    },
+    {
+      "case": "fit2000_epochs20__cal500",
+      "baseline": "eligible",
+      "training_gpu_j": 152.524,
+      "saved_gpu_j_per_image": -0.08022980000000002,
+      "accuracy_pass": true,
+      "valid": false,
+      "payback_images": null,
+      "reason": "nonpositive GPU-energy saving"
+    },
+    {
+      "case": "fit3000_epochs20__cal1000",
+      "baseline": "reference",
+      "training_gpu_j": 261.901,
+      "saved_gpu_j_per_image": 0.11739589999999997,
+      "accuracy_pass": false,
+      "valid": false,
+      "payback_images": null,
+      "reason": "accuracy failure"
+    },
+    {
+      "case": "fit3000_epochs20__cal1000",
+      "baseline": "eligible",
+      "training_gpu_j": 261.901,
+      "saved_gpu_j_per_image": -0.003998699999999911,
+      "accuracy_pass": false,
+      "valid": false,
+      "payback_images": null,
+      "reason": "accuracy failure"
+    },
+    {
+      "case": "fit3000_epochs20__cal2000",
+      "baseline": "reference",
+      "training_gpu_j": 261.901,
+      "saved_gpu_j_per_image": 0.11023949999999999,
+      "accuracy_pass": false,
+      "valid": false,
+      "payback_images": null,
+      "reason": "accuracy failure"
+    },
+    {
+      "case": "fit3000_epochs20__cal2000",
+      "baseline": "eligible",
+      "training_gpu_j": 261.901,
+      "saved_gpu_j_per_image": 0.07792120000000002,
+      "accuracy_pass": false,
+      "valid": false,
+      "payback_images": null,
+      "reason": "accuracy failure"
+    },
+    {
+      "case": "original_control__cal2000",
+      "baseline": "reference",
+      "training_gpu_j": 270.437,
+      "saved_gpu_j_per_image": 0.11779579999999995,
+      "accuracy_pass": true,
+      "valid": true,
+      "payback_images": 2296,
+      "reason": "valid GPU-fit-only estimate"
+    },
+    {
+      "case": "original_control__cal2000",
+      "baseline": "eligible",
+      "training_gpu_j": 270.437,
+      "saved_gpu_j_per_image": 0.08547749999999998,
+      "accuracy_pass": true,
+      "valid": true,
+      "payback_images": 3164,
+      "reason": "valid GPU-fit-only estimate"
+    },
+    {
+      "case": "internal_balanced_epochs60__cal500",
+      "baseline": "reference",
+      "training_gpu_j": 682.12,
+      "saved_gpu_j_per_image": 0.1422337999999999,
+      "accuracy_pass": false,
+      "valid": false,
+      "payback_images": null,
+      "reason": "accuracy failure"
+    },
+    {
+      "case": "internal_balanced_epochs60__cal500",
+      "baseline": "eligible",
+      "training_gpu_j": 682.12,
+      "saved_gpu_j_per_image": -0.032143400000000044,
+      "accuracy_pass": false,
+      "valid": false,
+      "payback_images": null,
+      "reason": "accuracy failure"
+    },
+    {
+      "case": "fit1000_epochs20__cal2000",
+      "baseline": "reference",
+      "training_gpu_j": 188.081,
+      "saved_gpu_j_per_image": 0.11450199999999988,
+      "accuracy_pass": true,
+      "valid": true,
+      "payback_images": 1643,
+      "reason": "valid GPU-fit-only estimate"
+    },
+    {
+      "case": "fit1000_epochs20__cal2000",
+      "baseline": "eligible",
+      "training_gpu_j": 188.081,
+      "saved_gpu_j_per_image": 0.08218369999999992,
+      "accuracy_pass": true,
+      "valid": true,
+      "payback_images": 2289,
+      "reason": "valid GPU-fit-only estimate"
+    },
+    {
+      "case": "fit1000_epochs20__cal500",
+      "baseline": "reference",
+      "training_gpu_j": 188.081,
+      "saved_gpu_j_per_image": 0.09256549999999991,
+      "accuracy_pass": true,
+      "valid": true,
+      "payback_images": 2032,
+      "reason": "valid GPU-fit-only estimate"
+    },
+    {
+      "case": "fit1000_epochs20__cal500",
+      "baseline": "eligible",
+      "training_gpu_j": 188.081,
+      "saved_gpu_j_per_image": -0.08181170000000004,
+      "accuracy_pass": true,
+      "valid": false,
+      "payback_images": null,
+      "reason": "nonpositive GPU-energy saving"
+    },
+    {
+      "case": "fit3000_epochs20__cal500",
+      "baseline": "reference",
+      "training_gpu_j": 261.901,
+      "saved_gpu_j_per_image": 0.11273659999999996,
+      "accuracy_pass": true,
+      "valid": true,
+      "payback_images": 2324,
+      "reason": "valid GPU-fit-only estimate"
+    },
+    {
+      "case": "fit3000_epochs20__cal500",
+      "baseline": "eligible",
+      "training_gpu_j": 261.901,
+      "saved_gpu_j_per_image": -0.06164059999999999,
+      "accuracy_pass": true,
+      "valid": false,
+      "payback_images": null,
+      "reason": "nonpositive GPU-energy saving"
+    },
+    {
+      "case": "internal_balanced_epochs60__cal1000",
+      "baseline": "reference",
+      "training_gpu_j": 682.12,
+      "saved_gpu_j_per_image": 0.15199569999999993,
+      "accuracy_pass": false,
+      "valid": false,
+      "payback_images": null,
+      "reason": "accuracy failure"
+    },
+    {
+      "case": "internal_balanced_epochs60__cal1000",
+      "baseline": "eligible",
+      "training_gpu_j": 682.12,
+      "saved_gpu_j_per_image": 0.030601100000000048,
+      "accuracy_pass": false,
+      "valid": false,
+      "payback_images": null,
+      "reason": "accuracy failure"
+    },
+    {
+      "case": "internal_balanced_epochs60__cal2000",
+      "baseline": "reference",
+      "training_gpu_j": 682.12,
+      "saved_gpu_j_per_image": 0.11578689999999991,
+      "accuracy_pass": true,
+      "valid": true,
+      "payback_images": 5892,
+      "reason": "valid GPU-fit-only estimate"
+    },
+    {
+      "case": "internal_balanced_epochs60__cal2000",
+      "baseline": "eligible",
+      "training_gpu_j": 682.12,
+      "saved_gpu_j_per_image": 0.08346859999999995,
+      "accuracy_pass": true,
+      "valid": true,
+      "payback_images": 8173,
+      "reason": "valid GPU-fit-only estimate"
+    },
+    {
+      "case": "internal_unweighted_epochs60__cal1000",
+      "baseline": "reference",
+      "training_gpu_j": 631.624,
+      "saved_gpu_j_per_image": 0.15018999999999996,
+      "accuracy_pass": false,
+      "valid": false,
+      "payback_images": null,
+      "reason": "accuracy failure"
+    },
+    {
+      "case": "internal_unweighted_epochs60__cal1000",
+      "baseline": "eligible",
+      "training_gpu_j": 631.624,
+      "saved_gpu_j_per_image": 0.028795400000000082,
+      "accuracy_pass": false,
+      "valid": false,
+      "payback_images": null,
+      "reason": "accuracy failure"
+    },
+    {
+      "case": "fit1000_epochs20__cal1000",
+      "baseline": "reference",
+      "training_gpu_j": 188.081,
+      "saved_gpu_j_per_image": 0.11598249999999993,
+      "accuracy_pass": true,
+      "valid": true,
+      "payback_images": 1622,
+      "reason": "valid GPU-fit-only estimate"
+    },
+    {
+      "case": "fit1000_epochs20__cal1000",
+      "baseline": "eligible",
+      "training_gpu_j": 188.081,
+      "saved_gpu_j_per_image": -0.0054120999999999475,
+      "accuracy_pass": true,
+      "valid": false,
+      "payback_images": null,
+      "reason": "nonpositive GPU-energy saving"
+    },
+    {
+      "case": "fit2000_epochs20__cal2000",
+      "baseline": "reference",
+      "training_gpu_j": 152.524,
+      "saved_gpu_j_per_image": 0.11092049999999992,
+      "accuracy_pass": true,
+      "valid": true,
+      "payback_images": 1376,
+      "reason": "valid GPU-fit-only estimate"
+    },
+    {
+      "case": "fit2000_epochs20__cal2000",
+      "baseline": "eligible",
+      "training_gpu_j": 152.524,
+      "saved_gpu_j_per_image": 0.07860219999999996,
+      "accuracy_pass": true,
+      "valid": true,
+      "payback_images": 1941,
+      "reason": "valid GPU-fit-only estimate"
+    }
+  ],
+  "scope": "GPU fit only; init/checkpoints/internal tune included where used; supervision/calibration/export/CPU excluded. Separate training/inference sessions; descriptive estimates, not precise uncertainty."
+}

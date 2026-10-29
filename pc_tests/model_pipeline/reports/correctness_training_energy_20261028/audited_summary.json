@@ -1,0 +1,38 @@
+{
+  "audit_passed": true,
+  "measurement_sha256": "f971e00256d18895c334c0e0509ed06e61c2f27886b789bac45069ee3e44ec4f",
+  "rows": [
+    {
+      "seed": 42,
+      "joules": 270.437,
+      "seconds": 11.138287300000002,
+      "final_bce": 0.45296560322984736,
+      "max_loss_difference_from_historical": 3.085237868288848e-05
+    },
+    {
+      "seed": 45,
+      "joules": 201.185,
+      "seconds": 8.38949320000006,
+      "final_bce": 0.4492987654310592,
+      "max_loss_difference_from_historical": 2.9203739572047915e-05
+    },
+    {
+      "seed": 48,
+      "joules": 195.008,
+      "seconds": 8.26579419999996,
+      "final_bce": 0.45325454245222374,
+      "max_loss_difference_from_historical": 3.6472335774861975e-05
+    }
+  ],
+  "median_joules_per_fit": 201.185,
+  "min_joules_per_fit": 195.008,
+  "max_joules_per_fit": 270.437,
+  "total_three_fit_joules": 666.63,
+  "median_seconds_per_fit": 8.38949320000006,
+  "original_artifacts_unchanged": true,
+  "epoch_checkpoints_verified": 60,
+  "scope": "GPU only; gross NVML counter difference including idle/display; not whole-PC",
+  "boundary": "CUDA context/data validation before measurement; initialization, 20 fit epochs, atomic epoch checkpoint writes inside fit window. Final weights write, calibration, export and supervision generation excluded.",
+  "break_even_computed": false,
+  "exact_historical_weight_reproduction_claimed": false
+}

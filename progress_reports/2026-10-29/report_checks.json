@@ -1,0 +1,16 @@
+{
+  "passed": true,
+  "pages": 4,
+  "all18fixed_setting_rows_verified": true,
+  "tail_adjustment_verified": true,
+  "six_batch_payback_groups_verified": true,
+  "batch1_reference_payback_images": 2399,
+  "optimized_graph_eligible_payback_images": 28621,
+  "worked_payback_images": 9583,
+  "pdf_sha256": "a14993fa1829f3de06f4c985d36c263f58304f993a14b11e3db65c81fb70bb2d",
+  "tex_sha256": "a58ebbc14564af9e20edb3ce367bcffcc4d17deb29b36d766a8f438426a64031",
+  "snapshot_sha256": "ceaf3519d6af2853e55627f76b049ec3c3d92c9b0dd238897cc4a5634b212ba9",
+  "source_hashes_verified": 14,
+  "latex_overfull_boxes": 0,
+  "visual_review": "Four latest rendered pages inspected at1400px; no clipping/overlap."
+}

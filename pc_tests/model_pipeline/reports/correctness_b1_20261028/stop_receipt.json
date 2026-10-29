@@ -1,0 +1,12 @@
+{
+  "status": "stopped_by_user",
+  "utc": "2026-10-28T15:21:06.4341839Z",
+  "reason": "User explicitly stopped the multi-day TinyCNN batch-one study and prioritized a separate GPU residency test.",
+  "saved_full_sweeps": 8,
+  "saved_preparation_pilot_rows": 6,
+  "study_sha256": "9d0ef73b7818c988f8c44f0f0c410df45ee825a9131238bea9936454f149a660",
+  "verified_process_ids_stopped": [6332, 20084, 14888],
+  "partial_inflight_sweep_discarded": true,
+  "restart_authorized": false,
+  "note": "Original study.json preserved byte-for-byte, including its historical running field. This receipt is the current lifecycle authority. No completion or full-matrix claim."
+}

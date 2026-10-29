@@ -1,0 +1,38 @@
+$ErrorActionPreference = 'Stop'
+$studyRoot = 'C:\Users\Eren\Desktop\tez\energy-efficient-edge-ai'
+Set-Location -LiteralPath $studyRoot
+. "$studyRoot/pc_tests/model_pipeline/scripts/require_experiments_resumed.ps1"
+$state = Get-Content pc_tests/model_pipeline/artifacts/pc_routers/thermal_guard.json -Raw | ConvertFrom-Json
+if ($state.status -ne 'monitoring' -or $null -ne $state.boundary_start_count) { throw 'Thermal latch' }
+$previous = Get-Content pc_tests/model_pipeline/reports/compact_switching_pilot_20261028/audited_summary.json -Raw | ConvertFrom-Json
+if (-not $previous.audit_passed) { throw 'Resident screen audit incomplete' }
+$active = @(Get-CimInstance Win32_Process | Where-Object {
+    $_.ProcessId -ne $PID -and (($_.Name -match '^python(w)?\.exe$' -and $_.CommandLine -match 'energy-efficient-edge-ai.*(confirm_|pilot_|run_|train_|measure_|probe_|profile_|diagnose_|refresh_|prepare_compact)') -or
+    ($_.Name -eq 'powershell.exe' -and $_.CommandLine -match 'watch_pc_thermals.ps1'))
+})
+if ($active.Count) { throw 'Worker or guard already active' }
+$directory = "$studyRoot/pc_tests/model_pipeline/artifacts/compact_switching_confirmation_20261028"
+$stateReport = Get-Content pc_tests/model_pipeline/reports/compact_switching_confirmation_20261028/study.json -Raw | ConvertFrom-Json
+$receipt = Get-Content pc_tests/model_pipeline/artifacts/compact_switching_confirmation_20261028/resume_receipt.json -Raw | ConvertFrom-Json
+if ($stateReport.status -ne 'resume_authorized' -or $receipt.status -ne 'authorized') { throw 'Explicit verified resume receipt required' }
+$sourceHash = (Get-FileHash -LiteralPath "$studyRoot/pc_tests/model_pipeline/experiments/confirm_compact_switching.py" -Algorithm SHA256).Hash.ToLowerInvariant()
+if ($sourceHash -ne $receipt.revision.new_source_sha256) { throw 'Resume source identity changed' }
+$directory = Join-Path $directory 'resume1'
+if (Test-Path -LiteralPath $directory) { throw 'Resume1 already launched; inspect logs, never duplicate' }
+New-Item -ItemType Directory -Path $directory | Out-Null
+$runner = "$studyRoot/pc_tests/model_pipeline/experiments/confirm_compact_switching.py"
+$launcher = Start-Process -FilePath "$studyRoot/.cuda-venv/Scripts/python.exe" -ArgumentList @('-u',$runner,'--resume') -WorkingDirectory $studyRoot -WindowStyle Hidden -RedirectStandardOutput "$directory/run.stdout.log" -RedirectStandardError "$directory/run.stderr.log" -PassThru
+Start-Sleep -Seconds 2
+$identities = @(Get-CimInstance Win32_Process | Where-Object { $_.Name -eq 'python.exe' -and ($_.ProcessId -eq $launcher.Id -or $_.ParentProcessId -eq $launcher.Id) -and $_.CommandLine -like "*$runner*" })
+if (-not $identities.Count) { throw 'Worker exited; inspect logs' }
+$ids = $identities.ProcessId -join ','
+$guardPath = "$studyRoot/pc_tests/model_pipeline/scripts/watch_pc_thermals.ps1"
+$command = "& '$guardPath' -TrackedIds @($ids) -ExpectedScript 'confirm_compact_switching.py' -ReportRelativePath 'pc_tests/model_pipeline/reports/compact_switching_confirmation_20261028/study.json'"
+$guard = Start-Process -FilePath 'C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe' -ArgumentList @('-NoProfile','-Command',$command) -WorkingDirectory $studyRoot -WindowStyle Hidden -RedirectStandardOutput "$directory/guard.stdout.log" -RedirectStandardError "$directory/guard.stderr.log" -PassThru
+$guardIdentity = Get-CimInstance Win32_Process -Filter "ProcessId = $($guard.Id)"
+[ordered]@{utc=[DateTime]::UtcNow.ToString('o');runner=@($identities|Select-Object ProcessId,CreationDate,ExecutablePath,CommandLine);guard_identity=$guardIdentity|Select-Object ProcessId,CreationDate,ExecutablePath,CommandLine;scope='Frozen3seeds latency1pp81fulltest sweeps,3repeats5variants4matchedcontrols,no testtuning'}|ConvertTo-Json -Depth 5|Set-Content -LiteralPath "$directory/launch_identity.json" -Encoding utf8
+$identities|Select-Object ProcessId,CreationDate,ExecutablePath
+Write-Output "Compact screen thermal guard PID $($guard.Id)"
+
+
+Copy-Item -LiteralPath "$directory/launch_identity.json" -Destination "$studyRoot/pc_tests/model_pipeline/artifacts/compact_switching_confirmation_20261028/launch_identity.json"

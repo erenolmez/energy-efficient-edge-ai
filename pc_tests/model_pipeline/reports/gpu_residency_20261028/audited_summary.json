@@ -1,0 +1,35 @@
+{
+  "audit_passed": true,
+  "report_sha256": "d80899fd45c4614da751c902d60f115d4409002f2fb5ca364a7fb399776cd955",
+  "rows": [
+    {
+      "order": "smallest_first",
+      "usable_classifier_engines": 53,
+      "final_used_mib": 4914.6875,
+      "final_free_mib": 1229.0,
+      "stop_reason": "conservative admission would cross 1GiB reserve",
+      "all_resident_verified": true
+    },
+    {
+      "order": "largest_first",
+      "usable_classifier_engines": 12,
+      "final_used_mib": 5004.6875,
+      "final_free_mib": 1139.0,
+      "stop_reason": "conservative admission would cross 1GiB reserve",
+      "all_resident_verified": true
+    },
+    {
+      "order": "architecture_round_robin",
+      "usable_classifier_engines": 18,
+      "final_used_mib": 4756.6875,
+      "final_free_mib": 1387.0,
+      "stop_reason": "conservative admission would cross 1GiB reserve",
+      "all_resident_verified": true
+    }
+  ],
+  "reserve_mib": 1024,
+  "batch_size": 1,
+  "gpu": "NVIDIA GeForce RTX 2060",
+  "router_additionally_resident": true,
+  "claim": "Demonstrated safe counts under frozen orders/reserve; not absolute maximum or speedup."
+}

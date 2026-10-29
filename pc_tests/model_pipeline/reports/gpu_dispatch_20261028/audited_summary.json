@@ -1,0 +1,31 @@
+{
+  "audit_passed": true,
+  "report_sha256": "e389a7e5ead9fc12a7ebcd28e8b02477f7a410d54777ce83f14e12fe4c7931ad",
+  "summary": {
+    "cpu_vector": {
+      "median_ms_per_image": 3.8587909441244665,
+      "median_gpu_j_per_image": 0.22236489151873767,
+      "images_per_window": [
+        507,
+        528,
+        520,
+        517,
+        519
+      ]
+    },
+    "gpu_id": {
+      "median_ms_per_image": 4.042898989898433,
+      "median_gpu_j_per_image": 0.22742424242424242,
+      "images_per_window": [
+        465,
+        507,
+        495,
+        503,
+        494
+      ]
+    }
+  },
+  "gpu_vs_cpu_latency_saving_percent": -4.771132938784772,
+  "gpu_vs_cpu_gpu_energy_saving_percent": -2.275247171866801,
+  "note": "Preliminary seed42 FP64/Torch selector implementation, same6residentpool/100inputcycle. Fixed2s windows have different imagecounts/final cycle tails, so not identical fullsweeps or a general causal overhead estimate. Preserve negative savings. Fullclassifier output parity checked on100validationimages, not heldout accuracy. Fused FP32/GPUconditional deployment not tested."
+}

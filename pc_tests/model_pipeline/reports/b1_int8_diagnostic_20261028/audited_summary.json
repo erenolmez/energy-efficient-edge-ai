@@ -1,0 +1,7 @@
+{
+  "audit_passed": true,
+  "report_sha256": "4c04e23e48e6518ca3e7455cad7b4d9864199cb0e6abf9f0399f0ad37d2c1f68",
+  "rows": 3,
+  "changed_predictions": 40,
+  "note": "Source/engine hashes and saved predictions audited. Raw logits were not retained by original diagnostic; recorded maximum-logit differences cannot independently be recomputed. Dedicated INT8 remains quarantined; numerical root cause unresolved."
+}

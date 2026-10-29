@@ -1,0 +1,160 @@
+{
+  "audit_passed": true,
+  "report_sha256": "08ee8f37868d782035561fe0c21d34e95dbaaaeaeee0684b157bed58b5a5cdd6",
+  "rows": [
+    {
+      "name": "resnet101__p0__fp32",
+      "build_seconds": 23.835426100000404,
+      "logits_max_abs_difference": 9.775161743164062e-06,
+      "argmax_disagreements_on_100": 0,
+      "original": {
+        "ms_per_image": 6.1318905198788975,
+        "gpu_j_per_image": 0.48749847094801224,
+        "observed_resident_mib": 494.0,
+        "deserialize_context_seconds": 0.12292960000013409
+      },
+      "batch1": {
+        "ms_per_image": 4.373965065501004,
+        "gpu_j_per_image": 0.3471659388646288,
+        "observed_resident_mib": 170.0,
+        "deserialize_context_seconds": 0.12781899999936286
+      },
+      "latency_saving_percent": 28.668572093368233,
+      "gpu_energy_saving_percent": 28.786250715922503
+    },
+    {
+      "name": "resnet101__p0__fp16",
+      "build_seconds": 42.214372800001,
+      "logits_max_abs_difference": 0.265625,
+      "argmax_disagreements_on_100": 1,
+      "original": {
+        "ms_per_image": 4.289977087792768,
+        "gpu_j_per_image": 0.268132382892057,
+        "observed_resident_mib": 248.0,
+        "deserialize_context_seconds": 0.0662133999994694
+      },
+      "batch1": {
+        "ms_per_image": 2.6159607843141903,
+        "gpu_j_per_image": 0.17676904176904176,
+        "observed_resident_mib": 84.0,
+        "deserialize_context_seconds": 0.06845380000049772
+      },
+      "latency_saving_percent": 39.02156746342611,
+      "gpu_energy_saving_percent": 34.073967544530305
+    },
+    {
+      "name": "efficientnet_b0__p0__fp16",
+      "build_seconds": 148.28904509999848,
+      "logits_max_abs_difference": 0.03515625,
+      "argmax_disagreements_on_100": 0,
+      "original": {
+        "ms_per_image": 2.850504829545095,
+        "gpu_j_per_image": 0.15381729428172944,
+        "observed_resident_mib": 184.0,
+        "deserialize_context_seconds": 0.03630609999891021
+      },
+      "batch1": {
+        "ms_per_image": 2.7590013793112655,
+        "gpu_j_per_image": 0.14611891891891893,
+        "observed_resident_mib": 10.0,
+        "deserialize_context_seconds": 0.05517580000014277
+      },
+      "latency_saving_percent": 3.2100787651860414,
+      "gpu_energy_saving_percent": 5.004882837628312
+    },
+    {
+      "name": "resnet34__p0__int8",
+      "build_seconds": 62.84617910000088,
+      "logits_max_abs_difference": 5.9375,
+      "argmax_disagreements_on_100": 40,
+      "original": {
+        "ms_per_image": 1.5703110588248248,
+        "gpu_j_per_image": 0.09527450980392156,
+        "observed_resident_mib": 72.0,
+        "deserialize_context_seconds": 0.0729577000001882
+      },
+      "batch1": {
+        "ms_per_image": 1.3987774125882322,
+        "gpu_j_per_image": 0.08703512396694214,
+        "observed_resident_mib": 24.0,
+        "deserialize_context_seconds": 0.031139899998379406
+      },
+      "latency_saving_percent": 10.923545705967543,
+      "gpu_energy_saving_percent": 8.64804852204055
+    },
+    {
+      "name": "mobilenetv3_large__p10__fp16",
+      "build_seconds": 126.61803859999964,
+      "logits_max_abs_difference": 0.10948848724365234,
+      "argmax_disagreements_on_100": 1,
+      "original": {
+        "ms_per_image": 1.9913591044785255,
+        "gpu_j_per_image": 0.09571312309257375,
+        "observed_resident_mib": 84.0,
+        "deserialize_context_seconds": 0.03741269999954966
+      },
+      "batch1": {
+        "ms_per_image": 1.9344095744688012,
+        "gpu_j_per_image": 0.09104820415879017,
+        "observed_resident_mib": 12.0,
+        "deserialize_context_seconds": 0.043263499999739
+      },
+      "latency_saving_percent": 2.859832256354262,
+      "gpu_energy_saving_percent": 4.873855102681867
+    },
+    {
+      "name": "resnet18__p10__fp16",
+      "build_seconds": 25.79364750000059,
+      "logits_max_abs_difference": 0.0546875,
+      "argmax_disagreements_on_100": 1,
+      "original": {
+        "ms_per_image": 1.1685740070095851,
+        "gpu_j_per_image": 0.060249280368451355,
+        "observed_resident_mib": 104.0,
+        "deserialize_context_seconds": 0.02525240000068152
+      },
+      "batch1": {
+        "ms_per_image": 0.9120981304148149,
+        "gpu_j_per_image": 0.048509486348912535,
+        "observed_resident_mib": 20.0,
+        "deserialize_context_seconds": 0.021177200000238372
+      },
+      "latency_saving_percent": 21.947764973063148,
+      "gpu_energy_saving_percent": 19.485368037169437
+    }
+  ],
+  "pool_memory": [
+    {
+      "id": "pool_original",
+      "router": "b1_profile",
+      "status": "complete",
+      "kind": "pool_memory",
+      "variant": "original",
+      "count": 6,
+      "observed_increment_bytes": 1235222528,
+      "free_bytes": 4033871872,
+      "used_bytes": 2408251392
+    },
+    {
+      "id": "pool_batch1",
+      "router": "b1_profile",
+      "status": "complete",
+      "kind": "pool_memory",
+      "variant": "batch1",
+      "count": 6,
+      "observed_increment_bytes": 331350016,
+      "free_bytes": 4937744384,
+      "used_bytes": 1504378880
+    }
+  ],
+  "audit_scope": "Structural/provenance/reserve audit, not numerical-equivalence acceptance",
+  "candidates_with_argmax_changes": [
+    "resnet101__p0__fp16",
+    "resnet34__p0__int8",
+    "mobilenetv3_large__p10__fp16",
+    "resnet18__p10__fp16"
+  ],
+  "heldout_accuracy_evaluated": false,
+  "router_speedup_evaluated": false,
+  "caveat": "Five paired >=2s validation-input windows; new profiles may change logits/argmax. No full-test routing gain, no whole-PC energy or unobserved peak-memory claim."
+}

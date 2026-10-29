@@ -1,0 +1,2998 @@
+{
+  "sources_sha256": {
+    "C:\\Users\\Eren\\Desktop\\tez\\energy-efficient-edge-ai\\pc_tests\\model_pipeline\\reports\\correctness_b1_20261028\\existing_only\\combined_summary.json": "b298775f00f93bd43213fabc4a39572e1c9004cdfbccafa555035fbdefd536d2",
+    "C:\\Users\\Eren\\Desktop\\tez\\energy-efficient-edge-ai\\pc_tests\\model_pipeline\\reports\\compact_resident_screen_20261028\\audited_summary.json": "26382364ce1cd01056774c8b831027b8a6b33eb8ea983c2ad06d7d4adcb48ec4",
+    "C:\\Users\\Eren\\Desktop\\tez\\energy-efficient-edge-ai\\pc_tests\\model_pipeline\\reports\\correctness_training_energy_20261028\\audited_summary.json": "29fac451a4b623266c457184529cca10c348805eb2a8bb500bb24f5181f39be8",
+    "C:\\Users\\Eren\\Desktop\\tez\\energy-efficient-edge-ai\\pc_tests\\model_pipeline\\reports\\compact_resident_screen_20261028\\study.json": "7ee268998de423a56efee75043c3a78c89d9f5207022922f2d7dead6a2c5b8ce",
+    "C:\\Users\\Eren\\Desktop\\tez\\energy-efficient-edge-ai\\pc_tests\\model_pipeline\\reports\\supervision_deployment_20261029\\audited_summary.json": "d255f9cc0b42b6ad2a83efc9817bc235ab2dee4126eda04af89eee635e282b36",
+    "C:\\Users\\Eren\\Desktop\\tez\\energy-efficient-edge-ai\\pc_tests\\model_pipeline\\reports\\compact_b1_20261028\\final_summary\\supervision_payback.json": "cc7cf73dab519d45bf7800b5126894efdedcdca6f96758e304de52f1388c35d7",
+    "C:\\Users\\Eren\\Desktop\\tez\\energy-efficient-edge-ai\\pc_tests\\model_pipeline\\reports\\compact_switching_confirmation_20261028\\audited_summary.json": "a03ab81bf039c180e782586e2a5cc7f5ce8168e537989ae2f453a3c01d1a46ae",
+    "C:\\Users\\Eren\\Desktop\\tez\\energy-efficient-edge-ai\\progress_reports\\2026-10-13\\progress_report.tex": "e0f1f0dedd3bdbfc768e853c96fbf87266fa2b1e9beef0b4ef1bf49e7f440078",
+    "C:\\Users\\Eren\\Desktop\\tez\\energy-efficient-edge-ai\\progress_reports\\2026-10-20\\progress_report.tex": "bdd32166cb7adea47ba67d88fe8d6cc6f8481e6a19acb2594d24ccbcdefad49a",
+    "C:\\Users\\Eren\\Desktop\\tez\\energy-efficient-edge-ai\\progress_reports\\2026-10-20\\uniform_batches_savings.tex": "5126e54213f965d3a5f66e93c7f1b4e65e09bf2e3188247088b64d1a6326e225",
+    "C:\\Users\\Eren\\Desktop\\tez\\energy-efficient-edge-ai\\progress_reports\\2026-10-20\\p80_savings.tex": "8eb0f12cefa89ea8d05f4bd328118707300cb19bb611fab9518953d54c14030d",
+    "C:\\Users\\Eren\\Desktop\\tez\\energy-efficient-edge-ai\\pc_tests\\model_pipeline\\reports\\compact_b1_20261028\\final_summary\\batch8_grouping.png": "f1471edf8afc2f4ef0af4f8898f8fce63fbcc898527118d39e625d008b0a1d1c",
+    "C:\\Users\\Eren\\Desktop\\tez\\energy-efficient-edge-ai\\pc_tests\\model_pipeline\\reports\\compact_b1_20261028\\final_summary\\supervision_deployment.png": "1cf52af6cdd203d64bb9a37d123c41739ea947ab5b6fd9277ca7a510f5f3f1be",
+    "C:\\Users\\Eren\\Desktop\\tez\\energy-efficient-edge-ai\\pc_tests\\model_pipeline\\reports\\compact_b1_20261028\\final_summary\\dispatch_conditional.png": "d331df7c8693b9ade2c9249c276db0db692de72dcb3eba5ea96f814d32e742a0"
+  },
+  "fixed1pp_latency_rows": [
+    {
+      "batch": 1,
+      "seed": 42,
+      "accuracy": 84.91,
+      "passed": true,
+      "ms_image": 4.154171830000268,
+      "ms_batch": 4.154171830000268,
+      "j_image": 0.23539690000000005
+    },
+    {
+      "batch": 1,
+      "seed": 45,
+      "accuracy": 84.55,
+      "passed": false,
+      "ms_image": 4.401866210000298,
+      "ms_batch": 4.401866210000298,
+      "j_image": 0.18042260000000002
+    },
+    {
+      "batch": 1,
+      "seed": 48,
+      "accuracy": 84.5,
+      "passed": false,
+      "ms_image": 4.461530839999978,
+      "ms_batch": 4.461530839999978,
+      "j_image": 0.17136530000000003
+    },
+    {
+      "batch": 8,
+      "seed": 42,
+      "accuracy": 85.05,
+      "passed": true,
+      "ms_image": 6.946028690019739,
+      "ms_batch": 55.568229520157914,
+      "j_image": 0.22150419999999998
+    },
+    {
+      "batch": 8,
+      "seed": 45,
+      "accuracy": 84.28999999999999,
+      "passed": false,
+      "ms_image": 2.152120180008933,
+      "ms_batch": 17.216961440071465,
+      "j_image": 0.0691987
+    },
+    {
+      "batch": 8,
+      "seed": 48,
+      "accuracy": 83.97,
+      "passed": false,
+      "ms_image": 1.8794955199962715,
+      "ms_batch": 15.035964159970172,
+      "j_image": 0.060688
+    },
+    {
+      "batch": 16,
+      "seed": 42,
+      "accuracy": 84.92,
+      "passed": true,
+      "ms_image": 2.155193819996202,
+      "ms_batch": 34.483101119939235,
+      "j_image": 0.0714973
+    },
+    {
+      "batch": 16,
+      "seed": 45,
+      "accuracy": 84.28,
+      "passed": false,
+      "ms_image": 1.0990069300256438,
+      "ms_batch": 17.5841108804103,
+      "j_image": 0.0343654
+    },
+    {
+      "batch": 16,
+      "seed": 48,
+      "accuracy": 84.99,
+      "passed": true,
+      "ms_image": 1.261165809974773,
+      "ms_batch": 20.178652959596366,
+      "j_image": 0.039715600000000004
+    },
+    {
+      "batch": 32,
+      "seed": 42,
+      "accuracy": 84.96000000000001,
+      "passed": true,
+      "ms_image": 1.1543846099666553,
+      "ms_batch": 36.88129744302413,
+      "j_image": 0.036039299999999996
+    },
+    {
+      "batch": 32,
+      "seed": 45,
+      "accuracy": 85.00999999999999,
+      "passed": true,
+      "ms_image": 1.140101190013229,
+      "ms_batch": 36.42495814738751,
+      "j_image": 0.0355521
+    },
+    {
+      "batch": 32,
+      "seed": 48,
+      "accuracy": 84.38,
+      "passed": false,
+      "ms_image": 0.9622739500104217,
+      "ms_batch": 30.743576677649255,
+      "j_image": 0.0300891
+    },
+    {
+      "batch": 64,
+      "seed": 42,
+      "accuracy": 84.02,
+      "passed": false,
+      "ms_image": 0.9976872899977025,
+      "ms_batch": 63.546961146350476,
+      "j_image": 0.031108999999999998
+    },
+    {
+      "batch": 64,
+      "seed": 45,
+      "accuracy": 85.17,
+      "passed": true,
+      "ms_image": 1.268364450018271,
+      "ms_batch": 80.78754458715102,
+      "j_image": 0.0394308
+    },
+    {
+      "batch": 64,
+      "seed": 48,
+      "accuracy": 84.84,
+      "passed": true,
+      "ms_image": 1.2069122599932598,
+      "ms_batch": 76.87339235625859,
+      "j_image": 0.0375966
+    },
+    {
+      "batch": 128,
+      "seed": 42,
+      "accuracy": 84.02,
+      "passed": false,
+      "ms_image": 1.033155399991665,
+      "ms_batch": 130.77916455590696,
+      "j_image": 0.0320177
+    },
+    {
+      "batch": 128,
+      "seed": 45,
+      "accuracy": 84.93,
+      "passed": true,
+      "ms_image": 1.3427896500070347,
+      "ms_batch": 169.97337341861197,
+      "j_image": 0.0419183
+    },
+    {
+      "batch": 128,
+      "seed": 48,
+      "accuracy": 84.94,
+      "passed": true,
+      "ms_image": 1.2791617999930167,
+      "ms_batch": 161.91921518898945,
+      "j_image": 0.0397841
+    }
+  ],
+  "payback_by_batch_all_settings": [
+    {
+      "batch": 1,
+      "settings": 3,
+      "accuracy_passes": 1,
+      "eligible_valid": 0,
+      "minimum": null,
+      "maximum": null,
+      "baselines": {
+        "eligible_static": {
+          "valid": 0,
+          "minimum": null,
+          "maximum": null
+        },
+        "reference_fp32": {
+          "valid": 1,
+          "minimum": 2399,
+          "maximum": 2399
+        }
+      }
+    },
+    {
+      "batch": 8,
+      "settings": 24,
+      "accuracy_passes": 10,
+      "eligible_valid": 2,
+      "minimum": 350497,
+      "maximum": 1314076,
+      "baselines": {
+        "eligible_static": {
+          "valid": 2,
+          "minimum": 350497,
+          "maximum": 1314076
+        },
+        "reference_fp32": {
+          "valid": 4,
+          "minimum": 2670,
+          "maximum": 21288
+        }
+      }
+    },
+    {
+      "batch": 16,
+      "settings": 24,
+      "accuracy_passes": 8,
+      "eligible_valid": 2,
+      "minimum": 79015,
+      "maximum": 81556,
+      "baselines": {
+        "eligible_static": {
+          "valid": 2,
+          "minimum": 79015,
+          "maximum": 81556
+        },
+        "reference_fp32": {
+          "valid": 8,
+          "minimum": 2279,
+          "maximum": 89265
+        }
+      }
+    },
+    {
+      "batch": 32,
+      "settings": 24,
+      "accuracy_passes": 13,
+      "eligible_valid": 9,
+      "minimum": 29522,
+      "maximum": 1672462,
+      "baselines": {
+        "eligible_static": {
+          "valid": 9,
+          "minimum": 29522,
+          "maximum": 1672462
+        },
+        "reference_fp32": {
+          "valid": 13,
+          "minimum": 1614,
+          "maximum": 3659
+        }
+      }
+    },
+    {
+      "batch": 64,
+      "settings": 24,
+      "accuracy_passes": 11,
+      "eligible_valid": 9,
+      "minimum": 9583,
+      "maximum": 23494940,
+      "baselines": {
+        "eligible_static": {
+          "valid": 9,
+          "minimum": 9583,
+          "maximum": 23494940
+        },
+        "reference_fp32": {
+          "valid": 11,
+          "minimum": 1653,
+          "maximum": 3382
+        }
+      }
+    },
+    {
+      "batch": 128,
+      "settings": 24,
+      "accuracy_passes": 11,
+      "eligible_valid": 9,
+      "minimum": 16089,
+      "maximum": 96831,
+      "baselines": {
+        "eligible_static": {
+          "valid": 9,
+          "minimum": 16089,
+          "maximum": 96831
+        },
+        "reference_fp32": {
+          "valid": 11,
+          "minimum": 2571,
+          "maximum": 3970
+        }
+      }
+    }
+  ],
+  "batch1_payback": [
+    {
+      "seed": 42,
+      "batch_size": 1,
+      "accuracy_passed": true,
+      "eligible_static": {
+        "training_j": 270.437,
+        "saved_j_per_image": -0.01800180000000004,
+        "valid_payback_images": null
+      },
+      "reference_fp32": {
+        "training_j": 270.437,
+        "saved_j_per_image": 0.11276739999999993,
+        "valid_payback_images": 2399
+      }
+    },
+    {
+      "seed": 45,
+      "batch_size": 1,
+      "accuracy_passed": false,
+      "eligible_static": {
+        "training_j": 201.185,
+        "saved_j_per_image": 0.016893699999999984,
+        "valid_payback_images": null
+      },
+      "reference_fp32": {
+        "training_j": 201.185,
+        "saved_j_per_image": 0.16993900000000003,
+        "valid_payback_images": null
+      }
+    },
+    {
+      "seed": 48,
+      "batch_size": 1,
+      "accuracy_passed": false,
+      "eligible_static": {
+        "training_j": 195.008,
+        "saved_j_per_image": 0.020226199999999944,
+        "valid_payback_images": null
+      },
+      "reference_fp32": {
+        "training_j": 195.008,
+        "saved_j_per_image": 0.17804630000000002,
+        "valid_payback_images": null
+      }
+    }
+  ],
+  "worked_example": {
+    "seed": 48,
+    "batch_size": 64,
+    "objective": "energy",
+    "budget_pp": 1.0,
+    "accuracy": 85.18,
+    "accuracy_loss_pp": 0.6199999999999903,
+    "accuracy_passed": true,
+    "route_ms_per_image": 1.3125542000001587,
+    "route_ms_per_batch": 83.60217834395915,
+    "route_j_per_image": 0.0403774,
+    "route_latency_repeat_range_ms_per_image": [
+      1.3094331100022827,
+      1.8317511899995225
+    ],
+    "route_energy_repeat_range_j_per_image": [
+      0.0394671,
+      0.055290700000000005
+    ],
+    "training_j": 195.008,
+    "eligible_static": {
+      "accuracy": 85.85000000000001,
+      "j_per_image": 0.0607284,
+      "ms_per_image": 2.155937109998922,
+      "latency_saving_percent": 39.119086827128505,
+      "energy_saving_percent": 33.511503678674224,
+      "saved_j_per_image": 0.020351,
+      "mathematical_crossing_images": 9583,
+      "valid_payback_images": 9583,
+      "no_valid_payback_reason": null
+    },
+    "measurement_source": "historical larger-batch report",
+    "reference_fp32": {
+      "accuracy": 85.8,
+      "j_per_image": 0.1583923,
+      "ms_per_image": 5.325686750000204,
+      "latency_saving_percent": 75.3542733244664,
+      "energy_saving_percent": 74.50797797620213,
+      "saved_j_per_image": 0.1180149,
+      "mathematical_crossing_images": 1653,
+      "valid_payback_images": 1653,
+      "no_valid_payback_reason": null
+    }
+  },
+  "compact_rows": [
+    {
+      "seed": 42,
+      "method": "tree_d3",
+      "accuracy": 84.87,
+      "accuracy_loss_pp": 0.9299999999999926,
+      "accuracy_pass": true,
+      "ms_per_image": 4.1229333099996435,
+      "gpu_j_per_image": 0.22697669999999998,
+      "decision_ms": 0.6213296499916396,
+      "latency_saving_vs_reference_pct": 49.52772914963822,
+      "energy_saving_vs_reference_pct": 34.80758940534685,
+      "latency_saving_vs_eligible_pct": 5.588293427678559,
+      "energy_saving_vs_eligible_pct": -4.40745904576505,
+      "selected_images": [
+        0,
+        6779,
+        3137,
+        84,
+        0,
+        0
+      ],
+      "fit_gpu_payback_images_vs_reference": null,
+      "payback_reason_vs_reference": "CPU fit energy unmeasured",
+      "fit_gpu_payback_images_vs_eligible": null,
+      "payback_reason_vs_eligible": "CPU fit energy unmeasured"
+    },
+    {
+      "seed": 42,
+      "method": "logistic",
+      "accuracy": 84.61999999999999,
+      "accuracy_loss_pp": 1.1800000000000068,
+      "accuracy_pass": false,
+      "ms_per_image": 5.429048150000381,
+      "gpu_j_per_image": 0.2912607,
+      "decision_ms": 1.7871109099975002,
+      "latency_saving_vs_reference_pct": 33.53848629521041,
+      "energy_saving_vs_reference_pct": 16.34389281152605,
+      "latency_saving_vs_eligible_pct": -24.320638333314392,
+      "energy_saving_vs_eligible_pct": -33.977582751405144,
+      "selected_images": [
+        0,
+        6225,
+        3701,
+        36,
+        19,
+        19
+      ],
+      "fit_gpu_payback_images_vs_reference": null,
+      "payback_reason_vs_reference": "CPU fit energy unmeasured",
+      "fit_gpu_payback_images_vs_eligible": null,
+      "payback_reason_vs_eligible": "CPU fit energy unmeasured"
+    },
+    {
+      "seed": 42,
+      "method": "tinycnn",
+      "accuracy": 84.91,
+      "accuracy_loss_pp": 0.8900000000000006,
+      "accuracy_pass": true,
+      "ms_per_image": 4.154171830000268,
+      "gpu_j_per_image": 0.23539690000000005,
+      "decision_ms": 0.3771125599900188,
+      "latency_saving_vs_reference_pct": 49.145312330377045,
+      "energy_saving_vs_reference_pct": 32.38913352115652,
+      "latency_saving_vs_eligible_pct": 4.872957582468674,
+      "energy_saving_vs_eligible_pct": -8.28068341926751,
+      "selected_images": [
+        0,
+        7363,
+        2442,
+        153,
+        0,
+        42
+      ],
+      "fit_gpu_payback_images_vs_reference": 2399,
+      "payback_reason_vs_reference": "GPU-only fit numerator, warm inference denominator; excludes setup/calibration/export, separate measurement sessions",
+      "fit_gpu_payback_images_vs_eligible": null,
+      "payback_reason_vs_eligible": "Not applicable, accuracy fails or energy saving nonpositive"
+    },
+    {
+      "seed": 42,
+      "method": "thumbnail_mlp16",
+      "accuracy": 84.98,
+      "accuracy_loss_pp": 0.8199999999999932,
+      "accuracy_pass": true,
+      "ms_per_image": 4.445000220000293,
+      "gpu_j_per_image": 0.2207852,
+      "decision_ms": 0.5173191700067037,
+      "latency_saving_vs_reference_pct": 45.58503905710959,
+      "energy_saving_vs_reference_pct": 36.58591647678983,
+      "latency_saving_vs_eligible_pct": -1.7867680436985278,
+      "energy_saving_vs_eligible_pct": -1.5594187725482156,
+      "selected_images": [
+        13,
+        7173,
+        2799,
+        0,
+        12,
+        3
+      ],
+      "fit_gpu_payback_images_vs_reference": null,
+      "payback_reason_vs_reference": "CPU fit energy unmeasured",
+      "fit_gpu_payback_images_vs_eligible": null,
+      "payback_reason_vs_eligible": "CPU fit energy unmeasured"
+    },
+    {
+      "seed": 42,
+      "method": "eligible_static",
+      "accuracy": 85.85000000000001,
+      "accuracy_loss_pp": -0.05000000000001137,
+      "accuracy_pass": true,
+      "ms_per_image": 4.36697254999981,
+      "gpu_j_per_image": 0.2173951,
+      "decision_ms": 0.0015959099919200526,
+      "latency_saving_vs_reference_pct": 46.54024094808739,
+      "energy_saving_vs_reference_pct": 37.559623430661894,
+      "latency_saving_vs_eligible_pct": 0.0,
+      "energy_saving_vs_eligible_pct": 0.0,
+      "selected_images": [
+        0,
+        10000,
+        0,
+        0,
+        0,
+        0
+      ],
+      "fit_gpu_payback_images_vs_reference": null,
+      "payback_reason_vs_reference": "Not applicable, accuracy fails or energy saving nonpositive",
+      "fit_gpu_payback_images_vs_eligible": null,
+      "payback_reason_vs_eligible": "Not applicable, accuracy fails or energy saving nonpositive"
+    },
+    {
+      "seed": 42,
+      "method": "boosted_d2",
+      "accuracy": 84.43,
+      "accuracy_loss_pp": 1.3699999999999903,
+      "accuracy_pass": false,
+      "ms_per_image": 6.592764549999993,
+      "gpu_j_per_image": 0.30540799999999996,
+      "decision_ms": 2.842558989992358,
+      "latency_saving_vs_reference_pct": 19.29246170118334,
+      "energy_saving_vs_reference_pct": 12.280495157027882,
+      "latency_saving_vs_eligible_pct": -50.96876553529699,
+      "energy_saving_vs_eligible_pct": -40.48522712793432,
+      "selected_images": [
+        0,
+        5498,
+        4502,
+        0,
+        0,
+        0
+      ],
+      "fit_gpu_payback_images_vs_reference": null,
+      "payback_reason_vs_reference": "CPU fit energy unmeasured",
+      "fit_gpu_payback_images_vs_eligible": null,
+      "payback_reason_vs_eligible": "CPU fit energy unmeasured"
+    },
+    {
+      "seed": 42,
+      "method": "reference",
+      "accuracy": 85.8,
+      "accuracy_loss_pp": 0.0,
+      "accuracy_pass": true,
+      "ms_per_image": 8.16870974999947,
+      "gpu_j_per_image": 0.3481643,
+      "decision_ms": 0.0016599400059931213,
+      "latency_saving_vs_reference_pct": 0.0,
+      "energy_saving_vs_reference_pct": 0.0,
+      "latency_saving_vs_eligible_pct": -87.05658568886187,
+      "energy_saving_vs_eligible_pct": -60.15278173243095,
+      "selected_images": [
+        10000,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "fit_gpu_payback_images_vs_reference": null,
+      "payback_reason_vs_reference": "Not applicable, accuracy fails or energy saving nonpositive",
+      "fit_gpu_payback_images_vs_eligible": null,
+      "payback_reason_vs_eligible": "Not applicable, accuracy fails or energy saving nonpositive"
+    },
+    {
+      "seed": 45,
+      "method": "logistic",
+      "accuracy": 84.17,
+      "accuracy_loss_pp": 1.6299999999999955,
+      "accuracy_pass": false,
+      "ms_per_image": 5.891600669999571,
+      "gpu_j_per_image": 0.24767420000000007,
+      "decision_ms": 2.0858462100017277,
+      "latency_saving_vs_reference_pct": 34.29565339332712,
+      "energy_saving_vs_reference_pct": 29.308976782843775,
+      "latency_saving_vs_eligible_pct": -20.451512184474762,
+      "energy_saving_vs_eligible_pct": -25.521409027029218,
+      "selected_images": [
+        0,
+        4889,
+        5002,
+        24,
+        24,
+        61
+      ],
+      "fit_gpu_payback_images_vs_reference": null,
+      "payback_reason_vs_reference": "CPU fit energy unmeasured",
+      "fit_gpu_payback_images_vs_eligible": null,
+      "payback_reason_vs_eligible": "CPU fit energy unmeasured"
+    },
+    {
+      "seed": 45,
+      "method": "tinycnn",
+      "accuracy": 84.55,
+      "accuracy_loss_pp": 1.25,
+      "accuracy_pass": false,
+      "ms_per_image": 4.401866210000298,
+      "gpu_j_per_image": 0.18042260000000002,
+      "decision_ms": 0.4249045600023237,
+      "latency_saving_vs_reference_pct": 50.90947954928484,
+      "energy_saving_vs_reference_pct": 48.50388855399679,
+      "latency_saving_vs_eligible_pct": 10.005536504170898,
+      "energy_saving_vs_eligible_pct": 8.56173564981706,
+      "selected_images": [
+        0,
+        5685,
+        4130,
+        98,
+        0,
+        87
+      ],
+      "fit_gpu_payback_images_vs_reference": null,
+      "payback_reason_vs_reference": "Not applicable, accuracy fails or energy saving nonpositive",
+      "fit_gpu_payback_images_vs_eligible": null,
+      "payback_reason_vs_eligible": "Not applicable, accuracy fails or energy saving nonpositive"
+    },
+    {
+      "seed": 45,
+      "method": "boosted_d2",
+      "accuracy": 85.00999999999999,
+      "accuracy_loss_pp": 0.7900000000000063,
+      "accuracy_pass": true,
+      "ms_per_image": 7.643749280000156,
+      "gpu_j_per_image": 0.2931271000000001,
+      "decision_ms": 3.1229676500039205,
+      "latency_saving_vs_reference_pct": 14.755330478351459,
+      "energy_saving_vs_reference_pct": 16.33583703236883,
+      "latency_saving_vs_eligible_pct": -56.273517352131755,
+      "energy_saving_vs_eligible_pct": -48.55696158908316,
+      "selected_images": [
+        0,
+        7466,
+        2534,
+        0,
+        0,
+        0
+      ],
+      "fit_gpu_payback_images_vs_reference": null,
+      "payback_reason_vs_reference": "CPU fit energy unmeasured",
+      "fit_gpu_payback_images_vs_eligible": null,
+      "payback_reason_vs_eligible": "CPU fit energy unmeasured"
+    },
+    {
+      "seed": 45,
+      "method": "reference",
+      "accuracy": 85.8,
+      "accuracy_loss_pp": 0.0,
+      "accuracy_pass": true,
+      "ms_per_image": 8.96683548999972,
+      "gpu_j_per_image": 0.35036160000000005,
+      "decision_ms": 0.001540280002882355,
+      "latency_saving_vs_reference_pct": 0.0,
+      "energy_saving_vs_reference_pct": 0.0,
+      "latency_saving_vs_eligible_pct": -83.32350659467909,
+      "energy_saving_vs_eligible_pct": -77.56343495190212,
+      "selected_images": [
+        10000,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "fit_gpu_payback_images_vs_reference": null,
+      "payback_reason_vs_reference": "Not applicable, accuracy fails or energy saving nonpositive",
+      "fit_gpu_payback_images_vs_eligible": null,
+      "payback_reason_vs_eligible": "Not applicable, accuracy fails or energy saving nonpositive"
+    },
+    {
+      "seed": 45,
+      "method": "eligible_static",
+      "accuracy": 85.85000000000001,
+      "accuracy_loss_pp": -0.05000000000001137,
+      "accuracy_pass": true,
+      "ms_per_image": 4.891263349999645,
+      "gpu_j_per_image": 0.1973163,
+      "decision_ms": 0.0016874800026926095,
+      "latency_saving_vs_reference_pct": 45.451621640046426,
+      "energy_saving_vs_reference_pct": 43.68209872314775,
+      "latency_saving_vs_eligible_pct": 0.0,
+      "energy_saving_vs_eligible_pct": 0.0,
+      "selected_images": [
+        0,
+        10000,
+        0,
+        0,
+        0,
+        0
+      ],
+      "fit_gpu_payback_images_vs_reference": null,
+      "payback_reason_vs_reference": "Not applicable, accuracy fails or energy saving nonpositive",
+      "fit_gpu_payback_images_vs_eligible": null,
+      "payback_reason_vs_eligible": "Not applicable, accuracy fails or energy saving nonpositive"
+    },
+    {
+      "seed": 45,
+      "method": "tree_d3",
+      "accuracy": 85.02,
+      "accuracy_loss_pp": 0.7800000000000011,
+      "accuracy_pass": true,
+      "ms_per_image": 4.980296830000225,
+      "gpu_j_per_image": 0.19043739999999998,
+      "decision_ms": 0.7115416300008292,
+      "latency_saving_vs_reference_pct": 44.458701895953034,
+      "energy_saving_vs_reference_pct": 45.645470279848034,
+      "latency_saving_vs_eligible_pct": -1.820255292542905,
+      "energy_saving_vs_eligible_pct": 3.486229976945654,
+      "selected_images": [
+        0,
+        6770,
+        3167,
+        63,
+        0,
+        0
+      ],
+      "fit_gpu_payback_images_vs_reference": null,
+      "payback_reason_vs_reference": "CPU fit energy unmeasured",
+      "fit_gpu_payback_images_vs_eligible": null,
+      "payback_reason_vs_eligible": "CPU fit energy unmeasured"
+    },
+    {
+      "seed": 45,
+      "method": "thumbnail_mlp16",
+      "accuracy": 84.64,
+      "accuracy_loss_pp": 1.1599999999999966,
+      "accuracy_pass": false,
+      "ms_per_image": 5.163751050000064,
+      "gpu_j_per_image": 0.19771869999999997,
+      "decision_ms": 0.5372440100056337,
+      "latency_saving_vs_reference_pct": 42.412782572414244,
+      "energy_saving_vs_reference_pct": 43.567245953894506,
+      "latency_saving_vs_eligible_pct": -5.570906338552373,
+      "energy_saving_vs_eligible_pct": -0.20393652222343572,
+      "selected_images": [
+        1211,
+        5052,
+        3737,
+        0,
+        0,
+        0
+      ],
+      "fit_gpu_payback_images_vs_reference": null,
+      "payback_reason_vs_reference": "CPU fit energy unmeasured",
+      "fit_gpu_payback_images_vs_eligible": null,
+      "payback_reason_vs_eligible": "CPU fit energy unmeasured"
+    },
+    {
+      "seed": 48,
+      "method": "thumbnail_mlp16",
+      "accuracy": 84.27,
+      "accuracy_loss_pp": 1.5300000000000011,
+      "accuracy_pass": false,
+      "ms_per_image": 4.473087189999751,
+      "gpu_j_per_image": 0.1716232,
+      "decision_ms": 0.5409405500025969,
+      "latency_saving_vs_reference_pct": 51.625073474412154,
+      "energy_saving_vs_reference_pct": 50.882226005089706,
+      "latency_saving_vs_eligible_pct": 12.271750272623638,
+      "energy_saving_vs_eligible_pct": 10.422330844531192,
+      "selected_images": [
+        1,
+        4956,
+        5009,
+        1,
+        33,
+        0
+      ],
+      "fit_gpu_payback_images_vs_reference": null,
+      "payback_reason_vs_reference": "CPU fit energy unmeasured",
+      "fit_gpu_payback_images_vs_eligible": null,
+      "payback_reason_vs_eligible": "CPU fit energy unmeasured"
+    },
+    {
+      "seed": 48,
+      "method": "tinycnn",
+      "accuracy": 84.5,
+      "accuracy_loss_pp": 1.2999999999999972,
+      "accuracy_pass": false,
+      "ms_per_image": 4.461530839999978,
+      "gpu_j_per_image": 0.17136530000000003,
+      "decision_ms": 0.39366555999840785,
+      "latency_saving_vs_reference_pct": 51.75005149482561,
+      "energy_saving_vs_reference_pct": 50.95603580419197,
+      "latency_saving_vs_eligible_pct": 12.498398740595285,
+      "energy_saving_vs_eligible_pct": 10.556940156530924,
+      "selected_images": [
+        0,
+        5903,
+        3713,
+        0,
+        352,
+        32
+      ],
+      "fit_gpu_payback_images_vs_reference": null,
+      "payback_reason_vs_reference": "Not applicable, accuracy fails or energy saving nonpositive",
+      "fit_gpu_payback_images_vs_eligible": null,
+      "payback_reason_vs_eligible": "Not applicable, accuracy fails or energy saving nonpositive"
+    },
+    {
+      "seed": 48,
+      "method": "logistic",
+      "accuracy": 84.00999999999999,
+      "accuracy_loss_pp": 1.7900000000000063,
+      "accuracy_pass": false,
+      "ms_per_image": 5.758845409999776,
+      "gpu_j_per_image": 0.22113810000000003,
+      "decision_ms": 1.9764626899983342,
+      "latency_saving_vs_reference_pct": 37.72003277651882,
+      "energy_saving_vs_reference_pct": 36.711288348755446,
+      "latency_saving_vs_eligible_pct": -12.945133150834831,
+      "energy_saving_vs_eligible_pct": -15.421665366156677,
+      "selected_images": [
+        0,
+        4798,
+        4849,
+        63,
+        147,
+        143
+      ],
+      "fit_gpu_payback_images_vs_reference": null,
+      "payback_reason_vs_reference": "CPU fit energy unmeasured",
+      "fit_gpu_payback_images_vs_eligible": null,
+      "payback_reason_vs_eligible": "CPU fit energy unmeasured"
+    },
+    {
+      "seed": 48,
+      "method": "tree_d3",
+      "accuracy": 83.89,
+      "accuracy_loss_pp": 1.9099999999999966,
+      "accuracy_pass": false,
+      "ms_per_image": 4.545790960000159,
+      "gpu_j_per_image": 0.1744971,
+      "decision_ms": 0.7206190599867114,
+      "latency_saving_vs_reference_pct": 50.83880676810564,
+      "energy_saving_vs_reference_pct": 50.059728984384044,
+      "latency_saving_vs_eligible_pct": 10.845850391893197,
+      "energy_saving_vs_eligible_pct": 8.922316491076055,
+      "selected_images": [
+        0,
+        4832,
+        4238,
+        242,
+        688,
+        0
+      ],
+      "fit_gpu_payback_images_vs_reference": null,
+      "payback_reason_vs_reference": "CPU fit energy unmeasured",
+      "fit_gpu_payback_images_vs_eligible": null,
+      "payback_reason_vs_eligible": "CPU fit energy unmeasured"
+    },
+    {
+      "seed": 48,
+      "method": "boosted_d2",
+      "accuracy": 84.19,
+      "accuracy_loss_pp": 1.6099999999999994,
+      "accuracy_pass": false,
+      "ms_per_image": 6.64587367999975,
+      "gpu_j_per_image": 0.24670920000000002,
+      "decision_ms": 2.7771015699921917,
+      "latency_saving_vs_reference_pct": 28.12712175897829,
+      "energy_saving_vs_reference_pct": 29.392956616208508,
+      "latency_saving_vs_eligible_pct": -30.341940832065074,
+      "energy_saving_vs_eligible_pct": -28.768343063236124,
+      "selected_images": [
+        0,
+        4803,
+        5149,
+        0,
+        48,
+        0
+      ],
+      "fit_gpu_payback_images_vs_reference": null,
+      "payback_reason_vs_reference": "CPU fit energy unmeasured",
+      "fit_gpu_payback_images_vs_eligible": null,
+      "payback_reason_vs_eligible": "CPU fit energy unmeasured"
+    },
+    {
+      "seed": 48,
+      "method": "reference",
+      "accuracy": 85.8,
+      "accuracy_loss_pp": 0.0,
+      "accuracy_pass": true,
+      "ms_per_image": 9.246705910000127,
+      "gpu_j_per_image": 0.34941160000000004,
+      "decision_ms": 0.0014238900137570453,
+      "latency_saving_vs_reference_pct": 0.0,
+      "energy_saving_vs_reference_pct": 0.0,
+      "latency_saving_vs_eligible_pct": -81.35066247795255,
+      "energy_saving_vs_eligible_pct": -82.37322636964588,
+      "selected_images": [
+        10000,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "fit_gpu_payback_images_vs_reference": null,
+      "payback_reason_vs_reference": "Not applicable, accuracy fails or energy saving nonpositive",
+      "fit_gpu_payback_images_vs_eligible": null,
+      "payback_reason_vs_eligible": "Not applicable, accuracy fails or energy saving nonpositive"
+    },
+    {
+      "seed": 48,
+      "method": "eligible_static",
+      "accuracy": 85.85000000000001,
+      "accuracy_loss_pp": -0.05000000000001137,
+      "accuracy_pass": true,
+      "ms_per_image": 5.098799080000208,
+      "gpu_j_per_image": 0.19159149999999997,
+      "decision_ms": 0.001609649997772067,
+      "latency_saving_vs_reference_pct": 44.8582108090411,
+      "energy_saving_vs_reference_pct": 45.16738997789428,
+      "latency_saving_vs_eligible_pct": 0.0,
+      "energy_saving_vs_eligible_pct": 0.0,
+      "selected_images": [
+        0,
+        10000,
+        0,
+        0,
+        0,
+        0
+      ],
+      "fit_gpu_payback_images_vs_reference": null,
+      "payback_reason_vs_reference": "Not applicable, accuracy fails or energy saving nonpositive",
+      "fit_gpu_payback_images_vs_eligible": null,
+      "payback_reason_vs_eligible": "Not applicable, accuracy fails or energy saving nonpositive"
+    }
+  ],
+  "switching": {
+    "audit_passed": true,
+    "report_sha256": "82bf9ccfdcc36cf814aa10f94cc9671b42dd1dd853e21e7fb65ed9ed77d5901e",
+    "source_lineage_verified": true,
+    "original41rows_unchanged": true,
+    "archived_partial_chunks": 5,
+    "full_sweeps": 81,
+    "full_chunks": 1620,
+    "results": [
+      {
+        "seed": 42,
+        "variant": "file_static_c2",
+        "comparator_mode": "eager",
+        "accuracy": 84.91,
+        "accuracy_loss_pp": 0.8900000000000006,
+        "accuracy_pass": true,
+        "all_repeats_pass": true,
+        "median_ms_per_image": 15.913766589999796,
+        "latency_range_ms": [
+          14.836293289999594,
+          16.065843660000247
+        ],
+        "median_gpu_j_per_image": 0.5483204,
+        "gpu_energy_range_j_per_image": [
+          0.5462516000000001,
+          0.6749670999999999
+        ],
+        "median_loads": 440.0,
+        "median_evictions": 438.0,
+        "median_setup_seconds": 4.3000000005122274e-05,
+        "is_routed": true,
+        "used_models": [
+          "resnet101__p0__fp16",
+          "efficientnet_b0__p0__fp16",
+          "resnet34__p0__int8",
+          "resnet18__p10__fp16"
+        ],
+        "constant_classifier_selection": false,
+        "reference_comparison": {
+          "latency_saving_percent": -43.10617902229221,
+          "gpu_energy_saving_percent": -48.723434610504476,
+          "matched_repeat_latency_saving_range_percent": [
+            -47.70568043471919,
+            -37.332142358360464
+          ],
+          "mathematical_fit_crossing_images": null,
+          "valid_gpu_fit_payback_images": null,
+          "no_valid_payback_reason": "no positive inference energy saving or staticcontrol"
+        },
+        "eligible_comparison": {
+          "latency_saving_percent": -192.37747585907877,
+          "gpu_energy_saving_percent": -181.38735276850628,
+          "matched_repeat_latency_saving_range_percent": [
+            -197.40924280098722,
+            -66.87073948092502
+          ],
+          "mathematical_fit_crossing_images": null,
+          "valid_gpu_fit_payback_images": null,
+          "no_valid_payback_reason": "no positive inference energy saving or staticcontrol"
+        }
+      },
+      {
+        "seed": 42,
+        "variant": "host_static_reuse_c2",
+        "comparator_mode": "eager",
+        "accuracy": 84.91,
+        "accuracy_loss_pp": 0.8900000000000006,
+        "accuracy_pass": true,
+        "all_repeats_pass": true,
+        "median_ms_per_image": 7.901159369999732,
+        "latency_range_ms": [
+          7.4581617500001816,
+          9.228114910000476
+        ],
+        "median_gpu_j_per_image": 0.2679993,
+        "gpu_energy_range_j_per_image": [
+          0.2673006,
+          0.2807909
+        ],
+        "median_loads": 440.0,
+        "median_evictions": 438.0,
+        "median_setup_seconds": 2.1100000594742596e-05,
+        "is_routed": true,
+        "used_models": [
+          "resnet101__p0__fp16",
+          "efficientnet_b0__p0__fp16",
+          "resnet34__p0__int8",
+          "resnet18__p10__fp16"
+        ],
+        "constant_classifier_selection": false,
+        "reference_comparison": {
+          "latency_saving_percent": 28.94801360242536,
+          "gpu_energy_saving_percent": 27.30933160755834,
+          "matched_repeat_latency_saving_range_percent": [
+            20.363492618028246,
+            28.948013602425362
+          ],
+          "mathematical_fit_crossing_images": 2686,
+          "valid_gpu_fit_payback_images": 2686,
+          "no_valid_payback_reason": null
+        },
+        "eligible_comparison": {
+          "latency_saving_percent": -45.164943817418425,
+          "gpu_energy_saving_percent": -37.53202246499079,
+          "matched_repeat_latency_saving_range_percent": [
+            -46.265448314558625,
+            3.234576783701018
+          ],
+          "mathematical_fit_crossing_images": null,
+          "valid_gpu_fit_payback_images": null,
+          "no_valid_payback_reason": "no positive inference energy saving or staticcontrol"
+        }
+      },
+      {
+        "seed": 42,
+        "variant": "host_aware_c2",
+        "comparator_mode": "eager",
+        "accuracy": 85.85000000000001,
+        "accuracy_loss_pp": -0.05000000000001137,
+        "accuracy_pass": true,
+        "all_repeats_pass": true,
+        "median_ms_per_image": 6.021795019999809,
+        "latency_range_ms": [
+          5.313600600000245,
+          6.041018009999789
+        ],
+        "median_gpu_j_per_image": 0.20743529999999996,
+        "gpu_energy_range_j_per_image": [
+          0.2050422,
+          0.2084485
+        ],
+        "median_loads": 1.0,
+        "median_evictions": 0.0,
+        "median_setup_seconds": 2.1800000467919745e-05,
+        "is_routed": true,
+        "used_models": [
+          "resnet101__p0__fp16"
+        ],
+        "constant_classifier_selection": true,
+        "reference_comparison": {
+          "latency_saving_percent": 45.84839036729572,
+          "gpu_energy_saving_percent": 43.73638063537236,
+          "matched_repeat_latency_saving_range_percent": [
+            45.675525657189354,
+            48.033295181094495
+          ],
+          "mathematical_fit_crossing_images": 1678,
+          "valid_gpu_fit_payback_images": 1678,
+          "no_valid_payback_reason": null
+        },
+        "eligible_comparison": {
+          "latency_saving_percent": -10.636109819198847,
+          "gpu_energy_saving_percent": -6.451756924858021,
+          "matched_repeat_latency_saving_range_percent": [
+            -11.830703081865806,
+            36.85584224784507
+          ],
+          "mathematical_fit_crossing_images": null,
+          "valid_gpu_fit_payback_images": null,
+          "no_valid_payback_reason": "no positive inference energy saving or staticcontrol"
+        }
+      },
+      {
+        "seed": 42,
+        "variant": "resident_eager_c6",
+        "comparator_mode": "eager",
+        "accuracy": 84.91,
+        "accuracy_loss_pp": 0.8900000000000006,
+        "accuracy_pass": true,
+        "all_repeats_pass": true,
+        "median_ms_per_image": 6.7914665099997364,
+        "latency_range_ms": [
+          5.375616290000107,
+          12.48793368000006
+        ],
+        "median_gpu_j_per_image": 0.3516172000000001,
+        "gpu_energy_range_j_per_image": [
+          0.17940930000000002,
+          0.36045839999999996
+        ],
+        "median_loads": 0.0,
+        "median_evictions": 0.0,
+        "median_setup_seconds": 0.4209054999992077,
+        "is_routed": true,
+        "used_models": [
+          "resnet101__p0__fp16",
+          "efficientnet_b0__p0__fp16",
+          "resnet34__p0__int8",
+          "resnet18__p10__fp16"
+        ],
+        "constant_classifier_selection": false,
+        "reference_comparison": {
+          "latency_saving_percent": 38.927040515055275,
+          "gpu_energy_saving_percent": 4.629268485854832,
+          "matched_repeat_latency_saving_range_percent": [
+            -7.767992964106588,
+            51.65921890325303
+          ],
+          "mathematical_fit_crossing_images": 15846,
+          "valid_gpu_fit_payback_images": 15846,
+          "no_valid_payback_reason": null
+        },
+        "eligible_comparison": {
+          "latency_saving_percent": -24.77698628701677,
+          "gpu_energy_saving_percent": -80.44310059569997,
+          "matched_repeat_latency_saving_range_percent": [
+            -30.94767451722352,
+            0.48714501199375343
+          ],
+          "mathematical_fit_crossing_images": null,
+          "valid_gpu_fit_payback_images": null,
+          "no_valid_payback_reason": "no positive inference energy saving or staticcontrol"
+        }
+      },
+      {
+        "seed": 42,
+        "variant": "resident_graph_c6",
+        "comparator_mode": "graph",
+        "accuracy": 84.91,
+        "accuracy_loss_pp": 0.8900000000000006,
+        "accuracy_pass": true,
+        "all_repeats_pass": true,
+        "median_ms_per_image": 6.350502350000352,
+        "latency_range_ms": [
+          5.237732340000366,
+          7.198571839999931
+        ],
+        "median_gpu_j_per_image": 0.21532880000000001,
+        "gpu_energy_range_j_per_image": [
+          0.17161929999999997,
+          0.2216154
+        ],
+        "median_loads": 0.0,
+        "median_evictions": 0.0,
+        "median_setup_seconds": 0.8911206000011589,
+        "is_routed": true,
+        "used_models": [
+          "resnet101__p0__fp16",
+          "efficientnet_b0__p0__fp16",
+          "resnet34__p0__int8",
+          "resnet18__p10__fp16"
+        ],
+        "constant_classifier_selection": false,
+        "reference_comparison": {
+          "latency_saving_percent": 39.58587714741368,
+          "gpu_energy_saving_percent": 40.27223673994938,
+          "matched_repeat_latency_saving_range_percent": [
+            28.85748695161706,
+            53.1890481903083
+          ],
+          "mathematical_fit_crossing_images": 1863,
+          "valid_gpu_fit_payback_images": 1863,
+          "no_valid_payback_reason": null
+        },
+        "eligible_comparison": {
+          "latency_saving_percent": 9.072205935707345,
+          "gpu_energy_saving_percent": 4.203706949707653,
+          "matched_repeat_latency_saving_range_percent": [
+            -2.396013064356839,
+            25.0050749803419
+          ],
+          "mathematical_fit_crossing_images": 28621,
+          "valid_gpu_fit_payback_images": 28621,
+          "no_valid_payback_reason": null
+        }
+      },
+      {
+        "seed": 42,
+        "variant": "reference_eager",
+        "comparator_mode": "eager",
+        "accuracy": 85.8,
+        "accuracy_loss_pp": 0.0,
+        "accuracy_pass": true,
+        "all_repeats_pass": true,
+        "median_ms_per_image": 11.120251199999439,
+        "latency_range_ms": [
+          10.044497439999759,
+          11.587794610000127
+        ],
+        "median_gpu_j_per_image": 0.36868460000000003,
+        "gpu_energy_range_j_per_image": [
+          0.35537399999999997,
+          0.3796954
+        ],
+        "median_loads": 0.0,
+        "median_evictions": 0.0,
+        "median_setup_seconds": 0.22257250000075146,
+        "is_routed": false,
+        "used_models": [
+          "resnet101__p0__fp32"
+        ],
+        "constant_classifier_selection": false,
+        "reference_comparison": {
+          "latency_saving_percent": 0.0,
+          "gpu_energy_saving_percent": 0.0,
+          "matched_repeat_latency_saving_range_percent": [
+            0.0,
+            0.0
+          ],
+          "mathematical_fit_crossing_images": null,
+          "valid_gpu_fit_payback_images": null,
+          "no_valid_payback_reason": "no positive inference energy saving or staticcontrol"
+        },
+        "eligible_comparison": {
+          "latency_saving_percent": -104.30807240932202,
+          "gpu_energy_saving_percent": -89.2017579512191,
+          "matched_repeat_latency_saving_range_percent": [
+            -105.85694465475407,
+            -21.50887375330187
+          ],
+          "mathematical_fit_crossing_images": null,
+          "valid_gpu_fit_payback_images": null,
+          "no_valid_payback_reason": "no positive inference energy saving or staticcontrol"
+        }
+      },
+      {
+        "seed": 42,
+        "variant": "eligible_eager",
+        "comparator_mode": "eager",
+        "accuracy": 85.85000000000001,
+        "accuracy_loss_pp": -0.05000000000001137,
+        "accuracy_pass": true,
+        "all_repeats_pass": true,
+        "median_ms_per_image": 5.442883910000637,
+        "latency_range_ms": [
+          5.401931529999819,
+          9.536583010000323
+        ],
+        "median_gpu_j_per_image": 0.19486320000000004,
+        "gpu_energy_range_j_per_image": [
+          0.18962419999999997,
+          0.27700139999999995
+        ],
+        "median_loads": 0.0,
+        "median_evictions": 0.0,
+        "median_setup_seconds": 0.2762060000004567,
+        "is_routed": false,
+        "used_models": [
+          "resnet101__p0__fp16"
+        ],
+        "constant_classifier_selection": false,
+        "reference_comparison": {
+          "latency_saving_percent": 51.05430792785588,
+          "gpu_energy_saving_percent": 47.14636846779062,
+          "matched_repeat_latency_saving_range_percent": [
+            17.70148392369359,
+            51.42257640726595
+          ],
+          "mathematical_fit_crossing_images": null,
+          "valid_gpu_fit_payback_images": null,
+          "no_valid_payback_reason": "no positive inference energy saving or staticcontrol"
+        },
+        "eligible_comparison": {
+          "latency_saving_percent": 0.0,
+          "gpu_energy_saving_percent": 0.0,
+          "matched_repeat_latency_saving_range_percent": [
+            0.0,
+            0.0
+          ],
+          "mathematical_fit_crossing_images": null,
+          "valid_gpu_fit_payback_images": null,
+          "no_valid_payback_reason": "no positive inference energy saving or staticcontrol"
+        }
+      },
+      {
+        "seed": 42,
+        "variant": "reference_graph",
+        "comparator_mode": "graph",
+        "accuracy": 85.8,
+        "accuracy_loss_pp": 0.0,
+        "accuracy_pass": true,
+        "all_repeats_pass": true,
+        "median_ms_per_image": 10.511618890000136,
+        "latency_range_ms": [
+          8.92645210000028,
+          11.189117369999622
+        ],
+        "median_gpu_j_per_image": 0.36051710000000003,
+        "gpu_energy_range_j_per_image": [
+          0.3552188,
+          0.3703887
+        ],
+        "median_loads": 0.0,
+        "median_evictions": 0.0,
+        "median_setup_seconds": 0.8402458999989904,
+        "is_routed": false,
+        "used_models": [
+          "resnet101__p0__fp32"
+        ],
+        "constant_classifier_selection": false,
+        "reference_comparison": {
+          "latency_saving_percent": 0.0,
+          "gpu_energy_saving_percent": 0.0,
+          "matched_repeat_latency_saving_range_percent": [
+            0.0,
+            0.0
+          ],
+          "mathematical_fit_crossing_images": null,
+          "valid_gpu_fit_payback_images": null,
+          "no_valid_payback_reason": "no positive inference energy saving or staticcontrol"
+        },
+        "eligible_comparison": {
+          "latency_saving_percent": -50.507513427218555,
+          "gpu_energy_saving_percent": -60.38821449449192,
+          "matched_repeat_latency_saving_range_percent": [
+            -60.208075504525894,
+            -28.403715369400157
+          ],
+          "mathematical_fit_crossing_images": null,
+          "valid_gpu_fit_payback_images": null,
+          "no_valid_payback_reason": "no positive inference energy saving or staticcontrol"
+        }
+      },
+      {
+        "seed": 42,
+        "variant": "eligible_graph",
+        "comparator_mode": "graph",
+        "accuracy": 85.85000000000001,
+        "accuracy_loss_pp": -0.05000000000001137,
+        "accuracy_pass": true,
+        "all_repeats_pass": true,
+        "median_ms_per_image": 6.984115709999605,
+        "latency_range_ms": [
+          6.951864339999884,
+          7.030129029999989
+        ],
+        "median_gpu_j_per_image": 0.22477779999999997,
+        "gpu_energy_range_j_per_image": [
+          0.2113231,
+          0.22612419999999997
+        ],
+        "median_loads": 0.0,
+        "median_evictions": 0.0,
+        "median_setup_seconds": 0.8322042999989208,
+        "is_routed": false,
+        "used_models": [
+          "resnet101__p0__fp16"
+        ],
+        "constant_classifier_selection": false,
+        "reference_comparison": {
+          "latency_saving_percent": 33.55813425995019,
+          "gpu_energy_saving_percent": 37.651279231969866,
+          "matched_repeat_latency_saving_range_percent": [
+            22.120633571767375,
+            37.581173929540775
+          ],
+          "mathematical_fit_crossing_images": null,
+          "valid_gpu_fit_payback_images": null,
+          "no_valid_payback_reason": "no positive inference energy saving or staticcontrol"
+        },
+        "eligible_comparison": {
+          "latency_saving_percent": 0.0,
+          "gpu_energy_saving_percent": 0.0,
+          "matched_repeat_latency_saving_range_percent": [
+            0.0,
+            0.0
+          ],
+          "mathematical_fit_crossing_images": null,
+          "valid_gpu_fit_payback_images": null,
+          "no_valid_payback_reason": "no positive inference energy saving or staticcontrol"
+        }
+      },
+      {
+        "seed": 45,
+        "variant": "file_static_c2",
+        "comparator_mode": "eager",
+        "accuracy": 84.55,
+        "accuracy_loss_pp": 1.25,
+        "accuracy_pass": false,
+        "all_repeats_pass": false,
+        "median_ms_per_image": 16.58718933,
+        "latency_range_ms": [
+          16.042024980000132,
+          19.45952626999988
+        ],
+        "median_gpu_j_per_image": 0.5289219000000001,
+        "gpu_energy_range_j_per_image": [
+          0.5147771,
+          0.5485546999999998
+        ],
+        "median_loads": 440.0,
+        "median_evictions": 438.0,
+        "median_setup_seconds": 3.839999953925144e-05,
+        "is_routed": true,
+        "used_models": [
+          "resnet101__p0__fp16",
+          "efficientnet_b0__p0__fp16",
+          "resnet34__p0__int8",
+          "resnet18__p10__fp16"
+        ],
+        "constant_classifier_selection": false,
+        "reference_comparison": {
+          "latency_saving_percent": -47.84236254458784,
+          "gpu_energy_saving_percent": -42.58722693479542,
+          "matched_repeat_latency_saving_range_percent": [
+            -73.22747351243584,
+            -42.98328823877445
+          ],
+          "mathematical_fit_crossing_images": null,
+          "valid_gpu_fit_payback_images": null,
+          "no_valid_payback_reason": "accuracy allowance fails"
+        },
+        "eligible_comparison": {
+          "latency_saving_percent": -77.95977851074902,
+          "gpu_energy_saving_percent": -94.88087667340442,
+          "matched_repeat_latency_saving_range_percent": [
+            -104.72953541576057,
+            -77.95977851074902
+          ],
+          "mathematical_fit_crossing_images": null,
+          "valid_gpu_fit_payback_images": null,
+          "no_valid_payback_reason": "accuracy allowance fails"
+        }
+      },
+      {
+        "seed": 45,
+        "variant": "host_static_reuse_c2",
+        "comparator_mode": "eager",
+        "accuracy": 84.55,
+        "accuracy_loss_pp": 1.25,
+        "accuracy_pass": false,
+        "all_repeats_pass": false,
+        "median_ms_per_image": 7.610575230000177,
+        "latency_range_ms": [
+          6.807456980000279,
+          8.553677230000357
+        ],
+        "median_gpu_j_per_image": 0.24384170000000005,
+        "gpu_energy_range_j_per_image": [
+          0.24240609999999996,
+          0.25016710000000003
+        ],
+        "median_loads": 440.0,
+        "median_evictions": 438.0,
+        "median_setup_seconds": 1.9899998733308166e-05,
+        "is_routed": true,
+        "used_models": [
+          "resnet101__p0__fp16",
+          "efficientnet_b0__p0__fp16",
+          "resnet34__p0__int8",
+          "resnet18__p10__fp16"
+        ],
+        "constant_classifier_selection": false,
+        "reference_comparison": {
+          "latency_saving_percent": 32.16660158984595,
+          "gpu_energy_saving_percent": 34.26494192419277,
+          "matched_repeat_latency_saving_range_percent": [
+            23.855705671614917,
+            38.715720466616226
+          ],
+          "mathematical_fit_crossing_images": 1583,
+          "valid_gpu_fit_payback_images": null,
+          "no_valid_payback_reason": "accuracy allowance fails"
+        },
+        "eligible_comparison": {
+          "latency_saving_percent": 18.348054313176142,
+          "gpu_energy_saving_percent": 10.156708834454985,
+          "matched_repeat_latency_saving_range_percent": [
+            7.451076478288901,
+            26.964507833087954
+          ],
+          "mathematical_fit_crossing_images": 7299,
+          "valid_gpu_fit_payback_images": null,
+          "no_valid_payback_reason": "accuracy allowance fails"
+        }
+      },
+      {
+        "seed": 45,
+        "variant": "host_aware_c2",
+        "comparator_mode": "eager",
+        "accuracy": 85.85000000000001,
+        "accuracy_loss_pp": -0.05000000000001137,
+        "accuracy_pass": true,
+        "all_repeats_pass": true,
+        "median_ms_per_image": 6.68931479999992,
+        "latency_range_ms": [
+          6.640574080000443,
+          8.094482849999986
+        ],
+        "median_gpu_j_per_image": 0.21136239999999998,
+        "gpu_energy_range_j_per_image": [
+          0.21053049999999998,
+          0.24197739999999998
+        ],
+        "median_loads": 1.0,
+        "median_evictions": 0.0,
+        "median_setup_seconds": 2.249999852210749e-05,
+        "is_routed": true,
+        "used_models": [
+          "resnet101__p0__fp16"
+        ],
+        "constant_classifier_selection": true,
+        "reference_comparison": {
+          "latency_saving_percent": 40.377837127125545,
+          "gpu_energy_saving_percent": 43.02073993479378,
+          "matched_repeat_latency_saving_range_percent": [
+            27.129242077478427,
+            40.81226535082793
+          ],
+          "mathematical_fit_crossing_images": 1261,
+          "valid_gpu_fit_payback_images": 1261,
+          "no_valid_payback_reason": null
+        },
+        "eligible_comparison": {
+          "latency_saving_percent": 28.232025540118364,
+          "gpu_energy_saving_percent": 22.123682517598976,
+          "matched_repeat_latency_saving_range_percent": [
+            13.156331281530386,
+            29.6231422979156
+          ],
+          "mathematical_fit_crossing_images": 3351,
+          "valid_gpu_fit_payback_images": 3351,
+          "no_valid_payback_reason": null
+        }
+      },
+      {
+        "seed": 45,
+        "variant": "resident_eager_c6",
+        "comparator_mode": "eager",
+        "accuracy": 84.55,
+        "accuracy_loss_pp": 1.25,
+        "accuracy_pass": false,
+        "all_repeats_pass": false,
+        "median_ms_per_image": 6.656687829999828,
+        "latency_range_ms": [
+          5.754697770000166,
+          10.232143590000486
+        ],
+        "median_gpu_j_per_image": 0.1969827,
+        "gpu_energy_range_j_per_image": [
+          0.168817,
+          0.29464200000000007
+        ],
+        "median_loads": 0.0,
+        "median_evictions": 0.0,
+        "median_setup_seconds": 0.23963259999982256,
+        "is_routed": true,
+        "used_models": [
+          "resnet101__p0__fp16",
+          "efficientnet_b0__p0__fp16",
+          "resnet34__p0__int8",
+          "resnet18__p10__fp16"
+        ],
+        "constant_classifier_selection": false,
+        "reference_comparison": {
+          "latency_saving_percent": 40.66864277427403,
+          "gpu_energy_saving_percent": 46.897231997524166,
+          "matched_repeat_latency_saving_range_percent": [
+            8.800445202301644,
+            48.77204400080272
+          ],
+          "mathematical_fit_crossing_images": 1157,
+          "valid_gpu_fit_payback_images": null,
+          "no_valid_payback_reason": "accuracy allowance fails"
+        },
+        "eligible_comparison": {
+          "latency_saving_percent": 28.582072087437382,
+          "gpu_energy_saving_percent": 27.421872179060426,
+          "matched_repeat_latency_saving_range_percent": [
+            -24.42868586874207,
+            39.456049208835424
+          ],
+          "mathematical_fit_crossing_images": 2704,
+          "valid_gpu_fit_payback_images": null,
+          "no_valid_payback_reason": "accuracy allowance fails"
+        }
+      },
+      {
+        "seed": 45,
+        "variant": "resident_graph_c6",
+        "comparator_mode": "graph",
+        "accuracy": 84.55,
+        "accuracy_loss_pp": 1.25,
+        "accuracy_pass": false,
+        "all_repeats_pass": false,
+        "median_ms_per_image": 6.423884060000273,
+        "latency_range_ms": [
+          3.707754120000027,
+          8.132473380000373
+        ],
+        "median_gpu_j_per_image": 0.2139178,
+        "gpu_energy_range_j_per_image": [
+          0.19184959999999995,
+          0.23265780000000005
+        ],
+        "median_loads": 0.0,
+        "median_evictions": 0.0,
+        "median_setup_seconds": 0.948879700001271,
+        "is_routed": true,
+        "used_models": [
+          "resnet101__p0__fp16",
+          "efficientnet_b0__p0__fp16",
+          "resnet34__p0__int8",
+          "resnet18__p10__fp16"
+        ],
+        "constant_classifier_selection": false,
+        "reference_comparison": {
+          "latency_saving_percent": 43.30456643606896,
+          "gpu_energy_saving_percent": 43.43882872328078,
+          "matched_repeat_latency_saving_range_percent": [
+            29.020281999965277,
+            53.5746177376857
+          ],
+          "mathematical_fit_crossing_images": 1225,
+          "valid_gpu_fit_payback_images": null,
+          "no_valid_payback_reason": "accuracy allowance fails"
+        },
+        "eligible_comparison": {
+          "latency_saving_percent": 11.684905048166371,
+          "gpu_energy_saving_percent": 8.112134245635062,
+          "matched_repeat_latency_saving_range_percent": [
+            -19.189822013851472,
+            58.574676711865585
+          ],
+          "mathematical_fit_crossing_images": 10653,
+          "valid_gpu_fit_payback_images": null,
+          "no_valid_payback_reason": "accuracy allowance fails"
+        }
+      },
+      {
+        "seed": 45,
+        "variant": "reference_eager",
+        "comparator_mode": "eager",
+        "accuracy": 85.8,
+        "accuracy_loss_pp": 0.0,
+        "accuracy_pass": true,
+        "all_repeats_pass": true,
+        "median_ms_per_image": 11.219510459999219,
+        "latency_range_ms": [
+          11.10799870999872,
+          11.233510410000235
+        ],
+        "median_gpu_j_per_image": 0.3709462,
+        "gpu_energy_range_j_per_image": [
+          0.36893610000000004,
+          0.39992900000000003
+        ],
+        "median_loads": 0.0,
+        "median_evictions": 0.0,
+        "median_setup_seconds": 0.2221719999997731,
+        "is_routed": false,
+        "used_models": [
+          "resnet101__p0__fp32"
+        ],
+        "constant_classifier_selection": false,
+        "reference_comparison": {
+          "latency_saving_percent": 0.0,
+          "gpu_energy_saving_percent": 0.0,
+          "matched_repeat_latency_saving_range_percent": [
+            0.0,
+            0.0
+          ],
+          "mathematical_fit_crossing_images": null,
+          "valid_gpu_fit_payback_images": null,
+          "no_valid_payback_reason": "no positive inference energy saving or staticcontrol"
+        },
+        "eligible_comparison": {
+          "latency_saving_percent": -20.371303223105652,
+          "gpu_energy_saving_percent": -36.67484869631603,
+          "matched_repeat_latency_saving_range_percent": [
+            -36.43562860011059,
+            -18.18537283063429
+          ],
+          "mathematical_fit_crossing_images": null,
+          "valid_gpu_fit_payback_images": null,
+          "no_valid_payback_reason": "no positive inference energy saving or staticcontrol"
+        }
+      },
+      {
+        "seed": 45,
+        "variant": "eligible_eager",
+        "comparator_mode": "eager",
+        "accuracy": 85.85000000000001,
+        "accuracy_loss_pp": -0.05000000000001137,
+        "accuracy_pass": true,
+        "all_repeats_pass": true,
+        "median_ms_per_image": 9.320751839999684,
+        "latency_range_ms": [
+          8.223299569999654,
+          9.50499215000018
+        ],
+        "median_gpu_j_per_image": 0.2714078,
+        "gpu_energy_range_j_per_image": [
+          0.24921289999999993,
+          0.277794
+        ],
+        "median_loads": 0.0,
+        "median_evictions": 0.0,
+        "median_setup_seconds": 0.2372004000008019,
+        "is_routed": false,
+        "used_models": [
+          "resnet101__p0__fp16"
+        ],
+        "constant_classifier_selection": false,
+        "reference_comparison": {
+          "latency_saving_percent": 16.923720752069848,
+          "gpu_energy_saving_percent": 26.8336486530931,
+          "matched_repeat_latency_saving_range_percent": [
+            15.387160352486985,
+            26.705362062648977
+          ],
+          "mathematical_fit_crossing_images": null,
+          "valid_gpu_fit_payback_images": null,
+          "no_valid_payback_reason": "no positive inference energy saving or staticcontrol"
+        },
+        "eligible_comparison": {
+          "latency_saving_percent": 0.0,
+          "gpu_energy_saving_percent": 0.0,
+          "matched_repeat_latency_saving_range_percent": [
+            0.0,
+            0.0
+          ],
+          "mathematical_fit_crossing_images": null,
+          "valid_gpu_fit_payback_images": null,
+          "no_valid_payback_reason": "no positive inference energy saving or staticcontrol"
+        }
+      },
+      {
+        "seed": 45,
+        "variant": "reference_graph",
+        "comparator_mode": "graph",
+        "accuracy": 85.8,
+        "accuracy_loss_pp": 0.0,
+        "accuracy_pass": true,
+        "all_repeats_pass": true,
+        "median_ms_per_image": 11.330514040000343,
+        "latency_range_ms": [
+          7.98648053999932,
+          11.45746081999987
+        ],
+        "median_gpu_j_per_image": 0.3782061,
+        "gpu_energy_range_j_per_image": [
+          0.37029149999999994,
+          0.38666519999999993
+        ],
+        "median_loads": 0.0,
+        "median_evictions": 0.0,
+        "median_setup_seconds": 1.332710099999531,
+        "is_routed": false,
+        "used_models": [
+          "resnet101__p0__fp32"
+        ],
+        "constant_classifier_selection": false,
+        "reference_comparison": {
+          "latency_saving_percent": 0.0,
+          "gpu_energy_saving_percent": 0.0,
+          "matched_repeat_latency_saving_range_percent": [
+            0.0,
+            0.0
+          ],
+          "mathematical_fit_crossing_images": null,
+          "valid_gpu_fit_payback_images": null,
+          "no_valid_payback_reason": "no positive inference energy saving or staticcontrol"
+        },
+        "eligible_comparison": {
+          "latency_saving_percent": -55.77109019238306,
+          "gpu_energy_saving_percent": -62.45750163979773,
+          "matched_repeat_latency_saving_range_percent": [
+            -67.92095738361931,
+            10.770097585687877
+          ],
+          "mathematical_fit_crossing_images": null,
+          "valid_gpu_fit_payback_images": null,
+          "no_valid_payback_reason": "no positive inference energy saving or staticcontrol"
+        }
+      },
+      {
+        "seed": 45,
+        "variant": "eligible_graph",
+        "comparator_mode": "graph",
+        "accuracy": 85.85000000000001,
+        "accuracy_loss_pp": -0.05000000000001137,
+        "accuracy_pass": true,
+        "all_repeats_pass": true,
+        "median_ms_per_image": 7.2738234199983705,
+        "latency_range_ms": [
+          6.823127380000005,
+          8.950453069999458
+        ],
+        "median_gpu_j_per_image": 0.23280310000000004,
+        "gpu_energy_range_j_per_image": [
+          0.20448360000000002,
+          0.2623071
+        ],
+        "median_loads": 0.0,
+        "median_evictions": 0.0,
+        "median_setup_seconds": 1.5915278000011313,
+        "is_routed": false,
+        "used_models": [
+          "resnet101__p0__fp16"
+        ],
+        "constant_classifier_selection": false,
+        "reference_comparison": {
+          "latency_saving_percent": 35.803235454989554,
+          "gpu_energy_saving_percent": 38.44544019781806,
+          "matched_repeat_latency_saving_range_percent": [
+            -12.07005420187526,
+            40.448171831495884
+          ],
+          "mathematical_fit_crossing_images": null,
+          "valid_gpu_fit_payback_images": null,
+          "no_valid_payback_reason": "no positive inference energy saving or staticcontrol"
+        },
+        "eligible_comparison": {
+          "latency_saving_percent": 0.0,
+          "gpu_energy_saving_percent": 0.0,
+          "matched_repeat_latency_saving_range_percent": [
+            0.0,
+            0.0
+          ],
+          "mathematical_fit_crossing_images": null,
+          "valid_gpu_fit_payback_images": null,
+          "no_valid_payback_reason": "no positive inference energy saving or staticcontrol"
+        }
+      },
+      {
+        "seed": 48,
+        "variant": "file_static_c2",
+        "comparator_mode": "eager",
+        "accuracy": 84.5,
+        "accuracy_loss_pp": 1.2999999999999972,
+        "accuracy_pass": false,
+        "all_repeats_pass": false,
+        "median_ms_per_image": 23.148559819999356,
+        "latency_range_ms": [
+          23.0717989400011,
+          24.3838900200004
+        ],
+        "median_gpu_j_per_image": 0.8062684999999998,
+        "gpu_energy_range_j_per_image": [
+          0.7971885000000001,
+          0.8131013000000001
+        ],
+        "median_loads": 868.0,
+        "median_evictions": 866.0,
+        "median_setup_seconds": 3.520000245771371e-05,
+        "is_routed": true,
+        "used_models": [
+          "resnet101__p0__fp16",
+          "efficientnet_b0__p0__fp16",
+          "mobilenetv3_large__p10__fp16",
+          "resnet18__p10__fp16"
+        ],
+        "constant_classifier_selection": false,
+        "reference_comparison": {
+          "latency_saving_percent": -114.49378731561879,
+          "gpu_energy_saving_percent": -121.48675807415734,
+          "matched_repeat_latency_saving_range_percent": [
+            -128.92810595788822,
+            -108.97465147142923
+          ],
+          "mathematical_fit_crossing_images": null,
+          "valid_gpu_fit_payback_images": null,
+          "no_valid_payback_reason": "accuracy allowance fails"
+        },
+        "eligible_comparison": {
+          "latency_saving_percent": -299.8802250529388,
+          "gpu_energy_saving_percent": -315.80507814635376,
+          "matched_repeat_latency_saving_range_percent": [
+            -330.5772724725672,
+            -186.3386055152392
+          ],
+          "mathematical_fit_crossing_images": null,
+          "valid_gpu_fit_payback_images": null,
+          "no_valid_payback_reason": "accuracy allowance fails"
+        }
+      },
+      {
+        "seed": 48,
+        "variant": "host_static_reuse_c2",
+        "comparator_mode": "eager",
+        "accuracy": 84.5,
+        "accuracy_loss_pp": 1.2999999999999972,
+        "accuracy_pass": false,
+        "all_repeats_pass": false,
+        "median_ms_per_image": 8.202524950000589,
+        "latency_range_ms": [
+          8.147528570000578,
+          8.399011110001084
+        ],
+        "median_gpu_j_per_image": 0.285023,
+        "gpu_energy_range_j_per_image": [
+          0.27715609999999996,
+          0.2853948
+        ],
+        "median_loads": 868.0,
+        "median_evictions": 866.0,
+        "median_setup_seconds": 1.9499999325489625e-05,
+        "is_routed": true,
+        "used_models": [
+          "resnet101__p0__fp16",
+          "efficientnet_b0__p0__fp16",
+          "mobilenetv3_large__p10__fp16",
+          "resnet18__p10__fp16"
+        ],
+        "constant_classifier_selection": false,
+        "reference_comparison": {
+          "latency_saving_percent": 23.995675940217865,
+          "gpu_energy_saving_percent": 21.702484660419497,
+          "matched_repeat_latency_saving_range_percent": [
+            21.14589986443119,
+            26.447824119132168
+          ],
+          "mathematical_fit_crossing_images": 2469,
+          "valid_gpu_fit_payback_images": null,
+          "no_valid_payback_reason": "accuracy allowance fails"
+        },
+        "eligible_comparison": {
+          "latency_saving_percent": -41.6946690642404,
+          "gpu_energy_saving_percent": -46.99074909724021,
+          "matched_repeat_latency_saving_range_percent": [
+            -51.54897999452574,
+            -1.7995849389546623
+          ],
+          "mathematical_fit_crossing_images": null,
+          "valid_gpu_fit_payback_images": null,
+          "no_valid_payback_reason": "accuracy allowance fails"
+        }
+      },
+      {
+        "seed": 48,
+        "variant": "host_aware_c2",
+        "comparator_mode": "eager",
+        "accuracy": 85.85000000000001,
+        "accuracy_loss_pp": -0.05000000000001137,
+        "accuracy_pass": true,
+        "all_repeats_pass": true,
+        "median_ms_per_image": 6.9381540000009405,
+        "latency_range_ms": [
+          6.090054119999332,
+          9.311229439999442
+        ],
+        "median_gpu_j_per_image": 0.22210049999999998,
+        "gpu_energy_range_j_per_image": [
+          0.20427209999999998,
+          0.28765019999999997
+        ],
+        "median_loads": 1.0,
+        "median_evictions": 0.0,
+        "median_setup_seconds": 1.9099999917671084e-05,
+        "is_routed": true,
+        "used_models": [
+          "resnet101__p0__fp16"
+        ],
+        "constant_classifier_selection": true,
+        "reference_comparison": {
+          "latency_saving_percent": 35.711295216150816,
+          "gpu_energy_saving_percent": 38.98767009792719,
+          "matched_repeat_latency_saving_range_percent": [
+            12.581539775236996,
+            43.5697605676887
+          ],
+          "mathematical_fit_crossing_images": 1375,
+          "valid_gpu_fit_payback_images": 1375,
+          "no_valid_payback_reason": null
+        },
+        "eligible_comparison": {
+          "latency_saving_percent": -19.853269687012464,
+          "gpu_energy_saving_percent": -14.54064714030654,
+          "matched_repeat_latency_saving_range_percent": [
+            -60.847005297050465,
+            24.41778776038246
+          ],
+          "mathematical_fit_crossing_images": null,
+          "valid_gpu_fit_payback_images": null,
+          "no_valid_payback_reason": "no positive inference energy saving or staticcontrol"
+        }
+      },
+      {
+        "seed": 48,
+        "variant": "resident_eager_c6",
+        "comparator_mode": "eager",
+        "accuracy": 84.5,
+        "accuracy_loss_pp": 1.2999999999999972,
+        "accuracy_pass": false,
+        "all_repeats_pass": false,
+        "median_ms_per_image": 7.725028610000663,
+        "latency_range_ms": [
+          4.490429240000594,
+          8.38617596999975
+        ],
+        "median_gpu_j_per_image": 0.23497739999999995,
+        "gpu_energy_range_j_per_image": [
+          0.16059320000000002,
+          0.2483034
+        ],
+        "median_loads": 0.0,
+        "median_evictions": 0.0,
+        "median_setup_seconds": 0.19902199999705772,
+        "is_routed": true,
+        "used_models": [
+          "resnet101__p0__fp16",
+          "efficientnet_b0__p0__fp16",
+          "mobilenetv3_large__p10__fp16",
+          "resnet18__p10__fp16"
+        ],
+        "constant_classifier_selection": false,
+        "reference_comparison": {
+          "latency_saving_percent": 28.42014118524119,
+          "gpu_energy_saving_percent": 35.45030898925793,
+          "matched_repeat_latency_saving_range_percent": [
+            21.266402552386214,
+            58.39183163661064
+          ],
+          "mathematical_fit_crossing_images": 1512,
+          "valid_gpu_fit_payback_images": null,
+          "no_valid_payback_reason": "accuracy allowance fails"
+        },
+        "eligible_comparison": {
+          "latency_saving_percent": -33.44614970122759,
+          "gpu_energy_saving_percent": -21.18146271326118,
+          "matched_repeat_latency_saving_range_percent": [
+            -44.8671520082989,
+            44.27035143248503
+          ],
+          "mathematical_fit_crossing_images": null,
+          "valid_gpu_fit_payback_images": null,
+          "no_valid_payback_reason": "accuracy allowance fails"
+        }
+      },
+      {
+        "seed": 48,
+        "variant": "resident_graph_c6",
+        "comparator_mode": "graph",
+        "accuracy": 84.5,
+        "accuracy_loss_pp": 1.2999999999999972,
+        "accuracy_pass": false,
+        "all_repeats_pass": false,
+        "median_ms_per_image": 6.070401749998927,
+        "latency_range_ms": [
+          4.299489569999059,
+          6.542603750000126
+        ],
+        "median_gpu_j_per_image": 0.19009859999999998,
+        "gpu_energy_range_j_per_image": [
+          0.1419077,
+          0.1992568
+        ],
+        "median_loads": 0.0,
+        "median_evictions": 0.0,
+        "median_setup_seconds": 0.8442218000018329,
+        "is_routed": true,
+        "used_models": [
+          "resnet101__p0__fp16",
+          "efficientnet_b0__p0__fp16",
+          "mobilenetv3_large__p10__fp16",
+          "resnet18__p10__fp16"
+        ],
+        "constant_classifier_selection": false,
+        "reference_comparison": {
+          "latency_saving_percent": 42.76125115617771,
+          "gpu_energy_saving_percent": 46.95532187697506,
+          "matched_repeat_latency_saving_range_percent": [
+            34.767644799074475,
+            59.459453626137154
+          ],
+          "mathematical_fit_crossing_images": 1159,
+          "valid_gpu_fit_payback_images": null,
+          "no_valid_payback_reason": "accuracy allowance fails"
+        },
+        "eligible_comparison": {
+          "latency_saving_percent": 18.230299139680607,
+          "gpu_energy_saving_percent": 15.528439930769256,
+          "matched_repeat_latency_saving_range_percent": [
+            11.168830519589442,
+            42.084891499817374
+          ],
+          "mathematical_fit_crossing_images": 5581,
+          "valid_gpu_fit_payback_images": null,
+          "no_valid_payback_reason": "accuracy allowance fails"
+        }
+      },
+      {
+        "seed": 48,
+        "variant": "reference_eager",
+        "comparator_mode": "eager",
+        "accuracy": 85.8,
+        "accuracy_loss_pp": 0.0,
+        "accuracy_pass": true,
+        "all_repeats_pass": true,
+        "median_ms_per_image": 10.792181960001107,
+        "latency_range_ms": [
+          10.651330870000674,
+          11.077209439999569
+        ],
+        "median_gpu_j_per_image": 0.36402560000000006,
+        "gpu_energy_range_j_per_image": [
+          0.3622172000000001,
+          0.36404279999999994
+        ],
+        "median_loads": 0.0,
+        "median_evictions": 0.0,
+        "median_setup_seconds": 0.5361752999997407,
+        "is_routed": false,
+        "used_models": [
+          "resnet101__p0__fp32"
+        ],
+        "constant_classifier_selection": false,
+        "reference_comparison": {
+          "latency_saving_percent": 0.0,
+          "gpu_energy_saving_percent": 0.0,
+          "matched_repeat_latency_saving_range_percent": [
+            0.0,
+            0.0
+          ],
+          "mathematical_fit_crossing_images": null,
+          "valid_gpu_fit_payback_images": null,
+          "no_valid_payback_reason": "no positive inference energy saving or staticcontrol"
+        },
+        "eligible_comparison": {
+          "latency_saving_percent": -86.42974701385239,
+          "gpu_energy_saving_percent": -87.73360618115846,
+          "matched_repeat_latency_saving_range_percent": [
+            -106.04282358687664,
+            -33.93920174710448
+          ],
+          "mathematical_fit_crossing_images": null,
+          "valid_gpu_fit_payback_images": null,
+          "no_valid_payback_reason": "no positive inference energy saving or staticcontrol"
+        }
+      },
+      {
+        "seed": 48,
+        "variant": "eligible_eager",
+        "comparator_mode": "eager",
+        "accuracy": 85.85000000000001,
+        "accuracy_loss_pp": -0.05000000000001137,
+        "accuracy_pass": true,
+        "all_repeats_pass": true,
+        "median_ms_per_image": 5.7888733600004345,
+        "latency_range_ms": [
+          5.376168529999267,
+          8.057522979999703
+        ],
+        "median_gpu_j_per_image": 0.1939054,
+        "gpu_energy_range_j_per_image": [
+          0.1884107,
+          0.24690570000000003
+        ],
+        "median_loads": 0.0,
+        "median_evictions": 0.0,
+        "median_setup_seconds": 0.20484139999825857,
+        "is_routed": false,
+        "used_models": [
+          "resnet101__p0__fp16"
+        ],
+        "constant_classifier_selection": false,
+        "reference_comparison": {
+          "latency_saving_percent": 46.360491497867216,
+          "gpu_energy_saving_percent": 46.733031962587255,
+          "matched_repeat_latency_saving_range_percent": [
+            25.3392593836615,
+            51.4663999166971
+          ],
+          "mathematical_fit_crossing_images": null,
+          "valid_gpu_fit_payback_images": null,
+          "no_valid_payback_reason": "no positive inference energy saving or staticcontrol"
+        },
+        "eligible_comparison": {
+          "latency_saving_percent": 0.0,
+          "gpu_energy_saving_percent": 0.0,
+          "matched_repeat_latency_saving_range_percent": [
+            0.0,
+            0.0
+          ],
+          "mathematical_fit_crossing_images": null,
+          "valid_gpu_fit_payback_images": null,
+          "no_valid_payback_reason": "no positive inference energy saving or staticcontrol"
+        }
+      },
+      {
+        "seed": 48,
+        "variant": "reference_graph",
+        "comparator_mode": "graph",
+        "accuracy": 85.8,
+        "accuracy_loss_pp": 0.0,
+        "accuracy_pass": true,
+        "all_repeats_pass": true,
+        "median_ms_per_image": 10.605406080000467,
+        "latency_range_ms": [
+          10.02969113999934,
+          10.927146569999604
+        ],
+        "median_gpu_j_per_image": 0.3583745,
+        "gpu_energy_range_j_per_image": [
+          0.3527494,
+          0.3613029
+        ],
+        "median_loads": 0.0,
+        "median_evictions": 0.0,
+        "median_setup_seconds": 1.36296289999882,
+        "is_routed": false,
+        "used_models": [
+          "resnet101__p0__fp32"
+        ],
+        "constant_classifier_selection": false,
+        "reference_comparison": {
+          "latency_saving_percent": 0.0,
+          "gpu_energy_saving_percent": 0.0,
+          "matched_repeat_latency_saving_range_percent": [
+            0.0,
+            0.0
+          ],
+          "mathematical_fit_crossing_images": null,
+          "valid_gpu_fit_payback_images": null,
+          "no_valid_payback_reason": "no positive inference energy saving or staticcontrol"
+        },
+        "eligible_comparison": {
+          "latency_saving_percent": -42.857247078252115,
+          "gpu_energy_saving_percent": -59.24606022364465,
+          "matched_repeat_latency_saving_range_percent": [
+            -47.11981859486287,
+            -36.17654798266461
+          ],
+          "mathematical_fit_crossing_images": null,
+          "valid_gpu_fit_payback_images": null,
+          "no_valid_payback_reason": "no positive inference energy saving or staticcontrol"
+        }
+      },
+      {
+        "seed": 48,
+        "variant": "eligible_graph",
+        "comparator_mode": "graph",
+        "accuracy": 85.85000000000001,
+        "accuracy_loss_pp": -0.05000000000001137,
+        "accuracy_pass": true,
+        "all_repeats_pass": true,
+        "median_ms_per_image": 7.423778839999068,
+        "latency_range_ms": [
+          7.365211770000315,
+          7.427379039999141
+        ],
+        "median_gpu_j_per_image": 0.2250445,
+        "gpu_energy_range_j_per_image": [
+          0.22486730000000002,
+          0.2269672
+        ],
+        "median_loads": 0.0,
+        "median_evictions": 0.0,
+        "median_setup_seconds": 0.8137452000009944,
+        "is_routed": false,
+        "used_models": [
+          "resnet101__p0__fp16"
+        ],
+        "constant_classifier_selection": false,
+        "reference_comparison": {
+          "latency_saving_percent": 30.000051068306277,
+          "gpu_energy_saving_percent": 37.20409794781715,
+          "matched_repeat_latency_saving_range_percent": [
+            26.565916465491487,
+            32.0281924249927
+          ],
+          "mathematical_fit_crossing_images": null,
+          "valid_gpu_fit_payback_images": null,
+          "no_valid_payback_reason": "no positive inference energy saving or staticcontrol"
+        },
+        "eligible_comparison": {
+          "latency_saving_percent": 0.0,
+          "gpu_energy_saving_percent": 0.0,
+          "matched_repeat_latency_saving_range_percent": [
+            0.0,
+            0.0
+          ],
+          "mathematical_fit_crossing_images": null,
+          "valid_gpu_fit_payback_images": null,
+          "no_valid_payback_reason": "no positive inference energy saving or staticcontrol"
+        }
+      }
+    ],
+    "scope": "Three repeats, all3seeds, six original candidates, latency1pp. Mode-matched eager/graph controls; no test-based tuning. Compare only matchingpool/configuration.",
+    "payback_scope": "Seed-specific TinyCNN GPUfit-only numerator, positive matchedGPUinferencesaving denominator, allrepeataccuracygate. Excludes CPU,supervision,calibration,export,startup. Training/inference separate sessions; measurements straddle saved recovery, notwholePC energy.",
+    "limitations": "Three repeats are descriptive ranges, not confidence intervals. Sequential caseorders/sessionthermals may affect differences: eligible-eager timings varied substantially across repeats/sessions. All host-aware cases collapsed to the same staticR101FP16; faster same-classifier measurements are not proof of dynamic-selection benefit. Keep rawcoldloads/setup separate; resident warm inference excludes pool startup."
+  },
+  "optimized_graph_seed42": {
+    "seed": 42,
+    "variant": "resident_graph_c6",
+    "comparator_mode": "graph",
+    "accuracy": 84.91,
+    "accuracy_loss_pp": 0.8900000000000006,
+    "accuracy_pass": true,
+    "all_repeats_pass": true,
+    "median_ms_per_image": 6.350502350000352,
+    "latency_range_ms": [
+      5.237732340000366,
+      7.198571839999931
+    ],
+    "median_gpu_j_per_image": 0.21532880000000001,
+    "gpu_energy_range_j_per_image": [
+      0.17161929999999997,
+      0.2216154
+    ],
+    "median_loads": 0.0,
+    "median_evictions": 0.0,
+    "median_setup_seconds": 0.8911206000011589,
+    "is_routed": true,
+    "used_models": [
+      "resnet101__p0__fp16",
+      "efficientnet_b0__p0__fp16",
+      "resnet34__p0__int8",
+      "resnet18__p10__fp16"
+    ],
+    "constant_classifier_selection": false,
+    "reference_comparison": {
+      "latency_saving_percent": 39.58587714741368,
+      "gpu_energy_saving_percent": 40.27223673994938,
+      "matched_repeat_latency_saving_range_percent": [
+        28.85748695161706,
+        53.1890481903083
+      ],
+      "mathematical_fit_crossing_images": 1863,
+      "valid_gpu_fit_payback_images": 1863,
+      "no_valid_payback_reason": null
+    },
+    "eligible_comparison": {
+      "latency_saving_percent": 9.072205935707345,
+      "gpu_energy_saving_percent": 4.203706949707653,
+      "matched_repeat_latency_saving_range_percent": [
+        -2.396013064356839,
+        25.0050749803419
+      ],
+      "mathematical_fit_crossing_images": 28621,
+      "valid_gpu_fit_payback_images": 28621,
+      "no_valid_payback_reason": null
+    }
+  },
+  "fit_energy": {
+    "audit_passed": true,
+    "measurement_sha256": "f971e00256d18895c334c0e0509ed06e61c2f27886b789bac45069ee3e44ec4f",
+    "rows": [
+      {
+        "seed": 42,
+        "joules": 270.437,
+        "seconds": 11.138287300000002,
+        "final_bce": 0.45296560322984736,
+        "max_loss_difference_from_historical": 3.085237868288848e-05
+      },
+      {
+        "seed": 45,
+        "joules": 201.185,
+        "seconds": 8.38949320000006,
+        "final_bce": 0.4492987654310592,
+        "max_loss_difference_from_historical": 2.9203739572047915e-05
+      },
+      {
+        "seed": 48,
+        "joules": 195.008,
+        "seconds": 8.26579419999996,
+        "final_bce": 0.45325454245222374,
+        "max_loss_difference_from_historical": 3.6472335774861975e-05
+      }
+    ],
+    "median_joules_per_fit": 201.185,
+    "min_joules_per_fit": 195.008,
+    "max_joules_per_fit": 270.437,
+    "total_three_fit_joules": 666.63,
+    "median_seconds_per_fit": 8.38949320000006,
+    "original_artifacts_unchanged": true,
+    "epoch_checkpoints_verified": 60,
+    "scope": "GPU only; gross NVML counter difference including idle/display; not whole-PC",
+    "boundary": "CUDA context/data validation before measurement; initialization, 20 fit epochs, atomic epoch checkpoint writes inside fit window. Final weights write, calibration, export and supervision generation excluded.",
+    "break_even_computed": false,
+    "exact_historical_weight_reproduction_claimed": false
+  },
+  "supervision": {
+    "audit_passed": true,
+    "report_sha256": "c57ccbec322f600eea7fb6478d155f09199682db05fc910f0cd47f3261785b7d",
+    "full_sweeps": 20,
+    "full_chunks": 400,
+    "preparations": 6,
+    "results": [
+      {
+        "case": "fit2000_epochs20__cal1000",
+        "method": "fit2000_epochs20",
+        "calibration_images": 1000,
+        "accuracy": 85.25,
+        "accuracy_loss_pp": 0.5499999999999972,
+        "accuracy_pass": true,
+        "ms_per_image": 7.295156399999906,
+        "gpu_j_per_image": 0.3218573,
+        "distinct_models": 3,
+        "validation_fallback": false,
+        "latency_saving_vs_reference_pct": 32.303490846960884,
+        "gpu_energy_saving_vs_reference_pct": 11.39912433433855,
+        "latency_saving_vs_eligible_pct": -2.393079322807168,
+        "gpu_energy_saving_vs_eligible_pct": -33.06932305902419
+      },
+      {
+        "case": "internal_unweighted_epochs60__cal500",
+        "method": "internal_unweighted_epochs60",
+        "calibration_images": 500,
+        "accuracy": 84.14,
+        "accuracy_loss_pp": 1.6599999999999966,
+        "accuracy_pass": false,
+        "ms_per_image": 6.715840340001523,
+        "gpu_j_per_image": 0.2598739,
+        "distinct_models": 5,
+        "validation_fallback": false,
+        "latency_saving_vs_reference_pct": 37.67934200187013,
+        "gpu_energy_saving_vs_reference_pct": 28.461914324607406,
+        "latency_saving_vs_eligible_pct": -23.567786193508876,
+        "gpu_energy_saving_vs_eligible_pct": -37.580000561175254
+      },
+      {
+        "case": "internal_unweighted_epochs60__cal2000",
+        "method": "internal_unweighted_epochs60",
+        "calibration_images": 2000,
+        "accuracy": 83.93,
+        "accuracy_loss_pp": 1.8699999999999903,
+        "accuracy_pass": false,
+        "ms_per_image": 6.792109170000549,
+        "gpu_j_per_image": 0.24321420000000002,
+        "distinct_models": 5,
+        "validation_fallback": false,
+        "latency_saving_vs_reference_pct": 36.97159383788002,
+        "gpu_energy_saving_vs_reference_pct": 33.04799644338245,
+        "latency_saving_vs_eligible_pct": -11.89371704931743,
+        "gpu_energy_saving_vs_eligible_pct": 26.509888858739817
+      },
+      {
+        "case": "fit2000_epochs20__cal500",
+        "method": "fit2000_epochs20",
+        "calibration_images": 500,
+        "accuracy": 85.35000000000001,
+        "accuracy_loss_pp": 0.44999999999998863,
+        "accuracy_pass": true,
+        "ms_per_image": 7.8513959199990495,
+        "gpu_j_per_image": 0.2691191,
+        "distinct_models": 4,
+        "validation_fallback": false,
+        "latency_saving_vs_reference_pct": 27.14178194145961,
+        "gpu_energy_saving_vs_reference_pct": 25.916895722561794,
+        "latency_saving_vs_eligible_pct": -44.46138729420874,
+        "gpu_energy_saving_vs_eligible_pct": -42.47450755548356
+      },
+      {
+        "case": "fit3000_epochs20__cal1000",
+        "method": "fit3000_epochs20",
+        "calibration_images": 1000,
+        "accuracy": 84.78,
+        "accuracy_loss_pp": 1.019999999999996,
+        "accuracy_pass": false,
+        "ms_per_image": 7.281435680000141,
+        "gpu_j_per_image": 0.24587059999999997,
+        "distinct_models": 3,
+        "validation_fallback": false,
+        "latency_saving_vs_reference_pct": 32.43081434711921,
+        "gpu_energy_saving_vs_reference_pct": 32.316742666885055,
+        "latency_saving_vs_eligible_pct": -2.2004985617830597,
+        "gpu_energy_saving_vs_eligible_pct": -1.6532304910160667
+      },
+      {
+        "case": "fit3000_epochs20__cal2000",
+        "method": "fit3000_epochs20",
+        "calibration_images": 2000,
+        "accuracy": 84.78,
+        "accuracy_loss_pp": 1.019999999999996,
+        "accuracy_pass": false,
+        "ms_per_image": 7.798467119998532,
+        "gpu_j_per_image": 0.25302699999999995,
+        "distinct_models": 3,
+        "validation_fallback": false,
+        "latency_saving_vs_reference_pct": 27.632942760670353,
+        "gpu_energy_saving_vs_reference_pct": 30.346728916649347,
+        "latency_saving_vs_eligible_pct": -28.47253356845716,
+        "gpu_energy_saving_vs_eligible_pct": 23.544832695872053
+      },
+      {
+        "case": "original_control__cal2000",
+        "method": "original_control",
+        "calibration_images": 2000,
+        "accuracy": 84.91,
+        "accuracy_loss_pp": 0.8900000000000006,
+        "accuracy_pass": true,
+        "ms_per_image": 7.768366609999066,
+        "gpu_j_per_image": 0.2454707,
+        "distinct_models": 4,
+        "validation_fallback": false,
+        "latency_saving_vs_reference_pct": 27.912265003945357,
+        "gpu_energy_saving_vs_reference_pct": 32.42682713655126,
+        "latency_saving_vs_eligible_pct": -27.976655503982517,
+        "gpu_energy_saving_vs_eligible_pct": 25.828060101248475
+      },
+      {
+        "case": "internal_balanced_epochs60__cal500",
+        "method": "internal_balanced_epochs60",
+        "calibration_images": 500,
+        "accuracy": 83.87,
+        "accuracy_loss_pp": 1.9299999999999926,
+        "accuracy_pass": false,
+        "ms_per_image": 7.090593320003245,
+        "gpu_j_per_image": 0.22103270000000003,
+        "distinct_models": 5,
+        "validation_fallback": false,
+        "latency_saving_vs_reference_pct": 34.201764942546816,
+        "gpu_energy_saving_vs_reference_pct": 39.15411963393265,
+        "latency_saving_vs_eligible_pct": -30.463035896276924,
+        "gpu_energy_saving_vs_eligible_pct": -17.017057080522857
+      },
+      {
+        "case": "fit1000_epochs20__cal2000",
+        "method": "fit1000_epochs20",
+        "calibration_images": 2000,
+        "accuracy": 84.98,
+        "accuracy_loss_pp": 0.8199999999999932,
+        "accuracy_pass": true,
+        "ms_per_image": 7.97089576000144,
+        "gpu_j_per_image": 0.24876450000000006,
+        "distinct_models": 3,
+        "validation_fallback": false,
+        "latency_saving_vs_reference_pct": 26.0328650699161,
+        "gpu_energy_saving_vs_reference_pct": 31.52010989177364,
+        "latency_saving_vs_eligible_pct": -31.313135945830673,
+        "gpu_energy_saving_vs_eligible_pct": 24.832798607153606
+      },
+      {
+        "case": "fit1000_epochs20__cal500",
+        "method": "fit1000_epochs20",
+        "calibration_images": 500,
+        "accuracy": 85.11999999999999,
+        "accuracy_loss_pp": 0.6800000000000068,
+        "accuracy_pass": true,
+        "ms_per_image": 8.706529829997454,
+        "gpu_j_per_image": 0.270701,
+        "distinct_models": 3,
+        "validation_fallback": false,
+        "latency_saving_vs_reference_pct": 19.206437256418752,
+        "gpu_energy_saving_vs_reference_pct": 25.48143029979366,
+        "latency_saving_vs_eligible_pct": -60.19538316187676,
+        "gpu_energy_saving_vs_eligible_pct": -43.311982203332875
+      },
+      {
+        "case": "fit3000_epochs20__cal500",
+        "method": "fit3000_epochs20",
+        "calibration_images": 500,
+        "accuracy": 84.86,
+        "accuracy_loss_pp": 0.9399999999999977,
+        "accuracy_pass": true,
+        "ms_per_image": 8.038770890002343,
+        "gpu_j_per_image": 0.25052989999999997,
+        "distinct_models": 3,
+        "validation_fallback": false,
+        "latency_saving_vs_reference_pct": 25.403007516845687,
+        "gpu_energy_saving_vs_reference_pct": 31.034130590076426,
+        "latency_saving_vs_eligible_pct": -47.90898417846954,
+        "gpu_energy_saving_vs_eligible_pct": -32.633187798355955
+      },
+      {
+        "case": "internal_balanced_epochs60__cal1000",
+        "method": "internal_balanced_epochs60",
+        "calibration_images": 1000,
+        "accuracy": 83.35000000000001,
+        "accuracy_loss_pp": 2.4499999999999886,
+        "accuracy_pass": false,
+        "ms_per_image": 6.8270344699980345,
+        "gpu_j_per_image": 0.2112708,
+        "distinct_models": 5,
+        "validation_fallback": false,
+        "latency_saving_vs_reference_pct": 36.64749922478132,
+        "gpu_energy_saving_vs_reference_pct": 41.84137540896283,
+        "latency_saving_vs_eligible_pct": 4.177368695473538,
+        "gpu_energy_saving_vs_eligible_pct": 12.651779723068302
+      },
+      {
+        "case": "internal_balanced_epochs60__cal2000",
+        "method": "internal_balanced_epochs60",
+        "calibration_images": 2000,
+        "accuracy": 84.87,
+        "accuracy_loss_pp": 0.9299999999999926,
+        "accuracy_pass": true,
+        "ms_per_image": 7.943765249998978,
+        "gpu_j_per_image": 0.24747960000000002,
+        "distinct_models": 6,
+        "validation_fallback": false,
+        "latency_saving_vs_reference_pct": 26.284626748213814,
+        "gpu_energy_saving_vs_reference_pct": 31.873817156275063,
+        "latency_saving_vs_eligible_pct": -30.866185884570264,
+        "gpu_energy_saving_vs_eligible_pct": 25.22104667739542
+      },
+      {
+        "case": "internal_unweighted_epochs60__cal1000",
+        "method": "internal_unweighted_epochs60",
+        "calibration_images": 1000,
+        "accuracy": 83.86,
+        "accuracy_loss_pp": 1.9399999999999977,
+        "accuracy_pass": false,
+        "ms_per_image": 6.874268560000201,
+        "gpu_j_per_image": 0.21307649999999997,
+        "distinct_models": 5,
+        "validation_fallback": false,
+        "latency_saving_vs_reference_pct": 36.209183329844905,
+        "gpu_energy_saving_vs_reference_pct": 41.34430232350079,
+        "latency_saving_vs_eligible_pct": 3.5144022477175296,
+        "gpu_energy_saving_vs_eligible_pct": 11.905227519195105
+      },
+      {
+        "case": "fit1000_epochs20__cal1000",
+        "method": "fit1000_epochs20",
+        "calibration_images": 1000,
+        "accuracy": 84.98,
+        "accuracy_loss_pp": 0.8199999999999932,
+        "accuracy_pass": true,
+        "ms_per_image": 7.9577579199998585,
+        "gpu_j_per_image": 0.247284,
+        "distinct_models": 3,
+        "validation_fallback": false,
+        "latency_saving_vs_reference_pct": 26.15477964681513,
+        "gpu_energy_saving_vs_reference_pct": 31.927661923133556,
+        "latency_saving_vs_eligible_pct": -11.693196589212684,
+        "gpu_energy_saving_vs_eligible_pct": -2.2375894016625875
+      },
+      {
+        "case": "fit2000_epochs20__cal2000",
+        "method": "fit2000_epochs20",
+        "calibration_images": 2000,
+        "accuracy": 85.08,
+        "accuracy_loss_pp": 0.7199999999999989,
+        "accuracy_pass": true,
+        "ms_per_image": 8.20626941999726,
+        "gpu_j_per_image": 0.252346,
+        "distinct_models": 3,
+        "validation_fallback": false,
+        "latency_saving_vs_reference_pct": 23.848679528905404,
+        "gpu_energy_saving_vs_reference_pct": 30.534194592675057,
+        "latency_saving_vs_eligible_pct": -35.19069931432885,
+        "gpu_energy_saving_vs_eligible_pct": 23.750605079586464
+      }
+    ],
+    "note": "Seed42 only, one repeat per predeclared case; no test-based policy selection. Six original resident eager classifiers, GPU-only energy excludes CPU/restPC. Preserve accuracy failures and negative savings. Separate-session timing variation prevents a general causal speedup claim. Fit payback must use the corresponding fit energy and positive savings plus accuracy compliance."
+  },
+  "supervision_payback": {
+    "results": [
+      {
+        "case": "fit2000_epochs20__cal1000",
+        "baseline": "reference",
+        "training_gpu_j": 152.524,
+        "saved_gpu_j_per_image": 0.041409199999999924,
+        "accuracy_pass": true,
+        "valid": true,
+        "payback_images": 3684,
+        "reason": "valid GPU-fit-only estimate"
+      },
+      {
+        "case": "fit2000_epochs20__cal1000",
+        "baseline": "eligible",
+        "training_gpu_j": 152.524,
+        "saved_gpu_j_per_image": -0.07998539999999996,
+        "accuracy_pass": true,
+        "valid": false,
+        "payback_images": null,
+        "reason": "nonpositive GPU-energy saving"
+      },
+      {
+        "case": "internal_unweighted_epochs60__cal500",
+        "baseline": "reference",
+        "training_gpu_j": 631.624,
+        "saved_gpu_j_per_image": 0.10339259999999995,
+        "accuracy_pass": false,
+        "valid": false,
+        "payback_images": null,
+        "reason": "accuracy failure"
+      },
+      {
+        "case": "internal_unweighted_epochs60__cal500",
+        "baseline": "eligible",
+        "training_gpu_j": 631.624,
+        "saved_gpu_j_per_image": -0.07098460000000001,
+        "accuracy_pass": false,
+        "valid": false,
+        "payback_images": null,
+        "reason": "accuracy failure"
+      },
+      {
+        "case": "internal_unweighted_epochs60__cal2000",
+        "baseline": "reference",
+        "training_gpu_j": 631.624,
+        "saved_gpu_j_per_image": 0.12005229999999992,
+        "accuracy_pass": false,
+        "valid": false,
+        "payback_images": null,
+        "reason": "accuracy failure"
+      },
+      {
+        "case": "internal_unweighted_epochs60__cal2000",
+        "baseline": "eligible",
+        "training_gpu_j": 631.624,
+        "saved_gpu_j_per_image": 0.08773399999999995,
+        "accuracy_pass": false,
+        "valid": false,
+        "payback_images": null,
+        "reason": "accuracy failure"
+      },
+      {
+        "case": "fit2000_epochs20__cal500",
+        "baseline": "reference",
+        "training_gpu_j": 152.524,
+        "saved_gpu_j_per_image": 0.09414739999999994,
+        "accuracy_pass": true,
+        "valid": true,
+        "payback_images": 1621,
+        "reason": "valid GPU-fit-only estimate"
+      },
+      {
+        "case": "fit2000_epochs20__cal500",
+        "baseline": "eligible",
+        "training_gpu_j": 152.524,
+        "saved_gpu_j_per_image": -0.08022980000000002,
+        "accuracy_pass": true,
+        "valid": false,
+        "payback_images": null,
+        "reason": "nonpositive GPU-energy saving"
+      },
+      {
+        "case": "fit3000_epochs20__cal1000",
+        "baseline": "reference",
+        "training_gpu_j": 261.901,
+        "saved_gpu_j_per_image": 0.11739589999999997,
+        "accuracy_pass": false,
+        "valid": false,
+        "payback_images": null,
+        "reason": "accuracy failure"
+      },
+      {
+        "case": "fit3000_epochs20__cal1000",
+        "baseline": "eligible",
+        "training_gpu_j": 261.901,
+        "saved_gpu_j_per_image": -0.003998699999999911,
+        "accuracy_pass": false,
+        "valid": false,
+        "payback_images": null,
+        "reason": "accuracy failure"
+      },
+      {
+        "case": "fit3000_epochs20__cal2000",
+        "baseline": "reference",
+        "training_gpu_j": 261.901,
+        "saved_gpu_j_per_image": 0.11023949999999999,
+        "accuracy_pass": false,
+        "valid": false,
+        "payback_images": null,
+        "reason": "accuracy failure"
+      },
+      {
+        "case": "fit3000_epochs20__cal2000",
+        "baseline": "eligible",
+        "training_gpu_j": 261.901,
+        "saved_gpu_j_per_image": 0.07792120000000002,
+        "accuracy_pass": false,
+        "valid": false,
+        "payback_images": null,
+        "reason": "accuracy failure"
+      },
+      {
+        "case": "original_control__cal2000",
+        "baseline": "reference",
+        "training_gpu_j": 270.437,
+        "saved_gpu_j_per_image": 0.11779579999999995,
+        "accuracy_pass": true,
+        "valid": true,
+        "payback_images": 2296,
+        "reason": "valid GPU-fit-only estimate"
+      },
+      {
+        "case": "original_control__cal2000",
+        "baseline": "eligible",
+        "training_gpu_j": 270.437,
+        "saved_gpu_j_per_image": 0.08547749999999998,
+        "accuracy_pass": true,
+        "valid": true,
+        "payback_images": 3164,
+        "reason": "valid GPU-fit-only estimate"
+      },
+      {
+        "case": "internal_balanced_epochs60__cal500",
+        "baseline": "reference",
+        "training_gpu_j": 682.12,
+        "saved_gpu_j_per_image": 0.1422337999999999,
+        "accuracy_pass": false,
+        "valid": false,
+        "payback_images": null,
+        "reason": "accuracy failure"
+      },
+      {
+        "case": "internal_balanced_epochs60__cal500",
+        "baseline": "eligible",
+        "training_gpu_j": 682.12,
+        "saved_gpu_j_per_image": -0.032143400000000044,
+        "accuracy_pass": false,
+        "valid": false,
+        "payback_images": null,
+        "reason": "accuracy failure"
+      },
+      {
+        "case": "fit1000_epochs20__cal2000",
+        "baseline": "reference",
+        "training_gpu_j": 188.081,
+        "saved_gpu_j_per_image": 0.11450199999999988,
+        "accuracy_pass": true,
+        "valid": true,
+        "payback_images": 1643,
+        "reason": "valid GPU-fit-only estimate"
+      },
+      {
+        "case": "fit1000_epochs20__cal2000",
+        "baseline": "eligible",
+        "training_gpu_j": 188.081,
+        "saved_gpu_j_per_image": 0.08218369999999992,
+        "accuracy_pass": true,
+        "valid": true,
+        "payback_images": 2289,
+        "reason": "valid GPU-fit-only estimate"
+      },
+      {
+        "case": "fit1000_epochs20__cal500",
+        "baseline": "reference",
+        "training_gpu_j": 188.081,
+        "saved_gpu_j_per_image": 0.09256549999999991,
+        "accuracy_pass": true,
+        "valid": true,
+        "payback_images": 2032,
+        "reason": "valid GPU-fit-only estimate"
+      },
+      {
+        "case": "fit1000_epochs20__cal500",
+        "baseline": "eligible",
+        "training_gpu_j": 188.081,
+        "saved_gpu_j_per_image": -0.08181170000000004,
+        "accuracy_pass": true,
+        "valid": false,
+        "payback_images": null,
+        "reason": "nonpositive GPU-energy saving"
+      },
+      {
+        "case": "fit3000_epochs20__cal500",
+        "baseline": "reference",
+        "training_gpu_j": 261.901,
+        "saved_gpu_j_per_image": 0.11273659999999996,
+        "accuracy_pass": true,
+        "valid": true,
+        "payback_images": 2324,
+        "reason": "valid GPU-fit-only estimate"
+      },
+      {
+        "case": "fit3000_epochs20__cal500",
+        "baseline": "eligible",
+        "training_gpu_j": 261.901,
+        "saved_gpu_j_per_image": -0.06164059999999999,
+        "accuracy_pass": true,
+        "valid": false,
+        "payback_images": null,
+        "reason": "nonpositive GPU-energy saving"
+      },
+      {
+        "case": "internal_balanced_epochs60__cal1000",
+        "baseline": "reference",
+        "training_gpu_j": 682.12,
+        "saved_gpu_j_per_image": 0.15199569999999993,
+        "accuracy_pass": false,
+        "valid": false,
+        "payback_images": null,
+        "reason": "accuracy failure"
+      },
+      {
+        "case": "internal_balanced_epochs60__cal1000",
+        "baseline": "eligible",
+        "training_gpu_j": 682.12,
+        "saved_gpu_j_per_image": 0.030601100000000048,
+        "accuracy_pass": false,
+        "valid": false,
+        "payback_images": null,
+        "reason": "accuracy failure"
+      },
+      {
+        "case": "internal_balanced_epochs60__cal2000",
+        "baseline": "reference",
+        "training_gpu_j": 682.12,
+        "saved_gpu_j_per_image": 0.11578689999999991,
+        "accuracy_pass": true,
+        "valid": true,
+        "payback_images": 5892,
+        "reason": "valid GPU-fit-only estimate"
+      },
+      {
+        "case": "internal_balanced_epochs60__cal2000",
+        "baseline": "eligible",
+        "training_gpu_j": 682.12,
+        "saved_gpu_j_per_image": 0.08346859999999995,
+        "accuracy_pass": true,
+        "valid": true,
+        "payback_images": 8173,
+        "reason": "valid GPU-fit-only estimate"
+      },
+      {
+        "case": "internal_unweighted_epochs60__cal1000",
+        "baseline": "reference",
+        "training_gpu_j": 631.624,
+        "saved_gpu_j_per_image": 0.15018999999999996,
+        "accuracy_pass": false,
+        "valid": false,
+        "payback_images": null,
+        "reason": "accuracy failure"
+      },
+      {
+        "case": "internal_unweighted_epochs60__cal1000",
+        "baseline": "eligible",
+        "training_gpu_j": 631.624,
+        "saved_gpu_j_per_image": 0.028795400000000082,
+        "accuracy_pass": false,
+        "valid": false,
+        "payback_images": null,
+        "reason": "accuracy failure"
+      },
+      {
+        "case": "fit1000_epochs20__cal1000",
+        "baseline": "reference",
+        "training_gpu_j": 188.081,
+        "saved_gpu_j_per_image": 0.11598249999999993,
+        "accuracy_pass": true,
+        "valid": true,
+        "payback_images": 1622,
+        "reason": "valid GPU-fit-only estimate"
+      },
+      {
+        "case": "fit1000_epochs20__cal1000",
+        "baseline": "eligible",
+        "training_gpu_j": 188.081,
+        "saved_gpu_j_per_image": -0.0054120999999999475,
+        "accuracy_pass": true,
+        "valid": false,
+        "payback_images": null,
+        "reason": "nonpositive GPU-energy saving"
+      },
+      {
+        "case": "fit2000_epochs20__cal2000",
+        "baseline": "reference",
+        "training_gpu_j": 152.524,
+        "saved_gpu_j_per_image": 0.11092049999999992,
+        "accuracy_pass": true,
+        "valid": true,
+        "payback_images": 1376,
+        "reason": "valid GPU-fit-only estimate"
+      },
+      {
+        "case": "fit2000_epochs20__cal2000",
+        "baseline": "eligible",
+        "training_gpu_j": 152.524,
+        "saved_gpu_j_per_image": 0.07860219999999996,
+        "accuracy_pass": true,
+        "valid": true,
+        "payback_images": 1941,
+        "reason": "valid GPU-fit-only estimate"
+      }
+    ],
+    "scope": "GPU fit only; init/checkpoints/internal tune included where used; supervision/calibration/export/CPU excluded. Separate training/inference sessions; descriptive estimates, not precise uncertainty."
+  },
+  "note": "Historical 213-choice/capacity2 vs new six-resident classifiers are not a matched batch-size experiment. No inference reruns."
+}

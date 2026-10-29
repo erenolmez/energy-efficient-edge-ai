@@ -1,0 +1,145 @@
+{
+  "audit_passed": true,
+  "report_sha256": "f01b8e904e3e5aad767256ee50209d2a20db736f0f678bfb054c33ead5ac8be4",
+  "rows": 21,
+  "parity": {
+    "id": "selector_parity",
+    "router": "dispatch_controls",
+    "status": "complete",
+    "kind": "selector_parity",
+    "real_images": 512,
+    "fp32_real_choice_mismatches": 0,
+    "near_tie_fixtures": 105,
+    "near_tie_choice_mismatches": 15,
+    "engine_sha256": "8a328f51886f32a0fa72a29bc3224dd654e396ccfd09f7ee924457b0ef9a9412",
+    "graph_sha256": "1016abf9dd2565e1708d55eb1769e7273c36771a5258a726381d252d223ba861"
+  },
+  "paired_same_classifier": [
+    {
+      "repeat": 0,
+      "static_ms": 7.121321679719017,
+      "forced_routed_ms": 7.731780273459776,
+      "increment_ms": 0.6104585937407592,
+      "telemetry": {
+        "utc": "2026-10-29T01:24:44.769936+00:00",
+        "temperature_c": 63,
+        "sm_clock_mhz": 1890,
+        "memory_clock_mhz": 5500,
+        "power_w": 59.838,
+        "pstate": 0,
+        "throttle_reasons": 0
+      }
+    },
+    {
+      "repeat": 1,
+      "static_ms": 4.103891992187414,
+      "forced_routed_ms": 4.572838867176188,
+      "increment_ms": 0.46894687498877374,
+      "telemetry": {
+        "utc": "2026-10-29T01:24:49.308841+00:00",
+        "temperature_c": 66,
+        "sm_clock_mhz": 1890,
+        "memory_clock_mhz": 5500,
+        "power_w": 61.907,
+        "pstate": 0,
+        "throttle_reasons": 0
+      }
+    },
+    {
+      "repeat": 2,
+      "static_ms": 4.129343554716058,
+      "forced_routed_ms": 4.568744140613035,
+      "increment_ms": 0.4394005858969763,
+      "telemetry": {
+        "utc": "2026-10-29T01:24:53.912594+00:00",
+        "temperature_c": 67,
+        "sm_clock_mhz": 1875,
+        "memory_clock_mhz": 5500,
+        "power_w": 62.588,
+        "pstate": 0,
+        "throttle_reasons": 0
+      }
+    },
+    {
+      "repeat": 3,
+      "static_ms": 4.158241601572854,
+      "forced_routed_ms": 4.692925390614278,
+      "increment_ms": 0.5346837890414236,
+      "telemetry": {
+        "utc": "2026-10-29T01:24:58.535544+00:00",
+        "temperature_c": 69,
+        "sm_clock_mhz": 1875,
+        "memory_clock_mhz": 5500,
+        "power_w": 61.097,
+        "pstate": 0,
+        "throttle_reasons": 0
+      }
+    },
+    {
+      "repeat": 4,
+      "static_ms": 5.481318554714676,
+      "forced_routed_ms": 6.228978710936417,
+      "increment_ms": 0.7476601562217411,
+      "telemetry": {
+        "utc": "2026-10-29T01:25:04.657159+00:00",
+        "temperature_c": 70,
+        "sm_clock_mhz": 1875,
+        "memory_clock_mhz": 5500,
+        "power_w": 56.728,
+        "pstate": 0,
+        "throttle_reasons": 0
+      }
+    }
+  ],
+  "selection": {
+    "cpu64": {
+      "median_ms": 4.352380468752415,
+      "range_ms": [
+        4.334188085941548,
+        4.790134374999866
+      ],
+      "median_gpu_j_per_image": 0.255486328125
+    },
+    "torch64": {
+      "median_ms": 4.367951953121008,
+      "range_ms": [
+        4.179721679683723,
+        4.495817187496698
+      ],
+      "median_gpu_j_per_image": 0.250505859375
+    },
+    "trt32": {
+      "median_ms": 4.390229492187814,
+      "range_ms": [
+        4.097972070312039,
+        4.392897851566602
+      ],
+      "median_gpu_j_per_image": 0.258498046875
+    }
+  },
+  "aggregate_cold": {
+    "file": {
+      "median_seconds_per_load": 0.43893428000010315,
+      "median_gpu_j_per_load_cycle": 6.5836
+    },
+    "host": {
+      "median_seconds_per_load": 0.15726032307681564,
+      "median_gpu_j_per_load_cycle": 2.5076153846153844
+    }
+  },
+  "cpu_system_sensor_availability": [
+    {
+      "namespace": "root/LibreHardwareMonitor",
+      "reason": "Invalid namespace ",
+      "available": false
+    },
+    {
+      "namespace": "root/OpenHardwareMonitor",
+      "reason": "Invalid namespace ",
+      "available": false
+    }
+  ],
+  "cpu_energy_measured": false,
+  "whole_pc_energy_measured": false,
+  "caveats": "Validation-onlyengineering, nottestaccuracy. GPUonlyenergy excludesCPU. Fixedsameclassifier/context interleaving showedpositiveCNN/readback overhead inall5pairs, but staticlatencyvaried4.10\u20137.12ms. Selector3repeat rangesoverlap; do notclaimuniversalFP32speedup.15/105near-tiedFP32fixturesdifferedfromFP64 despite0/512realchoicechanges. Aggregatecoldenergy isload+context+cleanupcycles>=2s, notpurestartuporperimage; oldunavailableindividualreadingsnotreplaced."
+}

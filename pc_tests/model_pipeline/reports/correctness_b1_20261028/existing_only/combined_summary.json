@@ -1,0 +1,5303 @@
+{
+  "audit_passed": true,
+  "complete": false,
+  "settings": 120,
+  "rows": [
+    {
+      "seed": 42,
+      "batch_size": 8,
+      "objective": "energy",
+      "budget_pp": 0.5,
+      "accuracy": 85.52,
+      "accuracy_loss_pp": 0.28000000000000114,
+      "accuracy_passed": true,
+      "route_ms_per_image": 3.3108735500311015,
+      "route_ms_per_batch": 26.486988400248812,
+      "route_j_per_image": 0.10857080000000001,
+      "route_latency_repeat_range_ms_per_image": [
+        3.3096611599088646,
+        3.3262264199351192
+      ],
+      "route_energy_repeat_range_j_per_image": [
+        0.1076138,
+        0.108823
+      ],
+      "training_j": 270.437,
+      "eligible_static": {
+        "accuracy": 85.85000000000001,
+        "j_per_image": 0.0498438,
+        "ms_per_image": 1.5800054500054102,
+        "latency_saving_percent": -109.54823605322147,
+        "energy_saving_percent": -117.82207616594242,
+        "saved_j_per_image": -0.05872700000000001,
+        "mathematical_crossing_images": null,
+        "valid_payback_images": null,
+        "no_valid_payback_reason": "no positive energy saving"
+      },
+      "measurement_source": "historical larger-batch report",
+      "reference_fp32": {
+        "accuracy": 85.8,
+        "j_per_image": 0.1247053,
+        "ms_per_image": 4.019684530064114,
+        "latency_saving_percent": 17.633497721815186,
+        "energy_saving_percent": 12.938102871329443,
+        "saved_j_per_image": 0.016134499999999996,
+        "mathematical_crossing_images": 16762,
+        "valid_payback_images": 16762,
+        "no_valid_payback_reason": null
+      }
+    },
+    {
+      "seed": 45,
+      "batch_size": 8,
+      "objective": "energy",
+      "budget_pp": 0.5,
+      "accuracy": 85.52,
+      "accuracy_loss_pp": 0.28000000000000114,
+      "accuracy_passed": true,
+      "route_ms_per_image": 1.567528959995252,
+      "route_ms_per_batch": 12.540231679962016,
+      "route_j_per_image": 0.0495793,
+      "route_latency_repeat_range_ms_per_image": [
+        1.5648805700184312,
+        1.5689275899727364
+      ],
+      "route_energy_repeat_range_j_per_image": [
+        0.0494224,
+        0.0496118
+      ],
+      "training_j": 201.185,
+      "eligible_static": {
+        "accuracy": 85.85000000000001,
+        "j_per_image": 0.0497324,
+        "ms_per_image": 1.5735016499413177,
+        "latency_saving_percent": 0.3795795159343114,
+        "energy_saving_percent": 0.3078476003571177,
+        "saved_j_per_image": 0.00015310000000000323,
+        "mathematical_crossing_images": 1314076,
+        "valid_payback_images": 1314076,
+        "no_valid_payback_reason": null
+      },
+      "measurement_source": "historical larger-batch report",
+      "reference_fp32": {
+        "accuracy": 85.8,
+        "j_per_image": 0.1246016,
+        "ms_per_image": 4.0177267099323215,
+        "latency_saving_percent": 60.98467931827904,
+        "energy_saving_percent": 60.2097404848734,
+        "saved_j_per_image": 0.07502230000000001,
+        "mathematical_crossing_images": 2682,
+        "valid_payback_images": 2682,
+        "no_valid_payback_reason": null
+      }
+    },
+    {
+      "seed": 48,
+      "batch_size": 8,
+      "objective": "energy",
+      "budget_pp": 0.5,
+      "accuracy": 85.03,
+      "accuracy_loss_pp": 0.769999999999996,
+      "accuracy_passed": false,
+      "route_ms_per_image": 3.4641066900629083,
+      "route_ms_per_batch": 27.712853520503266,
+      "route_j_per_image": 0.11248499999999999,
+      "route_latency_repeat_range_ms_per_image": [
+        3.113575130072422,
+        3.6705803800170544
+      ],
+      "route_energy_repeat_range_j_per_image": [
+        0.0998539,
+        0.1190027
+      ],
+      "training_j": 195.008,
+      "eligible_static": {
+        "accuracy": 85.85000000000001,
+        "j_per_image": 0.0498904,
+        "ms_per_image": 1.5829316799790831,
+        "latency_saving_percent": -118.84120040535693,
+        "energy_saving_percent": -125.46421756490224,
+        "saved_j_per_image": -0.06259459999999999,
+        "mathematical_crossing_images": null,
+        "valid_payback_images": null,
+        "no_valid_payback_reason": "accuracy allowance failed"
+      },
+      "measurement_source": "historical larger-batch report",
+      "reference_fp32": {
+        "accuracy": 85.8,
+        "j_per_image": 0.1253985,
+        "ms_per_image": 4.036226489942055,
+        "latency_saving_percent": 14.174620807450282,
+        "energy_saving_percent": 10.297970071412346,
+        "saved_j_per_image": 0.012913500000000008,
+        "mathematical_crossing_images": 15102,
+        "valid_payback_images": null,
+        "no_valid_payback_reason": "accuracy allowance failed"
+      }
+    },
+    {
+      "seed": 42,
+      "batch_size": 8,
+      "objective": "energy",
+      "budget_pp": 1.0,
+      "accuracy": 85.11999999999999,
+      "accuracy_loss_pp": 0.6800000000000068,
+      "accuracy_passed": true,
+      "route_ms_per_image": 6.805684940019273,
+      "route_ms_per_batch": 54.44547952015419,
+      "route_j_per_image": 0.2137723,
+      "route_latency_repeat_range_ms_per_image": [
+        6.795051249986864,
+        7.183401119968039
+      ],
+      "route_energy_repeat_range_j_per_image": [
+        0.2109819,
+        0.2297904
+      ],
+      "training_j": 270.437,
+      "eligible_static": {
+        "accuracy": 85.85000000000001,
+        "j_per_image": 0.0498154,
+        "ms_per_image": 1.5738158899912378,
+        "latency_saving_percent": -332.4320896300751,
+        "energy_saving_percent": -329.1289440614749,
+        "saved_j_per_image": -0.1639569,
+        "mathematical_crossing_images": null,
+        "valid_payback_images": null,
+        "no_valid_payback_reason": "no positive energy saving"
+      },
+      "measurement_source": "historical larger-batch report",
+      "reference_fp32": {
+        "accuracy": 85.8,
+        "j_per_image": 0.1246231,
+        "ms_per_image": 4.019066700010444,
+        "latency_saving_percent": -69.33495878537144,
+        "energy_saving_percent": -71.53505249026865,
+        "saved_j_per_image": -0.0891492,
+        "mathematical_crossing_images": null,
+        "valid_payback_images": null,
+        "no_valid_payback_reason": "no positive energy saving"
+      }
+    },
+    {
+      "seed": 45,
+      "batch_size": 8,
+      "objective": "energy",
+      "budget_pp": 1.0,
+      "accuracy": 84.33,
+      "accuracy_loss_pp": 1.4699999999999989,
+      "accuracy_passed": false,
+      "route_ms_per_image": 1.6011609200388193,
+      "route_ms_per_batch": 12.809287360310554,
+      "route_j_per_image": 0.0515346,
+      "route_latency_repeat_range_ms_per_image": [
+        1.5989739700686187,
+        1.6177774399868212
+      ],
+      "route_energy_repeat_range_j_per_image": [
+        0.0507261,
+        0.051956600000000006
+      ],
+      "training_j": 201.185,
+      "eligible_static": {
+        "accuracy": 85.85000000000001,
+        "j_per_image": 0.0497941,
+        "ms_per_image": 1.5754335799720138,
+        "latency_saving_percent": -1.6330323533704612,
+        "energy_saving_percent": -3.4953940326263533,
+        "saved_j_per_image": -0.001740499999999999,
+        "mathematical_crossing_images": null,
+        "valid_payback_images": null,
+        "no_valid_payback_reason": "accuracy allowance failed"
+      },
+      "measurement_source": "historical larger-batch report",
+      "reference_fp32": {
+        "accuracy": 85.8,
+        "j_per_image": 0.1252177,
+        "ms_per_image": 4.025728640024317,
+        "latency_saving_percent": 60.22680455607789,
+        "energy_saving_percent": 58.84399729431222,
+        "saved_j_per_image": 0.07368309999999999,
+        "mathematical_crossing_images": 2731,
+        "valid_payback_images": null,
+        "no_valid_payback_reason": "accuracy allowance failed"
+      }
+    },
+    {
+      "seed": 48,
+      "batch_size": 8,
+      "objective": "energy",
+      "budget_pp": 1.0,
+      "accuracy": 84.14,
+      "accuracy_loss_pp": 1.6599999999999966,
+      "accuracy_passed": false,
+      "route_ms_per_image": 6.113927939976565,
+      "route_ms_per_batch": 48.91142351981252,
+      "route_j_per_image": 0.1944092,
+      "route_latency_repeat_range_ms_per_image": [
+        5.8588179800659415,
+        6.531573309964733
+      ],
+      "route_energy_repeat_range_j_per_image": [
+        0.18224400000000002,
+        0.2114849
+      ],
+      "training_j": 195.008,
+      "eligible_static": {
+        "accuracy": 85.85000000000001,
+        "j_per_image": 0.049761599999999996,
+        "ms_per_image": 1.5802153200114843,
+        "latency_saving_percent": -286.90473776270767,
+        "energy_saving_percent": -290.68116780810914,
+        "saved_j_per_image": -0.14464760000000002,
+        "mathematical_crossing_images": null,
+        "valid_payback_images": null,
+        "no_valid_payback_reason": "accuracy allowance failed"
+      },
+      "measurement_source": "historical larger-batch report",
+      "reference_fp32": {
+        "accuracy": 85.8,
+        "j_per_image": 0.1252871,
+        "ms_per_image": 4.033748749995721,
+        "latency_saving_percent": -51.56937922777297,
+        "energy_saving_percent": -55.17096333142038,
+        "saved_j_per_image": -0.06912209999999999,
+        "mathematical_crossing_images": null,
+        "valid_payback_images": null,
+        "no_valid_payback_reason": "accuracy allowance failed"
+      }
+    },
+    {
+      "seed": 42,
+      "batch_size": 8,
+      "objective": "energy",
+      "budget_pp": 1.5,
+      "accuracy": 84.73,
+      "accuracy_loss_pp": 1.0699999999999932,
+      "accuracy_passed": true,
+      "route_ms_per_image": 10.166304589941864,
+      "route_ms_per_batch": 81.33043671953492,
+      "route_j_per_image": 0.2583312,
+      "route_latency_repeat_range_ms_per_image": [
+        10.141137769969646,
+        10.582275920023676
+      ],
+      "route_energy_repeat_range_j_per_image": [
+        0.2549944,
+        0.2907221
+      ],
+      "training_j": 270.437,
+      "eligible_static": {
+        "accuracy": 85.85000000000001,
+        "j_per_image": 0.049785199999999995,
+        "ms_per_image": 1.5756019499822287,
+        "latency_saving_percent": -545.2330545831409,
+        "energy_saving_percent": -418.89155813374254,
+        "saved_j_per_image": -0.20854599999999998,
+        "mathematical_crossing_images": null,
+        "valid_payback_images": null,
+        "no_valid_payback_reason": "no positive energy saving"
+      },
+      "measurement_source": "historical larger-batch report",
+      "reference_fp32": {
+        "accuracy": 85.8,
+        "j_per_image": 0.12483920000000001,
+        "ms_per_image": 4.012706439991598,
+        "latency_saving_percent": -153.35281167398708,
+        "energy_saving_percent": -106.93115623938633,
+        "saved_j_per_image": -0.13349199999999997,
+        "mathematical_crossing_images": null,
+        "valid_payback_images": null,
+        "no_valid_payback_reason": "no positive energy saving"
+      }
+    },
+    {
+      "seed": 45,
+      "batch_size": 8,
+      "objective": "energy",
+      "budget_pp": 1.5,
+      "accuracy": 83.94,
+      "accuracy_loss_pp": 1.8599999999999994,
+      "accuracy_passed": false,
+      "route_ms_per_image": 1.6831335399561795,
+      "route_ms_per_batch": 13.465068319649436,
+      "route_j_per_image": 0.0545074,
+      "route_latency_repeat_range_ms_per_image": [
+        1.6547990499588194,
+        1.8437148900033207
+      ],
+      "route_energy_repeat_range_j_per_image": [
+        0.0535821,
+        0.0597713
+      ],
+      "training_j": 201.185,
+      "eligible_static": {
+        "accuracy": 85.85000000000001,
+        "j_per_image": 0.0498043,
+        "ms_per_image": 1.5764246499777073,
+        "latency_saving_percent": -6.769044748188957,
+        "energy_saving_percent": -9.443160530315645,
+        "saved_j_per_image": -0.004703099999999995,
+        "mathematical_crossing_images": null,
+        "valid_payback_images": null,
+        "no_valid_payback_reason": "accuracy allowance failed"
+      },
+      "measurement_source": "historical larger-batch report",
+      "reference_fp32": {
+        "accuracy": 85.8,
+        "j_per_image": 0.1248509,
+        "ms_per_image": 4.022005509943119,
+        "latency_saving_percent": 58.15188378546048,
+        "energy_saving_percent": 56.34200474325775,
+        "saved_j_per_image": 0.0703435,
+        "mathematical_crossing_images": 2861,
+        "valid_payback_images": null,
+        "no_valid_payback_reason": "accuracy allowance failed"
+      }
+    },
+    {
+      "seed": 48,
+      "batch_size": 8,
+      "objective": "energy",
+      "budget_pp": 1.5,
+      "accuracy": 82.69999999999999,
+      "accuracy_loss_pp": 3.1000000000000085,
+      "accuracy_passed": false,
+      "route_ms_per_image": 12.952267689994187,
+      "route_ms_per_batch": 103.6181415199535,
+      "route_j_per_image": 0.3732877,
+      "route_latency_repeat_range_ms_per_image": [
+        11.742668380052782,
+        13.863612280014786
+      ],
+      "route_energy_repeat_range_j_per_image": [
+        0.3099185,
+        0.3931052
+      ],
+      "training_j": 195.008,
+      "eligible_static": {
+        "accuracy": 84.38,
+        "j_per_image": 0.0352326,
+        "ms_per_image": 1.1233618300117088,
+        "latency_saving_percent": -1052.9916135622293,
+        "energy_saving_percent": -959.4951834380657,
+        "saved_j_per_image": -0.3380551,
+        "mathematical_crossing_images": null,
+        "valid_payback_images": null,
+        "no_valid_payback_reason": "accuracy allowance failed"
+      },
+      "measurement_source": "historical larger-batch report",
+      "reference_fp32": {
+        "accuracy": 85.8,
+        "j_per_image": 0.143196,
+        "ms_per_image": 4.62015497002285,
+        "latency_saving_percent": -180.34271088378947,
+        "energy_saving_percent": -160.68304980586052,
+        "saved_j_per_image": -0.2300917,
+        "mathematical_crossing_images": null,
+        "valid_payback_images": null,
+        "no_valid_payback_reason": "accuracy allowance failed"
+      }
+    },
+    {
+      "seed": 42,
+      "batch_size": 8,
+      "objective": "energy",
+      "budget_pp": 2.0,
+      "accuracy": 84.37,
+      "accuracy_loss_pp": 1.4299999999999926,
+      "accuracy_passed": true,
+      "route_ms_per_image": 11.897947520005982,
+      "route_ms_per_batch": 95.18358016004785,
+      "route_j_per_image": 0.276773,
+      "route_latency_repeat_range_ms_per_image": [
+        11.853329769943958,
+        12.219422700002905
+      ],
+      "route_energy_repeat_range_j_per_image": [
+        0.2689162,
+        0.2947315
+      ],
+      "training_j": 270.437,
+      "eligible_static": {
+        "accuracy": 85.85000000000001,
+        "j_per_image": 0.0410999,
+        "ms_per_image": 1.1305473399872425,
+        "latency_saving_percent": -952.4059541054019,
+        "energy_saving_percent": -573.4152637840967,
+        "saved_j_per_image": -0.2356731,
+        "mathematical_crossing_images": null,
+        "valid_payback_images": null,
+        "no_valid_payback_reason": "no positive energy saving"
+      },
+      "measurement_source": "historical larger-batch report",
+      "reference_fp32": {
+        "accuracy": 85.8,
+        "j_per_image": 0.113935,
+        "ms_per_image": 2.72767772997031,
+        "latency_saving_percent": -336.1933005969693,
+        "energy_saving_percent": -142.9218414007987,
+        "saved_j_per_image": -0.16283799999999998,
+        "mathematical_crossing_images": null,
+        "valid_payback_images": null,
+        "no_valid_payback_reason": "no positive energy saving"
+      }
+    },
+    {
+      "seed": 45,
+      "batch_size": 8,
+      "objective": "energy",
+      "budget_pp": 2.0,
+      "accuracy": 83.5,
+      "accuracy_loss_pp": 2.299999999999997,
+      "accuracy_passed": false,
+      "route_ms_per_image": 1.7287693500315071,
+      "route_ms_per_batch": 13.830154800252057,
+      "route_j_per_image": 0.05588680000000001,
+      "route_latency_repeat_range_ms_per_image": [
+        1.7175882000214187,
+        1.7356433301029028
+      ],
+      "route_energy_repeat_range_j_per_image": [
+        0.0555066,
+        0.0566052
+      ],
+      "training_j": 201.185,
+      "eligible_static": {
+        "accuracy": 85.85000000000001,
+        "j_per_image": 0.0496799,
+        "ms_per_image": 1.5777619299624348,
+        "latency_saving_percent": -9.570988956025055,
+        "energy_saving_percent": -12.493785212933215,
+        "saved_j_per_image": -0.006206900000000008,
+        "mathematical_crossing_images": null,
+        "valid_payback_images": null,
+        "no_valid_payback_reason": "accuracy allowance failed"
+      },
+      "measurement_source": "historical larger-batch report",
+      "reference_fp32": {
+        "accuracy": 85.8,
+        "j_per_image": 0.1254301,
+        "ms_per_image": 4.034189120103838,
+        "latency_saving_percent": 57.14704247710108,
+        "energy_saving_percent": 55.4438687364516,
+        "saved_j_per_image": 0.06954329999999997,
+        "mathematical_crossing_images": 2893,
+        "valid_payback_images": null,
+        "no_valid_payback_reason": "accuracy allowance failed"
+      }
+    },
+    {
+      "seed": 48,
+      "batch_size": 8,
+      "objective": "energy",
+      "budget_pp": 2.0,
+      "accuracy": 82.36,
+      "accuracy_loss_pp": 3.4399999999999977,
+      "accuracy_passed": false,
+      "route_ms_per_image": 10.54230496000056,
+      "route_ms_per_batch": 84.33843968000437,
+      "route_j_per_image": 0.2620846,
+      "route_latency_repeat_range_ms_per_image": [
+        10.298547969998515,
+        11.303287120001356
+      ],
+      "route_energy_repeat_range_j_per_image": [
+        0.2239196,
+        0.2995175
+      ],
+      "training_j": 195.008,
+      "eligible_static": {
+        "accuracy": 84.38,
+        "j_per_image": 0.027379199999999996,
+        "ms_per_image": 0.7508701100006874,
+        "latency_saving_percent": -1304.0118017203947,
+        "energy_saving_percent": -857.2398024777934,
+        "saved_j_per_image": -0.2347054,
+        "mathematical_crossing_images": null,
+        "valid_payback_images": null,
+        "no_valid_payback_reason": "accuracy allowance failed"
+      },
+      "measurement_source": "historical larger-batch report",
+      "reference_fp32": {
+        "accuracy": 85.8,
+        "j_per_image": 0.1347369,
+        "ms_per_image": 3.4274365399996896,
+        "latency_saving_percent": -207.58570835571228,
+        "energy_saving_percent": -94.5158304814791,
+        "saved_j_per_image": -0.1273477,
+        "mathematical_crossing_images": null,
+        "valid_payback_images": null,
+        "no_valid_payback_reason": "accuracy allowance failed"
+      }
+    },
+    {
+      "seed": 42,
+      "batch_size": 8,
+      "objective": "latency",
+      "budget_pp": 0.5,
+      "accuracy": 85.54,
+      "accuracy_loss_pp": 0.2599999999999909,
+      "accuracy_passed": true,
+      "route_ms_per_image": 2.7089056400174742,
+      "route_ms_per_batch": 21.671245120139794,
+      "route_j_per_image": 0.1018954,
+      "route_latency_repeat_range_ms_per_image": [
+        2.6729274100536715,
+        2.7173564200638793
+      ],
+      "route_energy_repeat_range_j_per_image": [
+        0.10038,
+        0.1026127
+      ],
+      "training_j": 270.437,
+      "eligible_static": {
+        "accuracy": 85.85000000000001,
+        "j_per_image": 0.0406256,
+        "ms_per_image": 1.111702520059771,
+        "latency_saving_percent": -143.67180888209458,
+        "energy_saving_percent": -150.81574179827498,
+        "saved_j_per_image": -0.0612698,
+        "mathematical_crossing_images": null,
+        "valid_payback_images": null,
+        "no_valid_payback_reason": "no positive energy saving"
+      },
+      "measurement_source": "historical larger-batch report",
+      "reference_fp32": {
+        "accuracy": 85.8,
+        "j_per_image": 0.11459960000000001,
+        "ms_per_image": 2.4433327099628515,
+        "latency_saving_percent": -10.869290497022016,
+        "energy_saving_percent": 11.085728047916406,
+        "saved_j_per_image": 0.012704200000000013,
+        "mathematical_crossing_images": 21288,
+        "valid_payback_images": 21288,
+        "no_valid_payback_reason": null
+      }
+    },
+    {
+      "seed": 45,
+      "batch_size": 8,
+      "objective": "latency",
+      "budget_pp": 0.5,
+      "accuracy": 85.47,
+      "accuracy_loss_pp": 0.3299999999999983,
+      "accuracy_passed": true,
+      "route_ms_per_image": 1.5639477000047919,
+      "route_ms_per_batch": 12.511581600038335,
+      "route_j_per_image": 0.049348899999999994,
+      "route_latency_repeat_range_ms_per_image": [
+        1.5628222899889805,
+        1.5655434399348451
+      ],
+      "route_energy_repeat_range_j_per_image": [
+        0.0493096,
+        0.049548
+      ],
+      "training_j": 201.185,
+      "eligible_static": {
+        "accuracy": 85.85000000000001,
+        "j_per_image": 0.0499229,
+        "ms_per_image": 1.572626039959141,
+        "latency_saving_percent": 0.5518374829005558,
+        "energy_saving_percent": 1.1497729498887386,
+        "saved_j_per_image": 0.0005740000000000051,
+        "mathematical_crossing_images": 350497,
+        "valid_payback_images": 350497,
+        "no_valid_payback_reason": null
+      },
+      "measurement_source": "historical larger-batch report",
+      "reference_fp32": {
+        "accuracy": 85.8,
+        "j_per_image": 0.12471549999999999,
+        "ms_per_image": 4.018821280030534,
+        "latency_saving_percent": 61.084417767567174,
+        "energy_saving_percent": 60.43082054756627,
+        "saved_j_per_image": 0.0753666,
+        "mathematical_crossing_images": 2670,
+        "valid_payback_images": 2670,
+        "no_valid_payback_reason": null
+      }
+    },
+    {
+      "seed": 48,
+      "batch_size": 8,
+      "objective": "latency",
+      "budget_pp": 0.5,
+      "accuracy": 84.3,
+      "accuracy_loss_pp": 1.5,
+      "accuracy_passed": false,
+      "route_ms_per_image": 1.8945899299840676,
+      "route_ms_per_batch": 15.156719439872541,
+      "route_j_per_image": 0.0609001,
+      "route_latency_repeat_range_ms_per_image": [
+        1.8902121400285978,
+        1.9021414300455946
+      ],
+      "route_energy_repeat_range_j_per_image": [
+        0.060646500000000006,
+        0.0612193
+      ],
+      "training_j": 195.008,
+      "eligible_static": {
+        "accuracy": 85.85000000000001,
+        "j_per_image": 0.0496377,
+        "ms_per_image": 1.5757144900155253,
+        "latency_saving_percent": -20.236879332460816,
+        "energy_saving_percent": -22.68920598657875,
+        "saved_j_per_image": -0.011262399999999999,
+        "mathematical_crossing_images": null,
+        "valid_payback_images": null,
+        "no_valid_payback_reason": "accuracy allowance failed"
+      },
+      "measurement_source": "historical larger-batch report",
+      "reference_fp32": {
+        "accuracy": 85.8,
+        "j_per_image": 0.1251408,
+        "ms_per_image": 4.022770380027941,
+        "latency_saving_percent": 52.9033538829301,
+        "energy_saving_percent": 51.33473655274698,
+        "saved_j_per_image": 0.0642407,
+        "mathematical_crossing_images": 3036,
+        "valid_payback_images": null,
+        "no_valid_payback_reason": "accuracy allowance failed"
+      }
+    },
+    {
+      "seed": 42,
+      "batch_size": 8,
+      "objective": "latency",
+      "budget_pp": 1.0,
+      "accuracy": 85.05,
+      "accuracy_loss_pp": 0.75,
+      "accuracy_passed": true,
+      "route_ms_per_image": 6.946028690019739,
+      "route_ms_per_batch": 55.568229520157914,
+      "route_j_per_image": 0.22150419999999998,
+      "route_latency_repeat_range_ms_per_image": [
+        6.907529340003384,
+        7.094953740003985
+      ],
+      "route_energy_repeat_range_j_per_image": [
+        0.20963159999999997,
+        0.2232868
+      ],
+      "training_j": 270.437,
+      "eligible_static": {
+        "accuracy": 85.85000000000001,
+        "j_per_image": 0.0417501,
+        "ms_per_image": 1.1314297199773136,
+        "latency_saving_percent": -513.9160539427065,
+        "energy_saving_percent": -430.54771126296697,
+        "saved_j_per_image": -0.17975409999999997,
+        "mathematical_crossing_images": null,
+        "valid_payback_images": null,
+        "no_valid_payback_reason": "no positive energy saving"
+      },
+      "measurement_source": "historical larger-batch report",
+      "reference_fp32": {
+        "accuracy": 85.8,
+        "j_per_image": 0.1147365,
+        "ms_per_image": 2.7599267299927304,
+        "latency_saving_percent": -151.67438738629247,
+        "energy_saving_percent": -93.05469488785171,
+        "saved_j_per_image": -0.10676769999999998,
+        "mathematical_crossing_images": null,
+        "valid_payback_images": null,
+        "no_valid_payback_reason": "no positive energy saving"
+      }
+    },
+    {
+      "seed": 45,
+      "batch_size": 8,
+      "objective": "latency",
+      "budget_pp": 1.0,
+      "accuracy": 84.28999999999999,
+      "accuracy_loss_pp": 1.5100000000000051,
+      "accuracy_passed": false,
+      "route_ms_per_image": 2.152120180008933,
+      "route_ms_per_batch": 17.216961440071465,
+      "route_j_per_image": 0.0691987,
+      "route_latency_repeat_range_ms_per_image": [
+        2.1479653600166784,
+        2.1582689699163895
+      ],
+      "route_energy_repeat_range_j_per_image": [
+        0.0689028,
+        0.0700878
+      ],
+      "training_j": 201.185,
+      "eligible_static": {
+        "accuracy": 85.85000000000001,
+        "j_per_image": 0.049758300000000005,
+        "ms_per_image": 1.576625429984415,
+        "latency_saving_percent": -36.50167878049555,
+        "energy_saving_percent": -39.069662749732196,
+        "saved_j_per_image": -0.019440399999999997,
+        "mathematical_crossing_images": null,
+        "valid_payback_images": null,
+        "no_valid_payback_reason": "accuracy allowance failed"
+      },
+      "measurement_source": "historical larger-batch report",
+      "reference_fp32": {
+        "accuracy": 85.8,
+        "j_per_image": 0.12529949999999998,
+        "ms_per_image": 4.032022349946783,
+        "latency_saving_percent": 46.62429934106546,
+        "energy_saving_percent": 44.7733630221988,
+        "saved_j_per_image": 0.05610079999999998,
+        "mathematical_crossing_images": 3587,
+        "valid_payback_images": null,
+        "no_valid_payback_reason": "accuracy allowance failed"
+      }
+    },
+    {
+      "seed": 48,
+      "batch_size": 8,
+      "objective": "latency",
+      "budget_pp": 1.0,
+      "accuracy": 83.97,
+      "accuracy_loss_pp": 1.8299999999999983,
+      "accuracy_passed": false,
+      "route_ms_per_image": 1.8794955199962715,
+      "route_ms_per_batch": 15.035964159970172,
+      "route_j_per_image": 0.060688,
+      "route_latency_repeat_range_ms_per_image": [
+        1.8709956400532974,
+        1.8839851800352334
+      ],
+      "route_energy_repeat_range_j_per_image": [
+        0.06025320000000001,
+        0.061014700000000005
+      ],
+      "training_j": 195.008,
+      "eligible_static": {
+        "accuracy": 85.85000000000001,
+        "j_per_image": 0.0498029,
+        "ms_per_image": 1.576681990045472,
+        "latency_saving_percent": -19.205745474524395,
+        "energy_saving_percent": -21.856357762298984,
+        "saved_j_per_image": -0.010885100000000002,
+        "mathematical_crossing_images": null,
+        "valid_payback_images": null,
+        "no_valid_payback_reason": "accuracy allowance failed"
+      },
+      "measurement_source": "historical larger-batch report",
+      "reference_fp32": {
+        "accuracy": 85.8,
+        "j_per_image": 0.1253292,
+        "ms_per_image": 4.030949100066209,
+        "latency_saving_percent": 53.37337502065208,
+        "energy_saving_percent": 51.57712647970306,
+        "saved_j_per_image": 0.06464120000000001,
+        "mathematical_crossing_images": 3017,
+        "valid_payback_images": null,
+        "no_valid_payback_reason": "accuracy allowance failed"
+      }
+    },
+    {
+      "seed": 42,
+      "batch_size": 8,
+      "objective": "latency",
+      "budget_pp": 1.5,
+      "accuracy": 84.47,
+      "accuracy_loss_pp": 1.3299999999999983,
+      "accuracy_passed": true,
+      "route_ms_per_image": 9.98089970011497,
+      "route_ms_per_batch": 79.84719760091976,
+      "route_j_per_image": 0.2560978,
+      "route_latency_repeat_range_ms_per_image": [
+        9.876222169949324,
+        10.217836969945347
+      ],
+      "route_energy_repeat_range_j_per_image": [
+        0.24982390000000002,
+        0.2654652
+      ],
+      "training_j": 270.437,
+      "eligible_static": {
+        "accuracy": 85.85000000000001,
+        "j_per_image": 0.0447175,
+        "ms_per_image": 1.2278485499497038,
+        "latency_saving_percent": -712.8771012128341,
+        "energy_saving_percent": -472.7015150668083,
+        "saved_j_per_image": -0.2113803,
+        "mathematical_crossing_images": null,
+        "valid_payback_images": null,
+        "no_valid_payback_reason": "no positive energy saving"
+      },
+      "measurement_source": "historical larger-batch report",
+      "reference_fp32": {
+        "accuracy": 85.8,
+        "j_per_image": 0.11509739999999999,
+        "ms_per_image": 2.743319380059256,
+        "latency_saving_percent": -263.82565488599363,
+        "energy_saving_percent": -122.50528682663554,
+        "saved_j_per_image": -0.1410004,
+        "mathematical_crossing_images": null,
+        "valid_payback_images": null,
+        "no_valid_payback_reason": "no positive energy saving"
+      }
+    },
+    {
+      "seed": 45,
+      "batch_size": 8,
+      "objective": "latency",
+      "budget_pp": 1.5,
+      "accuracy": 84.09,
+      "accuracy_loss_pp": 1.7099999999999937,
+      "accuracy_passed": false,
+      "route_ms_per_image": 2.4376398600317772,
+      "route_ms_per_batch": 19.501118880254218,
+      "route_j_per_image": 0.0790726,
+      "route_latency_repeat_range_ms_per_image": [
+        2.4311698100180363,
+        2.4512528100749478
+      ],
+      "route_energy_repeat_range_j_per_image": [
+        0.0787869,
+        0.0803171
+      ],
+      "training_j": 201.185,
+      "eligible_static": {
+        "accuracy": 85.85000000000001,
+        "j_per_image": 0.049770999999999996,
+        "ms_per_image": 1.57304437001294,
+        "latency_saving_percent": -54.9631978919784,
+        "energy_saving_percent": -58.872837596190585,
+        "saved_j_per_image": -0.02930160000000001,
+        "mathematical_crossing_images": null,
+        "valid_payback_images": null,
+        "no_valid_payback_reason": "accuracy allowance failed"
+      },
+      "measurement_source": "historical larger-batch report",
+      "reference_fp32": {
+        "accuracy": 85.8,
+        "j_per_image": 0.12493299999999999,
+        "ms_per_image": 4.021570519937086,
+        "latency_saving_percent": 39.38587305762546,
+        "energy_saving_percent": 36.707995485580255,
+        "saved_j_per_image": 0.04586039999999998,
+        "mathematical_crossing_images": 4387,
+        "valid_payback_images": null,
+        "no_valid_payback_reason": "accuracy allowance failed"
+      }
+    },
+    {
+      "seed": 48,
+      "batch_size": 8,
+      "objective": "latency",
+      "budget_pp": 1.5,
+      "accuracy": 83.21,
+      "accuracy_loss_pp": 2.5900000000000034,
+      "accuracy_passed": false,
+      "route_ms_per_image": 2.8181209799600766,
+      "route_ms_per_batch": 22.544967839680613,
+      "route_j_per_image": 0.0927486,
+      "route_latency_repeat_range_ms_per_image": [
+        2.811614329999429,
+        2.8431172799493654
+      ],
+      "route_energy_repeat_range_j_per_image": [
+        0.08981839999999999,
+        0.09402200000000001
+      ],
+      "training_j": 195.008,
+      "eligible_static": {
+        "accuracy": 84.38,
+        "j_per_image": 0.029889699999999998,
+        "ms_per_image": 0.9450175899866735,
+        "latency_saving_percent": -198.20830954054696,
+        "energy_saving_percent": -210.3028802564094,
+        "saved_j_per_image": -0.0628589,
+        "mathematical_crossing_images": null,
+        "valid_payback_images": null,
+        "no_valid_payback_reason": "accuracy allowance failed"
+      },
+      "measurement_source": "historical larger-batch report",
+      "reference_fp32": {
+        "accuracy": 85.8,
+        "j_per_image": 0.1248962,
+        "ms_per_image": 4.020094819998485,
+        "latency_saving_percent": 29.899141534150715,
+        "energy_saving_percent": 25.739454042637007,
+        "saved_j_per_image": 0.0321476,
+        "mathematical_crossing_images": 6067,
+        "valid_payback_images": null,
+        "no_valid_payback_reason": "accuracy allowance failed"
+      }
+    },
+    {
+      "seed": 42,
+      "batch_size": 8,
+      "objective": "latency",
+      "budget_pp": 2.0,
+      "accuracy": 83.97,
+      "accuracy_loss_pp": 1.8299999999999983,
+      "accuracy_passed": true,
+      "route_ms_per_image": 11.551940029943944,
+      "route_ms_per_batch": 92.41552023955155,
+      "route_j_per_image": 0.27281550000000004,
+      "route_latency_repeat_range_ms_per_image": [
+        11.496938850023435,
+        11.825568590051262
+      ],
+      "route_energy_repeat_range_j_per_image": [
+        0.2657164,
+        0.2765993
+      ],
+      "training_j": 270.437,
+      "eligible_static": {
+        "accuracy": 84.39,
+        "j_per_image": 0.060525300000000004,
+        "ms_per_image": 1.4196527199674165,
+        "latency_saving_percent": -713.715908649059,
+        "energy_saving_percent": -350.7462168712919,
+        "saved_j_per_image": -0.21229020000000004,
+        "mathematical_crossing_images": null,
+        "valid_payback_images": null,
+        "no_valid_payback_reason": "no positive energy saving"
+      },
+      "measurement_source": "historical larger-batch report",
+      "reference_fp32": {
+        "accuracy": 85.8,
+        "j_per_image": 0.11408209999999999,
+        "ms_per_image": 2.7379960300138917,
+        "latency_saving_percent": -321.9122271658419,
+        "energy_saving_percent": -139.13961962481412,
+        "saved_j_per_image": -0.15873340000000005,
+        "mathematical_crossing_images": null,
+        "valid_payback_images": null,
+        "no_valid_payback_reason": "no positive energy saving"
+      }
+    },
+    {
+      "seed": 45,
+      "batch_size": 8,
+      "objective": "latency",
+      "budget_pp": 2.0,
+      "accuracy": 83.65,
+      "accuracy_loss_pp": 2.1499999999999915,
+      "accuracy_passed": false,
+      "route_ms_per_image": 3.0568211800040443,
+      "route_ms_per_batch": 24.454569440032355,
+      "route_j_per_image": 0.1004852,
+      "route_latency_repeat_range_ms_per_image": [
+        3.042415330125368,
+        3.061481179957627
+      ],
+      "route_energy_repeat_range_j_per_image": [
+        0.0976631,
+        0.1014611
+      ],
+      "training_j": 201.185,
+      "eligible_static": {
+        "accuracy": 85.85000000000001,
+        "j_per_image": 0.0497662,
+        "ms_per_image": 1.5744553699914832,
+        "latency_saving_percent": -94.15102125254779,
+        "energy_saving_percent": -101.91455244724332,
+        "saved_j_per_image": -0.050719,
+        "mathematical_crossing_images": null,
+        "valid_payback_images": null,
+        "no_valid_payback_reason": "accuracy allowance failed"
+      },
+      "measurement_source": "historical larger-batch report",
+      "reference_fp32": {
+        "accuracy": 85.8,
+        "j_per_image": 0.12481320000000001,
+        "ms_per_image": 4.019950529947527,
+        "latency_saving_percent": 23.958736376690062,
+        "energy_saving_percent": 19.49152813965191,
+        "saved_j_per_image": 0.024328000000000016,
+        "mathematical_crossing_images": 8270,
+        "valid_payback_images": null,
+        "no_valid_payback_reason": "accuracy allowance failed"
+      }
+    },
+    {
+      "seed": 48,
+      "batch_size": 8,
+      "objective": "latency",
+      "budget_pp": 2.0,
+      "accuracy": 82.69999999999999,
+      "accuracy_loss_pp": 3.1000000000000085,
+      "accuracy_passed": false,
+      "route_ms_per_image": 3.0389472099981503,
+      "route_ms_per_batch": 24.311577679985202,
+      "route_j_per_image": 0.1008966,
+      "route_latency_repeat_range_ms_per_image": [
+        3.0346622900047806,
+        3.045619120032643
+      ],
+      "route_energy_repeat_range_j_per_image": [
+        0.0970124,
+        0.1012226
+      ],
+      "training_j": 195.008,
+      "eligible_static": {
+        "accuracy": 84.38,
+        "j_per_image": 0.029653199999999998,
+        "ms_per_image": 0.9410066800046479,
+        "latency_saving_percent": -222.946401398887,
+        "energy_saving_percent": -240.25535186758938,
+        "saved_j_per_image": -0.07124340000000001,
+        "mathematical_crossing_images": null,
+        "valid_payback_images": null,
+        "no_valid_payback_reason": "accuracy allowance failed"
+      },
+      "measurement_source": "historical larger-batch report",
+      "reference_fp32": {
+        "accuracy": 85.8,
+        "j_per_image": 0.1246125,
+        "ms_per_image": 4.023566120007308,
+        "latency_saving_percent": 24.47129935589003,
+        "energy_saving_percent": 19.03171832681312,
+        "saved_j_per_image": 0.023715899999999998,
+        "mathematical_crossing_images": 8223,
+        "valid_payback_images": null,
+        "no_valid_payback_reason": "accuracy allowance failed"
+      }
+    },
+    {
+      "seed": 42,
+      "batch_size": 16,
+      "objective": "energy",
+      "budget_pp": 0.5,
+      "accuracy": 85.5,
+      "accuracy_loss_pp": 0.29999999999999716,
+      "accuracy_passed": true,
+      "route_ms_per_image": 2.068277719986509,
+      "route_ms_per_batch": 33.09244351978414,
+      "route_j_per_image": 0.07645679999999999,
+      "route_latency_repeat_range_ms_per_image": [
+        2.060288960035541,
+        2.1222826799959877
+      ],
+      "route_energy_repeat_range_j_per_image": [
+        0.070971,
+        0.0778229
+      ],
+      "training_j": 270.437,
+      "eligible_static": {
+        "accuracy": 85.85000000000001,
+        "j_per_image": 0.030503699999999998,
+        "ms_per_image": 0.7385438299825182,
+        "latency_saving_percent": -180.04806702338385,
+        "energy_saving_percent": -150.64762635352432,
+        "saved_j_per_image": -0.0459531,
+        "mathematical_crossing_images": null,
+        "valid_payback_images": null,
+        "no_valid_payback_reason": "no positive energy saving"
+      },
+      "measurement_source": "historical larger-batch report",
+      "reference_fp32": {
+        "accuracy": 85.8,
+        "j_per_image": 0.09941330000000001,
+        "ms_per_image": 2.186400309955934,
+        "latency_saving_percent": 5.4026058005730055,
+        "energy_saving_percent": 23.091980650476362,
+        "saved_j_per_image": 0.02295650000000002,
+        "mathematical_crossing_images": 11781,
+        "valid_payback_images": 11781,
+        "no_valid_payback_reason": null
+      }
+    },
+    {
+      "seed": 45,
+      "batch_size": 16,
+      "objective": "energy",
+      "budget_pp": 0.5,
+      "accuracy": 84.7,
+      "accuracy_loss_pp": 1.0999999999999943,
+      "accuracy_passed": false,
+      "route_ms_per_image": 1.1872744600346778,
+      "route_ms_per_batch": 18.996391360554846,
+      "route_j_per_image": 0.0371156,
+      "route_latency_repeat_range_ms_per_image": [
+        1.1855847900384107,
+        1.1902623999892967
+      ],
+      "route_energy_repeat_range_j_per_image": [
+        0.0368431,
+        0.037419799999999996
+      ],
+      "training_j": 201.185,
+      "eligible_static": {
+        "accuracy": 85.85000000000001,
+        "j_per_image": 0.041974000000000004,
+        "ms_per_image": 1.345461270044325,
+        "latency_saving_percent": 11.757069009086813,
+        "energy_saving_percent": 11.57478439033689,
+        "saved_j_per_image": 0.004858400000000006,
+        "mathematical_crossing_images": 41410,
+        "valid_payback_images": null,
+        "no_valid_payback_reason": "accuracy allowance failed"
+      },
+      "measurement_source": "historical larger-batch report",
+      "reference_fp32": {
+        "accuracy": 85.8,
+        "j_per_image": 0.1147428,
+        "ms_per_image": 3.679873989964835,
+        "latency_saving_percent": 67.73600228506675,
+        "energy_saving_percent": 67.65322094283911,
+        "saved_j_per_image": 0.07762720000000001,
+        "mathematical_crossing_images": 2592,
+        "valid_payback_images": null,
+        "no_valid_payback_reason": "accuracy allowance failed"
+      }
+    },
+    {
+      "seed": 48,
+      "batch_size": 16,
+      "objective": "energy",
+      "budget_pp": 0.5,
+      "accuracy": 85.55,
+      "accuracy_loss_pp": 0.25,
+      "accuracy_passed": true,
+      "route_ms_per_image": 0.8239738299987038,
+      "route_ms_per_batch": 13.183581279979261,
+      "route_j_per_image": 0.0335504,
+      "route_latency_repeat_range_ms_per_image": [
+        0.8208406799998557,
+        0.827686759999142
+      ],
+      "route_energy_repeat_range_j_per_image": [
+        0.0332405,
+        0.033819
+      ],
+      "training_j": 195.008,
+      "eligible_static": {
+        "accuracy": 85.85000000000001,
+        "j_per_image": 0.0326452,
+        "ms_per_image": 0.7851208399994902,
+        "latency_saving_percent": -4.948663698601967,
+        "energy_saving_percent": -2.7728425618467702,
+        "saved_j_per_image": -0.0009052000000000018,
+        "mathematical_crossing_images": null,
+        "valid_payback_images": null,
+        "no_valid_payback_reason": "no positive energy saving"
+      },
+      "measurement_source": "historical larger-batch report",
+      "reference_fp32": {
+        "accuracy": 85.8,
+        "j_per_image": 0.10414970000000001,
+        "ms_per_image": 2.3002353699994273,
+        "latency_saving_percent": 64.1787166328588,
+        "energy_saving_percent": 67.78636904378985,
+        "saved_j_per_image": 0.0705993,
+        "mathematical_crossing_images": 2763,
+        "valid_payback_images": 2763,
+        "no_valid_payback_reason": null
+      }
+    },
+    {
+      "seed": 42,
+      "batch_size": 16,
+      "objective": "energy",
+      "budget_pp": 1.0,
+      "accuracy": 84.95,
+      "accuracy_loss_pp": 0.8499999999999943,
+      "accuracy_passed": true,
+      "route_ms_per_image": 2.808636739934445,
+      "route_ms_per_batch": 44.93818783895112,
+      "route_j_per_image": 0.0976615,
+      "route_latency_repeat_range_ms_per_image": [
+        2.774995750008384,
+        2.9178659399185563
+      ],
+      "route_energy_repeat_range_j_per_image": [
+        0.0875924,
+        0.0989216
+      ],
+      "training_j": 270.437,
+      "eligible_static": {
+        "accuracy": 85.85000000000001,
+        "j_per_image": 0.0312816,
+        "ms_per_image": 0.7394467699428787,
+        "latency_saving_percent": -279.82946901660125,
+        "energy_saving_percent": -212.20110224540943,
+        "saved_j_per_image": -0.06637989999999999,
+        "mathematical_crossing_images": null,
+        "valid_payback_images": null,
+        "no_valid_payback_reason": "no positive energy saving"
+      },
+      "measurement_source": "historical larger-batch report",
+      "reference_fp32": {
+        "accuracy": 85.8,
+        "j_per_image": 0.10069109999999999,
+        "ms_per_image": 2.190667590076919,
+        "latency_saving_percent": -28.20917023909723,
+        "energy_saving_percent": 3.0088061407611932,
+        "saved_j_per_image": 0.0030295999999999934,
+        "mathematical_crossing_images": 89265,
+        "valid_payback_images": 89265,
+        "no_valid_payback_reason": null
+      }
+    },
+    {
+      "seed": 45,
+      "batch_size": 16,
+      "objective": "energy",
+      "budget_pp": 1.0,
+      "accuracy": 84.25,
+      "accuracy_loss_pp": 1.5499999999999972,
+      "accuracy_passed": false,
+      "route_ms_per_image": 1.093431980011519,
+      "route_ms_per_batch": 17.494911680184305,
+      "route_j_per_image": 0.0343522,
+      "route_latency_repeat_range_ms_per_image": [
+        1.091878859946155,
+        1.0951963400089881
+      ],
+      "route_energy_repeat_range_j_per_image": [
+        0.0340825,
+        0.0344186
+      ],
+      "training_j": 201.185,
+      "eligible_static": {
+        "accuracy": 85.85000000000001,
+        "j_per_image": 0.0418979,
+        "ms_per_image": 1.345209049974801,
+        "latency_saving_percent": 18.716575685243743,
+        "energy_saving_percent": 18.00973318471809,
+        "saved_j_per_image": 0.007545700000000002,
+        "mathematical_crossing_images": 26663,
+        "valid_payback_images": null,
+        "no_valid_payback_reason": "accuracy allowance failed"
+      },
+      "measurement_source": "historical larger-batch report",
+      "reference_fp32": {
+        "accuracy": 85.8,
+        "j_per_image": 0.1146593,
+        "ms_per_image": 3.6769925700034944,
+        "latency_saving_percent": 70.2628721925734,
+        "energy_saving_percent": 70.039761275361,
+        "saved_j_per_image": 0.0803071,
+        "mathematical_crossing_images": 2506,
+        "valid_payback_images": null,
+        "no_valid_payback_reason": "accuracy allowance failed"
+      }
+    },
+    {
+      "seed": 48,
+      "batch_size": 16,
+      "objective": "energy",
+      "budget_pp": 1.0,
+      "accuracy": 85.00999999999999,
+      "accuracy_loss_pp": 0.7900000000000063,
+      "accuracy_passed": true,
+      "route_ms_per_image": 1.3183428200004528,
+      "route_ms_per_batch": 21.093485120007244,
+      "route_j_per_image": 0.0406839,
+      "route_latency_repeat_range_ms_per_image": [
+        1.3146502900005543,
+        1.3236504100014828
+      ],
+      "route_energy_repeat_range_j_per_image": [
+        0.0402918,
+        0.040887099999999996
+      ],
+      "training_j": 195.008,
+      "eligible_static": {
+        "accuracy": 85.85000000000001,
+        "j_per_image": 0.043075,
+        "ms_per_image": 1.4100458900005832,
+        "latency_saving_percent": 6.503552164539312,
+        "energy_saving_percent": 5.5510156703424265,
+        "saved_j_per_image": 0.0023911,
+        "mathematical_crossing_images": 81556,
+        "valid_payback_images": 81556,
+        "no_valid_payback_reason": null
+      },
+      "measurement_source": "historical larger-batch report",
+      "reference_fp32": {
+        "accuracy": 85.8,
+        "j_per_image": 0.12625419999999998,
+        "ms_per_image": 4.1138989199977,
+        "latency_saving_percent": 67.9539326162834,
+        "energy_saving_percent": 67.77620071253075,
+        "saved_j_per_image": 0.08557029999999999,
+        "mathematical_crossing_images": 2279,
+        "valid_payback_images": 2279,
+        "no_valid_payback_reason": null
+      }
+    },
+    {
+      "seed": 42,
+      "batch_size": 16,
+      "objective": "energy",
+      "budget_pp": 1.5,
+      "accuracy": 84.03,
+      "accuracy_loss_pp": 1.769999999999996,
+      "accuracy_passed": false,
+      "route_ms_per_image": 3.642995439952938,
+      "route_ms_per_batch": 58.28792703924701,
+      "route_j_per_image": 0.11827860000000001,
+      "route_latency_repeat_range_ms_per_image": [
+        3.6408958800457185,
+        3.8331242999993265
+      ],
+      "route_energy_repeat_range_j_per_image": [
+        0.1066379,
+        0.1200876
+      ],
+      "training_j": 270.437,
+      "eligible_static": {
+        "accuracy": 85.85000000000001,
+        "j_per_image": 0.0313604,
+        "ms_per_image": 0.7402888299897313,
+        "latency_saving_percent": -392.1046073332581,
+        "energy_saving_percent": -277.1590923585159,
+        "saved_j_per_image": -0.08691820000000001,
+        "mathematical_crossing_images": null,
+        "valid_payback_images": null,
+        "no_valid_payback_reason": "accuracy allowance failed"
+      },
+      "measurement_source": "historical larger-batch report",
+      "reference_fp32": {
+        "accuracy": 85.8,
+        "j_per_image": 0.1011369,
+        "ms_per_image": 2.1933353200292913,
+        "latency_saving_percent": -66.09386657322815,
+        "energy_saving_percent": -16.949006742346274,
+        "saved_j_per_image": -0.01714170000000001,
+        "mathematical_crossing_images": null,
+        "valid_payback_images": null,
+        "no_valid_payback_reason": "accuracy allowance failed"
+      }
+    },
+    {
+      "seed": 45,
+      "batch_size": 16,
+      "objective": "energy",
+      "budget_pp": 1.5,
+      "accuracy": 83.89999999999999,
+      "accuracy_loss_pp": 1.9000000000000057,
+      "accuracy_passed": false,
+      "route_ms_per_image": 1.0260795999784023,
+      "route_ms_per_batch": 16.417273599654436,
+      "route_j_per_image": 0.032135199999999996,
+      "route_latency_repeat_range_ms_per_image": [
+        1.021795839999686,
+        1.027906560030533
+      ],
+      "route_energy_repeat_range_j_per_image": [
+        0.0318991,
+        0.0322084
+      ],
+      "training_j": 201.185,
+      "eligible_static": {
+        "accuracy": 85.85000000000001,
+        "j_per_image": 0.0421908,
+        "ms_per_image": 1.344762299975264,
+        "latency_saving_percent": 23.698069168262943,
+        "energy_saving_percent": 23.833631976639467,
+        "saved_j_per_image": 0.010055600000000005,
+        "mathematical_crossing_images": 20008,
+        "valid_payback_images": null,
+        "no_valid_payback_reason": "accuracy allowance failed"
+      },
+      "measurement_source": "historical larger-batch report",
+      "reference_fp32": {
+        "accuracy": 85.8,
+        "j_per_image": 0.1148588,
+        "ms_per_image": 3.6789376399799947,
+        "latency_saving_percent": 72.1093505682803,
+        "energy_saving_percent": 72.02199570254957,
+        "saved_j_per_image": 0.08272360000000001,
+        "mathematical_crossing_images": 2433,
+        "valid_payback_images": null,
+        "no_valid_payback_reason": "accuracy allowance failed"
+      }
+    },
+    {
+      "seed": 48,
+      "batch_size": 16,
+      "objective": "energy",
+      "budget_pp": 1.5,
+      "accuracy": 83.84,
+      "accuracy_loss_pp": 1.9599999999999937,
+      "accuracy_passed": false,
+      "route_ms_per_image": 2.013462680000612,
+      "route_ms_per_batch": 32.21540288000979,
+      "route_j_per_image": 0.0599019,
+      "route_latency_repeat_range_ms_per_image": [
+        2.0071127699996394,
+        2.0404894199982664
+      ],
+      "route_energy_repeat_range_j_per_image": [
+        0.058733799999999996,
+        0.06154880000000001
+      ],
+      "training_j": 195.008,
+      "eligible_static": {
+        "accuracy": 84.38,
+        "j_per_image": 0.0389271,
+        "ms_per_image": 1.331415419998666,
+        "latency_saving_percent": -51.227231543001736,
+        "energy_saving_percent": -53.88225683392804,
+        "saved_j_per_image": -0.020974800000000002,
+        "mathematical_crossing_images": null,
+        "valid_payback_images": null,
+        "no_valid_payback_reason": "accuracy allowance failed"
+      },
+      "measurement_source": "historical larger-batch report",
+      "reference_fp32": {
+        "accuracy": 85.8,
+        "j_per_image": 0.1222167,
+        "ms_per_image": 3.9449645999988205,
+        "latency_saving_percent": 48.96119777598984,
+        "energy_saving_percent": 50.98714005532795,
+        "saved_j_per_image": 0.0623148,
+        "mathematical_crossing_images": 3130,
+        "valid_payback_images": null,
+        "no_valid_payback_reason": "accuracy allowance failed"
+      }
+    },
+    {
+      "seed": 42,
+      "batch_size": 16,
+      "objective": "energy",
+      "budget_pp": 2.0,
+      "accuracy": 83.02000000000001,
+      "accuracy_loss_pp": 2.779999999999987,
+      "accuracy_passed": false,
+      "route_ms_per_image": 3.7609483499545604,
+      "route_ms_per_batch": 60.175173599272966,
+      "route_j_per_image": 0.1203343,
+      "route_latency_repeat_range_ms_per_image": [
+        3.742267739988165,
+        3.8964523700036806
+      ],
+      "route_energy_repeat_range_j_per_image": [
+        0.10934819999999999,
+        0.124333
+      ],
+      "training_j": 270.437,
+      "eligible_static": {
+        "accuracy": 85.85000000000001,
+        "j_per_image": 0.0316042,
+        "ms_per_image": 0.7448369499470573,
+        "latency_saving_percent": -404.93579168190934,
+        "energy_saving_percent": -280.7541402724955,
+        "saved_j_per_image": -0.0887301,
+        "mathematical_crossing_images": null,
+        "valid_payback_images": null,
+        "no_valid_payback_reason": "accuracy allowance failed"
+      },
+      "measurement_source": "historical larger-batch report",
+      "reference_fp32": {
+        "accuracy": 85.8,
+        "j_per_image": 0.1007175,
+        "ms_per_image": 2.191073889975087,
+        "latency_saving_percent": -71.64863162133358,
+        "energy_saving_percent": -19.477052150817883,
+        "saved_j_per_image": -0.019616800000000004,
+        "mathematical_crossing_images": null,
+        "valid_payback_images": null,
+        "no_valid_payback_reason": "accuracy allowance failed"
+      }
+    },
+    {
+      "seed": 45,
+      "batch_size": 16,
+      "objective": "energy",
+      "budget_pp": 2.0,
+      "accuracy": 83.38,
+      "accuracy_loss_pp": 2.4200000000000017,
+      "accuracy_passed": false,
+      "route_ms_per_image": 0.9334745299333008,
+      "route_ms_per_batch": 14.935592478932813,
+      "route_j_per_image": 0.029424099999999998,
+      "route_latency_repeat_range_ms_per_image": [
+        0.9321985700400546,
+        0.9366898299776949
+      ],
+      "route_energy_repeat_range_j_per_image": [
+        0.029342899999999998,
+        0.029449
+      ],
+      "training_j": 201.185,
+      "eligible_static": {
+        "accuracy": 85.85000000000001,
+        "j_per_image": 0.041848,
+        "ms_per_image": 1.3443111899774522,
+        "latency_saving_percent": 30.561127743870244,
+        "energy_saving_percent": 29.688157140126183,
+        "saved_j_per_image": 0.012423900000000005,
+        "mathematical_crossing_images": 16194,
+        "valid_payback_images": null,
+        "no_valid_payback_reason": "accuracy allowance failed"
+      },
+      "measurement_source": "historical larger-batch report",
+      "reference_fp32": {
+        "accuracy": 85.8,
+        "j_per_image": 0.1142328,
+        "ms_per_image": 3.6738870500499616,
+        "latency_saving_percent": 74.59163776086675,
+        "energy_saving_percent": 74.24198653976791,
+        "saved_j_per_image": 0.0848087,
+        "mathematical_crossing_images": 2373,
+        "valid_payback_images": null,
+        "no_valid_payback_reason": "accuracy allowance failed"
+      }
+    },
+    {
+      "seed": 48,
+      "batch_size": 16,
+      "objective": "energy",
+      "budget_pp": 2.0,
+      "accuracy": 82.78999999999999,
+      "accuracy_loss_pp": 3.010000000000005,
+      "accuracy_passed": false,
+      "route_ms_per_image": 1.4571953400011808,
+      "route_ms_per_batch": 23.315125440018893,
+      "route_j_per_image": 0.0412697,
+      "route_latency_repeat_range_ms_per_image": [
+        1.391268970001238,
+        1.812574020000102
+      ],
+      "route_energy_repeat_range_j_per_image": [
+        0.0372834,
+        0.053920899999999994
+      ],
+      "training_j": 195.008,
+      "eligible_static": {
+        "accuracy": 84.38,
+        "j_per_image": 0.030275,
+        "ms_per_image": 1.0246338800011472,
+        "latency_saving_percent": -42.21619726253335,
+        "energy_saving_percent": -36.31610239471511,
+        "saved_j_per_image": -0.0109947,
+        "mathematical_crossing_images": null,
+        "valid_payback_images": null,
+        "no_valid_payback_reason": "accuracy allowance failed"
+      },
+      "measurement_source": "historical larger-batch report",
+      "reference_fp32": {
+        "accuracy": 85.8,
+        "j_per_image": 0.1663587,
+        "ms_per_image": 5.474796410002455,
+        "latency_saving_percent": 73.38357025771982,
+        "energy_saving_percent": 75.19234040660332,
+        "saved_j_per_image": 0.125089,
+        "mathematical_crossing_images": 1559,
+        "valid_payback_images": null,
+        "no_valid_payback_reason": "accuracy allowance failed"
+      }
+    },
+    {
+      "seed": 42,
+      "batch_size": 16,
+      "objective": "latency",
+      "budget_pp": 0.5,
+      "accuracy": 85.52,
+      "accuracy_loss_pp": 0.28000000000000114,
+      "accuracy_passed": true,
+      "route_ms_per_image": 1.6486060700175584,
+      "route_ms_per_batch": 26.377697120280935,
+      "route_j_per_image": 0.05928289999999999,
+      "route_latency_repeat_range_ms_per_image": [
+        1.6450314999674447,
+        1.6871004199521848
+      ],
+      "route_energy_repeat_range_j_per_image": [
+        0.0560054,
+        0.060715700000000004
+      ],
+      "training_j": 270.437,
+      "eligible_static": {
+        "accuracy": 85.85000000000001,
+        "j_per_image": 0.030536200000000003,
+        "ms_per_image": 0.7395624500059057,
+        "latency_saving_percent": -122.91641091356027,
+        "energy_saving_percent": -94.13974233860137,
+        "saved_j_per_image": -0.02874669999999999,
+        "mathematical_crossing_images": null,
+        "valid_payback_images": null,
+        "no_valid_payback_reason": "no positive energy saving"
+      },
+      "measurement_source": "historical larger-batch report",
+      "reference_fp32": {
+        "accuracy": 85.8,
+        "j_per_image": 0.0987181,
+        "ms_per_image": 2.181424599996535,
+        "latency_saving_percent": 24.42525540327284,
+        "energy_saving_percent": 39.947284236629365,
+        "saved_j_per_image": 0.03943520000000001,
+        "mathematical_crossing_images": 6858,
+        "valid_payback_images": 6858,
+        "no_valid_payback_reason": null
+      }
+    },
+    {
+      "seed": 45,
+      "batch_size": 16,
+      "objective": "latency",
+      "budget_pp": 0.5,
+      "accuracy": 84.71,
+      "accuracy_loss_pp": 1.0900000000000034,
+      "accuracy_passed": false,
+      "route_ms_per_image": 1.1906587099219905,
+      "route_ms_per_batch": 19.05053935875185,
+      "route_j_per_image": 0.0373498,
+      "route_latency_repeat_range_ms_per_image": [
+        1.1873847799754003,
+        1.1920532300457125
+      ],
+      "route_energy_repeat_range_j_per_image": [
+        0.0371428,
+        0.0374411
+      ],
+      "training_j": 201.185,
+      "eligible_static": {
+        "accuracy": 85.85000000000001,
+        "j_per_image": 0.0422287,
+        "ms_per_image": 1.3456877300195629,
+        "latency_saving_percent": 11.52043053073826,
+        "energy_saving_percent": 11.553516920956596,
+        "saved_j_per_image": 0.0048788999999999985,
+        "mathematical_crossing_images": 41236,
+        "valid_payback_images": null,
+        "no_valid_payback_reason": "accuracy allowance failed"
+      },
+      "measurement_source": "historical larger-batch report",
+      "reference_fp32": {
+        "accuracy": 85.8,
+        "j_per_image": 0.11478379999999999,
+        "ms_per_image": 3.675010620005196,
+        "latency_saving_percent": 67.60121716545387,
+        "energy_saving_percent": 67.46073923323674,
+        "saved_j_per_image": 0.07743399999999999,
+        "mathematical_crossing_images": 2599,
+        "valid_payback_images": null,
+        "no_valid_payback_reason": "accuracy allowance failed"
+      }
+    },
+    {
+      "seed": 48,
+      "batch_size": 16,
+      "objective": "latency",
+      "budget_pp": 0.5,
+      "accuracy": 85.52,
+      "accuracy_loss_pp": 0.28000000000000114,
+      "accuracy_passed": true,
+      "route_ms_per_image": 1.3519774000073084,
+      "route_ms_per_batch": 21.631638400116934,
+      "route_j_per_image": 0.0425436,
+      "route_latency_repeat_range_ms_per_image": [
+        1.3497367599542485,
+        1.3531918200227664
+      ],
+      "route_energy_repeat_range_j_per_image": [
+        0.0420289,
+        0.0425457
+      ],
+      "training_j": 195.008,
+      "eligible_static": {
+        "accuracy": 85.85000000000001,
+        "j_per_image": 0.0422452,
+        "ms_per_image": 1.3443439700320596,
+        "latency_saving_percent": -0.5678182180611732,
+        "energy_saving_percent": -0.7063524376734025,
+        "saved_j_per_image": -0.0002984000000000042,
+        "mathematical_crossing_images": null,
+        "valid_payback_images": null,
+        "no_valid_payback_reason": "no positive energy saving"
+      },
+      "measurement_source": "historical larger-batch report",
+      "reference_fp32": {
+        "accuracy": 85.8,
+        "j_per_image": 0.1145198,
+        "ms_per_image": 3.6756369900191204,
+        "latency_saving_percent": 63.21787478800306,
+        "energy_saving_percent": 62.85044158302757,
+        "saved_j_per_image": 0.0719762,
+        "mathematical_crossing_images": 2710,
+        "valid_payback_images": 2710,
+        "no_valid_payback_reason": null
+      }
+    },
+    {
+      "seed": 42,
+      "batch_size": 16,
+      "objective": "latency",
+      "budget_pp": 1.0,
+      "accuracy": 84.92,
+      "accuracy_loss_pp": 0.8799999999999955,
+      "accuracy_passed": true,
+      "route_ms_per_image": 2.155193819996202,
+      "route_ms_per_batch": 34.483101119939235,
+      "route_j_per_image": 0.0714973,
+      "route_latency_repeat_range_ms_per_image": [
+        2.1169586600153707,
+        2.2163039300299716
+      ],
+      "route_energy_repeat_range_j_per_image": [
+        0.0686634,
+        0.0748422
+      ],
+      "training_j": 270.437,
+      "eligible_static": {
+        "accuracy": 85.85000000000001,
+        "j_per_image": 0.0312067,
+        "ms_per_image": 0.7387628500175196,
+        "latency_saving_percent": -191.73012962753774,
+        "energy_saving_percent": -129.10881317153044,
+        "saved_j_per_image": -0.040290599999999996,
+        "mathematical_crossing_images": null,
+        "valid_payback_images": null,
+        "no_valid_payback_reason": "no positive energy saving"
+      },
+      "measurement_source": "historical larger-batch report",
+      "reference_fp32": {
+        "accuracy": 85.8,
+        "j_per_image": 0.10042910000000001,
+        "ms_per_image": 2.190013909977279,
+        "latency_saving_percent": 1.589948347927962,
+        "energy_saving_percent": 28.8081840821037,
+        "saved_j_per_image": 0.028931800000000008,
+        "mathematical_crossing_images": 9348,
+        "valid_payback_images": 9348,
+        "no_valid_payback_reason": null
+      }
+    },
+    {
+      "seed": 45,
+      "batch_size": 16,
+      "objective": "latency",
+      "budget_pp": 1.0,
+      "accuracy": 84.28,
+      "accuracy_loss_pp": 1.519999999999996,
+      "accuracy_passed": false,
+      "route_ms_per_image": 1.0990069300256438,
+      "route_ms_per_batch": 17.5841108804103,
+      "route_j_per_image": 0.0343654,
+      "route_latency_repeat_range_ms_per_image": [
+        1.0971538699930534,
+        1.1011975600238657
+      ],
+      "route_energy_repeat_range_j_per_image": [
+        0.034148899999999996,
+        0.0346004
+      ],
+      "training_j": 201.185,
+      "eligible_static": {
+        "accuracy": 85.85000000000001,
+        "j_per_image": 0.0421747,
+        "ms_per_image": 1.3460776400344912,
+        "latency_saving_percent": 18.35486324566811,
+        "energy_saving_percent": 18.516551392185374,
+        "saved_j_per_image": 0.007809300000000005,
+        "mathematical_crossing_images": 25763,
+        "valid_payback_images": null,
+        "no_valid_payback_reason": "accuracy allowance failed"
+      },
+      "measurement_source": "historical larger-batch report",
+      "reference_fp32": {
+        "accuracy": 85.8,
+        "j_per_image": 0.114326,
+        "ms_per_image": 3.673168090026593,
+        "latency_saving_percent": 70.08013510163954,
+        "energy_saving_percent": 69.94087084302782,
+        "saved_j_per_image": 0.07996059999999999,
+        "mathematical_crossing_images": 2517,
+        "valid_payback_images": null,
+        "no_valid_payback_reason": "accuracy allowance failed"
+      }
+    },
+    {
+      "seed": 48,
+      "batch_size": 16,
+      "objective": "latency",
+      "budget_pp": 1.0,
+      "accuracy": 84.99,
+      "accuracy_loss_pp": 0.8100000000000023,
+      "accuracy_passed": true,
+      "route_ms_per_image": 1.261165809974773,
+      "route_ms_per_batch": 20.178652959596366,
+      "route_j_per_image": 0.039715600000000004,
+      "route_latency_repeat_range_ms_per_image": [
+        1.2593057100049918,
+        1.2633578500011935
+      ],
+      "route_energy_repeat_range_j_per_image": [
+        0.039355,
+        0.0397765
+      ],
+      "training_j": 195.008,
+      "eligible_static": {
+        "accuracy": 85.85000000000001,
+        "j_per_image": 0.0421836,
+        "ms_per_image": 1.3438956600235543,
+        "latency_saving_percent": 6.155972707533811,
+        "energy_saving_percent": 5.850614930921016,
+        "saved_j_per_image": 0.002467999999999998,
+        "mathematical_crossing_images": 79015,
+        "valid_payback_images": 79015,
+        "no_valid_payback_reason": null
+      },
+      "measurement_source": "historical larger-batch report",
+      "reference_fp32": {
+        "accuracy": 85.8,
+        "j_per_image": 0.1141683,
+        "ms_per_image": 3.676858310017269,
+        "latency_saving_percent": 65.69990726760288,
+        "energy_saving_percent": 65.21311081972841,
+        "saved_j_per_image": 0.0744527,
+        "mathematical_crossing_images": 2620,
+        "valid_payback_images": 2620,
+        "no_valid_payback_reason": null
+      }
+    },
+    {
+      "seed": 42,
+      "batch_size": 16,
+      "objective": "latency",
+      "budget_pp": 1.5,
+      "accuracy": 83.8,
+      "accuracy_loss_pp": 2.0,
+      "accuracy_passed": false,
+      "route_ms_per_image": 2.385742160017253,
+      "route_ms_per_batch": 38.171874560276045,
+      "route_j_per_image": 0.07863300000000001,
+      "route_latency_repeat_range_ms_per_image": [
+        2.346481220019632,
+        2.7302852700377116
+      ],
+      "route_energy_repeat_range_j_per_image": [
+        0.073588,
+        0.0800672
+      ],
+      "training_j": 270.437,
+      "eligible_static": {
+        "accuracy": 85.85000000000001,
+        "j_per_image": 0.0313299,
+        "ms_per_image": 0.7399622000084491,
+        "latency_saving_percent": -222.4140584465006,
+        "energy_saving_percent": -150.98388440435497,
+        "saved_j_per_image": -0.04730310000000001,
+        "mathematical_crossing_images": null,
+        "valid_payback_images": null,
+        "no_valid_payback_reason": "accuracy allowance failed"
+      },
+      "measurement_source": "historical larger-batch report",
+      "reference_fp32": {
+        "accuracy": 85.8,
+        "j_per_image": 0.10080399999999999,
+        "ms_per_image": 2.189552470028866,
+        "latency_saving_percent": -8.96026437703045,
+        "energy_saving_percent": 21.994166898138946,
+        "saved_j_per_image": 0.022170999999999982,
+        "mathematical_crossing_images": 12198,
+        "valid_payback_images": null,
+        "no_valid_payback_reason": "accuracy allowance failed"
+      }
+    },
+    {
+      "seed": 45,
+      "batch_size": 16,
+      "objective": "latency",
+      "budget_pp": 1.5,
+      "accuracy": 83.91,
+      "accuracy_loss_pp": 1.8900000000000006,
+      "accuracy_passed": false,
+      "route_ms_per_image": 1.0309444600192363,
+      "route_ms_per_batch": 16.49511136030778,
+      "route_j_per_image": 0.0321926,
+      "route_latency_repeat_range_ms_per_image": [
+        1.0291319299692987,
+        1.032745090001845
+      ],
+      "route_energy_repeat_range_j_per_image": [
+        0.0321089,
+        0.0324693
+      ],
+      "training_j": 201.185,
+      "eligible_static": {
+        "accuracy": 85.85000000000001,
+        "j_per_image": 0.0421866,
+        "ms_per_image": 1.3456093599816086,
+        "latency_saving_percent": 23.38456533675367,
+        "energy_saving_percent": 23.689986867867987,
+        "saved_j_per_image": 0.009993999999999996,
+        "mathematical_crossing_images": 20131,
+        "valid_payback_images": null,
+        "no_valid_payback_reason": "accuracy allowance failed"
+      },
+      "measurement_source": "historical larger-batch report",
+      "reference_fp32": {
+        "accuracy": 85.8,
+        "j_per_image": 0.114747,
+        "ms_per_image": 3.6776416099688505,
+        "latency_saving_percent": 71.96723962376615,
+        "energy_saving_percent": 71.94471315154209,
+        "saved_j_per_image": 0.0825544,
+        "mathematical_crossing_images": 2437,
+        "valid_payback_images": null,
+        "no_valid_payback_reason": "accuracy allowance failed"
+      }
+    },
+    {
+      "seed": 48,
+      "batch_size": 16,
+      "objective": "latency",
+      "budget_pp": 1.5,
+      "accuracy": 83.77,
+      "accuracy_loss_pp": 2.030000000000001,
+      "accuracy_passed": false,
+      "route_ms_per_image": 1.0305234399565961,
+      "route_ms_per_batch": 16.488375039305538,
+      "route_j_per_image": 0.0324314,
+      "route_latency_repeat_range_ms_per_image": [
+        1.0294237499532755,
+        1.035012020013528
+      ],
+      "route_energy_repeat_range_j_per_image": [
+        0.032108,
+        0.0327367
+      ],
+      "training_j": 195.008,
+      "eligible_static": {
+        "accuracy": 84.38,
+        "j_per_image": 0.0274029,
+        "ms_per_image": 0.8690440600126749,
+        "latency_saving_percent": -18.581265021426656,
+        "energy_saving_percent": -18.350247601531215,
+        "saved_j_per_image": -0.005028499999999998,
+        "mathematical_crossing_images": null,
+        "valid_payback_images": null,
+        "no_valid_payback_reason": "accuracy allowance failed"
+      },
+      "measurement_source": "historical larger-batch report",
+      "reference_fp32": {
+        "accuracy": 85.8,
+        "j_per_image": 0.1141718,
+        "ms_per_image": 3.674073970003519,
+        "latency_saving_percent": 71.9514781583015,
+        "energy_saving_percent": 71.59421153034286,
+        "saved_j_per_image": 0.0817404,
+        "mathematical_crossing_images": 2386,
+        "valid_payback_images": null,
+        "no_valid_payback_reason": "accuracy allowance failed"
+      }
+    },
+    {
+      "seed": 42,
+      "batch_size": 16,
+      "objective": "latency",
+      "budget_pp": 2.0,
+      "accuracy": 82.98,
+      "accuracy_loss_pp": 2.819999999999993,
+      "accuracy_passed": false,
+      "route_ms_per_image": 2.9689875200099776,
+      "route_ms_per_batch": 47.50380032015964,
+      "route_j_per_image": 0.092555,
+      "route_latency_repeat_range_ms_per_image": [
+        2.960620849984116,
+        3.169733909965726
+      ],
+      "route_energy_repeat_range_j_per_image": [
+        0.0860566,
+        0.10250530000000001
+      ],
+      "training_j": 270.437,
+      "eligible_static": {
+        "accuracy": 84.39,
+        "j_per_image": 0.0616163,
+        "ms_per_image": 1.6040000699693338,
+        "latency_saving_percent": -85.09896449485446,
+        "energy_saving_percent": -50.211875753656095,
+        "saved_j_per_image": -0.0309387,
+        "mathematical_crossing_images": null,
+        "valid_payback_images": null,
+        "no_valid_payback_reason": "accuracy allowance failed"
+      },
+      "measurement_source": "historical larger-batch report",
+      "reference_fp32": {
+        "accuracy": 85.8,
+        "j_per_image": 0.1009707,
+        "ms_per_image": 2.188983839916182,
+        "latency_saving_percent": -35.63314017538216,
+        "energy_saving_percent": 8.33479415315532,
+        "saved_j_per_image": 0.008415699999999998,
+        "mathematical_crossing_images": 32135,
+        "valid_payback_images": null,
+        "no_valid_payback_reason": "accuracy allowance failed"
+      }
+    },
+    {
+      "seed": 45,
+      "batch_size": 16,
+      "objective": "latency",
+      "budget_pp": 2.0,
+      "accuracy": 83.39999999999999,
+      "accuracy_loss_pp": 2.4000000000000057,
+      "accuracy_passed": false,
+      "route_ms_per_image": 0.9347205400059465,
+      "route_ms_per_batch": 14.955528640095144,
+      "route_j_per_image": 0.029365199999999998,
+      "route_latency_repeat_range_ms_per_image": [
+        0.9332548500213307,
+        0.9374929600016912
+      ],
+      "route_energy_repeat_range_j_per_image": [
+        0.029127899999999998,
+        0.0296957
+      ],
+      "training_j": 201.185,
+      "eligible_static": {
+        "accuracy": 85.85000000000001,
+        "j_per_image": 0.042223500000000004,
+        "ms_per_image": 1.3458925599581562,
+        "latency_saving_percent": 30.550136926605273,
+        "energy_saving_percent": 30.45294681871471,
+        "saved_j_per_image": 0.012858300000000007,
+        "mathematical_crossing_images": 15647,
+        "valid_payback_images": null,
+        "no_valid_payback_reason": "accuracy allowance failed"
+      },
+      "measurement_source": "historical larger-batch report",
+      "reference_fp32": {
+        "accuracy": 85.8,
+        "j_per_image": 0.11463889999999999,
+        "ms_per_image": 3.6768361399736023,
+        "latency_saving_percent": 74.57812901032197,
+        "energy_saving_percent": 74.38461115729478,
+        "saved_j_per_image": 0.0852737,
+        "mathematical_crossing_images": 2360,
+        "valid_payback_images": null,
+        "no_valid_payback_reason": "accuracy allowance failed"
+      }
+    },
+    {
+      "seed": 48,
+      "batch_size": 16,
+      "objective": "latency",
+      "budget_pp": 2.0,
+      "accuracy": 83.77,
+      "accuracy_loss_pp": 2.030000000000001,
+      "accuracy_passed": false,
+      "route_ms_per_image": 1.031095809963881,
+      "route_ms_per_batch": 16.497532959422095,
+      "route_j_per_image": 0.0324327,
+      "route_latency_repeat_range_ms_per_image": [
+        1.0297499000589596,
+        1.0337753299740142
+      ],
+      "route_energy_repeat_range_j_per_image": [
+        0.0321332,
+        0.032700599999999996
+      ],
+      "training_j": 195.008,
+      "eligible_static": {
+        "accuracy": 84.38,
+        "j_per_image": 0.027116699999999997,
+        "ms_per_image": 0.8684918399783783,
+        "latency_saving_percent": -18.722567386419072,
+        "energy_saving_percent": -19.604155372888314,
+        "saved_j_per_image": -0.005316000000000005,
+        "mathematical_crossing_images": null,
+        "valid_payback_images": null,
+        "no_valid_payback_reason": "accuracy allowance failed"
+      },
+      "measurement_source": "historical larger-batch report",
+      "reference_fp32": {
+        "accuracy": 85.8,
+        "j_per_image": 0.11464459999999999,
+        "ms_per_image": 3.6750309099821608,
+        "latency_saving_percent": 71.9432071397493,
+        "energy_saving_percent": 71.71022446761556,
+        "saved_j_per_image": 0.08221189999999998,
+        "mathematical_crossing_images": 2373,
+        "valid_payback_images": null,
+        "no_valid_payback_reason": "accuracy allowance failed"
+      }
+    },
+    {
+      "seed": 42,
+      "batch_size": 32,
+      "objective": "energy",
+      "budget_pp": 0.5,
+      "accuracy": 85.13,
+      "accuracy_loss_pp": 0.6700000000000017,
+      "accuracy_passed": false,
+      "route_ms_per_image": 0.7364330400130712,
+      "route_ms_per_batch": 23.52821214099269,
+      "route_j_per_image": 0.029882299999999997,
+      "route_latency_repeat_range_ms_per_image": [
+        0.7329378200345673,
+        0.7432231600396335
+      ],
+      "route_energy_repeat_range_j_per_image": [
+        0.029638400000000002,
+        0.0300361
+      ],
+      "training_j": 270.437,
+      "eligible_static": {
+        "accuracy": 85.85000000000001,
+        "j_per_image": 0.0261027,
+        "ms_per_image": 0.5532427200174425,
+        "latency_saving_percent": -33.11210674220044,
+        "energy_saving_percent": -14.479728150727693,
+        "saved_j_per_image": -0.0037795999999999975,
+        "mathematical_crossing_images": null,
+        "valid_payback_images": null,
+        "no_valid_payback_reason": "accuracy allowance failed"
+      },
+      "measurement_source": "historical larger-batch report",
+      "reference_fp32": {
+        "accuracy": 85.8,
+        "j_per_image": 0.09322960000000001,
+        "ms_per_image": 1.8814666999765906,
+        "latency_saving_percent": 60.85856635027163,
+        "energy_saving_percent": 67.94762607583858,
+        "saved_j_per_image": 0.06334730000000001,
+        "mathematical_crossing_images": 4270,
+        "valid_payback_images": null,
+        "no_valid_payback_reason": "accuracy allowance failed"
+      }
+    },
+    {
+      "seed": 45,
+      "batch_size": 32,
+      "objective": "energy",
+      "budget_pp": 0.5,
+      "accuracy": 85.05,
+      "accuracy_loss_pp": 0.75,
+      "accuracy_passed": false,
+      "route_ms_per_image": 1.1692438000114636,
+      "route_ms_per_batch": 37.356031949248035,
+      "route_j_per_image": 0.036318500000000004,
+      "route_latency_repeat_range_ms_per_image": [
+        1.1685237000318012,
+        1.171914780017687
+      ],
+      "route_energy_repeat_range_j_per_image": [
+        0.035867899999999994,
+        0.0365761
+      ],
+      "training_j": 201.185,
+      "eligible_static": {
+        "accuracy": 85.85000000000001,
+        "j_per_image": 0.038137,
+        "ms_per_image": 1.227124409956741,
+        "latency_saving_percent": 4.716767874197703,
+        "energy_saving_percent": 4.768335212523255,
+        "saved_j_per_image": 0.0018184999999999937,
+        "mathematical_crossing_images": 110633,
+        "valid_payback_images": null,
+        "no_valid_payback_reason": "accuracy allowance failed"
+      },
+      "measurement_source": "historical larger-batch report",
+      "reference_fp32": {
+        "accuracy": 85.8,
+        "j_per_image": 0.1145115,
+        "ms_per_image": 3.637764890008839,
+        "latency_saving_percent": 67.85818118090027,
+        "energy_saving_percent": 68.2839714788471,
+        "saved_j_per_image": 0.078193,
+        "mathematical_crossing_images": 2573,
+        "valid_payback_images": null,
+        "no_valid_payback_reason": "accuracy allowance failed"
+      }
+    },
+    {
+      "seed": 48,
+      "batch_size": 32,
+      "objective": "energy",
+      "budget_pp": 0.5,
+      "accuracy": 84.53,
+      "accuracy_loss_pp": 1.269999999999996,
+      "accuracy_passed": false,
+      "route_ms_per_image": 1.0622566699994422,
+      "route_ms_per_batch": 33.9379127795349,
+      "route_j_per_image": 0.0327859,
+      "route_latency_repeat_range_ms_per_image": [
+        1.050110210000821,
+        1.0744269999996505
+      ],
+      "route_energy_repeat_range_j_per_image": [
+        0.0313538,
+        0.033132100000000005
+      ],
+      "training_j": 195.008,
+      "eligible_static": {
+        "accuracy": 85.85000000000001,
+        "j_per_image": 0.039209,
+        "ms_per_image": 1.275301020000279,
+        "latency_saving_percent": 16.705416733752024,
+        "energy_saving_percent": 16.38169807952256,
+        "saved_j_per_image": 0.006423100000000001,
+        "mathematical_crossing_images": 30361,
+        "valid_payback_images": null,
+        "no_valid_payback_reason": "accuracy allowance failed"
+      },
+      "measurement_source": "historical larger-batch report",
+      "reference_fp32": {
+        "accuracy": 85.8,
+        "j_per_image": 0.1194835,
+        "ms_per_image": 3.8638471500001286,
+        "latency_saving_percent": 72.5077978304756,
+        "energy_saving_percent": 72.56031167483377,
+        "saved_j_per_image": 0.08669760000000001,
+        "mathematical_crossing_images": 2250,
+        "valid_payback_images": null,
+        "no_valid_payback_reason": "accuracy allowance failed"
+      }
+    },
+    {
+      "seed": 42,
+      "batch_size": 32,
+      "objective": "energy",
+      "budget_pp": 1.0,
+      "accuracy": 85.13,
+      "accuracy_loss_pp": 0.6700000000000017,
+      "accuracy_passed": true,
+      "route_ms_per_image": 1.331855259972508,
+      "route_ms_per_batch": 42.5512862611025,
+      "route_j_per_image": 0.041835899999999995,
+      "route_latency_repeat_range_ms_per_image": [
+        1.328464050006005,
+        1.335350800002925
+      ],
+      "route_energy_repeat_range_j_per_image": [
+        0.0407729,
+        0.0420829
+      ],
+      "training_j": 270.437,
+      "eligible_static": {
+        "accuracy": 85.85000000000001,
+        "j_per_image": 0.0377765,
+        "ms_per_image": 1.229576569981873,
+        "latency_saving_percent": -8.318204208473398,
+        "energy_saving_percent": -10.745834050269341,
+        "saved_j_per_image": -0.004059399999999998,
+        "mathematical_crossing_images": null,
+        "valid_payback_images": null,
+        "no_valid_payback_reason": "no positive energy saving"
+      },
+      "measurement_source": "historical larger-batch report",
+      "reference_fp32": {
+        "accuracy": 85.8,
+        "j_per_image": 0.11575899999999999,
+        "ms_per_image": 3.704679650007165,
+        "latency_saving_percent": 64.04938116660283,
+        "energy_saving_percent": 63.859483927815546,
+        "saved_j_per_image": 0.07392309999999999,
+        "mathematical_crossing_images": 3659,
+        "valid_payback_images": 3659,
+        "no_valid_payback_reason": null
+      }
+    },
+    {
+      "seed": 45,
+      "batch_size": 32,
+      "objective": "energy",
+      "budget_pp": 1.0,
+      "accuracy": 85.00999999999999,
+      "accuracy_loss_pp": 0.7900000000000063,
+      "accuracy_passed": true,
+      "route_ms_per_image": 1.1395522300008452,
+      "route_ms_per_batch": 36.407419488844894,
+      "route_j_per_image": 0.0353194,
+      "route_latency_repeat_range_ms_per_image": [
+        1.13837448998529,
+        1.1413572900171858
+      ],
+      "route_energy_repeat_range_j_per_image": [
+        0.0351702,
+        0.0355496
+      ],
+      "training_j": 201.185,
+      "eligible_static": {
+        "accuracy": 85.85000000000001,
+        "j_per_image": 0.0381694,
+        "ms_per_image": 1.2270685499912362,
+        "latency_saving_percent": 7.132145958024592,
+        "energy_saving_percent": 7.466714174181408,
+        "saved_j_per_image": 0.0028499999999999984,
+        "mathematical_crossing_images": 70592,
+        "valid_payback_images": 70592,
+        "no_valid_payback_reason": null
+      },
+      "measurement_source": "historical larger-batch report",
+      "reference_fp32": {
+        "accuracy": 85.8,
+        "j_per_image": 0.11484649999999999,
+        "ms_per_image": 3.6364830400038044,
+        "latency_saving_percent": 68.66334264549043,
+        "energy_saving_percent": 69.24642892904878,
+        "saved_j_per_image": 0.07952709999999999,
+        "mathematical_crossing_images": 2530,
+        "valid_payback_images": 2530,
+        "no_valid_payback_reason": null
+      }
+    },
+    {
+      "seed": 48,
+      "batch_size": 32,
+      "objective": "energy",
+      "budget_pp": 1.0,
+      "accuracy": 84.53,
+      "accuracy_loss_pp": 1.269999999999996,
+      "accuracy_passed": false,
+      "route_ms_per_image": 1.494417900001008,
+      "route_ms_per_batch": 47.744980830703135,
+      "route_j_per_image": 0.046160599999999996,
+      "route_latency_repeat_range_ms_per_image": [
+        1.4891406399986409,
+        1.5108634099999108
+      ],
+      "route_energy_repeat_range_j_per_image": [
+        0.044585,
+        0.046312
+      ],
+      "training_j": 195.008,
+      "eligible_static": {
+        "accuracy": 85.85000000000001,
+        "j_per_image": 0.0570324,
+        "ms_per_image": 1.8473859299996547,
+        "latency_saving_percent": 19.10635045264812,
+        "energy_saving_percent": 19.062497808263373,
+        "saved_j_per_image": 0.010871800000000001,
+        "mathematical_crossing_images": 17938,
+        "valid_payback_images": null,
+        "no_valid_payback_reason": "accuracy allowance failed"
+      },
+      "measurement_source": "historical larger-batch report",
+      "reference_fp32": {
+        "accuracy": 85.8,
+        "j_per_image": 0.1193639,
+        "ms_per_image": 3.8280587900012506,
+        "latency_saving_percent": 60.96146945537062,
+        "energy_saving_percent": 61.32783865138455,
+        "saved_j_per_image": 0.0732033,
+        "mathematical_crossing_images": 2664,
+        "valid_payback_images": null,
+        "no_valid_payback_reason": "accuracy allowance failed"
+      }
+    },
+    {
+      "seed": 42,
+      "batch_size": 32,
+      "objective": "energy",
+      "budget_pp": 1.5,
+      "accuracy": 84.11999999999999,
+      "accuracy_loss_pp": 1.6800000000000068,
+      "accuracy_passed": false,
+      "route_ms_per_image": 1.2084782900288702,
+      "route_ms_per_batch": 38.60953003287125,
+      "route_j_per_image": 0.038113,
+      "route_latency_repeat_range_ms_per_image": [
+        1.204544569985592,
+        1.217631650014664
+      ],
+      "route_energy_repeat_range_j_per_image": [
+        0.0375047,
+        0.0386168
+      ],
+      "training_j": 270.437,
+      "eligible_static": {
+        "accuracy": 85.85000000000001,
+        "j_per_image": 0.0380583,
+        "ms_per_image": 1.2297091799671762,
+        "latency_saving_percent": 1.7264968241411978,
+        "energy_saving_percent": -0.1437268611577443,
+        "saved_j_per_image": -5.4699999999997806e-05,
+        "mathematical_crossing_images": null,
+        "valid_payback_images": null,
+        "no_valid_payback_reason": "accuracy allowance failed"
+      },
+      "measurement_source": "historical larger-batch report",
+      "reference_fp32": {
+        "accuracy": 85.8,
+        "j_per_image": 0.11544000000000001,
+        "ms_per_image": 3.663697509962367,
+        "latency_saving_percent": 67.01479074779611,
+        "energy_saving_percent": 66.98458073458073,
+        "saved_j_per_image": 0.077327,
+        "mathematical_crossing_images": 3498,
+        "valid_payback_images": null,
+        "no_valid_payback_reason": "accuracy allowance failed"
+      }
+    },
+    {
+      "seed": 45,
+      "batch_size": 32,
+      "objective": "energy",
+      "budget_pp": 1.5,
+      "accuracy": 84.75,
+      "accuracy_loss_pp": 1.0499999999999972,
+      "accuracy_passed": true,
+      "route_ms_per_image": 1.101343020008062,
+      "route_ms_per_batch": 35.186677955529134,
+      "route_j_per_image": 0.0341752,
+      "route_latency_repeat_range_ms_per_image": [
+        1.100988389988197,
+        1.1039065700111679
+      ],
+      "route_energy_repeat_range_j_per_image": [
+        0.033680299999999996,
+        0.034452300000000005
+      ],
+      "training_j": 201.185,
+      "eligible_static": {
+        "accuracy": 85.85000000000001,
+        "j_per_image": 0.038140600000000004,
+        "ms_per_image": 1.228734290014836,
+        "latency_saving_percent": 10.367682504020934,
+        "energy_saving_percent": 10.396795016334302,
+        "saved_j_per_image": 0.003965400000000001,
+        "mathematical_crossing_images": 50736,
+        "valid_payback_images": 50736,
+        "no_valid_payback_reason": null
+      },
+      "measurement_source": "historical larger-batch report",
+      "reference_fp32": {
+        "accuracy": 85.8,
+        "j_per_image": 0.11444570000000001,
+        "ms_per_image": 3.646273969998583,
+        "latency_saving_percent": 69.79538484848165,
+        "energy_saving_percent": 70.13850236400319,
+        "saved_j_per_image": 0.08027050000000001,
+        "mathematical_crossing_images": 2507,
+        "valid_payback_images": 2507,
+        "no_valid_payback_reason": null
+      }
+    },
+    {
+      "seed": 48,
+      "batch_size": 32,
+      "objective": "energy",
+      "budget_pp": 1.5,
+      "accuracy": 84.53,
+      "accuracy_loss_pp": 1.269999999999996,
+      "accuracy_passed": true,
+      "route_ms_per_image": 1.5679127899993546,
+      "route_ms_per_batch": 50.09306038336596,
+      "route_j_per_image": 0.0468172,
+      "route_latency_repeat_range_ms_per_image": [
+        1.5631073199992898,
+        1.5728193200009628
+      ],
+      "route_energy_repeat_range_j_per_image": [
+        0.0467334,
+        0.0469997
+      ],
+      "training_j": 195.008,
+      "eligible_static": {
+        "accuracy": 84.38,
+        "j_per_image": 0.036470499999999996,
+        "ms_per_image": 1.2874306099987733,
+        "latency_saving_percent": -21.786197859692678,
+        "energy_saving_percent": -28.370052508191574,
+        "saved_j_per_image": -0.010346700000000007,
+        "mathematical_crossing_images": null,
+        "valid_payback_images": null,
+        "no_valid_payback_reason": "no positive energy saving"
+      },
+      "measurement_source": "historical larger-batch report",
+      "reference_fp32": {
+        "accuracy": 85.8,
+        "j_per_image": 0.158755,
+        "ms_per_image": 5.333688230000371,
+        "latency_saving_percent": 70.60359131641172,
+        "energy_saving_percent": 70.50977921955214,
+        "saved_j_per_image": 0.1119378,
+        "mathematical_crossing_images": 1743,
+        "valid_payback_images": 1743,
+        "no_valid_payback_reason": null
+      }
+    },
+    {
+      "seed": 42,
+      "batch_size": 32,
+      "objective": "energy",
+      "budget_pp": 2.0,
+      "accuracy": 83.63000000000001,
+      "accuracy_loss_pp": 2.1699999999999875,
+      "accuracy_passed": false,
+      "route_ms_per_image": 1.0634886299900246,
+      "route_ms_per_batch": 33.97727252364295,
+      "route_j_per_image": 0.033206900000000004,
+      "route_latency_repeat_range_ms_per_image": [
+        1.0607905399840092,
+        1.0709671200165758
+      ],
+      "route_energy_repeat_range_j_per_image": [
+        0.032754399999999996,
+        0.033826100000000005
+      ],
+      "training_j": 270.437,
+      "eligible_static": {
+        "accuracy": 85.85000000000001,
+        "j_per_image": 0.0380546,
+        "ms_per_image": 1.2285528400039767,
+        "latency_saving_percent": 13.435662239274773,
+        "energy_saving_percent": 12.738801616624524,
+        "saved_j_per_image": 0.0048476999999999965,
+        "mathematical_crossing_images": 55787,
+        "valid_payback_images": null,
+        "no_valid_payback_reason": "accuracy allowance failed"
+      },
+      "measurement_source": "historical larger-batch report",
+      "reference_fp32": {
+        "accuracy": 85.8,
+        "j_per_image": 0.1152636,
+        "ms_per_image": 3.651900440012105,
+        "latency_saving_percent": 70.87848785969369,
+        "energy_saving_percent": 71.19047123289572,
+        "saved_j_per_image": 0.08205669999999998,
+        "mathematical_crossing_images": 3296,
+        "valid_payback_images": null,
+        "no_valid_payback_reason": "accuracy allowance failed"
+      }
+    },
+    {
+      "seed": 45,
+      "batch_size": 32,
+      "objective": "energy",
+      "budget_pp": 2.0,
+      "accuracy": 84.19,
+      "accuracy_loss_pp": 1.6099999999999994,
+      "accuracy_passed": true,
+      "route_ms_per_image": 1.0009866499894997,
+      "route_ms_per_batch": 31.980404153019162,
+      "route_j_per_image": 0.0313108,
+      "route_latency_repeat_range_ms_per_image": [
+        0.9999891200102866,
+        1.0031737700046506
+      ],
+      "route_energy_repeat_range_j_per_image": [
+        0.0310871,
+        0.0314079
+      ],
+      "training_j": 201.185,
+      "eligible_static": {
+        "accuracy": 85.85000000000001,
+        "j_per_image": 0.0381257,
+        "ms_per_image": 1.228014680033084,
+        "latency_saving_percent": 18.487403590115708,
+        "energy_saving_percent": 17.87481934757919,
+        "saved_j_per_image": 0.006814899999999999,
+        "mathematical_crossing_images": 29522,
+        "valid_payback_images": 29522,
+        "no_valid_payback_reason": null
+      },
+      "measurement_source": "historical larger-batch report",
+      "reference_fp32": {
+        "accuracy": 85.8,
+        "j_per_image": 0.11473019999999999,
+        "ms_per_image": 3.6384507399663564,
+        "latency_saving_percent": 72.48865735643419,
+        "energy_saving_percent": 72.70919077975982,
+        "saved_j_per_image": 0.08341939999999999,
+        "mathematical_crossing_images": 2412,
+        "valid_payback_images": 2412,
+        "no_valid_payback_reason": null
+      }
+    },
+    {
+      "seed": 48,
+      "batch_size": 32,
+      "objective": "energy",
+      "budget_pp": 2.0,
+      "accuracy": 83.83,
+      "accuracy_loss_pp": 1.9699999999999989,
+      "accuracy_passed": true,
+      "route_ms_per_image": 1.3811009299974102,
+      "route_ms_per_batch": 44.12463035135496,
+      "route_j_per_image": 0.0394152,
+      "route_latency_repeat_range_ms_per_image": [
+        1.3636396900010368,
+        1.3887291000020923
+      ],
+      "route_energy_repeat_range_j_per_image": [
+        0.0389422,
+        0.0419803
+      ],
+      "training_j": 195.008,
+      "eligible_static": {
+        "accuracy": 84.38,
+        "j_per_image": 0.0360039,
+        "ms_per_image": 1.2768851200007703,
+        "latency_saving_percent": -8.161721705753541,
+        "energy_saving_percent": -9.474806895919608,
+        "saved_j_per_image": -0.003411299999999999,
+        "mathematical_crossing_images": null,
+        "valid_payback_images": null,
+        "no_valid_payback_reason": "no positive energy saving"
+      },
+      "measurement_source": "historical larger-batch report",
+      "reference_fp32": {
+        "accuracy": 85.8,
+        "j_per_image": 0.16026279999999998,
+        "ms_per_image": 5.359478549999767,
+        "latency_saving_percent": 74.23068462514007,
+        "energy_saving_percent": 75.40589581612203,
+        "saved_j_per_image": 0.12084759999999999,
+        "mathematical_crossing_images": 1614,
+        "valid_payback_images": 1614,
+        "no_valid_payback_reason": null
+      }
+    },
+    {
+      "seed": 42,
+      "batch_size": 32,
+      "objective": "latency",
+      "budget_pp": 0.5,
+      "accuracy": 85.35000000000001,
+      "accuracy_loss_pp": 0.44999999999998863,
+      "accuracy_passed": true,
+      "route_ms_per_image": 1.2190372700017178,
+      "route_ms_per_batch": 38.94687763583763,
+      "route_j_per_image": 0.037918099999999996,
+      "route_latency_repeat_range_ms_per_image": [
+        1.2183180299500236,
+        1.2217194700089749
+      ],
+      "route_energy_repeat_range_j_per_image": [
+        0.037878800000000004,
+        0.0379256
+      ],
+      "training_j": 270.437,
+      "eligible_static": {
+        "accuracy": 85.85000000000001,
+        "j_per_image": 0.0380798,
+        "ms_per_image": 1.228206759999739,
+        "latency_saving_percent": 0.7465754380006109,
+        "energy_saving_percent": 0.4246345831648295,
+        "saved_j_per_image": 0.00016170000000000073,
+        "mathematical_crossing_images": 1672462,
+        "valid_payback_images": 1672462,
+        "no_valid_payback_reason": null
+      },
+      "measurement_source": "historical larger-batch report",
+      "reference_fp32": {
+        "accuracy": 85.8,
+        "j_per_image": 0.11530530000000001,
+        "ms_per_image": 3.6596482500171987,
+        "latency_saving_percent": 66.68976943355173,
+        "energy_saving_percent": 67.11504154622556,
+        "saved_j_per_image": 0.07738720000000002,
+        "mathematical_crossing_images": 3495,
+        "valid_payback_images": 3495,
+        "no_valid_payback_reason": null
+      }
+    },
+    {
+      "seed": 45,
+      "batch_size": 32,
+      "objective": "latency",
+      "budget_pp": 0.5,
+      "accuracy": 85.09,
+      "accuracy_loss_pp": 0.7099999999999937,
+      "accuracy_passed": false,
+      "route_ms_per_image": 1.1760188700340222,
+      "route_ms_per_batch": 37.57248786051189,
+      "route_j_per_image": 0.0365042,
+      "route_latency_repeat_range_ms_per_image": [
+        1.1748567299771822,
+        1.1800706899812212
+      ],
+      "route_energy_repeat_range_j_per_image": [
+        0.0362958,
+        0.0367133
+      ],
+      "training_j": 201.185,
+      "eligible_static": {
+        "accuracy": 85.85000000000001,
+        "j_per_image": 0.0382028,
+        "ms_per_image": 1.228694569997606,
+        "latency_saving_percent": 4.287127269040202,
+        "energy_saving_percent": 4.446270953961493,
+        "saved_j_per_image": 0.0016986000000000015,
+        "mathematical_crossing_images": 118442,
+        "valid_payback_images": null,
+        "no_valid_payback_reason": "accuracy allowance failed"
+      },
+      "measurement_source": "historical larger-batch report",
+      "reference_fp32": {
+        "accuracy": 85.8,
+        "j_per_image": 0.1152527,
+        "ms_per_image": 3.647344790006173,
+        "latency_saving_percent": 67.75684949620482,
+        "energy_saving_percent": 68.32681577091036,
+        "saved_j_per_image": 0.0787485,
+        "mathematical_crossing_images": 2555,
+        "valid_payback_images": null,
+        "no_valid_payback_reason": "accuracy allowance failed"
+      }
+    },
+    {
+      "seed": 48,
+      "batch_size": 32,
+      "objective": "latency",
+      "budget_pp": 0.5,
+      "accuracy": 84.95,
+      "accuracy_loss_pp": 0.8499999999999943,
+      "accuracy_passed": false,
+      "route_ms_per_image": 1.0697699199954513,
+      "route_ms_per_batch": 34.177952715509626,
+      "route_j_per_image": 0.033227,
+      "route_latency_repeat_range_ms_per_image": [
+        1.0693924199877074,
+        1.0752818699984346
+      ],
+      "route_energy_repeat_range_j_per_image": [
+        0.0329254,
+        0.0335229
+      ],
+      "training_j": 195.008,
+      "eligible_static": {
+        "accuracy": 85.85000000000001,
+        "j_per_image": 0.0384079,
+        "ms_per_image": 1.2278735099826008,
+        "latency_saving_percent": 12.87621149098573,
+        "energy_saving_percent": 13.489151971339233,
+        "saved_j_per_image": 0.005180900000000002,
+        "mathematical_crossing_images": 37640,
+        "valid_payback_images": null,
+        "no_valid_payback_reason": "accuracy allowance failed"
+      },
+      "measurement_source": "historical larger-batch report",
+      "reference_fp32": {
+        "accuracy": 85.8,
+        "j_per_image": 0.1147444,
+        "ms_per_image": 3.6346589300141203,
+        "latency_saving_percent": 70.5675294272716,
+        "energy_saving_percent": 71.042595542789,
+        "saved_j_per_image": 0.08151739999999999,
+        "mathematical_crossing_images": 2393,
+        "valid_payback_images": null,
+        "no_valid_payback_reason": "accuracy allowance failed"
+      }
+    },
+    {
+      "seed": 42,
+      "batch_size": 32,
+      "objective": "latency",
+      "budget_pp": 1.0,
+      "accuracy": 84.96000000000001,
+      "accuracy_loss_pp": 0.8399999999999892,
+      "accuracy_passed": true,
+      "route_ms_per_image": 1.1543846099666553,
+      "route_ms_per_batch": 36.88129744302413,
+      "route_j_per_image": 0.036039299999999996,
+      "route_latency_repeat_range_ms_per_image": [
+        1.1523323000117671,
+        1.1556068300153128
+      ],
+      "route_energy_repeat_range_j_per_image": [
+        0.0358437,
+        0.036212
+      ],
+      "training_j": 270.437,
+      "eligible_static": {
+        "accuracy": 85.85000000000001,
+        "j_per_image": 0.0380808,
+        "ms_per_image": 1.2278841899940744,
+        "latency_saving_percent": 5.985872334407518,
+        "energy_saving_percent": 5.360969307367497,
+        "saved_j_per_image": 0.0020415000000000016,
+        "mathematical_crossing_images": 132470,
+        "valid_payback_images": 132470,
+        "no_valid_payback_reason": null
+      },
+      "measurement_source": "historical larger-batch report",
+      "reference_fp32": {
+        "accuracy": 85.8,
+        "j_per_image": 0.1146725,
+        "ms_per_image": 3.636671600022237,
+        "latency_saving_percent": 68.2571115313355,
+        "energy_saving_percent": 68.57197671630077,
+        "saved_j_per_image": 0.0786332,
+        "mathematical_crossing_images": 3440,
+        "valid_payback_images": 3440,
+        "no_valid_payback_reason": null
+      }
+    },
+    {
+      "seed": 45,
+      "batch_size": 32,
+      "objective": "latency",
+      "budget_pp": 1.0,
+      "accuracy": 85.00999999999999,
+      "accuracy_loss_pp": 0.7900000000000063,
+      "accuracy_passed": true,
+      "route_ms_per_image": 1.140101190013229,
+      "route_ms_per_batch": 36.42495814738751,
+      "route_j_per_image": 0.0355521,
+      "route_latency_repeat_range_ms_per_image": [
+        1.1376610500301467,
+        1.142135429996415
+      ],
+      "route_energy_repeat_range_j_per_image": [
+        0.0349808,
+        0.0356117
+      ],
+      "training_j": 201.185,
+      "eligible_static": {
+        "accuracy": 85.85000000000001,
+        "j_per_image": 0.0381334,
+        "ms_per_image": 1.2283806600025855,
+        "latency_saving_percent": 7.18665417519442,
+        "energy_saving_percent": 6.769131522497325,
+        "saved_j_per_image": 0.0025812999999999947,
+        "mathematical_crossing_images": 77940,
+        "valid_payback_images": 77940,
+        "no_valid_payback_reason": null
+      },
+      "measurement_source": "historical larger-batch report",
+      "reference_fp32": {
+        "accuracy": 85.8,
+        "j_per_image": 0.1152994,
+        "ms_per_image": 3.6499860299867577,
+        "latency_saving_percent": 68.76423140673322,
+        "energy_saving_percent": 69.16540762571184,
+        "saved_j_per_image": 0.0797473,
+        "mathematical_crossing_images": 2523,
+        "valid_payback_images": 2523,
+        "no_valid_payback_reason": null
+      }
+    },
+    {
+      "seed": 48,
+      "batch_size": 32,
+      "objective": "latency",
+      "budget_pp": 1.0,
+      "accuracy": 84.38,
+      "accuracy_loss_pp": 1.4200000000000017,
+      "accuracy_passed": false,
+      "route_ms_per_image": 0.9622739500104217,
+      "route_ms_per_batch": 30.743576677649255,
+      "route_j_per_image": 0.0300891,
+      "route_latency_repeat_range_ms_per_image": [
+        0.9614969199872576,
+        0.9636824500135844
+      ],
+      "route_energy_repeat_range_j_per_image": [
+        0.029545299999999997,
+        0.030135199999999997
+      ],
+      "training_j": 195.008,
+      "eligible_static": {
+        "accuracy": 85.85000000000001,
+        "j_per_image": 0.0381733,
+        "ms_per_image": 1.227625579989399,
+        "latency_saving_percent": 21.615029395303786,
+        "energy_saving_percent": 21.177629390175852,
+        "saved_j_per_image": 0.0080842,
+        "mathematical_crossing_images": 24123,
+        "valid_payback_images": null,
+        "no_valid_payback_reason": "accuracy allowance failed"
+      },
+      "measurement_source": "historical larger-batch report",
+      "reference_fp32": {
+        "accuracy": 85.8,
+        "j_per_image": 0.11374179999999999,
+        "ms_per_image": 3.6253758599807044,
+        "latency_saving_percent": 73.45726382103886,
+        "energy_saving_percent": 73.54613695229018,
+        "saved_j_per_image": 0.0836527,
+        "mathematical_crossing_images": 2332,
+        "valid_payback_images": null,
+        "no_valid_payback_reason": "accuracy allowance failed"
+      }
+    },
+    {
+      "seed": 42,
+      "batch_size": 32,
+      "objective": "latency",
+      "budget_pp": 1.5,
+      "accuracy": 84.42,
+      "accuracy_loss_pp": 1.3799999999999955,
+      "accuracy_passed": true,
+      "route_ms_per_image": 1.0237073000200325,
+      "route_ms_per_batch": 32.70630351501701,
+      "route_j_per_image": 0.0319658,
+      "route_latency_repeat_range_ms_per_image": [
+        1.0231420499912929,
+        1.0351688299968373
+      ],
+      "route_energy_repeat_range_j_per_image": [
+        0.031716,
+        0.032352
+      ],
+      "training_j": 270.437,
+      "eligible_static": {
+        "accuracy": 85.85000000000001,
+        "j_per_image": 0.0381685,
+        "ms_per_image": 1.227589039990562,
+        "latency_saving_percent": 16.60830565676091,
+        "energy_saving_percent": 16.250835112723838,
+        "saved_j_per_image": 0.0062026999999999985,
+        "mathematical_crossing_images": 43600,
+        "valid_payback_images": 43600,
+        "no_valid_payback_reason": null
+      },
+      "measurement_source": "historical larger-batch report",
+      "reference_fp32": {
+        "accuracy": 85.8,
+        "j_per_image": 0.1145289,
+        "ms_per_image": 3.6338576599722727,
+        "latency_saving_percent": 71.82863513625232,
+        "energy_saving_percent": 72.08931544789131,
+        "saved_j_per_image": 0.0825631,
+        "mathematical_crossing_images": 3276,
+        "valid_payback_images": 3276,
+        "no_valid_payback_reason": null
+      }
+    },
+    {
+      "seed": 45,
+      "batch_size": 32,
+      "objective": "latency",
+      "budget_pp": 1.5,
+      "accuracy": 84.75,
+      "accuracy_loss_pp": 1.0499999999999972,
+      "accuracy_passed": true,
+      "route_ms_per_image": 1.1015474999934667,
+      "route_ms_per_batch": 35.19321086241108,
+      "route_j_per_image": 0.0343558,
+      "route_latency_repeat_range_ms_per_image": [
+        1.1006523799907881,
+        1.1030364100181032
+      ],
+      "route_energy_repeat_range_j_per_image": [
+        0.033982,
+        0.0344253
+      ],
+      "training_j": 201.185,
+      "eligible_static": {
+        "accuracy": 85.85000000000001,
+        "j_per_image": 0.0381016,
+        "ms_per_image": 1.2276811699906829,
+        "latency_saving_percent": 10.27413900941182,
+        "energy_saving_percent": 9.831083209104081,
+        "saved_j_per_image": 0.0037458000000000005,
+        "mathematical_crossing_images": 53710,
+        "valid_payback_images": 53710,
+        "no_valid_payback_reason": null
+      },
+      "measurement_source": "historical larger-batch report",
+      "reference_fp32": {
+        "accuracy": 85.8,
+        "j_per_image": 0.11476869999999999,
+        "ms_per_image": 3.6406020000053103,
+        "latency_saving_percent": 69.74271013442667,
+        "energy_saving_percent": 70.06518327732212,
+        "saved_j_per_image": 0.08041289999999998,
+        "mathematical_crossing_images": 2502,
+        "valid_payback_images": 2502,
+        "no_valid_payback_reason": null
+      }
+    },
+    {
+      "seed": 48,
+      "batch_size": 32,
+      "objective": "latency",
+      "budget_pp": 1.5,
+      "accuracy": 84.38,
+      "accuracy_loss_pp": 1.4200000000000017,
+      "accuracy_passed": true,
+      "route_ms_per_image": 0.9624255199887557,
+      "route_ms_per_batch": 30.748419168969832,
+      "route_j_per_image": 0.030043,
+      "route_latency_repeat_range_ms_per_image": [
+        0.9617956400761614,
+        0.9638499399850844
+      ],
+      "route_energy_repeat_range_j_per_image": [
+        0.029639699999999998,
+        0.0301894
+      ],
+      "training_j": 195.008,
+      "eligible_static": {
+        "accuracy": 84.38,
+        "j_per_image": 0.0253851,
+        "ms_per_image": 0.813223029972869,
+        "latency_saving_percent": -18.347056651957395,
+        "energy_saving_percent": -18.348952732114505,
+        "saved_j_per_image": -0.0046578999999999995,
+        "mathematical_crossing_images": null,
+        "valid_payback_images": null,
+        "no_valid_payback_reason": "no positive energy saving"
+      },
+      "measurement_source": "historical larger-batch report",
+      "reference_fp32": {
+        "accuracy": 85.8,
+        "j_per_image": 0.11366949999999999,
+        "ms_per_image": 3.6249628900317474,
+        "latency_saving_percent": 73.45005868514349,
+        "energy_saving_percent": 73.56986702677499,
+        "saved_j_per_image": 0.08362649999999999,
+        "mathematical_crossing_images": 2332,
+        "valid_payback_images": 2332,
+        "no_valid_payback_reason": null
+      }
+    },
+    {
+      "seed": 42,
+      "batch_size": 32,
+      "objective": "latency",
+      "budget_pp": 2.0,
+      "accuracy": 83.5,
+      "accuracy_loss_pp": 2.299999999999997,
+      "accuracy_passed": false,
+      "route_ms_per_image": 0.8996408499981043,
+      "route_ms_per_batch": 28.742519169268512,
+      "route_j_per_image": 0.0284672,
+      "route_latency_repeat_range_ms_per_image": [
+        0.8984088899829658,
+        0.9013615399802802
+      ],
+      "route_energy_repeat_range_j_per_image": [
+        0.0275579,
+        0.028712
+      ],
+      "training_j": 270.437,
+      "eligible_static": {
+        "accuracy": 84.39,
+        "j_per_image": 0.0676737,
+        "ms_per_image": 2.1660850099870004,
+        "latency_saving_percent": 58.46696478438288,
+        "energy_saving_percent": 57.93461861845888,
+        "saved_j_per_image": 0.039206500000000005,
+        "mathematical_crossing_images": 6898,
+        "valid_payback_images": null,
+        "no_valid_payback_reason": "accuracy allowance failed"
+      },
+      "measurement_source": "historical larger-batch report",
+      "reference_fp32": {
+        "accuracy": 85.8,
+        "j_per_image": 0.11419259999999999,
+        "ms_per_image": 3.6344699299923375,
+        "latency_saving_percent": 75.24698601647253,
+        "energy_saving_percent": 75.0708890068183,
+        "saved_j_per_image": 0.0857254,
+        "mathematical_crossing_images": 3155,
+        "valid_payback_images": null,
+        "no_valid_payback_reason": "accuracy allowance failed"
+      }
+    },
+    {
+      "seed": 45,
+      "batch_size": 32,
+      "objective": "latency",
+      "budget_pp": 2.0,
+      "accuracy": 84.23,
+      "accuracy_loss_pp": 1.5699999999999932,
+      "accuracy_passed": true,
+      "route_ms_per_image": 1.0039464000117733,
+      "route_ms_per_batch": 32.07496485660617,
+      "route_j_per_image": 0.03143,
+      "route_latency_repeat_range_ms_per_image": [
+        1.0034818100073608,
+        1.0080706399399788
+      ],
+      "route_energy_repeat_range_j_per_image": [
+        0.0313671,
+        0.031674400000000005
+      ],
+      "training_j": 201.185,
+      "eligible_static": {
+        "accuracy": 85.85000000000001,
+        "j_per_image": 0.0381474,
+        "ms_per_image": 1.228311400001985,
+        "latency_saving_percent": 18.266133489426966,
+        "energy_saving_percent": 17.60906378940635,
+        "saved_j_per_image": 0.006717399999999998,
+        "mathematical_crossing_images": 29950,
+        "valid_payback_images": 29950,
+        "no_valid_payback_reason": null
+      },
+      "measurement_source": "historical larger-batch report",
+      "reference_fp32": {
+        "accuracy": 85.8,
+        "j_per_image": 0.11483489999999999,
+        "ms_per_image": 3.6399784500390524,
+        "latency_saving_percent": 72.41889165577334,
+        "energy_saving_percent": 72.63027180761249,
+        "saved_j_per_image": 0.08340489999999999,
+        "mathematical_crossing_images": 2413,
+        "valid_payback_images": 2413,
+        "no_valid_payback_reason": null
+      }
+    },
+    {
+      "seed": 48,
+      "batch_size": 32,
+      "objective": "latency",
+      "budget_pp": 2.0,
+      "accuracy": 83.49,
+      "accuracy_loss_pp": 2.3100000000000023,
+      "accuracy_passed": false,
+      "route_ms_per_image": 0.8605195899785031,
+      "route_ms_per_batch": 27.492638657460162,
+      "route_j_per_image": 0.026930399999999997,
+      "route_latency_repeat_range_ms_per_image": [
+        0.8574718200048664,
+        0.8651829699985683
+      ],
+      "route_energy_repeat_range_j_per_image": [
+        0.0267256,
+        0.027220800000000003
+      ],
+      "training_j": 195.008,
+      "eligible_static": {
+        "accuracy": 84.38,
+        "j_per_image": 0.0253433,
+        "ms_per_image": 0.813009500017506,
+        "latency_saving_percent": -5.8437312183896974,
+        "energy_saving_percent": -6.2624046592195866,
+        "saved_j_per_image": -0.0015870999999999975,
+        "mathematical_crossing_images": null,
+        "valid_payback_images": null,
+        "no_valid_payback_reason": "accuracy allowance failed"
+      },
+      "measurement_source": "historical larger-batch report",
+      "reference_fp32": {
+        "accuracy": 85.8,
+        "j_per_image": 0.11455,
+        "ms_per_image": 3.629827629963984,
+        "latency_saving_percent": 76.29310045262284,
+        "energy_saving_percent": 76.49026625927543,
+        "saved_j_per_image": 0.0876196,
+        "mathematical_crossing_images": 2226,
+        "valid_payback_images": null,
+        "no_valid_payback_reason": "accuracy allowance failed"
+      }
+    },
+    {
+      "seed": 42,
+      "batch_size": 64,
+      "objective": "energy",
+      "budget_pp": 0.5,
+      "accuracy": 85.22999999999999,
+      "accuracy_loss_pp": 0.5700000000000074,
+      "accuracy_passed": false,
+      "route_ms_per_image": 1.2484840299875941,
+      "route_ms_per_batch": 79.52127579538816,
+      "route_j_per_image": 0.0388945,
+      "route_latency_repeat_range_ms_per_image": [
+        1.2475485300004947,
+        1.2491755700029898
+      ],
+      "route_energy_repeat_range_j_per_image": [
+        0.0388006,
+        0.0389235
+      ],
+      "training_j": 270.437,
+      "eligible_static": {
+        "accuracy": 85.85000000000001,
+        "j_per_image": 0.0422752,
+        "ms_per_image": 1.3614856499887538,
+        "latency_saving_percent": 8.299875948166845,
+        "energy_saving_percent": 7.996887063810462,
+        "saved_j_per_image": 0.0033807000000000004,
+        "mathematical_crossing_images": 79995,
+        "valid_payback_images": null,
+        "no_valid_payback_reason": "accuracy allowance failed"
+      },
+      "measurement_source": "historical larger-batch report",
+      "reference_fp32": {
+        "accuracy": 85.8,
+        "j_per_image": 0.1132897,
+        "ms_per_image": 3.6018212300143206,
+        "latency_saving_percent": 65.3374237570744,
+        "energy_saving_percent": 65.66810575012556,
+        "saved_j_per_image": 0.0743952,
+        "mathematical_crossing_images": 3636,
+        "valid_payback_images": null,
+        "no_valid_payback_reason": "accuracy allowance failed"
+      }
+    },
+    {
+      "seed": 45,
+      "batch_size": 64,
+      "objective": "energy",
+      "budget_pp": 0.5,
+      "accuracy": 85.27,
+      "accuracy_loss_pp": 0.5300000000000011,
+      "accuracy_passed": false,
+      "route_ms_per_image": 1.2862403099861694,
+      "route_ms_per_batch": 81.92613439402353,
+      "route_j_per_image": 0.0399836,
+      "route_latency_repeat_range_ms_per_image": [
+        1.2856481999682727,
+        1.2872234599984949
+      ],
+      "route_energy_repeat_range_j_per_image": [
+        0.0396141,
+        0.0402435
+      ],
+      "training_j": 201.185,
+      "eligible_static": {
+        "accuracy": 85.85000000000001,
+        "j_per_image": 0.0422387,
+        "ms_per_image": 1.3611406000127317,
+        "latency_saving_percent": 5.5027592319163565,
+        "energy_saving_percent": 5.3389427231425115,
+        "saved_j_per_image": 0.002255099999999996,
+        "mathematical_crossing_images": 89214,
+        "valid_payback_images": null,
+        "no_valid_payback_reason": "accuracy allowance failed"
+      },
+      "measurement_source": "historical larger-batch report",
+      "reference_fp32": {
+        "accuracy": 85.8,
+        "j_per_image": 0.1135102,
+        "ms_per_image": 3.603235109979869,
+        "latency_saving_percent": 64.30318114897155,
+        "energy_saving_percent": 64.77532415589083,
+        "saved_j_per_image": 0.0735266,
+        "mathematical_crossing_images": 2737,
+        "valid_payback_images": null,
+        "no_valid_payback_reason": "accuracy allowance failed"
+      }
+    },
+    {
+      "seed": 48,
+      "batch_size": 64,
+      "objective": "energy",
+      "budget_pp": 0.5,
+      "accuracy": 85.64,
+      "accuracy_loss_pp": 0.1599999999999966,
+      "accuracy_passed": true,
+      "route_ms_per_image": 2.0802887600011672,
+      "route_ms_per_batch": 132.50246878988327,
+      "route_j_per_image": 0.060058799999999996,
+      "route_latency_repeat_range_ms_per_image": [
+        2.0766685899980075,
+        2.0891227900006926
+      ],
+      "route_energy_repeat_range_j_per_image": [
+        0.059450800000000005,
+        0.06378289999999999
+      ],
+      "training_j": 195.008,
+      "eligible_static": {
+        "accuracy": 85.85000000000001,
+        "j_per_image": 0.060067100000000005,
+        "ms_per_image": 2.122563080001055,
+        "latency_saving_percent": 1.991663776601007,
+        "energy_saving_percent": 0.01381788033717241,
+        "saved_j_per_image": 8.300000000009689e-06,
+        "mathematical_crossing_images": 23494940,
+        "valid_payback_images": 23494940,
+        "no_valid_payback_reason": null
+      },
+      "measurement_source": "historical larger-batch report",
+      "reference_fp32": {
+        "accuracy": 85.8,
+        "j_per_image": 0.1650228,
+        "ms_per_image": 5.408504779999385,
+        "latency_saving_percent": 61.536712185333336,
+        "energy_saving_percent": 63.60575629549371,
+        "saved_j_per_image": 0.104964,
+        "mathematical_crossing_images": 1858,
+        "valid_payback_images": 1858,
+        "no_valid_payback_reason": null
+      }
+    },
+    {
+      "seed": 42,
+      "batch_size": 64,
+      "objective": "energy",
+      "budget_pp": 1.0,
+      "accuracy": 84.44,
+      "accuracy_loss_pp": 1.3599999999999994,
+      "accuracy_passed": false,
+      "route_ms_per_image": 1.094635910022771,
+      "route_ms_per_batch": 69.72203248552681,
+      "route_j_per_image": 0.034033999999999995,
+      "route_latency_repeat_range_ms_per_image": [
+        1.0933400100038853,
+        1.0954877599986503
+      ],
+      "route_energy_repeat_range_j_per_image": [
+        0.033878399999999996,
+        0.0343631
+      ],
+      "training_j": 270.437,
+      "eligible_static": {
+        "accuracy": 85.85000000000001,
+        "j_per_image": 0.0423267,
+        "ms_per_image": 1.3609507200133522,
+        "latency_saving_percent": 19.568291935505815,
+        "energy_saving_percent": 19.59212506526615,
+        "saved_j_per_image": 0.008292700000000007,
+        "mathematical_crossing_images": 32612,
+        "valid_payback_images": null,
+        "no_valid_payback_reason": "accuracy allowance failed"
+      },
+      "measurement_source": "historical larger-batch report",
+      "reference_fp32": {
+        "accuracy": 85.8,
+        "j_per_image": 0.11386600000000001,
+        "ms_per_image": 3.598899809998693,
+        "latency_saving_percent": 69.58415160706659,
+        "energy_saving_percent": 70.11048074051956,
+        "saved_j_per_image": 0.07983200000000001,
+        "mathematical_crossing_images": 3388,
+        "valid_payback_images": null,
+        "no_valid_payback_reason": "accuracy allowance failed"
+      }
+    },
+    {
+      "seed": 45,
+      "batch_size": 64,
+      "objective": "energy",
+      "budget_pp": 1.0,
+      "accuracy": 84.74000000000001,
+      "accuracy_loss_pp": 1.059999999999988,
+      "accuracy_passed": false,
+      "route_ms_per_image": 1.2324841999885394,
+      "route_ms_per_batch": 78.50217834321907,
+      "route_j_per_image": 0.0383874,
+      "route_latency_repeat_range_ms_per_image": [
+        1.2317228200059618,
+        1.2334275500150398
+      ],
+      "route_energy_repeat_range_j_per_image": [
+        0.038129899999999994,
+        0.0384774
+      ],
+      "training_j": 201.185,
+      "eligible_static": {
+        "accuracy": 85.85000000000001,
+        "j_per_image": 0.0423771,
+        "ms_per_image": 1.362105470019742,
+        "latency_saving_percent": 9.516243263403377,
+        "energy_saving_percent": 9.414754667025347,
+        "saved_j_per_image": 0.003989699999999999,
+        "mathematical_crossing_images": 50427,
+        "valid_payback_images": null,
+        "no_valid_payback_reason": "accuracy allowance failed"
+      },
+      "measurement_source": "historical larger-batch report",
+      "reference_fp32": {
+        "accuracy": 85.8,
+        "j_per_image": 0.1128158,
+        "ms_per_image": 3.589792319978005,
+        "latency_saving_percent": 65.66697763741132,
+        "energy_saving_percent": 65.9733831608693,
+        "saved_j_per_image": 0.07442839999999999,
+        "mathematical_crossing_images": 2704,
+        "valid_payback_images": null,
+        "no_valid_payback_reason": "accuracy allowance failed"
+      }
+    },
+    {
+      "seed": 48,
+      "batch_size": 64,
+      "objective": "energy",
+      "budget_pp": 1.0,
+      "accuracy": 85.18,
+      "accuracy_loss_pp": 0.6199999999999903,
+      "accuracy_passed": true,
+      "route_ms_per_image": 1.3125542000001587,
+      "route_ms_per_batch": 83.60217834395915,
+      "route_j_per_image": 0.0403774,
+      "route_latency_repeat_range_ms_per_image": [
+        1.3094331100022827,
+        1.8317511899995225
+      ],
+      "route_energy_repeat_range_j_per_image": [
+        0.0394671,
+        0.055290700000000005
+      ],
+      "training_j": 195.008,
+      "eligible_static": {
+        "accuracy": 85.85000000000001,
+        "j_per_image": 0.0607284,
+        "ms_per_image": 2.155937109998922,
+        "latency_saving_percent": 39.119086827128505,
+        "energy_saving_percent": 33.511503678674224,
+        "saved_j_per_image": 0.020351,
+        "mathematical_crossing_images": 9583,
+        "valid_payback_images": 9583,
+        "no_valid_payback_reason": null
+      },
+      "measurement_source": "historical larger-batch report",
+      "reference_fp32": {
+        "accuracy": 85.8,
+        "j_per_image": 0.1583923,
+        "ms_per_image": 5.325686750000204,
+        "latency_saving_percent": 75.3542733244664,
+        "energy_saving_percent": 74.50797797620213,
+        "saved_j_per_image": 0.1180149,
+        "mathematical_crossing_images": 1653,
+        "valid_payback_images": 1653,
+        "no_valid_payback_reason": null
+      }
+    },
+    {
+      "seed": 42,
+      "batch_size": 64,
+      "objective": "energy",
+      "budget_pp": 1.5,
+      "accuracy": 84.44,
+      "accuracy_loss_pp": 1.3599999999999994,
+      "accuracy_passed": true,
+      "route_ms_per_image": 1.0941699100279947,
+      "route_ms_per_batch": 69.69235095719712,
+      "route_j_per_image": 0.0339285,
+      "route_latency_repeat_range_ms_per_image": [
+        1.0939255199948092,
+        1.0954941900243285
+      ],
+      "route_energy_repeat_range_j_per_image": [
+        0.033641199999999996,
+        0.0342565
+      ],
+      "training_j": 270.437,
+      "eligible_static": {
+        "accuracy": 85.85000000000001,
+        "j_per_image": 0.0422543,
+        "ms_per_image": 1.3608712999994168,
+        "latency_saving_percent": 19.597840734207292,
+        "energy_saving_percent": 19.70403012237808,
+        "saved_j_per_image": 0.008325800000000001,
+        "mathematical_crossing_images": 32482,
+        "valid_payback_images": 32482,
+        "no_valid_payback_reason": null
+      },
+      "measurement_source": "historical larger-batch report",
+      "reference_fp32": {
+        "accuracy": 85.8,
+        "j_per_image": 0.1139107,
+        "ms_per_image": 3.602910890011117,
+        "latency_saving_percent": 69.63094721377861,
+        "energy_saving_percent": 70.21482617524077,
+        "saved_j_per_image": 0.0799822,
+        "mathematical_crossing_images": 3382,
+        "valid_payback_images": 3382,
+        "no_valid_payback_reason": null
+      }
+    },
+    {
+      "seed": 45,
+      "batch_size": 64,
+      "objective": "energy",
+      "budget_pp": 1.5,
+      "accuracy": 84.34,
+      "accuracy_loss_pp": 1.4599999999999937,
+      "accuracy_passed": true,
+      "route_ms_per_image": 1.1541519300051732,
+      "route_ms_per_batch": 73.512861783769,
+      "route_j_per_image": 0.0357677,
+      "route_latency_repeat_range_ms_per_image": [
+        1.1521825100149727,
+        1.1573937100009062
+      ],
+      "route_energy_repeat_range_j_per_image": [
+        0.035595999999999996,
+        0.0362677
+      ],
+      "training_j": 201.185,
+      "eligible_static": {
+        "accuracy": 85.85000000000001,
+        "j_per_image": 0.0423628,
+        "ms_per_image": 1.36562728000863,
+        "latency_saving_percent": 15.485583299282093,
+        "energy_saving_percent": 15.568139971862104,
+        "saved_j_per_image": 0.0065951,
+        "mathematical_crossing_images": 30506,
+        "valid_payback_images": 30506,
+        "no_valid_payback_reason": null
+      },
+      "measurement_source": "historical larger-batch report",
+      "reference_fp32": {
+        "accuracy": 85.8,
+        "j_per_image": 0.11378420000000002,
+        "ms_per_image": 3.5977134999993723,
+        "latency_saving_percent": 67.9198488149383,
+        "energy_saving_percent": 68.56531926225259,
+        "saved_j_per_image": 0.07801650000000002,
+        "mathematical_crossing_images": 2579,
+        "valid_payback_images": 2579,
+        "no_valid_payback_reason": null
+      }
+    },
+    {
+      "seed": 48,
+      "batch_size": 64,
+      "objective": "energy",
+      "budget_pp": 1.5,
+      "accuracy": 84.66,
+      "accuracy_loss_pp": 1.1400000000000006,
+      "accuracy_passed": true,
+      "route_ms_per_image": 1.2123004500002934,
+      "route_ms_per_batch": 77.21658917199322,
+      "route_j_per_image": 0.0373295,
+      "route_latency_repeat_range_ms_per_image": [
+        1.2110255300007338,
+        1.215697060002094
+      ],
+      "route_energy_repeat_range_j_per_image": [
+        0.0371168,
+        0.037568
+      ],
+      "training_j": 195.008,
+      "eligible_static": {
+        "accuracy": 84.38,
+        "j_per_image": 0.026582400000000003,
+        "ms_per_image": 0.8651571799997327,
+        "latency_saving_percent": -40.12487881111591,
+        "energy_saving_percent": -40.42938184663536,
+        "saved_j_per_image": -0.010747099999999999,
+        "mathematical_crossing_images": null,
+        "valid_payback_images": null,
+        "no_valid_payback_reason": "no positive energy saving"
+      },
+      "measurement_source": "historical larger-batch report",
+      "reference_fp32": {
+        "accuracy": 85.8,
+        "j_per_image": 0.1178703,
+        "ms_per_image": 3.78253653000138,
+        "latency_saving_percent": 67.95006630114815,
+        "energy_saving_percent": 68.33002036984719,
+        "saved_j_per_image": 0.0805408,
+        "mathematical_crossing_images": 2422,
+        "valid_payback_images": 2422,
+        "no_valid_payback_reason": null
+      }
+    },
+    {
+      "seed": 42,
+      "batch_size": 64,
+      "objective": "energy",
+      "budget_pp": 2.0,
+      "accuracy": 83.50999999999999,
+      "accuracy_loss_pp": 2.2900000000000063,
+      "accuracy_passed": false,
+      "route_ms_per_image": 1.1752371599985054,
+      "route_ms_per_batch": 74.85587006359907,
+      "route_j_per_image": 0.0368067,
+      "route_latency_repeat_range_ms_per_image": [
+        1.1741914300364442,
+        1.179400120014907
+      ],
+      "route_energy_repeat_range_j_per_image": [
+        0.0364261,
+        0.0374291
+      ],
+      "training_j": 270.437,
+      "eligible_static": {
+        "accuracy": 85.85000000000001,
+        "j_per_image": 0.0423296,
+        "ms_per_image": 1.3634751200064783,
+        "latency_saving_percent": 13.805749532641169,
+        "energy_saving_percent": 13.047371106743281,
+        "saved_j_per_image": 0.005522900000000004,
+        "mathematical_crossing_images": 48967,
+        "valid_payback_images": null,
+        "no_valid_payback_reason": "accuracy allowance failed"
+      },
+      "measurement_source": "historical larger-batch report",
+      "reference_fp32": {
+        "accuracy": 85.8,
+        "j_per_image": 0.11329249999999999,
+        "ms_per_image": 3.5952389600017343,
+        "latency_saving_percent": 67.31129215405647,
+        "energy_saving_percent": 67.51179469073416,
+        "saved_j_per_image": 0.07648579999999999,
+        "mathematical_crossing_images": 3536,
+        "valid_payback_images": null,
+        "no_valid_payback_reason": "accuracy allowance failed"
+      }
+    },
+    {
+      "seed": 45,
+      "batch_size": 64,
+      "objective": "energy",
+      "budget_pp": 2.0,
+      "accuracy": 83.49,
+      "accuracy_loss_pp": 2.3100000000000023,
+      "accuracy_passed": false,
+      "route_ms_per_image": 0.9664795200136723,
+      "route_ms_per_batch": 61.55920509641225,
+      "route_j_per_image": 0.0303889,
+      "route_latency_repeat_range_ms_per_image": [
+        0.9659572600008687,
+        0.9667433299997356
+      ],
+      "route_energy_repeat_range_j_per_image": [
+        0.0302378,
+        0.030478500000000002
+      ],
+      "training_j": 201.185,
+      "eligible_static": {
+        "accuracy": 85.85000000000001,
+        "j_per_image": 0.0423414,
+        "ms_per_image": 1.3625455700122984,
+        "latency_saving_percent": 29.068095681750385,
+        "energy_saving_percent": 28.228872923427193,
+        "saved_j_per_image": 0.011952500000000001,
+        "mathematical_crossing_images": 16833,
+        "valid_payback_images": null,
+        "no_valid_payback_reason": "accuracy allowance failed"
+      },
+      "measurement_source": "historical larger-batch report",
+      "reference_fp32": {
+        "accuracy": 85.8,
+        "j_per_image": 0.1126841,
+        "ms_per_image": 3.5854436899971915,
+        "latency_saving_percent": 73.04435368180529,
+        "energy_saving_percent": 73.03177644405909,
+        "saved_j_per_image": 0.0822952,
+        "mathematical_crossing_images": 2445,
+        "valid_payback_images": null,
+        "no_valid_payback_reason": "accuracy allowance failed"
+      }
+    },
+    {
+      "seed": 48,
+      "batch_size": 64,
+      "objective": "energy",
+      "budget_pp": 2.0,
+      "accuracy": 83.65,
+      "accuracy_loss_pp": 2.1499999999999915,
+      "accuracy_passed": false,
+      "route_ms_per_image": 0.9951632900014374,
+      "route_ms_per_batch": 63.38619681537818,
+      "route_j_per_image": 0.030709500000000004,
+      "route_latency_repeat_range_ms_per_image": [
+        0.9938124099995548,
+        0.9970493500006341
+      ],
+      "route_energy_repeat_range_j_per_image": [
+        0.030473700000000003,
+        0.030894400000000002
+      ],
+      "training_j": 195.008,
+      "eligible_static": {
+        "accuracy": 84.38,
+        "j_per_image": 0.0267221,
+        "ms_per_image": 0.8625697099994796,
+        "latency_saving_percent": -15.371926287793933,
+        "energy_saving_percent": -14.921731450746782,
+        "saved_j_per_image": -0.0039874000000000055,
+        "mathematical_crossing_images": null,
+        "valid_payback_images": null,
+        "no_valid_payback_reason": "accuracy allowance failed"
+      },
+      "measurement_source": "historical larger-batch report",
+      "reference_fp32": {
+        "accuracy": 85.8,
+        "j_per_image": 0.1185786,
+        "ms_per_image": 3.8032904900004723,
+        "latency_saving_percent": 73.83414986002518,
+        "energy_saving_percent": 74.1019880484337,
+        "saved_j_per_image": 0.0878691,
+        "mathematical_crossing_images": 2220,
+        "valid_payback_images": null,
+        "no_valid_payback_reason": "accuracy allowance failed"
+      }
+    },
+    {
+      "seed": 42,
+      "batch_size": 64,
+      "objective": "latency",
+      "budget_pp": 0.5,
+      "accuracy": 84.93,
+      "accuracy_loss_pp": 0.8699999999999903,
+      "accuracy_passed": false,
+      "route_ms_per_image": 1.17951279997651,
+      "route_ms_per_batch": 75.12820382015987,
+      "route_j_per_image": 0.036722199999999997,
+      "route_latency_repeat_range_ms_per_image": [
+        1.1776962199801346,
+        1.1811496099689975
+      ],
+      "route_energy_repeat_range_j_per_image": [
+        0.0365047,
+        0.0369649
+      ],
+      "training_j": 270.437,
+      "eligible_static": {
+        "accuracy": 85.85000000000001,
+        "j_per_image": 0.0422277,
+        "ms_per_image": 1.3592387399927248,
+        "latency_saving_percent": 13.222543967307518,
+        "energy_saving_percent": 13.037650641640447,
+        "saved_j_per_image": 0.0055055000000000034,
+        "mathematical_crossing_images": 49122,
+        "valid_payback_images": null,
+        "no_valid_payback_reason": "accuracy allowance failed"
+      },
+      "measurement_source": "historical larger-batch report",
+      "reference_fp32": {
+        "accuracy": 85.8,
+        "j_per_image": 0.11354349999999999,
+        "ms_per_image": 3.5954459700005827,
+        "latency_saving_percent": 67.19425601669329,
+        "energy_saving_percent": 67.6580341455037,
+        "saved_j_per_image": 0.0768213,
+        "mathematical_crossing_images": 3521,
+        "valid_payback_images": null,
+        "no_valid_payback_reason": "accuracy allowance failed"
+      }
+    },
+    {
+      "seed": 45,
+      "batch_size": 64,
+      "objective": "latency",
+      "budget_pp": 0.5,
+      "accuracy": 85.52,
+      "accuracy_loss_pp": 0.28000000000000114,
+      "accuracy_passed": true,
+      "route_ms_per_image": 1.325746040014201,
+      "route_ms_per_batch": 84.44242293084082,
+      "route_j_per_image": 0.0412196,
+      "route_latency_repeat_range_ms_per_image": [
+        1.3253685399977257,
+        1.332726599983289
+      ],
+      "route_energy_repeat_range_j_per_image": [
+        0.0411785,
+        0.0415114
+      ],
+      "training_j": 201.185,
+      "eligible_static": {
+        "accuracy": 85.85000000000001,
+        "j_per_image": 0.0422721,
+        "ms_per_image": 1.3594910899933894,
+        "latency_saving_percent": 2.4821825039951215,
+        "energy_saving_percent": 2.4898218919807578,
+        "saved_j_per_image": 0.0010524999999999979,
+        "mathematical_crossing_images": 191150,
+        "valid_payback_images": 191150,
+        "no_valid_payback_reason": null
+      },
+      "measurement_source": "historical larger-batch report",
+      "reference_fp32": {
+        "accuracy": 85.8,
+        "j_per_image": 0.1140144,
+        "ms_per_image": 3.6055060599930586,
+        "latency_saving_percent": 63.22995945770916,
+        "energy_saving_percent": 63.84702283220365,
+        "saved_j_per_image": 0.07279479999999999,
+        "mathematical_crossing_images": 2764,
+        "valid_payback_images": 2764,
+        "no_valid_payback_reason": null
+      }
+    },
+    {
+      "seed": 48,
+      "batch_size": 64,
+      "objective": "latency",
+      "budget_pp": 0.5,
+      "accuracy": 85.41,
+      "accuracy_loss_pp": 0.39000000000000057,
+      "accuracy_passed": true,
+      "route_ms_per_image": 1.3001077899913072,
+      "route_ms_per_batch": 82.80941337524249,
+      "route_j_per_image": 0.0403972,
+      "route_latency_repeat_range_ms_per_image": [
+        1.2969255999894813,
+        1.3056481700099538
+      ],
+      "route_energy_repeat_range_j_per_image": [
+        0.0402318,
+        0.0405175
+      ],
+      "training_j": 195.008,
+      "eligible_static": {
+        "accuracy": 85.85000000000001,
+        "j_per_image": 0.0422939,
+        "ms_per_image": 1.3623018300131662,
+        "latency_saving_percent": 4.565364198421287,
+        "energy_saving_percent": 4.484571061075004,
+        "saved_j_per_image": 0.0018967000000000012,
+        "mathematical_crossing_images": 102815,
+        "valid_payback_images": 102815,
+        "no_valid_payback_reason": null
+      },
+      "measurement_source": "historical larger-batch report",
+      "reference_fp32": {
+        "accuracy": 85.8,
+        "j_per_image": 0.1137357,
+        "ms_per_image": 3.6059892800141826,
+        "latency_saving_percent": 63.94587756549865,
+        "energy_saving_percent": 64.48151284073515,
+        "saved_j_per_image": 0.0733385,
+        "mathematical_crossing_images": 2660,
+        "valid_payback_images": 2660,
+        "no_valid_payback_reason": null
+      }
+    },
+    {
+      "seed": 42,
+      "batch_size": 64,
+      "objective": "latency",
+      "budget_pp": 1.0,
+      "accuracy": 84.02,
+      "accuracy_loss_pp": 1.7800000000000011,
+      "accuracy_passed": false,
+      "route_ms_per_image": 0.9976872899977025,
+      "route_ms_per_batch": 63.546961146350476,
+      "route_j_per_image": 0.031108999999999998,
+      "route_latency_repeat_range_ms_per_image": [
+        0.9972079599945574,
+        1.001106140014599
+      ],
+      "route_energy_repeat_range_j_per_image": [
+        0.031037000000000002,
+        0.0311721
+      ],
+      "training_j": 270.437,
+      "eligible_static": {
+        "accuracy": 85.85000000000001,
+        "j_per_image": 0.0421712,
+        "ms_per_image": 1.3607722799992188,
+        "latency_saving_percent": 26.68227412758032,
+        "energy_saving_percent": 26.231646241985057,
+        "saved_j_per_image": 0.011062200000000001,
+        "mathematical_crossing_images": 24447,
+        "valid_payback_images": null,
+        "no_valid_payback_reason": "accuracy allowance failed"
+      },
+      "measurement_source": "historical larger-batch report",
+      "reference_fp32": {
+        "accuracy": 85.8,
+        "j_per_image": 0.1136494,
+        "ms_per_image": 3.592063579999376,
+        "latency_saving_percent": 72.22523299551742,
+        "energy_saving_percent": 72.62722020529804,
+        "saved_j_per_image": 0.0825404,
+        "mathematical_crossing_images": 3277,
+        "valid_payback_images": null,
+        "no_valid_payback_reason": "accuracy allowance failed"
+      }
+    },
+    {
+      "seed": 45,
+      "batch_size": 64,
+      "objective": "latency",
+      "budget_pp": 1.0,
+      "accuracy": 85.17,
+      "accuracy_loss_pp": 0.6299999999999955,
+      "accuracy_passed": true,
+      "route_ms_per_image": 1.268364450018271,
+      "route_ms_per_batch": 80.78754458715102,
+      "route_j_per_image": 0.0394308,
+      "route_latency_repeat_range_ms_per_image": [
+        1.2678438299917616,
+        1.2697998099727557
+      ],
+      "route_energy_repeat_range_j_per_image": [
+        0.0392771,
+        0.0396894
+      ],
+      "training_j": 201.185,
+      "eligible_static": {
+        "accuracy": 85.85000000000001,
+        "j_per_image": 0.042347199999999995,
+        "ms_per_image": 1.3606440799776465,
+        "latency_saving_percent": 6.782055007426456,
+        "energy_saving_percent": 6.886877999017627,
+        "saved_j_per_image": 0.0029163999999999926,
+        "mathematical_crossing_images": 68985,
+        "valid_payback_images": 68985,
+        "no_valid_payback_reason": null
+      },
+      "measurement_source": "historical larger-batch report",
+      "reference_fp32": {
+        "accuracy": 85.8,
+        "j_per_image": 0.11333610000000001,
+        "ms_per_image": 3.5857222599879606,
+        "latency_saving_percent": 64.62736491970995,
+        "energy_saving_percent": 65.20896695757133,
+        "saved_j_per_image": 0.07390530000000001,
+        "mathematical_crossing_images": 2723,
+        "valid_payback_images": 2723,
+        "no_valid_payback_reason": null
+      }
+    },
+    {
+      "seed": 48,
+      "batch_size": 64,
+      "objective": "latency",
+      "budget_pp": 1.0,
+      "accuracy": 84.84,
+      "accuracy_loss_pp": 0.9599999999999937,
+      "accuracy_passed": true,
+      "route_ms_per_image": 1.2069122599932598,
+      "route_ms_per_batch": 76.87339235625859,
+      "route_j_per_image": 0.0375966,
+      "route_latency_repeat_range_ms_per_image": [
+        1.2056871599983423,
+        1.2085572700074407
+      ],
+      "route_energy_repeat_range_j_per_image": [
+        0.0367709,
+        0.0376613
+      ],
+      "training_j": 195.008,
+      "eligible_static": {
+        "accuracy": 85.85000000000001,
+        "j_per_image": 0.042278300000000005,
+        "ms_per_image": 1.3624827900173841,
+        "latency_saving_percent": 11.418164777122753,
+        "energy_saving_percent": 11.073529446548237,
+        "saved_j_per_image": 0.004681700000000004,
+        "mathematical_crossing_images": 41654,
+        "valid_payback_images": 41654,
+        "no_valid_payback_reason": null
+      },
+      "measurement_source": "historical larger-batch report",
+      "reference_fp32": {
+        "accuracy": 85.8,
+        "j_per_image": 0.11355309999999999,
+        "ms_per_image": 3.5974997900106245,
+        "latency_saving_percent": 66.45135982093565,
+        "energy_saving_percent": 66.89073217728092,
+        "saved_j_per_image": 0.07595649999999998,
+        "mathematical_crossing_images": 2568,
+        "valid_payback_images": 2568,
+        "no_valid_payback_reason": null
+      }
+    },
+    {
+      "seed": 42,
+      "batch_size": 64,
+      "objective": "latency",
+      "budget_pp": 1.5,
+      "accuracy": 84.02,
+      "accuracy_loss_pp": 1.7800000000000011,
+      "accuracy_passed": false,
+      "route_ms_per_image": 0.9978461499966216,
+      "route_ms_per_batch": 63.55707961761921,
+      "route_j_per_image": 0.031043099999999997,
+      "route_latency_repeat_range_ms_per_image": [
+        0.9968835400097305,
+        1.0028693299856968
+      ],
+      "route_energy_repeat_range_j_per_image": [
+        0.030663799999999998,
+        0.0312055
+      ],
+      "training_j": 270.437,
+      "eligible_static": {
+        "accuracy": 85.85000000000001,
+        "j_per_image": 0.0422788,
+        "ms_per_image": 1.3612334899953566,
+        "latency_saving_percent": 26.695445173037484,
+        "energy_saving_percent": 26.57525757590093,
+        "saved_j_per_image": 0.011235700000000001,
+        "mathematical_crossing_images": 24070,
+        "valid_payback_images": null,
+        "no_valid_payback_reason": "accuracy allowance failed"
+      },
+      "measurement_source": "historical larger-batch report",
+      "reference_fp32": {
+        "accuracy": 85.8,
+        "j_per_image": 0.11390850000000001,
+        "ms_per_image": 3.599894119991222,
+        "latency_saving_percent": 72.28123614927168,
+        "energy_saving_percent": 72.74733667812323,
+        "saved_j_per_image": 0.0828654,
+        "mathematical_crossing_images": 3264,
+        "valid_payback_images": null,
+        "no_valid_payback_reason": "accuracy allowance failed"
+      }
+    },
+    {
+      "seed": 45,
+      "batch_size": 64,
+      "objective": "latency",
+      "budget_pp": 1.5,
+      "accuracy": 84.58,
+      "accuracy_loss_pp": 1.2199999999999989,
+      "accuracy_passed": true,
+      "route_ms_per_image": 1.2056741399923339,
+      "route_ms_per_batch": 76.7945312097028,
+      "route_j_per_image": 0.037614299999999996,
+      "route_latency_repeat_range_ms_per_image": [
+        1.2041175300226314,
+        1.2092701400077204
+      ],
+      "route_energy_repeat_range_j_per_image": [
+        0.0372455,
+        0.0378153
+      ],
+      "training_j": 201.185,
+      "eligible_static": {
+        "accuracy": 85.85000000000001,
+        "j_per_image": 0.0422294,
+        "ms_per_image": 1.3614292400045087,
+        "latency_saving_percent": 11.44055786635367,
+        "energy_saving_percent": 10.928642130837767,
+        "saved_j_per_image": 0.004615100000000004,
+        "mathematical_crossing_images": 43593,
+        "valid_payback_images": 43593,
+        "no_valid_payback_reason": null
+      },
+      "measurement_source": "historical larger-batch report",
+      "reference_fp32": {
+        "accuracy": 85.8,
+        "j_per_image": 0.1129636,
+        "ms_per_image": 3.5882176499988416,
+        "latency_saving_percent": 66.39908005600711,
+        "energy_saving_percent": 66.70228285925732,
+        "saved_j_per_image": 0.07534930000000001,
+        "mathematical_crossing_images": 2671,
+        "valid_payback_images": 2671,
+        "no_valid_payback_reason": null
+      }
+    },
+    {
+      "seed": 48,
+      "batch_size": 64,
+      "objective": "latency",
+      "budget_pp": 1.5,
+      "accuracy": 84.84,
+      "accuracy_loss_pp": 0.9599999999999937,
+      "accuracy_passed": true,
+      "route_ms_per_image": 1.2119323800085113,
+      "route_ms_per_batch": 77.19314522347206,
+      "route_j_per_image": 0.0375882,
+      "route_latency_repeat_range_ms_per_image": [
+        1.2042771300009918,
+        1.2171348999982001
+      ],
+      "route_energy_repeat_range_j_per_image": [
+        0.0373337,
+        0.0380312
+      ],
+      "training_j": 195.008,
+      "eligible_static": {
+        "accuracy": 84.38,
+        "j_per_image": 0.0259418,
+        "ms_per_image": 0.8317378100357018,
+        "latency_saving_percent": -45.71086770198529,
+        "energy_saving_percent": -44.89434040814439,
+        "saved_j_per_image": -0.011646400000000001,
+        "mathematical_crossing_images": null,
+        "valid_payback_images": null,
+        "no_valid_payback_reason": "no positive energy saving"
+      },
+      "measurement_source": "historical larger-batch report",
+      "reference_fp32": {
+        "accuracy": 85.8,
+        "j_per_image": 0.11350709999999999,
+        "ms_per_image": 3.5976498999982143,
+        "latency_saving_percent": 66.31322074977021,
+        "energy_saving_percent": 66.8847147006663,
+        "saved_j_per_image": 0.07591889999999998,
+        "mathematical_crossing_images": 2569,
+        "valid_payback_images": 2569,
+        "no_valid_payback_reason": null
+      }
+    },
+    {
+      "seed": 42,
+      "batch_size": 64,
+      "objective": "latency",
+      "budget_pp": 2.0,
+      "accuracy": 83.08,
+      "accuracy_loss_pp": 2.719999999999999,
+      "accuracy_passed": false,
+      "route_ms_per_image": 0.7665486600046278,
+      "route_ms_per_batch": 48.82475541430751,
+      "route_j_per_image": 0.0240422,
+      "route_latency_repeat_range_ms_per_image": [
+        0.7659670299908612,
+        0.7746478599903639
+      ],
+      "route_energy_repeat_range_j_per_image": [
+        0.023690700000000002,
+        0.0241826
+      ],
+      "training_j": 270.437,
+      "eligible_static": {
+        "accuracy": 85.85000000000001,
+        "j_per_image": 0.042342700000000004,
+        "ms_per_image": 1.361414069982129,
+        "latency_saving_percent": 43.69467181908219,
+        "energy_saving_percent": 43.219964716468255,
+        "saved_j_per_image": 0.018300500000000004,
+        "mathematical_crossing_images": 14778,
+        "valid_payback_images": null,
+        "no_valid_payback_reason": "accuracy allowance failed"
+      },
+      "measurement_source": "historical larger-batch report",
+      "reference_fp32": {
+        "accuracy": 85.8,
+        "j_per_image": 0.11396289999999999,
+        "ms_per_image": 3.5996351599984338,
+        "latency_saving_percent": 78.704823518699,
+        "energy_saving_percent": 78.90348525704418,
+        "saved_j_per_image": 0.08992069999999999,
+        "mathematical_crossing_images": 3008,
+        "valid_payback_images": null,
+        "no_valid_payback_reason": "accuracy allowance failed"
+      }
+    },
+    {
+      "seed": 45,
+      "batch_size": 64,
+      "objective": "latency",
+      "budget_pp": 2.0,
+      "accuracy": 83.23,
+      "accuracy_loss_pp": 2.569999999999993,
+      "accuracy_passed": false,
+      "route_ms_per_image": 0.9761279999976977,
+      "route_ms_per_batch": 62.1737579616368,
+      "route_j_per_image": 0.0308692,
+      "route_latency_repeat_range_ms_per_image": [
+        0.9438699300255393,
+        1.1292439800017746
+      ],
+      "route_energy_repeat_range_j_per_image": [
+        0.029763099999999997,
+        0.0354931
+      ],
+      "training_j": 201.185,
+      "eligible_static": {
+        "accuracy": 85.85000000000001,
+        "j_per_image": 0.042343900000000004,
+        "ms_per_image": 1.3620904300012626,
+        "latency_saving_percent": 28.336035662713453,
+        "energy_saving_percent": 27.0988265133821,
+        "saved_j_per_image": 0.011474700000000004,
+        "mathematical_crossing_images": 17533,
+        "valid_payback_images": null,
+        "no_valid_payback_reason": "accuracy allowance failed"
+      },
+      "measurement_source": "historical larger-batch report",
+      "reference_fp32": {
+        "accuracy": 85.8,
+        "j_per_image": 0.11307719999999999,
+        "ms_per_image": 3.5856676200259243,
+        "latency_saving_percent": 72.7769524831016,
+        "energy_saving_percent": 72.70077433823971,
+        "saved_j_per_image": 0.08220799999999999,
+        "mathematical_crossing_images": 2448,
+        "valid_payback_images": null,
+        "no_valid_payback_reason": "accuracy allowance failed"
+      }
+    },
+    {
+      "seed": 48,
+      "batch_size": 64,
+      "objective": "latency",
+      "budget_pp": 2.0,
+      "accuracy": 81.86,
+      "accuracy_loss_pp": 3.9399999999999977,
+      "accuracy_passed": false,
+      "route_ms_per_image": 0.45319542998913676,
+      "route_ms_per_batch": 28.865950954722088,
+      "route_j_per_image": 0.014145,
+      "route_latency_repeat_range_ms_per_image": [
+        0.45284993000677787,
+        0.45433647999889215
+      ],
+      "route_energy_repeat_range_j_per_image": [
+        0.013928999999999999,
+        0.0142816
+      ],
+      "training_j": 195.008,
+      "eligible_static": {
+        "accuracy": 84.38,
+        "j_per_image": 0.0257272,
+        "ms_per_image": 0.8307196400040994,
+        "latency_saving_percent": 45.44544173929722,
+        "energy_saving_percent": 45.01927920644298,
+        "saved_j_per_image": 0.011582199999999999,
+        "mathematical_crossing_images": 16837,
+        "valid_payback_images": null,
+        "no_valid_payback_reason": "accuracy allowance failed"
+      },
+      "measurement_source": "historical larger-batch report",
+      "reference_fp32": {
+        "accuracy": 85.8,
+        "j_per_image": 0.11317360000000001,
+        "ms_per_image": 3.594119299997692,
+        "latency_saving_percent": 87.39064031654631,
+        "energy_saving_percent": 87.50150211710151,
+        "saved_j_per_image": 0.09902860000000001,
+        "mathematical_crossing_images": 1970,
+        "valid_payback_images": null,
+        "no_valid_payback_reason": "accuracy allowance failed"
+      }
+    },
+    {
+      "seed": 42,
+      "batch_size": 128,
+      "objective": "energy",
+      "budget_pp": 0.5,
+      "accuracy": 85.39,
+      "accuracy_loss_pp": 0.4099999999999966,
+      "accuracy_passed": true,
+      "route_ms_per_image": 1.4275542999996105,
+      "route_ms_per_batch": 180.7030759493178,
+      "route_j_per_image": 0.0443167,
+      "route_latency_repeat_range_ms_per_image": [
+        1.4266858800081537,
+        1.4295313100039493
+      ],
+      "route_energy_repeat_range_j_per_image": [
+        0.0438827,
+        0.044376
+      ],
+      "training_j": 270.437,
+      "eligible_static": {
+        "accuracy": 85.85000000000001,
+        "j_per_image": 0.0471096,
+        "ms_per_image": 1.5224522899923614,
+        "latency_saving_percent": 6.233232437991666,
+        "energy_saving_percent": 5.928515631633469,
+        "saved_j_per_image": 0.002792900000000001,
+        "mathematical_crossing_images": 96831,
+        "valid_payback_images": 96831,
+        "no_valid_payback_reason": null
+      },
+      "measurement_source": "historical larger-batch report",
+      "reference_fp32": {
+        "accuracy": 85.8,
+        "j_per_image": 0.1124385,
+        "ms_per_image": 3.5726129900111117,
+        "latency_saving_percent": 60.041731248500824,
+        "energy_saving_percent": 60.58583136559097,
+        "saved_j_per_image": 0.0681218,
+        "mathematical_crossing_images": 3970,
+        "valid_payback_images": 3970,
+        "no_valid_payback_reason": null
+      }
+    },
+    {
+      "seed": 45,
+      "batch_size": 128,
+      "objective": "energy",
+      "budget_pp": 0.5,
+      "accuracy": 84.50999999999999,
+      "accuracy_loss_pp": 1.2900000000000063,
+      "accuracy_passed": false,
+      "route_ms_per_image": 1.23061960999039,
+      "route_ms_per_batch": 155.77463417599873,
+      "route_j_per_image": 0.038506,
+      "route_latency_repeat_range_ms_per_image": [
+        1.2296768499858444,
+        1.2315326899843058
+      ],
+      "route_energy_repeat_range_j_per_image": [
+        0.038154099999999996,
+        0.0386624
+      ],
+      "training_j": 201.185,
+      "eligible_static": {
+        "accuracy": 85.85000000000001,
+        "j_per_image": 0.0473846,
+        "ms_per_image": 1.5231299900158775,
+        "latency_saving_percent": 19.204557847517545,
+        "energy_saving_percent": 18.73731127834782,
+        "saved_j_per_image": 0.0088786,
+        "mathematical_crossing_images": 22660,
+        "valid_payback_images": null,
+        "no_valid_payback_reason": "accuracy allowance failed"
+      },
+      "measurement_source": "historical larger-batch report",
+      "reference_fp32": {
+        "accuracy": 85.8,
+        "j_per_image": 0.1127135,
+        "ms_per_image": 3.5737613600038456,
+        "latency_saving_percent": 65.56514310767898,
+        "energy_saving_percent": 65.83727769965444,
+        "saved_j_per_image": 0.0742075,
+        "mathematical_crossing_images": 2712,
+        "valid_payback_images": null,
+        "no_valid_payback_reason": "accuracy allowance failed"
+      }
+    },
+    {
+      "seed": 48,
+      "batch_size": 128,
+      "objective": "energy",
+      "budget_pp": 0.5,
+      "accuracy": 85.39,
+      "accuracy_loss_pp": 0.4099999999999966,
+      "accuracy_passed": true,
+      "route_ms_per_image": 1.4983467200010636,
+      "route_ms_per_batch": 189.66414177228654,
+      "route_j_per_image": 0.046238600000000005,
+      "route_latency_repeat_range_ms_per_image": [
+        1.496497709999494,
+        1.5023848999993787
+      ],
+      "route_energy_repeat_range_j_per_image": [
+        0.045983300000000005,
+        0.0463957
+      ],
+      "training_j": 195.008,
+      "eligible_static": {
+        "accuracy": 85.85000000000001,
+        "j_per_image": 0.0486988,
+        "ms_per_image": 1.5839247800016891,
+        "latency_saving_percent": 5.402911873159424,
+        "energy_saving_percent": 5.051869861269673,
+        "saved_j_per_image": 0.0024601999999999957,
+        "mathematical_crossing_images": 79266,
+        "valid_payback_images": 79266,
+        "no_valid_payback_reason": null
+      },
+      "measurement_source": "historical larger-batch report",
+      "reference_fp32": {
+        "accuracy": 85.8,
+        "j_per_image": 0.11714300000000001,
+        "ms_per_image": 3.75144616999969,
+        "latency_saving_percent": 60.059490337797186,
+        "energy_saving_percent": 60.52807252674082,
+        "saved_j_per_image": 0.0709044,
+        "mathematical_crossing_images": 2751,
+        "valid_payback_images": 2751,
+        "no_valid_payback_reason": null
+      }
+    },
+    {
+      "seed": 42,
+      "batch_size": 128,
+      "objective": "energy",
+      "budget_pp": 1.0,
+      "accuracy": 84.50999999999999,
+      "accuracy_loss_pp": 1.2900000000000063,
+      "accuracy_passed": false,
+      "route_ms_per_image": 1.2850962300028186,
+      "route_ms_per_batch": 162.67040886111627,
+      "route_j_per_image": 0.040007,
+      "route_latency_repeat_range_ms_per_image": [
+        1.1432162500015692,
+        1.3574424099992028
+      ],
+      "route_energy_repeat_range_j_per_image": [
+        0.0355116,
+        0.0425474
+      ],
+      "training_j": 270.437,
+      "eligible_static": {
+        "accuracy": 85.85000000000001,
+        "j_per_image": 0.0471889,
+        "ms_per_image": 1.523091520013986,
+        "latency_saving_percent": 15.625803629251516,
+        "energy_saving_percent": 15.219468985291028,
+        "saved_j_per_image": 0.007181899999999998,
+        "mathematical_crossing_images": 37656,
+        "valid_payback_images": null,
+        "no_valid_payback_reason": "accuracy allowance failed"
+      },
+      "measurement_source": "historical larger-batch report",
+      "reference_fp32": {
+        "accuracy": 85.8,
+        "j_per_image": 0.1124321,
+        "ms_per_image": 3.5715416000020923,
+        "latency_saving_percent": 64.01844430421681,
+        "energy_saving_percent": 64.41674575143576,
+        "saved_j_per_image": 0.07242509999999999,
+        "mathematical_crossing_images": 3735,
+        "valid_payback_images": null,
+        "no_valid_payback_reason": "accuracy allowance failed"
+      }
+    },
+    {
+      "seed": 45,
+      "batch_size": 128,
+      "objective": "energy",
+      "budget_pp": 1.0,
+      "accuracy": 84.50999999999999,
+      "accuracy_loss_pp": 1.2900000000000063,
+      "accuracy_passed": false,
+      "route_ms_per_image": 1.230393890014966,
+      "route_ms_per_batch": 155.74606202721088,
+      "route_j_per_image": 0.0386391,
+      "route_latency_repeat_range_ms_per_image": [
+        1.2299091999972007,
+        1.2319674999976997
+      ],
+      "route_energy_repeat_range_j_per_image": [
+        0.0383561,
+        0.0387045
+      ],
+      "training_j": 201.185,
+      "eligible_static": {
+        "accuracy": 85.85000000000001,
+        "j_per_image": 0.050284300000000004,
+        "ms_per_image": 1.6172721300041304,
+        "latency_saving_percent": 23.921653802825148,
+        "energy_saving_percent": 23.158719520804706,
+        "saved_j_per_image": 0.011645200000000001,
+        "mathematical_crossing_images": 17277,
+        "valid_payback_images": null,
+        "no_valid_payback_reason": "accuracy allowance failed"
+      },
+      "measurement_source": "historical larger-batch report",
+      "reference_fp32": {
+        "accuracy": 85.8,
+        "j_per_image": 0.11272080000000001,
+        "ms_per_image": 3.5687711600097827,
+        "latency_saving_percent": 65.5233178354985,
+        "energy_saving_percent": 65.72141077778014,
+        "saved_j_per_image": 0.0740817,
+        "mathematical_crossing_images": 2716,
+        "valid_payback_images": null,
+        "no_valid_payback_reason": "accuracy allowance failed"
+      }
+    },
+    {
+      "seed": 48,
+      "batch_size": 128,
+      "objective": "energy",
+      "budget_pp": 1.0,
+      "accuracy": 85.11999999999999,
+      "accuracy_loss_pp": 0.6800000000000068,
+      "accuracy_passed": true,
+      "route_ms_per_image": 1.357119220000277,
+      "route_ms_per_batch": 171.78724303800973,
+      "route_j_per_image": 0.0417566,
+      "route_latency_repeat_range_ms_per_image": [
+        1.3546282600002086,
+        1.6442589799995404
+      ],
+      "route_energy_repeat_range_j_per_image": [
+        0.0415575,
+        0.050981200000000004
+      ],
+      "training_j": 195.008,
+      "eligible_static": {
+        "accuracy": 85.85000000000001,
+        "j_per_image": 0.0488532,
+        "ms_per_image": 1.5820002700003897,
+        "latency_saving_percent": 14.214981771150857,
+        "energy_saving_percent": 14.526376982469934,
+        "saved_j_per_image": 0.0070966000000000015,
+        "mathematical_crossing_images": 27480,
+        "valid_payback_images": 27480,
+        "no_valid_payback_reason": null
+      },
+      "measurement_source": "historical larger-batch report",
+      "reference_fp32": {
+        "accuracy": 85.8,
+        "j_per_image": 0.11745309999999999,
+        "ms_per_image": 3.763057789999948,
+        "latency_saving_percent": 63.93573270103046,
+        "energy_saving_percent": 64.44827765295254,
+        "saved_j_per_image": 0.0756965,
+        "mathematical_crossing_images": 2577,
+        "valid_payback_images": 2577,
+        "no_valid_payback_reason": null
+      }
+    },
+    {
+      "seed": 42,
+      "batch_size": 128,
+      "objective": "energy",
+      "budget_pp": 1.5,
+      "accuracy": 84.50999999999999,
+      "accuracy_loss_pp": 1.2900000000000063,
+      "accuracy_passed": true,
+      "route_ms_per_image": 1.142914100002963,
+      "route_ms_per_batch": 144.67267088645102,
+      "route_j_per_image": 0.035519,
+      "route_latency_repeat_range_ms_per_image": [
+        1.1419560900132637,
+        1.1473962200136156
+      ],
+      "route_energy_repeat_range_j_per_image": [
+        0.035276499999999995,
+        0.0358851
+      ],
+      "training_j": 270.437,
+      "eligible_static": {
+        "accuracy": 85.85000000000001,
+        "j_per_image": 0.0471325,
+        "ms_per_image": 1.5222185499995249,
+        "latency_saving_percent": 24.91787069581304,
+        "energy_saving_percent": 24.640110327268868,
+        "saved_j_per_image": 0.011613499999999999,
+        "mathematical_crossing_images": 23287,
+        "valid_payback_images": 23287,
+        "no_valid_payback_reason": null
+      },
+      "measurement_source": "historical larger-batch report",
+      "reference_fp32": {
+        "accuracy": 85.8,
+        "j_per_image": 0.11293610000000001,
+        "ms_per_image": 3.5800588099984454,
+        "latency_saving_percent": 68.07554957446469,
+        "energy_saving_percent": 68.54947178094515,
+        "saved_j_per_image": 0.07741710000000002,
+        "mathematical_crossing_images": 3494,
+        "valid_payback_images": 3494,
+        "no_valid_payback_reason": null
+      }
+    },
+    {
+      "seed": 45,
+      "batch_size": 128,
+      "objective": "energy",
+      "budget_pp": 1.5,
+      "accuracy": 83.93,
+      "accuracy_loss_pp": 1.8699999999999903,
+      "accuracy_passed": false,
+      "route_ms_per_image": 1.109621510002762,
+      "route_ms_per_batch": 140.4584189876914,
+      "route_j_per_image": 0.0351285,
+      "route_latency_repeat_range_ms_per_image": [
+        1.1091539700020803,
+        1.1131823900097515
+      ],
+      "route_energy_repeat_range_j_per_image": [
+        0.034663900000000004,
+        0.0351949
+      ],
+      "training_j": 201.185,
+      "eligible_static": {
+        "accuracy": 85.85000000000001,
+        "j_per_image": 0.0473022,
+        "ms_per_image": 1.5235901900072348,
+        "latency_saving_percent": 27.170605502684882,
+        "energy_saving_percent": 25.73601227849868,
+        "saved_j_per_image": 0.012173700000000003,
+        "mathematical_crossing_images": 16527,
+        "valid_payback_images": null,
+        "no_valid_payback_reason": "accuracy allowance failed"
+      },
+      "measurement_source": "historical larger-batch report",
+      "reference_fp32": {
+        "accuracy": 85.8,
+        "j_per_image": 0.1127593,
+        "ms_per_image": 3.578672169998754,
+        "latency_saving_percent": 68.99348536853688,
+        "energy_saving_percent": 68.84647208700302,
+        "saved_j_per_image": 0.0776308,
+        "mathematical_crossing_images": 2592,
+        "valid_payback_images": null,
+        "no_valid_payback_reason": "accuracy allowance failed"
+      }
+    },
+    {
+      "seed": 48,
+      "batch_size": 128,
+      "objective": "energy",
+      "budget_pp": 1.5,
+      "accuracy": 85.11999999999999,
+      "accuracy_loss_pp": 0.6800000000000068,
+      "accuracy_passed": true,
+      "route_ms_per_image": 1.354148170001099,
+      "route_ms_per_batch": 171.4111607596328,
+      "route_j_per_image": 0.0416177,
+      "route_latency_repeat_range_ms_per_image": [
+        1.3527096400002847,
+        1.3578821800003424
+      ],
+      "route_energy_repeat_range_j_per_image": [
+        0.0413537,
+        0.0418661
+      ],
+      "training_j": 195.008,
+      "eligible_static": {
+        "accuracy": 84.38,
+        "j_per_image": 0.027712900000000002,
+        "ms_per_image": 0.9010439800000313,
+        "latency_saving_percent": -50.28657868632029,
+        "energy_saving_percent": -50.1744674862609,
+        "saved_j_per_image": -0.013904799999999998,
+        "mathematical_crossing_images": null,
+        "valid_payback_images": null,
+        "no_valid_payback_reason": "no positive energy saving"
+      },
+      "measurement_source": "historical larger-batch report",
+      "reference_fp32": {
+        "accuracy": 85.8,
+        "j_per_image": 0.11746199999999998,
+        "ms_per_image": 3.754077720001078,
+        "latency_saving_percent": 63.928605878710734,
+        "energy_saving_percent": 64.56922238681445,
+        "saved_j_per_image": 0.07584429999999998,
+        "mathematical_crossing_images": 2572,
+        "valid_payback_images": 2572,
+        "no_valid_payback_reason": null
+      }
+    },
+    {
+      "seed": 42,
+      "batch_size": 128,
+      "objective": "energy",
+      "budget_pp": 2.0,
+      "accuracy": 83.08,
+      "accuracy_loss_pp": 2.719999999999999,
+      "accuracy_passed": false,
+      "route_ms_per_image": 0.8281361000117613,
+      "route_ms_per_batch": 104.82735443186851,
+      "route_j_per_image": 0.025628500000000002,
+      "route_latency_repeat_range_ms_per_image": [
+        0.8269237700063968,
+        0.8296385700057727
+      ],
+      "route_energy_repeat_range_j_per_image": [
+        0.025051300000000002,
+        0.025853300000000003
+      ],
+      "training_j": 270.437,
+      "eligible_static": {
+        "accuracy": 85.85000000000001,
+        "j_per_image": 0.0471039,
+        "ms_per_image": 1.5228882699884707,
+        "latency_saving_percent": 45.62069218524936,
+        "energy_saving_percent": 45.591553990221605,
+        "saved_j_per_image": 0.021475399999999995,
+        "mathematical_crossing_images": 12593,
+        "valid_payback_images": null,
+        "no_valid_payback_reason": "accuracy allowance failed"
+      },
+      "measurement_source": "historical larger-batch report",
+      "reference_fp32": {
+        "accuracy": 85.8,
+        "j_per_image": 0.11234480000000001,
+        "ms_per_image": 3.5702483399974883,
+        "latency_saving_percent": 76.8045239112878,
+        "energy_saving_percent": 77.18764019340459,
+        "saved_j_per_image": 0.08671630000000001,
+        "mathematical_crossing_images": 3119,
+        "valid_payback_images": null,
+        "no_valid_payback_reason": "accuracy allowance failed"
+      }
+    },
+    {
+      "seed": 45,
+      "batch_size": 128,
+      "objective": "energy",
+      "budget_pp": 2.0,
+      "accuracy": 83.93,
+      "accuracy_loss_pp": 1.8699999999999903,
+      "accuracy_passed": true,
+      "route_ms_per_image": 1.1103069999953732,
+      "route_ms_per_batch": 140.54518987283205,
+      "route_j_per_image": 0.0348176,
+      "route_latency_repeat_range_ms_per_image": [
+        1.1101023500115843,
+        1.1118503600009717
+      ],
+      "route_energy_repeat_range_j_per_image": [
+        0.034715499999999996,
+        0.0350092
+      ],
+      "training_j": 201.185,
+      "eligible_static": {
+        "accuracy": 85.85000000000001,
+        "j_per_image": 0.047322699999999995,
+        "ms_per_image": 1.524286859994754,
+        "latency_saving_percent": 27.158920729711316,
+        "energy_saving_percent": 26.425161708862763,
+        "saved_j_per_image": 0.012505099999999998,
+        "mathematical_crossing_images": 16089,
+        "valid_payback_images": 16089,
+        "no_valid_payback_reason": null
+      },
+      "measurement_source": "historical larger-batch report",
+      "reference_fp32": {
+        "accuracy": 85.8,
+        "j_per_image": 0.1130884,
+        "ms_per_image": 3.5797588200046446,
+        "latency_saving_percent": 68.9837484639836,
+        "energy_saving_percent": 69.21205004226782,
+        "saved_j_per_image": 0.0782708,
+        "mathematical_crossing_images": 2571,
+        "valid_payback_images": 2571,
+        "no_valid_payback_reason": null
+      }
+    },
+    {
+      "seed": 48,
+      "batch_size": 128,
+      "objective": "energy",
+      "budget_pp": 2.0,
+      "accuracy": 82.28999999999999,
+      "accuracy_loss_pp": 3.510000000000005,
+      "accuracy_passed": false,
+      "route_ms_per_image": 0.7408811399993283,
+      "route_ms_per_batch": 93.7824227847251,
+      "route_j_per_image": 0.0226898,
+      "route_latency_repeat_range_ms_per_image": [
+        0.7374995100000887,
+        0.7423987700005454
+      ],
+      "route_energy_repeat_range_j_per_image": [
+        0.0224865,
+        0.0227869
+      ],
+      "training_j": 195.008,
+      "eligible_static": {
+        "accuracy": 84.38,
+        "j_per_image": 0.0277365,
+        "ms_per_image": 0.9012008400008199,
+        "latency_saving_percent": 17.789563977919254,
+        "energy_saving_percent": 18.195158004795132,
+        "saved_j_per_image": 0.005046700000000001,
+        "mathematical_crossing_images": 38641,
+        "valid_payback_images": null,
+        "no_valid_payback_reason": "accuracy allowance failed"
+      },
+      "measurement_source": "historical larger-batch report",
+      "reference_fp32": {
+        "accuracy": 85.8,
+        "j_per_image": 0.1164853,
+        "ms_per_image": 3.733173489999899,
+        "latency_saving_percent": 80.15411975939676,
+        "energy_saving_percent": 80.52131899904967,
+        "saved_j_per_image": 0.0937955,
+        "mathematical_crossing_images": 2080,
+        "valid_payback_images": null,
+        "no_valid_payback_reason": "accuracy allowance failed"
+      }
+    },
+    {
+      "seed": 42,
+      "batch_size": 128,
+      "objective": "latency",
+      "budget_pp": 0.5,
+      "accuracy": 85.22999999999999,
+      "accuracy_loss_pp": 0.5700000000000074,
+      "accuracy_passed": false,
+      "route_ms_per_image": 1.4032071500027086,
+      "route_ms_per_batch": 177.62115822819098,
+      "route_j_per_image": 0.043670999999999995,
+      "route_latency_repeat_range_ms_per_image": [
+        1.4009390099992742,
+        1.4068057399970713
+      ],
+      "route_energy_repeat_range_j_per_image": [
+        0.043604000000000004,
+        0.0437685
+      ],
+      "training_j": 270.437,
+      "eligible_static": {
+        "accuracy": 85.85000000000001,
+        "j_per_image": 0.0472584,
+        "ms_per_image": 1.5218612499913433,
+        "latency_saving_percent": 7.796643747208205,
+        "energy_saving_percent": 7.591031435681285,
+        "saved_j_per_image": 0.0035874000000000045,
+        "mathematical_crossing_images": 75386,
+        "valid_payback_images": null,
+        "no_valid_payback_reason": "accuracy allowance failed"
+      },
+      "measurement_source": "historical larger-batch report",
+      "reference_fp32": {
+        "accuracy": 85.8,
+        "j_per_image": 0.1128221,
+        "ms_per_image": 3.5911521200003333,
+        "latency_saving_percent": 60.92598967925151,
+        "energy_saving_percent": 61.29215818532007,
+        "saved_j_per_image": 0.0691511,
+        "mathematical_crossing_images": 3911,
+        "valid_payback_images": null,
+        "no_valid_payback_reason": "accuracy allowance failed"
+      }
+    },
+    {
+      "seed": 45,
+      "batch_size": 128,
+      "objective": "latency",
+      "budget_pp": 0.5,
+      "accuracy": 84.93,
+      "accuracy_loss_pp": 0.8699999999999903,
+      "accuracy_passed": false,
+      "route_ms_per_image": 1.3425878000009106,
+      "route_ms_per_batch": 169.9478227849254,
+      "route_j_per_image": 0.041928,
+      "route_latency_repeat_range_ms_per_image": [
+        1.341573180007981,
+        1.3443893400079105
+      ],
+      "route_energy_repeat_range_j_per_image": [
+        0.041669,
+        0.042117
+      ],
+      "training_j": 201.185,
+      "eligible_static": {
+        "accuracy": 85.85000000000001,
+        "j_per_image": 0.0473706,
+        "ms_per_image": 1.5228804699960166,
+        "latency_saving_percent": 11.838924560873608,
+        "energy_saving_percent": 11.489404820711577,
+        "saved_j_per_image": 0.005442599999999999,
+        "mathematical_crossing_images": 36965,
+        "valid_payback_images": null,
+        "no_valid_payback_reason": "accuracy allowance failed"
+      },
+      "measurement_source": "historical larger-batch report",
+      "reference_fp32": {
+        "accuracy": 85.8,
+        "j_per_image": 0.11283119999999999,
+        "ms_per_image": 3.574806900013937,
+        "latency_saving_percent": 62.44306790401248,
+        "energy_saving_percent": 62.840065513794066,
+        "saved_j_per_image": 0.0709032,
+        "mathematical_crossing_images": 2838,
+        "valid_payback_images": null,
+        "no_valid_payback_reason": "accuracy allowance failed"
+      }
+    },
+    {
+      "seed": 48,
+      "batch_size": 128,
+      "objective": "latency",
+      "budget_pp": 0.5,
+      "accuracy": 85.19,
+      "accuracy_loss_pp": 0.6099999999999994,
+      "accuracy_passed": false,
+      "route_ms_per_image": 1.3863537399796768,
+      "route_ms_per_batch": 175.48781518730087,
+      "route_j_per_image": 0.0430116,
+      "route_latency_repeat_range_ms_per_image": [
+        1.385802349986625,
+        1.386692330002552
+      ],
+      "route_energy_repeat_range_j_per_image": [
+        0.0427418,
+        0.0431319
+      ],
+      "training_j": 195.008,
+      "eligible_static": {
+        "accuracy": 85.85000000000001,
+        "j_per_image": 0.047068,
+        "ms_per_image": 1.5235784399934347,
+        "latency_saving_percent": 9.006736798818773,
+        "energy_saving_percent": 8.618169456955897,
+        "saved_j_per_image": 0.004056400000000002,
+        "mathematical_crossing_images": 48075,
+        "valid_payback_images": null,
+        "no_valid_payback_reason": "accuracy allowance failed"
+      },
+      "measurement_source": "historical larger-batch report",
+      "reference_fp32": {
+        "accuracy": 85.8,
+        "j_per_image": 0.11353030000000001,
+        "ms_per_image": 3.599060240018298,
+        "latency_saving_percent": 61.48011848857999,
+        "energy_saving_percent": 62.114431125435246,
+        "saved_j_per_image": 0.07051870000000002,
+        "mathematical_crossing_images": 2766,
+        "valid_payback_images": null,
+        "no_valid_payback_reason": "accuracy allowance failed"
+      }
+    },
+    {
+      "seed": 42,
+      "batch_size": 128,
+      "objective": "latency",
+      "budget_pp": 1.0,
+      "accuracy": 84.02,
+      "accuracy_loss_pp": 1.7800000000000011,
+      "accuracy_passed": false,
+      "route_ms_per_image": 1.033155399991665,
+      "route_ms_per_batch": 130.77916455590696,
+      "route_j_per_image": 0.0320177,
+      "route_latency_repeat_range_ms_per_image": [
+        1.0324283200054196,
+        1.0340354099957039
+      ],
+      "route_energy_repeat_range_j_per_image": [
+        0.0319053,
+        0.0321494
+      ],
+      "training_j": 270.437,
+      "eligible_static": {
+        "accuracy": 85.85000000000001,
+        "j_per_image": 0.0473431,
+        "ms_per_image": 1.5228007799974876,
+        "latency_saving_percent": 32.154263803741316,
+        "energy_saving_percent": 32.37092628070404,
+        "saved_j_per_image": 0.015325399999999996,
+        "mathematical_crossing_images": 17647,
+        "valid_payback_images": null,
+        "no_valid_payback_reason": "accuracy allowance failed"
+      },
+      "measurement_source": "historical larger-batch report",
+      "reference_fp32": {
+        "accuracy": 85.8,
+        "j_per_image": 0.1131747,
+        "ms_per_image": 3.59049686997605,
+        "latency_saving_percent": 71.2252805835601,
+        "energy_saving_percent": 71.70948984181094,
+        "saved_j_per_image": 0.081157,
+        "mathematical_crossing_images": 3333,
+        "valid_payback_images": null,
+        "no_valid_payback_reason": "accuracy allowance failed"
+      }
+    },
+    {
+      "seed": 45,
+      "batch_size": 128,
+      "objective": "latency",
+      "budget_pp": 1.0,
+      "accuracy": 84.93,
+      "accuracy_loss_pp": 0.8699999999999903,
+      "accuracy_passed": true,
+      "route_ms_per_image": 1.3427896500070347,
+      "route_ms_per_batch": 169.97337341861197,
+      "route_j_per_image": 0.0419183,
+      "route_latency_repeat_range_ms_per_image": [
+        1.3425121600041166,
+        1.3470774000219534
+      ],
+      "route_energy_repeat_range_j_per_image": [
+        0.0415689,
+        0.0421908
+      ],
+      "training_j": 201.185,
+      "eligible_static": {
+        "accuracy": 85.85000000000001,
+        "j_per_image": 0.0471539,
+        "ms_per_image": 1.5230284600023878,
+        "latency_saving_percent": 11.834237818186972,
+        "energy_saving_percent": 11.10321733727221,
+        "saved_j_per_image": 0.0052356,
+        "mathematical_crossing_images": 38427,
+        "valid_payback_images": 38427,
+        "no_valid_payback_reason": null
+      },
+      "measurement_source": "historical larger-batch report",
+      "reference_fp32": {
+        "accuracy": 85.8,
+        "j_per_image": 0.11276099999999999,
+        "ms_per_image": 3.570349510005326,
+        "latency_saving_percent": 62.39052657886618,
+        "energy_saving_percent": 62.82553365081898,
+        "saved_j_per_image": 0.07084269999999998,
+        "mathematical_crossing_images": 2840,
+        "valid_payback_images": 2840,
+        "no_valid_payback_reason": null
+      }
+    },
+    {
+      "seed": 48,
+      "batch_size": 128,
+      "objective": "latency",
+      "budget_pp": 1.0,
+      "accuracy": 84.94,
+      "accuracy_loss_pp": 0.8599999999999994,
+      "accuracy_passed": true,
+      "route_ms_per_image": 1.2791617999930167,
+      "route_ms_per_batch": 161.91921518898945,
+      "route_j_per_image": 0.0397841,
+      "route_latency_repeat_range_ms_per_image": [
+        1.2774302799924044,
+        1.2803401200188091
+      ],
+      "route_energy_repeat_range_j_per_image": [
+        0.0394057,
+        0.0400382
+      ],
+      "training_j": 195.008,
+      "eligible_static": {
+        "accuracy": 85.85000000000001,
+        "j_per_image": 0.0472306,
+        "ms_per_image": 1.5228005099925213,
+        "latency_saving_percent": 15.999384581287082,
+        "energy_saving_percent": 15.766261703217818,
+        "saved_j_per_image": 0.007446499999999995,
+        "mathematical_crossing_images": 26188,
+        "valid_payback_images": 26188,
+        "no_valid_payback_reason": null
+      },
+      "measurement_source": "historical larger-batch report",
+      "reference_fp32": {
+        "accuracy": 85.8,
+        "j_per_image": 0.11253800000000001,
+        "ms_per_image": 3.582025110014365,
+        "latency_saving_percent": 64.28942397927838,
+        "energy_saving_percent": 64.64829657537898,
+        "saved_j_per_image": 0.07275390000000001,
+        "mathematical_crossing_images": 2681,
+        "valid_payback_images": 2681,
+        "no_valid_payback_reason": null
+      }
+    },
+    {
+      "seed": 42,
+      "batch_size": 128,
+      "objective": "latency",
+      "budget_pp": 1.5,
+      "accuracy": 84.02,
+      "accuracy_loss_pp": 1.7800000000000011,
+      "accuracy_passed": false,
+      "route_ms_per_image": 1.033744170013233,
+      "route_ms_per_batch": 130.85369240673836,
+      "route_j_per_image": 0.0319404,
+      "route_latency_repeat_range_ms_per_image": [
+        1.03346222002001,
+        1.0367214299680199
+      ],
+      "route_energy_repeat_range_j_per_image": [
+        0.0318711,
+        0.032252800000000005
+      ],
+      "training_j": 270.437,
+      "eligible_static": {
+        "accuracy": 85.85000000000001,
+        "j_per_image": 0.0472879,
+        "ms_per_image": 1.5225558799924328,
+        "latency_saving_percent": 32.10468110908541,
+        "energy_saving_percent": 32.455448433954565,
+        "saved_j_per_image": 0.0153475,
+        "mathematical_crossing_images": 17621,
+        "valid_payback_images": null,
+        "no_valid_payback_reason": "accuracy allowance failed"
+      },
+      "measurement_source": "historical larger-batch report",
+      "reference_fp32": {
+        "accuracy": 85.8,
+        "j_per_image": 0.11282529999999999,
+        "ms_per_image": 3.5836304899887184,
+        "latency_saving_percent": 71.15371763631558,
+        "energy_saving_percent": 71.69039213722453,
+        "saved_j_per_image": 0.08088489999999998,
+        "mathematical_crossing_images": 3344,
+        "valid_payback_images": null,
+        "no_valid_payback_reason": "accuracy allowance failed"
+      }
+    },
+    {
+      "seed": 45,
+      "batch_size": 128,
+      "objective": "latency",
+      "budget_pp": 1.5,
+      "accuracy": 83.93,
+      "accuracy_loss_pp": 1.8699999999999903,
+      "accuracy_passed": false,
+      "route_ms_per_image": 1.1106366099818843,
+      "route_ms_per_batch": 140.58691265593473,
+      "route_j_per_image": 0.0348402,
+      "route_latency_repeat_range_ms_per_image": [
+        1.1098320300137856,
+        1.1159605100256158
+      ],
+      "route_energy_repeat_range_j_per_image": [
+        0.0348067,
+        0.035213
+      ],
+      "training_j": 201.185,
+      "eligible_static": {
+        "accuracy": 85.85000000000001,
+        "j_per_image": 0.047185000000000005,
+        "ms_per_image": 1.5225740599940765,
+        "latency_saving_percent": 27.055330892330765,
+        "energy_saving_percent": 26.16255165836601,
+        "saved_j_per_image": 0.012344800000000003,
+        "mathematical_crossing_images": 16298,
+        "valid_payback_images": null,
+        "no_valid_payback_reason": "accuracy allowance failed"
+      },
+      "measurement_source": "historical larger-batch report",
+      "reference_fp32": {
+        "accuracy": 85.8,
+        "j_per_image": 0.1127368,
+        "ms_per_image": 3.570975030012778,
+        "latency_saving_percent": 68.898225256481,
+        "energy_saving_percent": 69.09598285564252,
+        "saved_j_per_image": 0.0778966,
+        "mathematical_crossing_images": 2583,
+        "valid_payback_images": null,
+        "no_valid_payback_reason": "accuracy allowance failed"
+      }
+    },
+    {
+      "seed": 48,
+      "batch_size": 128,
+      "objective": "latency",
+      "budget_pp": 1.5,
+      "accuracy": 84.94,
+      "accuracy_loss_pp": 0.8599999999999994,
+      "accuracy_passed": true,
+      "route_ms_per_image": 1.2773406600084853,
+      "route_ms_per_batch": 161.6886911403146,
+      "route_j_per_image": 0.039687099999999996,
+      "route_latency_repeat_range_ms_per_image": [
+        1.2756411900074454,
+        1.2778632199973798
+      ],
+      "route_energy_repeat_range_j_per_image": [
+        0.0391167,
+        0.0398223
+      ],
+      "training_j": 195.008,
+      "eligible_static": {
+        "accuracy": 84.38,
+        "j_per_image": 0.0267782,
+        "ms_per_image": 0.865026410005521,
+        "latency_saving_percent": -47.66493198749074,
+        "energy_saving_percent": -48.206750267008225,
+        "saved_j_per_image": -0.012908899999999997,
+        "mathematical_crossing_images": null,
+        "valid_payback_images": null,
+        "no_valid_payback_reason": "no positive energy saving"
+      },
+      "measurement_source": "historical larger-batch report",
+      "reference_fp32": {
+        "accuracy": 85.8,
+        "j_per_image": 0.112766,
+        "ms_per_image": 3.5850407300051303,
+        "latency_saving_percent": 64.37026086432614,
+        "energy_saving_percent": 64.80579252611602,
+        "saved_j_per_image": 0.0730789,
+        "mathematical_crossing_images": 2669,
+        "valid_payback_images": 2669,
+        "no_valid_payback_reason": null
+      }
+    },
+    {
+      "seed": 42,
+      "batch_size": 128,
+      "objective": "latency",
+      "budget_pp": 2.0,
+      "accuracy": 84.02,
+      "accuracy_loss_pp": 1.7800000000000011,
+      "accuracy_passed": true,
+      "route_ms_per_image": 1.0345446400140645,
+      "route_ms_per_batch": 130.9550177232993,
+      "route_j_per_image": 0.0319153,
+      "route_latency_repeat_range_ms_per_image": [
+        1.033158430014737,
+        1.037083560001338
+      ],
+      "route_energy_repeat_range_j_per_image": [
+        0.031687400000000004,
+        0.032174400000000006
+      ],
+      "training_j": 270.437,
+      "eligible_static": {
+        "accuracy": 85.85000000000001,
+        "j_per_image": 0.047323399999999995,
+        "ms_per_image": 1.5224360500171314,
+        "latency_saving_percent": 32.04675887683932,
+        "energy_saving_percent": 32.559156780789195,
+        "saved_j_per_image": 0.015408099999999994,
+        "mathematical_crossing_images": 17552,
+        "valid_payback_images": 17552,
+        "no_valid_payback_reason": null
+      },
+      "measurement_source": "historical larger-batch report",
+      "reference_fp32": {
+        "accuracy": 85.8,
+        "j_per_image": 0.1133242,
+        "ms_per_image": 3.587810279999394,
+        "latency_saving_percent": 71.16501266019453,
+        "energy_saving_percent": 71.83717158382764,
+        "saved_j_per_image": 0.0814089,
+        "mathematical_crossing_images": 3322,
+        "valid_payback_images": 3322,
+        "no_valid_payback_reason": null
+      }
+    },
+    {
+      "seed": 45,
+      "batch_size": 128,
+      "objective": "latency",
+      "budget_pp": 2.0,
+      "accuracy": 83.93,
+      "accuracy_loss_pp": 1.8699999999999903,
+      "accuracy_passed": true,
+      "route_ms_per_image": 1.1129043299966725,
+      "route_ms_per_batch": 140.8739658223636,
+      "route_j_per_image": 0.0351212,
+      "route_latency_repeat_range_ms_per_image": [
+        1.110153839996201,
+        1.116826639987994
+      ],
+      "route_energy_repeat_range_j_per_image": [
+        0.0347923,
+        0.0351517
+      ],
+      "training_j": 201.185,
+      "eligible_static": {
+        "accuracy": 85.85000000000001,
+        "j_per_image": 0.0471298,
+        "ms_per_image": 1.522832879985799,
+        "latency_saving_percent": 26.91881396683196,
+        "energy_saving_percent": 25.47984502374294,
+        "saved_j_per_image": 0.012008600000000001,
+        "mathematical_crossing_images": 16754,
+        "valid_payback_images": 16754,
+        "no_valid_payback_reason": null
+      },
+      "measurement_source": "historical larger-batch report",
+      "reference_fp32": {
+        "accuracy": 85.8,
+        "j_per_image": 0.1128327,
+        "ms_per_image": 3.572239139996236,
+        "latency_saving_percent": 68.84574950382955,
+        "energy_saving_percent": 68.87320785552414,
+        "saved_j_per_image": 0.07771149999999999,
+        "mathematical_crossing_images": 2589,
+        "valid_payback_images": 2589,
+        "no_valid_payback_reason": null
+      }
+    },
+    {
+      "seed": 48,
+      "batch_size": 128,
+      "objective": "latency",
+      "budget_pp": 2.0,
+      "accuracy": 82.25,
+      "accuracy_loss_pp": 3.549999999999997,
+      "accuracy_passed": false,
+      "route_ms_per_image": 0.6529828400030965,
+      "route_ms_per_batch": 82.65605569659449,
+      "route_j_per_image": 0.020348400000000003,
+      "route_latency_repeat_range_ms_per_image": [
+        0.6522143099922687,
+        0.6546007800032385
+      ],
+      "route_energy_repeat_range_j_per_image": [
+        0.0202559,
+        0.0205662
+      ],
+      "training_j": 195.008,
+      "eligible_static": {
+        "accuracy": 84.38,
+        "j_per_image": 0.0269895,
+        "ms_per_image": 0.8647772100084694,
+        "latency_saving_percent": 24.49120623834417,
+        "energy_saving_percent": 24.60623575835046,
+        "saved_j_per_image": 0.006641099999999997,
+        "mathematical_crossing_images": 29364,
+        "valid_payback_images": null,
+        "no_valid_payback_reason": "accuracy allowance failed"
+      },
+      "measurement_source": "historical larger-batch report",
+      "reference_fp32": {
+        "accuracy": 85.8,
+        "j_per_image": 0.1129157,
+        "ms_per_image": 3.5955612299963833,
+        "latency_saving_percent": 81.83919565725895,
+        "energy_saving_percent": 81.97912247809649,
+        "saved_j_per_image": 0.09256729999999999,
+        "mathematical_crossing_images": 2107,
+        "valid_payback_images": null,
+        "no_valid_payback_reason": "accuracy allowance failed"
+      }
+    }
+  ],
+  "input_hashes": {
+    "C:\\Users\\Eren\\Desktop\\tez\\energy-efficient-edge-ai\\pc_tests\\model_pipeline\\reports\\pc_routes_correctness.json": "4e645a0a1398fc5df130ee2c84a182ae8ffe30f9e57157661b4fd8c8c2755783",
+    "C:\\Users\\Eren\\Desktop\\tez\\energy-efficient-edge-ai\\pc_tests\\model_pipeline\\reports\\correctness_training_energy_20261028\\audited_summary.json": "29fac451a4b623266c457184529cca10c348805eb2a8bb500bb24f5181f39be8",
+    "C:\\Users\\Eren\\Desktop\\tez\\energy-efficient-edge-ai\\pc_tests\\model_pipeline\\artifacts\\correctness_training_energy_20261028\\training_energy.json": "f971e00256d18895c334c0e0509ed06e61c2f27886b789bac45069ee3e44ec4f"
+  },
+  "analysis_sha256": "d62476823e4e012c2987e14a0d562244e3f288a1b6341b99084adc72ceae7899",
+  "figures": [
+    "batch_size_accuracy_latency_energy.png",
+    "eligible_static_savings_heatmaps.png",
+    "accuracy_cost_tradeoffs.png",
+    "payback_by_batch.png",
+    "cumulative_gpu_energy.png"
+  ],
+  "matplotlib_version": "3.11.2",
+  "caveat": "GPU-only fit-energy repeat, not full preparation/whole-PC; historical inference and new training/b1 are separate sessions with nonstationary GPU conditions. No test-label tuning or retrospective best-seed selection. Seed variation mixes training/split/batching. No precise statistical confidence claim.",
+  "per_image_cached_prediction_parity": "Not established for batch1: actual runtime accuracy is used; no cached predictions substitute for timed inference."
+}

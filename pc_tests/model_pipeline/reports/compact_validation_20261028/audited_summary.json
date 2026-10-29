@@ -1,0 +1,87 @@
+{
+  "audit_passed": true,
+  "report_sha256": "cc5e114a38fa39dc601b212b786cbe5e8fe41b3d705a7690a584904124b55ec4",
+  "rows": 84,
+  "validation_images_per_engine": 5000,
+  "models": [
+    {
+      "name": "resnet101__p0__fp32",
+      "dedicated_validation_accuracy": 85.88,
+      "original_cached_validation_accuracy": 85.88,
+      "changes_vs_original_cached": 0,
+      "quarantined": false,
+      "supported_adapter_modes": [
+        "file",
+        "hostbytes",
+        "shared_buffers",
+        "cuda_graph"
+      ]
+    },
+    {
+      "name": "resnet101__p0__fp16",
+      "dedicated_validation_accuracy": 85.86,
+      "original_cached_validation_accuracy": 85.8,
+      "changes_vs_original_cached": 16,
+      "quarantined": false,
+      "supported_adapter_modes": [
+        "file",
+        "hostbytes",
+        "shared_buffers",
+        "cuda_graph"
+      ]
+    },
+    {
+      "name": "efficientnet_b0__p0__fp16",
+      "dedicated_validation_accuracy": 83.08,
+      "original_cached_validation_accuracy": 83.14,
+      "changes_vs_original_cached": 7,
+      "quarantined": false,
+      "supported_adapter_modes": [
+        "file",
+        "hostbytes",
+        "shared_buffers",
+        "cuda_graph"
+      ]
+    },
+    {
+      "name": "resnet34__p0__int8",
+      "dedicated_validation_accuracy": 68.06,
+      "original_cached_validation_accuracy": 73.83999999999999,
+      "changes_vs_original_cached": 1529,
+      "quarantined": true,
+      "supported_adapter_modes": [
+        "file",
+        "hostbytes",
+        "shared_buffers",
+        "cuda_graph"
+      ]
+    },
+    {
+      "name": "mobilenetv3_large__p10__fp16",
+      "dedicated_validation_accuracy": 75.58,
+      "original_cached_validation_accuracy": 75.7,
+      "changes_vs_original_cached": 25,
+      "quarantined": false,
+      "supported_adapter_modes": [
+        "file",
+        "hostbytes",
+        "shared_buffers",
+        "cuda_graph"
+      ]
+    },
+    {
+      "name": "resnet18__p10__fp16",
+      "dedicated_validation_accuracy": 72.68,
+      "original_cached_validation_accuracy": 72.72,
+      "changes_vs_original_cached": 20,
+      "quarantined": false,
+      "supported_adapter_modes": [
+        "file",
+        "hostbytes",
+        "shared_buffers",
+        "cuda_graph"
+      ]
+    }
+  ],
+  "note": "Intermediate partial files were renamed/replaced; only final arrays are durable/hash-audited. Cached-vs-new differences are descriptive, not isolated profile effects. No heldout/timing gain claim."
+}

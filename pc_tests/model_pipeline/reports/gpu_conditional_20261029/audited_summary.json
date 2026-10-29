@@ -1,0 +1,46 @@
+{
+  "audit_passed": true,
+  "report_sha256": "bcd2820b75d6e2fbad3b6a8f4d440a1bc963f270a7ed0853b5e4d5c3e56c69cd",
+  "rows": 15,
+  "branch_execution_verified": true,
+  "parity": {
+    "images": 512,
+    "max_abs_logit_error": 1.7881393432617188e-05,
+    "class_changes": 0,
+    "cpu_vs_gpu_choice_mismatches": 0,
+    "branches_seen": [
+      0,
+      1
+    ]
+  },
+  "measurements": {
+    "cpu_dispatch": {
+      "median_ms": 3.955338867186242,
+      "range_ms": [
+        3.5617636718754397,
+        4.083263281252414
+      ],
+      "median_gpu_j_per_image": 0.228630859375
+    },
+    "gpu_conditional": {
+      "median_ms": 4.12294394531898,
+      "range_ms": [
+        3.9606128906299887,
+        4.448693359371703
+      ],
+      "median_gpu_j_per_image": 0.27144921875
+    },
+    "both_eager": {
+      "median_ms": 6.59640449218557,
+      "range_ms": [
+        6.388307421879347,
+        6.845427343748156
+      ],
+      "median_gpu_j_per_image": 0.433966796875
+    }
+  },
+  "gpu_vs_cpu_latency_saving_percent": -4.2374391616152085,
+  "gpu_vs_both_eager_latency_saving_percent": 37.49710239565774,
+  "scope": "TwoFP32classifiers/sameoldseed42CNN, actualnativeIfGPUconditionandtypedbranchoutput, onlyselectedclassifiercomputes.512validationimages,3repeats. No intermediatebranchIDreadback intimedGPUmode; finalCPUclassmatched.",
+  "limitations": "Engineeringmedianbias fromcalibrationdeliberatelyexercisesbothbranches; NOT validated1ppdeploymentpolicy orheldouttestaccuracy. Both-eager isnegativecontrol, notstandardrouterbaseline. GenuineGPUcontrol neednotbefasterthanCPUdispatch. Runtimeprofilerremovedbynewcontextbeforetiming. GPU-onlyenergy excludesCPU. No general213modelorallarchitectureclaim."
+}
