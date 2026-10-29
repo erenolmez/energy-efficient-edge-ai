@@ -3,7 +3,7 @@
   "verification": {
     "cpu_tests_passed": 38,
     "cuda_devices_hidden": true,
-    "report_pages": 4,
+    "report_pages": 3,
     "report_verifier_passed": true
   },
   "limitations": "Recompiling supplied TeX needs only report assets; replaying measurements/audits needs separately retained local data/engines/raw reports. Local launchers contain exact-identity/thermal controls and may request shutdown; do not run as generic examples. Cancelled full batch1 baseline remains cancelled.",
@@ -645,38 +645,43 @@
     },
     {
       "path": "progress_reports/2026-10-29/PUBLICATION.md",
-      "bytes": 3583,
-      "sha256": "164a47828f8180db61f3086c2607febfa1310931647c610a4cd0b7d4123715b3"
+      "bytes": 3594,
+      "sha256": "5ad50564fbaf317fef51ba3d2593da7e81e356b610cf5db9c19c3e77e4fab77e"
     },
     {
       "path": "progress_reports/2026-10-29/README.md",
-      "bytes": 2133,
-      "sha256": "d3de438236f03bf1cdaf8cfd10fa373499ec1eb6d1739aae5ae9152c5b10a5dc"
+      "bytes": 3535,
+      "sha256": "bdef338a8bf0d7bfdbadd0ae6dee22dab420e770f7272416b9451d492b032e76"
+    },
+    {
+      "path": "progress_reports/2026-10-29/accuracy_sensitivity.tex",
+      "bytes": 332,
+      "sha256": "7da74498db36bdc77a027f8159fda38649a61475a283eab314e54dee8ce4ab06"
     },
     {
       "path": "progress_reports/2026-10-29/batch1_example.tex",
-      "bytes": 469,
-      "sha256": "c5fe5d27812822fc5d0eae4f2b85301410b3223434c6a3b5676c885e901f2286"
+      "bytes": 411,
+      "sha256": "ef2b2ad8a420b373493c929166d43daec08af673039826e09a726574d5cca8d2"
     },
     {
       "path": "progress_reports/2026-10-29/batch_statistics.tex",
-      "bytes": 622,
-      "sha256": "e9680e79a80e3d57b7631354fccb6f088db36b522acd873b7d07e78ac8c77c92"
+      "bytes": 626,
+      "sha256": "485d571be6bb2faf75ee77c0af51e5dff06dae7bd958bc03c567510169883545"
     },
     {
       "path": "progress_reports/2026-10-29/build_report_assets.py",
-      "bytes": 12573,
-      "sha256": "ebcbde4202dc39ee40dc19cf6084cc45436fd5e60c428961a824e7e429b7fa95"
+      "bytes": 17614,
+      "sha256": "33e534757009caf32d8a3219c5325a7bf705ec1e5626168b503858006092b246"
     },
     {
       "path": "progress_reports/2026-10-29/compact_statistics.tex",
-      "bytes": 576,
-      "sha256": "5a012e11453b3d5720297b14945851901956c730d3892c0967879a4e8b0056c7"
+      "bytes": 630,
+      "sha256": "2f1d1ecbe31ea97024205a6a0ae921ef20fc8530882ee110a0435b5282ca2239"
     },
     {
       "path": "progress_reports/2026-10-29/format_report.py",
-      "bytes": 1023,
-      "sha256": "7713f9e8bcc0be3648c1b7c14994885184151c48280cecb2e846e687df2eb355"
+      "bytes": 1088,
+      "sha256": "3b223118e90da42fc7e9441fd4c98b744f615a305d72c272534fee6baaa6e26f"
     },
     {
       "path": "progress_reports/2026-10-29/images/batch8_grouping.png",
@@ -685,13 +690,13 @@
     },
     {
       "path": "progress_reports/2026-10-29/images/batch_comparison.pdf",
-      "bytes": 20925,
-      "sha256": "69260fd8c5eaa7b6f1df3ee427e466aaf78138212e7b38dd7eed57b9b64222b1"
+      "bytes": 26144,
+      "sha256": "c2538b8a4d1fd9e9496badf7c18f312e539045f26a52bc96d43cccb6a102241d"
     },
     {
       "path": "progress_reports/2026-10-29/images/batch_comparison.png",
-      "bytes": 65280,
-      "sha256": "71d3b74a1f0a99b495918a37be89b856830af5387fc16eb3cbae24ff4266c010"
+      "bytes": 73913,
+      "sha256": "2449e3ec902e5a4f64d14d3664574b35faa4ceafb4f0d34b9eef952fe3be805d"
     },
     {
       "path": "progress_reports/2026-10-29/images/dispatch_conditional.png",
@@ -701,7 +706,7 @@
     {
       "path": "progress_reports/2026-10-29/images/payback_comparison.pdf",
       "bytes": 32429,
-      "sha256": "33ddd7c5c82ed0ebad7c272c7a2dbd8976ba889730017428a8199e7a98010d46"
+      "sha256": "d28f3a6f6e8f75a851ff68ddd9a6d3e3ed5b73a9961d76acdaa34151108e7171"
     },
     {
       "path": "progress_reports/2026-10-29/images/payback_comparison.png",
@@ -714,19 +719,9 @@
       "sha256": "1cf52af6cdd203d64bb9a37d123c41739ea947ab5b6fd9277ca7a510f5f3f1be"
     },
     {
-      "path": "progress_reports/2026-10-29/main.pdf",
-      "bytes": 394425,
-      "sha256": "a14993fa1829f3de06f4c985d36c263f58304f993a14b11e3db65c81fb70bb2d"
-    },
-    {
-      "path": "progress_reports/2026-10-29/main.tex",
-      "bytes": 13983,
-      "sha256": "a58ebbc14564af9e20edb3ce367bcffcc4d17deb29b36d766a8f438426a64031"
-    },
-    {
       "path": "progress_reports/2026-10-29/optimized_payback.tex",
-      "bytes": 394,
-      "sha256": "e3f6ea6d99100a1d9fa9cdb2c8836aa2b3997ab7cef19b8d2ab4993c9db11be9"
+      "bytes": 333,
+      "sha256": "5d65570a9a057630b87e2807abfb3ab19eea1c6ebdd3a7a64d22f637259c4017"
     },
     {
       "path": "progress_reports/2026-10-29/payback_example.tex",
@@ -735,38 +730,53 @@
     },
     {
       "path": "progress_reports/2026-10-29/payback_statistics.tex",
-      "bytes": 519,
-      "sha256": "fa5696581dc1c9f8bc951355aafe36f49c9f6d27b66771232ab990f0403268be"
+      "bytes": 671,
+      "sha256": "aac37aca300e78107835a5baada187b50656505f11f500e4071fdf2bb8fcdc3f"
     },
     {
       "path": "progress_reports/2026-10-29/prepare_publication.py",
-      "bytes": 4034,
-      "sha256": "500eacf3eb3cb161da66ffda16c7a78a499aba9ff9da995f1448358ad761b2dd"
+      "bytes": 4228,
+      "sha256": "9a7b2a4f96d09651170526bf46d4e40efb1a202080cc0d91ab3e3cdb1b680008"
+    },
+    {
+      "path": "progress_reports/2026-10-29/progress_report.pdf",
+      "bytes": 111420,
+      "sha256": "9493c5dc58b487784eaa6fe5f8cc4e7f1627cb62a5972a737e43c0ec66e647ab"
+    },
+    {
+      "path": "progress_reports/2026-10-29/progress_report.tex",
+      "bytes": 10061,
+      "sha256": "23cc6a7e39feca1557da055f84e2d9a6575fcbf8635c2fbfe39e50fbcf29f933"
     },
     {
       "path": "progress_reports/2026-10-29/report_checks.json",
-      "bytes": 710,
-      "sha256": "c49a63f3addedfe4f33ac605c5cedce45327459bf4d2a5456989e0233ce682da"
+      "bytes": 801,
+      "sha256": "8006049d36bb52e434d320ae71883b128b9f00258d3d3cffb4ab7718a5cf7168"
     },
     {
       "path": "progress_reports/2026-10-29/report_data.json",
-      "bytes": 107639,
-      "sha256": "ceaf3519d6af2853e55627f76b049ec3c3d92c9b0dd238897cc4a5634b212ba9"
+      "bytes": 114900,
+      "sha256": "cad6f31e5b39a1951c6966f4057f99a30a2ba83ea8f8247115100b4bbfdb888a"
+    },
+    {
+      "path": "progress_reports/2026-10-29/runtime_explanations.tex",
+      "bytes": 1921,
+      "sha256": "6ae7f870decceda54ed4a8f813be8991554cc120b0630b2a387a28075483c4b1"
     },
     {
       "path": "progress_reports/2026-10-29/switching_statistics.tex",
-      "bytes": 532,
-      "sha256": "b6be78fe474b573ec0c043f4d44b4abb8ab0f9eb0d8813051ca9dae759d17bdb"
+      "bytes": 580,
+      "sha256": "2809026225f44044ff77375140cfeb3d3bd4fd142eae2c5efc28788716118279"
     },
     {
       "path": "progress_reports/2026-10-29/verify_publication.py",
-      "bytes": 1561,
-      "sha256": "69e067d137dc896ec537339d20a3ab471ee29eee1cc2d1c78d3c65d319e880fa"
+      "bytes": 1686,
+      "sha256": "da74ed18e3b17bf1fe247d3dbe784aed6ef3de14634e9d78f30a9b153e011b93"
     },
     {
       "path": "progress_reports/2026-10-29/verify_report.py",
-      "bytes": 3459,
-      "sha256": "e157e3ebae14459e4c42218124ca61c16ac02a1af6b80048859f445a0c08cd5c"
+      "bytes": 4741,
+      "sha256": "b092dbedc2855ddb65fddb85a7fed9ff08a5e932026ed1534b10e31c0a795b75"
     },
     {
       "path": "tests/test_ablation_design.py",

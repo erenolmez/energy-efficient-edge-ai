@@ -2,7 +2,7 @@
 import re
 from pathlib import Path
 root=Path(__file__).resolve().parent
-for name in ('main.tex','payback_example.tex','batch1_example.tex','optimized_payback.tex'):
+for name in ('progress_report.tex','payback_example.tex','batch1_example.tex','optimized_payback.tex','accuracy_sensitivity.tex','runtime_explanations.tex'):
     p=root/name
     text=p.read_text(encoding='utf-8')
     text='\n'.join(line if line.startswith(('\\definecolor','\\documentclass','\\usepackage','\\input','\\begin{center}\\includegraphics')) else re.sub(r'(?<=[A-Za-z])(?=\d)|(?<=\d)(?=[A-Za-z])',' ',line) for line in text.splitlines())+'\n'

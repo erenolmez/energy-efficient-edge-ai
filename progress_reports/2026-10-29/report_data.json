@@ -179,6 +179,296 @@
       "j_image": 0.0397841
     }
   ],
+  "comparison_baseline_rows": [
+    {
+      "series": "eligible_static",
+      "batch": 1,
+      "seed": 42,
+      "accuracy": 85.85000000000001,
+      "ms_image": 4.36697254999981,
+      "j_image": 0.2173951
+    },
+    {
+      "series": "eligible_static",
+      "batch": 1,
+      "seed": 45,
+      "accuracy": 85.85000000000001,
+      "ms_image": 4.891263349999645,
+      "j_image": 0.1973163
+    },
+    {
+      "series": "eligible_static",
+      "batch": 1,
+      "seed": 48,
+      "accuracy": 85.85000000000001,
+      "ms_image": 5.098799080000208,
+      "j_image": 0.19159149999999997
+    },
+    {
+      "series": "eligible_static",
+      "batch": 8,
+      "seed": 42,
+      "accuracy": 85.85000000000001,
+      "ms_image": 1.1314297199773136,
+      "j_image": 0.0417501
+    },
+    {
+      "series": "eligible_static",
+      "batch": 8,
+      "seed": 45,
+      "accuracy": 85.85000000000001,
+      "ms_image": 1.576625429984415,
+      "j_image": 0.049758300000000005
+    },
+    {
+      "series": "eligible_static",
+      "batch": 8,
+      "seed": 48,
+      "accuracy": 85.85000000000001,
+      "ms_image": 1.576681990045472,
+      "j_image": 0.0498029
+    },
+    {
+      "series": "eligible_static",
+      "batch": 16,
+      "seed": 42,
+      "accuracy": 85.85000000000001,
+      "ms_image": 0.7387628500175196,
+      "j_image": 0.0312067
+    },
+    {
+      "series": "eligible_static",
+      "batch": 16,
+      "seed": 45,
+      "accuracy": 85.85000000000001,
+      "ms_image": 1.3460776400344912,
+      "j_image": 0.0421747
+    },
+    {
+      "series": "eligible_static",
+      "batch": 16,
+      "seed": 48,
+      "accuracy": 85.85000000000001,
+      "ms_image": 1.3438956600235543,
+      "j_image": 0.0421836
+    },
+    {
+      "series": "eligible_static",
+      "batch": 32,
+      "seed": 42,
+      "accuracy": 85.85000000000001,
+      "ms_image": 1.2278841899940744,
+      "j_image": 0.0380808
+    },
+    {
+      "series": "eligible_static",
+      "batch": 32,
+      "seed": 45,
+      "accuracy": 85.85000000000001,
+      "ms_image": 1.2283806600025855,
+      "j_image": 0.0381334
+    },
+    {
+      "series": "eligible_static",
+      "batch": 32,
+      "seed": 48,
+      "accuracy": 85.85000000000001,
+      "ms_image": 1.227625579989399,
+      "j_image": 0.0381733
+    },
+    {
+      "series": "eligible_static",
+      "batch": 64,
+      "seed": 42,
+      "accuracy": 85.85000000000001,
+      "ms_image": 1.3607722799992188,
+      "j_image": 0.0421712
+    },
+    {
+      "series": "eligible_static",
+      "batch": 64,
+      "seed": 45,
+      "accuracy": 85.85000000000001,
+      "ms_image": 1.3606440799776465,
+      "j_image": 0.042347199999999995
+    },
+    {
+      "series": "eligible_static",
+      "batch": 64,
+      "seed": 48,
+      "accuracy": 85.85000000000001,
+      "ms_image": 1.3624827900173841,
+      "j_image": 0.042278300000000005
+    },
+    {
+      "series": "eligible_static",
+      "batch": 128,
+      "seed": 42,
+      "accuracy": 85.85000000000001,
+      "ms_image": 1.5228007799974876,
+      "j_image": 0.0473431
+    },
+    {
+      "series": "eligible_static",
+      "batch": 128,
+      "seed": 45,
+      "accuracy": 85.85000000000001,
+      "ms_image": 1.5230284600023878,
+      "j_image": 0.0471539
+    },
+    {
+      "series": "eligible_static",
+      "batch": 128,
+      "seed": 48,
+      "accuracy": 85.85000000000001,
+      "ms_image": 1.5228005099925213,
+      "j_image": 0.0472306
+    },
+    {
+      "series": "reference_fp32",
+      "batch": 1,
+      "seed": 42,
+      "accuracy": 85.8,
+      "ms_image": 8.16870974999947,
+      "j_image": 0.3481643
+    },
+    {
+      "series": "reference_fp32",
+      "batch": 1,
+      "seed": 45,
+      "accuracy": 85.8,
+      "ms_image": 8.96683548999972,
+      "j_image": 0.35036160000000005
+    },
+    {
+      "series": "reference_fp32",
+      "batch": 1,
+      "seed": 48,
+      "accuracy": 85.8,
+      "ms_image": 9.246705910000127,
+      "j_image": 0.34941160000000004
+    },
+    {
+      "series": "reference_fp32",
+      "batch": 8,
+      "seed": 42,
+      "accuracy": 85.8,
+      "ms_image": 2.7599267299927304,
+      "j_image": 0.1147365
+    },
+    {
+      "series": "reference_fp32",
+      "batch": 8,
+      "seed": 45,
+      "accuracy": 85.8,
+      "ms_image": 4.032022349946783,
+      "j_image": 0.12529949999999998
+    },
+    {
+      "series": "reference_fp32",
+      "batch": 8,
+      "seed": 48,
+      "accuracy": 85.8,
+      "ms_image": 4.030949100066209,
+      "j_image": 0.1253292
+    },
+    {
+      "series": "reference_fp32",
+      "batch": 16,
+      "seed": 42,
+      "accuracy": 85.8,
+      "ms_image": 2.190013909977279,
+      "j_image": 0.10042910000000001
+    },
+    {
+      "series": "reference_fp32",
+      "batch": 16,
+      "seed": 45,
+      "accuracy": 85.8,
+      "ms_image": 3.673168090026593,
+      "j_image": 0.114326
+    },
+    {
+      "series": "reference_fp32",
+      "batch": 16,
+      "seed": 48,
+      "accuracy": 85.8,
+      "ms_image": 3.676858310017269,
+      "j_image": 0.1141683
+    },
+    {
+      "series": "reference_fp32",
+      "batch": 32,
+      "seed": 42,
+      "accuracy": 85.8,
+      "ms_image": 3.636671600022237,
+      "j_image": 0.1146725
+    },
+    {
+      "series": "reference_fp32",
+      "batch": 32,
+      "seed": 45,
+      "accuracy": 85.8,
+      "ms_image": 3.6499860299867577,
+      "j_image": 0.1152994
+    },
+    {
+      "series": "reference_fp32",
+      "batch": 32,
+      "seed": 48,
+      "accuracy": 85.8,
+      "ms_image": 3.6253758599807044,
+      "j_image": 0.11374179999999999
+    },
+    {
+      "series": "reference_fp32",
+      "batch": 64,
+      "seed": 42,
+      "accuracy": 85.8,
+      "ms_image": 3.592063579999376,
+      "j_image": 0.1136494
+    },
+    {
+      "series": "reference_fp32",
+      "batch": 64,
+      "seed": 45,
+      "accuracy": 85.8,
+      "ms_image": 3.5857222599879606,
+      "j_image": 0.11333610000000001
+    },
+    {
+      "series": "reference_fp32",
+      "batch": 64,
+      "seed": 48,
+      "accuracy": 85.8,
+      "ms_image": 3.5974997900106245,
+      "j_image": 0.11355309999999999
+    },
+    {
+      "series": "reference_fp32",
+      "batch": 128,
+      "seed": 42,
+      "accuracy": 85.8,
+      "ms_image": 3.59049686997605,
+      "j_image": 0.1131747
+    },
+    {
+      "series": "reference_fp32",
+      "batch": 128,
+      "seed": 45,
+      "accuracy": 85.8,
+      "ms_image": 3.570349510005326,
+      "j_image": 0.11276099999999999
+    },
+    {
+      "series": "reference_fp32",
+      "batch": 128,
+      "seed": 48,
+      "accuracy": 85.8,
+      "ms_image": 3.582025110014365,
+      "j_image": 0.11253800000000001
+    }
+  ],
   "payback_by_batch_all_settings": [
     {
       "batch": 1,
@@ -940,6 +1230,14 @@
       "payback_reason_vs_eligible": "Not applicable, accuracy fails or energy saving nonpositive"
     }
   ],
+  "accuracy_sensitivity": {
+    "scope": "Descriptive2pp reassessment of unchanged1pp-calibrated policies and controls; not a new run or calibration.",
+    "compact_cases": 15,
+    "compact_accuracy_passes_1pp": 5,
+    "compact_accuracy_passes_2pp": 15,
+    "compact_joint_savings_passes_1pp": 0,
+    "compact_joint_savings_passes_2pp": 4
+  },
   "switching": {
     "audit_passed": true,
     "report_sha256": "82bf9ccfdcc36cf814aa10f94cc9671b42dd1dd853e21e7fb65ed9ed77d5901e",

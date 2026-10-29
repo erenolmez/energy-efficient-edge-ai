@@ -9,7 +9,12 @@ groups=['pc_tests/model_pipeline/'+x+'/' for x in ('analysis','experiments','run
 excluded={'request_completion_shutdown.py','record_compact_completion.py','snapshot_experiment_pause.py','resume_experiment_checkpoint.py'}
 selected={p for p in new if any(p.startswith(g) for g in groups) and Path(p).suffix in ('.py','.ps1') and Path(p).name not in excluded}
 previous=ROOT/'code_manifest.json'
-if previous.exists():selected.update(r['path'] for r in json.loads(previous.read_text())['files'])
+if previous.exists():
+    for record in json.loads(previous.read_text())['files']:
+        rel=record['path']
+        if rel in ('progress_reports/2026-10-29/main.tex','progress_reports/2026-10-29/main.pdf'):
+            rel=rel.replace('/main.','/progress_report.')
+        selected.add(rel)
 tests=('ablation_design','atomic_checkpoint','b1_engine_profiles','compact_b1','compact_subset','conditional_onnx','correctness_b1','correctness_payback','correctness_training_energy','device_selection','experiment_guard','gpu_residency','grouped_dispatch')
 selected.update('tests/test_'+n+'.py' for n in tests)
 studies=('b1_engine_profiles_20261028','b1_int8_diagnostic_20261028','batch8_grouping_20261029','compact_b1_20261028','compact_resident_screen_20261028','compact_runtime_profile_20261028','compact_switching_confirmation_20261028','compact_switching_pilot_20261028','compact_validation_20261028','correctness_training_energy_20261028','dispatch_controls_20261029','gpu_conditional_20261029','gpu_dispatch_20261028','gpu_residency_20261028','router_supervision_screen_20261029','supervision_deployment_20261029')
@@ -35,7 +40,7 @@ for rel in sorted(selected):
     files.append(dict(path=rel,bytes=p.stat().st_size,sha256=hashlib.sha256(p.read_bytes()).hexdigest()))
 assert sum(r['bytes'] for r in files)<15_000_000
 manifest=dict(scope='29 October report, related PC experiment/runtime/analysis/launcher code, CPU tests and small audited numerical summaries. Excludes unrelated changes, datasets, engines/weights/prediction arrays, raw study checkpoints and shutdown/pause receipts.',
-    verification=dict(cpu_tests_passed=38,cuda_devices_hidden=True,report_pages=4,report_verifier_passed=True),
+    verification=dict(cpu_tests_passed=38,cuda_devices_hidden=True,report_pages=3,report_verifier_passed=True),
     limitations='Recompiling supplied TeX needs only report assets; replaying measurements/audits needs separately retained local data/engines/raw reports. Local launchers contain exact-identity/thermal controls and may request shutdown; do not run as generic examples. Cancelled full batch1 baseline remains cancelled.',files=files)
 (ROOT/'code_manifest.json').write_text(json.dumps(manifest,indent=2),encoding='utf-8')
 print(json.dumps(dict(files=len(files),bytes=sum(r['bytes'] for r in files)),indent=2))

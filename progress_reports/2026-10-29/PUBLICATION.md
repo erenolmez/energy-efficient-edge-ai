@@ -2,8 +2,8 @@
 
 ## Published material
 
-- `main.tex`, included numerical tables, report figures and the compiled four-page
-  `main.pdf`; source reports from October13/20 are referenced, not replaced.
+- `progress_report.tex`, included numerical tables, report figures and the compiled
+  three-page `progress_report.pdf`; October13/20 sources are referenced, not replaced.
 - PC experiment implementations under `pc_tests/model_pipeline/experiments/`:
   training-energy measurement, residency probing, dedicated-engine profiles and
   INT8 diagnosis, compact-router preparation and inference, switching pilots and

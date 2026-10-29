@@ -1,0 +1,9 @@
+\textbf{1. Load engine files; keep only two models on GPU.} When the selected model is missing from GPU memory, read its engine file, create its execution context and evict a model if necessary. Selection is dynamic, but repeated switching is expensive. Measured total latency: 15.91--23.15 ms/image; GPU energy: 528.9--806.3 mJ/image.
+
+\textbf{2. Cache engine bytes in CPU RAM and reuse allocations.} Keep verified engine bytes in system RAM to avoid repeated disk reads, reuse buffers and reduce forced cleanup. Only two models are resident on GPU, so misses still require GPU deserialization. The same per-seed choices are preserved. Measured total latency: 7.61--8.20 ms/image; GPU energy: 243.8--285.0 mJ/image.
+
+\textbf{3. Keep all six models on GPU; execute normally.} Load every classifier, its context and buffers before timing. The router can switch among them without warm-run loading or eviction. Eager means ordinary per-inference execution calls, without a captured graph. Measured total latency: 6.66--7.73 ms/image; GPU energy: 197.0--351.6 mJ/image.
+
+\textbf{4. Keep all six models on GPU and replay CUDA Graphs.} In addition to residency, capture GPU work once and replay it to reduce repeated launch overhead. Seed 42 recorded 9.07 \% latency and 4.20 \% GPU-energy savings against graph-enabled eligible static. It meets 1 pp; all three seeds meet 2 pp, but not every repeat improves timing. Measured total latency: 6.07--6.42 ms/image; GPU energy: 190.1--215.3 mJ/image.
+
+\textbf{5. Penalize model switches during selection.} Combine RAM-byte caching with a policy that charges the measured cost of a cache miss. All three seeds then choose R101 FP16 for every image: switching disappears, but selection is constant rather than input-dependent. This is not evidence that dynamic routing beats static selection. Measured total latency: 6.02--6.94 ms/image; GPU energy: 207.4--222.1 mJ/image.
