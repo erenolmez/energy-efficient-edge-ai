@@ -57,7 +57,20 @@ def main():
     print(f"Recorded epoch progress: ~{completed_epochs}/{plan['maximum_training_epochs']} "
           f"({100*completed_epochs/plan['maximum_training_epochs']:.2f}%)")
     if (root / "investigate_stop.json").exists():
-        print("STOP: unexpected failure needs investigation; no automatic retry")
+        from hpc.clean_protocol import file_hash
+        recovery = root / "recoveries/gpu_step_v1"
+        receipt = json.loads((recovery/"receipt.json").read_text()) if (recovery/"receipt.json").exists() else {}
+        if (receipt.get("status") == "verified"
+            and receipt.get("retained_stop_sha256") == file_hash(root/"investigate_stop.json")):
+            print("Legacy stop retained. GPU-step recovery audit verified; new worker starts still require scheduler evidence.")
+            print("Case2 failed attempt preserved in recoveries/gpu_step_v1; not counted as a successful run.")
+            if (recovery/"submission.json").exists():
+                submitted = json.loads((recovery/"submission.json").read_text())
+                print("Recovery jobs:", ", ".join(x["job_id"] for x in submitted["jobs"]))
+            if (recovery/"stop.json").exists():
+                print("STOP: GPU-step recovery hit a new error; inspect recoveries/gpu_step_v1/stop.json")
+        else:
+            print("STOP: unexpected failure needs investigation; no automatic retry")
 
 
 if __name__ == "__main__":
