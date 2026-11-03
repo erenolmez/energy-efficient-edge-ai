@@ -69,6 +69,18 @@ def main():
                 print("Recovery jobs:", ", ".join(x["job_id"] for x in submitted["jobs"]))
             if (recovery/"stop.json").exists():
                 print("STOP: GPU-step recovery hit a new error; inspect recoveries/gpu_step_v1/stop.json")
+            v2 = root / "recoveries/gpu_step_v2"
+            if (v2/"receipt.json").exists():
+                rearm = json.loads((v2/"receipt.json").read_text())
+                print("Worker-local preflight audit:", rearm["status"],
+                      "| New-job node exclusions:", rearm.get("excluded_nodes"))
+                if (v2/"submission.json").exists():
+                    queued = json.loads((v2/"submission.json").read_text())
+                    print("V2 recovery jobs:", ", ".join(x["job_id"] for x in queued["jobs"]))
+                failures = list((v2/"preflight_failures").glob("*.json"))
+                if failures:
+                    print("Worker-local preflight failures:", len(failures),
+                          "(no case claimed by these attempts; inspect per-job logs)")
         else:
             print("STOP: unexpected failure needs investigation; no automatic retry")
 
