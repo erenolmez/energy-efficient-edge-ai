@@ -15,6 +15,9 @@ export CUDA_VISIBLE_DEVICES=""
 export OMP_NUM_THREADS=2
 export MKL_NUM_THREADS=2
 export PYTHONUNBUFFERED=1
+if [[ "${INSTALL_TRACKING:-0}" == "1" ]]; then
+    "$HPC_PYTHON" -m pip install --requirement hpc/requirements-tracking.txt
+fi
 study_dir="${SCRATCH_FLASH}/clean_classifier_study/scratch32_resnet18_v1"
 action="${STUDY_ACTION:-prepare}"
 case "$action" in

@@ -1,0 +1,2 @@
+# Optional; installs no Torch/CUDA packages. No account credentials belong here.
+wandb==0.23.0

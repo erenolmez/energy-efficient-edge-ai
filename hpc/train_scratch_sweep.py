@@ -6,6 +6,7 @@ additional seeds. Test data and router subsets are never instantiated as loaders
 from __future__ import annotations
 
 import argparse
+from contextlib import ExitStack
 import csv
 import hashlib
 import json
@@ -25,6 +26,7 @@ from hpc.clean_protocol import atomic_write, file_hash, load_or_create_split, va
 from hpc.scratch_recipes import (check_confirmation, checked_plan, create_selection,
                                   freeze_plan, trial_directory)
 from hpc.train_classifier_pilot import run_lock, seed_worker
+from hpc.wandb_tracking import public_config, tracking_session
 
 
 def build_model():
@@ -129,13 +131,13 @@ def train(args):
     check_confirmation(args.study_dir, plan, trial_id, seed, split["sha256"])
     directory = trial_directory(args.study_dir, trial_id, seed)
     directory.mkdir(parents=True, exist_ok=True)
-    with run_lock(directory):
+    with run_lock(directory), ExitStack() as tracking_stack:
         recipe = {"plan_sha256": plan["sha256"], "trial": trial, "seed": seed,
                   "torch": torch.__version__, "torchvision": torchvision.__version__,
                   "numpy": np.__version__, "python": sys.version}
         sources = {str(path.relative_to(ROOT)): file_hash(path) for path in (
             Path(__file__), ROOT / "hpc/clean_protocol.py", ROOT / "hpc/scratch_recipes.py",
-            ROOT / "hpc/train_classifier_pilot.py")}
+            ROOT / "hpc/train_classifier_pilot.py", ROOT / "hpc/wandb_tracking.py")}
         latest = directory / "latest.pt"
         checkpoint = None
         if latest.exists():
@@ -189,7 +191,14 @@ def train(args):
                "cudnn": torch.backends.cudnn.version(), "host": socket.gethostname(),
                "job": os.environ.get("SLURM_JOB_ID"), "test_evaluated": False,
                "pretrained_weights": False}
+        tracker = tracking_stack.enter_context(tracking_session(
+            directory, public_config(plan, trial, seed, args.phase), mode=args.tracking,
+            project=args.wandb_project, entity=args.wandb_entity))
+        run["tracking_mode"] = args.tracking
         write_json(directory / (f"resume_{time.time_ns()}.json" if checkpoint else "run.json"), run)
+        if args.tracking == "offline":
+            for old_row in history:
+                tracker.log(old_row)
         stop = []
         def request_stop(signum, _frame):
             stop.append(signum)
@@ -258,6 +267,7 @@ def train(args):
                 "history": history, "best_state": best_state,
                 "best_accuracy": best_accuracy, "best_loss": best_loss}
             atomic_write(latest, lambda temporary: torch.save(checkpoint, temporary))
+            tracker.log(row)
             print(json.dumps({"event": "epoch_saved", "trial_id": trial_id, "seed": seed, **row}), flush=True)
             if stop:
                 break
@@ -271,6 +281,7 @@ def train(args):
                   "test_evaluated": False, "energy_measured": False,
                   "training_accuracy_note": "CutMix runs report label-weighted training accuracy"}
         write_json(directory / "summary.json", result)
+        tracker.summary(result)
         print(json.dumps({key: value for key, value in result.items() if key != "history"}), flush=True)
 
 
@@ -321,6 +332,10 @@ def main():
     parser.add_argument("--task-id", type=int, default=0)
     parser.add_argument("--resume", action="store_true")
     parser.add_argument("--epochs-this-job", type=int, default=200)
+    parser.add_argument("--tracking", choices=("disabled", "offline", "online"),
+                        default=os.environ.get("SCRATCH_TRACKING_MODE", "disabled"))
+    parser.add_argument("--wandb-project", default=os.environ.get("WANDB_PROJECT"))
+    parser.add_argument("--wandb-entity", default=os.environ.get("WANDB_ENTITY"))
     args = parser.parse_args()
     if args.action in ("prepare", "train") and (args.data_dir is None or args.split_manifest is None):
         parser.error("prepare/train require --data-dir and --split-manifest")

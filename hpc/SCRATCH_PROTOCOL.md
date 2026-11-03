@@ -77,8 +77,9 @@ and Python path are supplied at submission; the scripts do not choose a cluster.
 Per-batch progress, epoch metrics and checkpoint acknowledgements are printed
 immediately to Slurm logs. Each trial directory has run.json, latest.pt (current
 model/optimizer/scaler/scheduler AND best state), and summary.json with complete
-epoch history, time, memory and settings. No W&B account, remote upload or extra
-tracking dependency. The CSV/JSON records provide the initial offline tracker.
+epoch history, time, memory and settings. W&B is optional and disabled unless
+SCRATCH_TRACKING_MODE=online/offline (or --tracking) is explicitly set.
+The CSV/JSON records remain authoritative, independent of the dashboard.
 No training-energy or whole-system measurement is claimed.
 
 Reruns require explicit --resume, exact source hashes, settings, library
@@ -86,6 +87,43 @@ versions, initial-state hash and split. Signals request a stop after a completed
 epoch. A scheduler hard kill may lose the current epoch, not the last atomic
 checkpoint. Crashes can leave active.lock: inspect the recorded job/host/PID
 before any human-approved removal; never automatically delete a live lock.
+
+## Optional W&B dashboards
+
+Pinned optional SDK: hpc/requirements-tracking.txt (wandb==0.23.0). The CPU
+preparation job installs it only with explicit INSTALL_TRACKING=1. Set
+WANDB_PROJECT and WANDB_ENTITY to your chosen private project/account; these
+are not hardcoded or published. Online mode requires prior authentication.
+Never put an API key in Git, chat, a Slurm script or a submission command.
+Use the SDK login prompt/account-supported credential mechanism privately.
+Create/review project visibility in W&B BEFORE online runs: our code does not
+assert or change server-side visibility. Confirm site external-service policy.
+
+The integration logs an explicit allowlist: architecture/configuration ID,
+optimizer/LR/weight decay/schedule, seed, epoch train/validation loss and accuracy,
+stage seconds and peak GPU memory. It does not upload images, model checkpoints,
+run.json, Slurm logs or source files. Console capture, git/code capture and
+automatic machine metadata/system metrics are disabled, and host is redacted.
+This reduces collection; it does NOT promise zero SDK/service telemetry. Online
+tracking sends allowed data and service connection metadata to W&B. Offline
+runs keep SDK files locally unless the user explicitly syncs them; no automatic
+sync command is provided. No wandb.watch, model artifact or W&B sweep agent is used.
+
+Online resume uses the same stored run ID with resume=allow. Offline resume
+creates a new execution-segment run with a common logical_run_id and replays
+saved history, since the SDK does not provide equivalent offline resume semantics.
+Do not blindly sync every offline segment as if it were a separate independent
+experiment. Local checkpoints/ranking, not the dashboard, govern selection.
+
+Initialization must succeed before training starts if tracking is explicitly
+requested. Later SDK log/finish errors are recorded generically without printing
+arbitrary exception strings; local training/checkpoints continue. Offline support
+can be used when the compute node cannot reach the service.
+
+This integration changes measured source hashes, not plan.json or its
+hyperparameters. Do not update a running study in place. If any scratch trial
+started before this integration, preserve it and resolve version lineage before
+resuming; strict source checks intentionally reject silent source changes.
 
 ## Literature anchors, not guarantees
 
