@@ -15,7 +15,9 @@
   synthetic MLP convergence/batch-size warnings are retained, not test failures.
 - Small audited JSON/CSV/Markdown results, historical larger-batch payback
   summaries and scientific figures. `code_manifest.json` lists exact files,
-  sizes and SHA256 hashes; it does not overwrite historical provenance.
+  sizes and SHA256 hashes from the original publication; it does not overwrite
+  historical provenance. Report-only preparation/publication/verification helpers
+  have since been removed; their historical manifest entries remain as evidence.
 
 ## Measurement boundaries
 
@@ -35,8 +37,8 @@ static collapse and the quarantined dedicated INT8 build remain explicit.
 ## Reproduction boundaries and safety
 
 The supplied TeX and images compile without any engines, weights or datasets.
-Asset regeneration and full provenance verification need the measurement
-inputs referenced by the scripts; absolute local paths in historical hashes
+Reconstructing assets and full provenance additionally needs the original
+measurement inputs; absolute local paths in historical hashes
 identify the original experiment environment, not portable file locations.
 Raw checkpoints/reports, prediction arrays, engine binaries, fitted weights,
 dataset caches, machine pause/shutdown receipts and local dependency bundles
@@ -46,8 +48,9 @@ fresh clone without those retained inputs.
 
 Python components use NumPy, PyTorch, scikit-learn and ONNX; GPU runs additionally
 require the existing TensorRT/NVML/CUDA stack described in the pipeline's
-requirements files. Report plotting/verifying uses Matplotlib and pypdf. The
-measured environment is retained; this publication does not install or change it.
+requirements files. The finished report compiles directly from supplied TeX
+and figure assets, without the removed Python preparation helpers. The measured
+environment is retained; this publication does not install or change it.
 
 The PowerShell launchers are historical, machine-specific workflow code.
 They launch hidden processes with exact-identity checks and thermal guards;

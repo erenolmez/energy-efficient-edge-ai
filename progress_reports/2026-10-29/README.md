@@ -26,7 +26,7 @@ section is removed from the three-page presentation; its existing scientific
 data and supplementary assets are preserved, not deleted. Historical
 213-choice/capacity2 and new six-resident-model protocols
 are explicitly distinguished. The cancelled full batch1 matrix is not claimed
-complete. No inference, retraining or automation is started by these scripts.
+complete. These report files do not start inference, retraining or automation.
 
 The first accuracy/latency/energy figure now includes both fresh static baselines
 at every batch size: eligible static and R101 FP32, alongside learned TinyCNN.
@@ -35,8 +35,7 @@ bars are descriptive, not confidence intervals. Open batch1 markers denote the
 different six-resident eager setup. The frozen snapshot includes all36 baseline
 rows, and the report verifier checks their coverage and batch1 values.
 
-Rebuild assets with `build_report_assets.py`, then normalize generated prose
-using `format_report.py`. Compile `progress_report.tex` with Tectonic or a compatible TeX
+Compile `progress_report.tex` directly with Tectonic or a compatible TeX
 distribution. Required images and generated TeX tables are supplied so PDF
 compilation alone does not need datasets, engines or measurement artifacts.
 `report_data.json` freezes report inputs and their SHA256 hashes. Historical
@@ -49,8 +48,11 @@ energy from the number of images processed before repayment, with a plain-Englis
 reading example; its accuracy-pass column is removed without changing the
 scientific eligibility rules or numerical results.
 
-Run `verify_report.py` after rebuilding. All three current pages were visually checked.
-Regression/build evidence is recorded in `report_checks.json`.
+One-off asset-generation, formatting, verification and publication scripts were
+removed after report preparation. Their generated assets, frozen data and
+historical checks are retained. All three current pages were visually checked;
+regression/build evidence is recorded in `report_checks.json`. Historical code
+manifests describe the original publication and may name removed report helpers.
 
 GPU-only fitting energy excludes supervision/calibration/export/CPU costs;
 payback is not a complete-system or precise cross-session uncertainty claim.
