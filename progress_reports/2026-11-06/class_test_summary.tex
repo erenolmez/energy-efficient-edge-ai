@@ -1,0 +1,47 @@
+\begin{center}\small
+\begin{tabularx}{\linewidth}{@{}lrrXX@{}}\toprule
+Architecture & Pruning & Overall & Worst class & Best class(es) \\ \midrule
+ResNet18 & 10\% & 75.07\% & boy (41\%) & skyscraper (97\%) \\
+ResNet34 & 10\% & 75.50\% & shrew (40\%) & motorcycle / mountain (+1 ties) (95\%) \\
+ResNet50 & 10\% & 76.02\% & girl (36\%) & motorcycle (97\%) \\
+ResNet101 & 10\% & 76.08\% & seal (43\%) & orange (96\%) \\
+MobileNetV3 Small & 10\% & 60.32\% & girl / otter (23\%) & motorcycle / wardrobe (90\%) \\
+MobileNetV3 Large & 10\% & 71.33\% & woman (37\%) & orange / road (95\%) \\
+EfficientNet-B0 & 10\% & 71.22\% & seal (40\%) & motorcycle (96\%) \\
+\bottomrule\end{tabularx}
+\end{center}
+\textbf{How does the weakest class change as pruning increases?}
+\begin{center}\small\setlength{\tabcolsep}{4.2pt}
+\begin{tabular}{@{}lrrrrrrrrr@{}}\toprule
+Requested pruning (\%) & 10 & 20 & 30 & 40 & 50 & 60 & 70 & 80 & 90 \\ \midrule
+ResNet18 & \cellcolor{teal!26}41 & \cellcolor{teal!21}33 & \cellcolor{teal!23}36 & \cellcolor{teal!24}38 & \cellcolor{teal!19}30 & \cellcolor{teal!11}17 & \cellcolor{teal!8}13 & \cellcolor{teal!1}3 & \cellcolor{teal!0}1 \\
+ResNet34 & \cellcolor{teal!26}40 & \cellcolor{teal!29}45 & \cellcolor{teal!18}28 & \cellcolor{teal!27}43 & \cellcolor{teal!16}25 & \cellcolor{teal!18}29 & \cellcolor{teal!6}10 & \cellcolor{teal!3}5 & \cellcolor{teal!2}4 \\
+ResNet50 & \cellcolor{teal!23}36 & \cellcolor{teal!25}39 & \cellcolor{teal!27}42 & \cellcolor{teal!26}40 & \cellcolor{teal!29}45 & \cellcolor{teal!15}24 & \cellcolor{teal!18}29 & \cellcolor{teal!3}6 & \cellcolor{teal!1}3 \\
+ResNet101 & \cellcolor{teal!27}43 & \cellcolor{teal!25}39 & \cellcolor{teal!24}37 & \cellcolor{teal!24}38 & \cellcolor{teal!19}30 & \cellcolor{teal!10}16 & \cellcolor{teal!3}6 & \cellcolor{teal!1}3 & \cellcolor{teal!1}2 \\
+MobileNetV3 Small & \cellcolor{teal!14}23 & \cellcolor{teal!11}18 & \cellcolor{teal!13}21 & \cellcolor{teal!15}24 & \cellcolor{teal!14}22 & \cellcolor{teal!10}16 & \cellcolor{teal!11}17 & \cellcolor{teal!5}8 & \cellcolor{teal!2}4 \\
+MobileNetV3 Large & \cellcolor{teal!24}37 & \cellcolor{teal!20}32 & \cellcolor{teal!17}27 & \cellcolor{teal!14}23 & \cellcolor{teal!18}29 & \cellcolor{teal!15}24 & \cellcolor{teal!16}26 & \cellcolor{teal!8}13 & \cellcolor{teal!3}6 \\
+EfficientNet-B0 & \cellcolor{teal!26}40 & \cellcolor{teal!11}18 & \cellcolor{teal!14}23 & \cellcolor{teal!22}35 & \cellcolor{teal!16}26 & \cellcolor{teal!11}17 & \cellcolor{teal!15}24 & \cellcolor{teal!9}15 & \cellcolor{teal!5}8 \\
+\bottomrule\end{tabular}
+\end{center}
+\smallcap{Each cell is the lowest class accuracy (\%) at that pruning level; darker means higher accuracy. The weakest class can change from cell to cell.}
+\textbf{How does the strongest class change as pruning increases?}
+\begin{center}\small\setlength{\tabcolsep}{4.2pt}
+\begin{tabular}{@{}lrrrrrrrrr@{}}\toprule
+Requested pruning (\%) & 10 & 20 & 30 & 40 & 50 & 60 & 70 & 80 & 90 \\ \midrule
+ResNet18 & \cellcolor{teal!63}97 & \cellcolor{teal!61}95 & \cellcolor{teal!60}93 & \cellcolor{teal!62}96 & \cellcolor{teal!61}94 & \cellcolor{teal!59}91 & \cellcolor{teal!59}91 & \cellcolor{teal!55}86 & \cellcolor{teal!53}82 \\
+ResNet34 & \cellcolor{teal!61}95 & \cellcolor{teal!63}97 & \cellcolor{teal!62}96 & \cellcolor{teal!61}94 & \cellcolor{teal!61}95 & \cellcolor{teal!62}96 & \cellcolor{teal!59}92 & \cellcolor{teal!57}89 & \cellcolor{teal!57}88 \\
+ResNet50 & \cellcolor{teal!63}97 & \cellcolor{teal!63}97 & \cellcolor{teal!62}96 & \cellcolor{teal!62}96 & \cellcolor{teal!62}96 & \cellcolor{teal!61}95 & \cellcolor{teal!61}95 & \cellcolor{teal!58}90 & \cellcolor{teal!57}89 \\
+ResNet101 & \cellcolor{teal!62}96 & \cellcolor{teal!61}95 & \cellcolor{teal!63}98 & \cellcolor{teal!62}96 & \cellcolor{teal!63}98 & \cellcolor{teal!62}96 & \cellcolor{teal!56}87 & \cellcolor{teal!55}86 & \cellcolor{teal!50}78 \\
+MobileNetV3 Small & \cellcolor{teal!58}90 & \cellcolor{teal!58}90 & \cellcolor{teal!57}89 & \cellcolor{teal!59}92 & \cellcolor{teal!57}89 & \cellcolor{teal!55}86 & \cellcolor{teal!56}87 & \cellcolor{teal!56}87 & \cellcolor{teal!53}82 \\
+MobileNetV3 Large & \cellcolor{teal!61}95 & \cellcolor{teal!61}94 & \cellcolor{teal!60}93 & \cellcolor{teal!59}91 & \cellcolor{teal!61}94 & \cellcolor{teal!61}94 & \cellcolor{teal!57}89 & \cellcolor{teal!57}89 & \cellcolor{teal!58}90 \\
+EfficientNet-B0 & \cellcolor{teal!62}96 & \cellcolor{teal!62}96 & \cellcolor{teal!61}94 & \cellcolor{teal!61}94 & \cellcolor{teal!59}92 & \cellcolor{teal!60}93 & \cellcolor{teal!57}89 & \cellcolor{teal!61}94 & \cellcolor{teal!57}89 \\
+\bottomrule\end{tabular}
+\end{center}
+\smallcap{Each cell is the highest class accuracy (\%) at that pruning level, using the same color scale as above. The strongest class can change from cell to cell.}
+\textbf{Where do models disagree most on class accuracy?} At each selected pruning level, this is the class with the largest accuracy gap between models.
+\begin{center}\small\begin{tabularx}{\linewidth}{@{}rlXX@{}}\toprule
+Pruning & Class & Highest accuracy & Lowest accuracy \\ \midrule
+10\% & man & ResNet101 (76\%) & MobileNetV3 Small (31\%) \\
+50\% & leopard & ResNet50 (82\%) & MobileNetV3 Small (44\%) \\
+90\% & orange & ResNet50 (89\%) & ResNet34 (42\%) \\
+\bottomrule\end{tabularx}\end{center}
