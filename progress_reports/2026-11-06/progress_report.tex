@@ -195,15 +195,15 @@ SGD val.\ (\%) & 72.74 & 64.84 & 55.66 & 45.88 & 35.18 & 18.38 & 10.54 & 5.62 & 
 
 \newpage
 \heading{4. HPC training progress}
-\textbf{HPC training from scratch.} This sweep is separate from the fine-tuning bank. W\&B recorded 353/1,728 completed runs (20.43\%) and 71,277/345,600 epochs (20.62\%). All four runs marked running had fresh metrics; 11 were marked failed or crashed. These counts do not verify Slurm state or checkpoints.
+\textbf{HPC training from scratch.} This sweep is separate from the fine-tuning bank. W\&B recorded 359/1,728 completed runs (20.78\%) and 72,276/345,600 epochs (20.91\%). All four runs marked running had fresh metrics; 11 were marked failed or crashed, unchanged since the previous check. These counts do not verify Slurm state or checkpoints.
 
 \begin{center}\small
 \begin{tabular}{@{}lrrrrr@{}}\toprule
 Active architecture (case) & Epoch & Latest val. acc. & Val. loss & Run-best val. acc. & Historical FP32 val.\\\midrule
-ResNet50 (362) & 183 & 79.26\% & 0.796 & 79.90\% & 83.94\%\\
-ResNet101 (363) & 110 & 74.26\% & 0.974 & 77.60\% & 85.88\%\\
-EfficientNet-B0 (366) & 124 & 64.70\% & 1.331 & 64.76\% & 83.14\%\\
-ShuffleNetV2 (367) & 71 & 47.58\% & 1.930 & 53.38\% & 75.72\%\\\bottomrule
+ResNet50 (370) & 101 & 75.04\% & 0.922 & 76.20\% & 83.94\%\\
+ResNet101 (371) & 46 & 54.32\% & 1.747 & 58.22\% & 85.88\%\\
+MobileNetV3 Small (372) & 62 & 27.92\% & 2.786 & 31.20\% & 61.82\%\\
+MobileNetV3 Large (373) & 78 & 30.56\% & 2.698 & 37.16\% & 82.04\%\\\bottomrule
 \end{tabular}
 \end{center}
 \smallcap{Each run is planned for 200 epochs. Run-best is the highest validation accuracy observed so far in that run. The table below reports the highest observed validation accuracy across all runs of each architecture.}
