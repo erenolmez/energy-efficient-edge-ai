@@ -1,0 +1,119 @@
+\documentclass[10pt,a4paper]{article}
+\usepackage[margin=1.65 cm,top=1.4 cm,bottom=1.5 cm]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern,microtype,booktabs,tabularx,array,amsmath,graphicx,xcolor,colortbl,hyperref,enumitem,fancyhdr}
+\definecolor{navy}{HTML}{183B56}\definecolor{teal}{HTML}{187F80}
+\hypersetup{colorlinks=true,urlcolor=teal,linkcolor=navy,pdftitle={Thesis Progress Update: Batch Scaling and Classifier Comparison},pdfauthor={Eren Olmez}}
+\setlength{\parindent}{0 pt}\setlength{\parskip}{4 pt}\setlength{\emergencystretch}{2 em}
+\renewcommand{\arraystretch}{1.12}
+\setlist[itemize]{leftmargin=1.2 em,itemsep=1 pt,topsep=2 pt}
+\pagestyle{fancy}\fancyhf{}\fancyhead[L]{\small\color{navy}Energy-efficient input-based model routing}
+\fancyhead[R]{\small 24 November 2026}\fancyfoot[C]{\small\thepage}\setlength{\headheight}{13 pt}
+\newcommand{\heading}[1]{\section*{\color{navy}#1}}
+\newcommand{\smallcap}[1]{{\footnotesize\color{navy}#1}\par}
+\newcommand{\missing}{\textemdash}
+\newcommand{\newbatch}[2]{ & \textbf{#1} & \textbf{#2\%} & \missing & \missing & \missing & \missing\\}
+% The routed comparison is the canonical meeting report.
+\providecommand{\RoutedProgressUpdate}{1}
+\begin{document}
+\begin{center}
+{\Large\bfseries\color{navy}Thesis Progress Update}\\[3 pt]
+{Eren Olmez}\\{24 November 2026}
+\end{center}\vspace{-8 pt}
+
+\ifdefined\RoutedProgressUpdate
+\input{routed_plateau_section.tex}
+\else
+\heading{1. Batch scaling on the PC}
+This update extends the fixed-classifier comparison from the 6 November report to batches 8 and 16. The two unpruned FP16 TensorRT engines and their original optimization profiles were retained. The table separates test accuracy from latency and GPU energy, and keeps the two input/output boundaries separate.
+
+\textbf{What changed at batches 8 and 16?}
+Both new batch sizes reproduced the archived top-1 accuracy: 85.85\% for ResNet101 and 82.71\% for EfficientNet-B0. Equal scores do not by themselves establish identical predictions on every image.
+
+\begin{center}\small
+\begin{tabular}{@{}lrrrrrr@{}}\toprule
+ & & & \multicolumn{2}{c}{GPU-resident input} & \multicolumn{2}{c}{Host input to host logits}\\
+\cmidrule(lr){4-5}\cmidrule(lr){6-7}
+FP16 classifier & Batch & Test acc. & ms/image & GPU mJ/image & ms/image & GPU mJ/image\\
+\midrule
+ResNet101 \newbatch{8}{85.85}
+\newbatch{16}{85.85}
+ & 32 & 85.85\% & 0.3355 & 23.170 & 0.3632 & 25.509\\
+ & 64 & 85.85\% & 0.3265 & 23.162 & 0.3518 & 24.313\\
+ & 128 & 85.85\% & 0.3190 & 22.125 & 0.3457 & 23.512\\
+\addlinespace[2pt]
+EfficientNet-B0 \newbatch{8}{82.71}
+\newbatch{16}{82.71}
+ & 32 & 82.71\% & 0.1384 & 9.895 & 0.1701 & 12.140\\
+ & 64 & 82.71\% & 0.1242 & 8.862 & 0.1629 & 11.340\\
+ & 128 & 82.71\% & 0.1164 & 8.046 & 0.1456 & 10.497\\
+\bottomrule\end{tabular}
+\end{center}
+\smallcap{Top-1 accuracy uses all 10,000 CIFAR-100 test images. Original timing and GPU-only energy medians use 128 fixed validation inputs per cycle and three windows per model, boundary and batch. Dashes denote unmeasured timing or energy.}
+
+\textbf{Why did the timing run stop if the GPU is warmed up?}
+The protocol first requires at least 15 seconds of cooldown and a temperature of at most 55 degrees Celsius, with no thermal slowdown flag. It then runs at least one second of model-specific warm-up immediately before the timed window. This gives each repeat a comparable starting condition without including cold-start inference in its timer. The new run could not clear the cooldown gate within 180 seconds, so it collected no accepted timing windows. The separate accuracy run was unaffected.
+
+\textbf{What can be concluded now?}
+The original GPU-resident results still show improvement from batch 32 to 128: latency and GPU energy dropped by 4.92\% and 4.51\% for ResNet101 and by 15.91\% and 18.69\% for EfficientNet-B0. This is a fixed-model result; it does not explain the old routed plateau. The next matched timing pass will use batches 8, 16 and a repeat of 32 to check comparability with November 6.
+\fi
+
+\newpage
+\heading{2. HPC classifier sweep and PC comparison}
+The frozen scratch sweep covers eight architectures, 72 recipes per architecture, three seeds per recipe and 200 epochs per case. The verified W\&B snapshot recorded \textbf{1,629/1,728 complete cases (94.27\%)} and \textbf{327,184/345,600 recorded epochs (94.67\%)}. W\&B showed 99 failed or crashed records and no run marked running; this does not establish the Slurm queue state.
+
+\begin{center}\small
+\begin{tabular}{@{}lrrrrr@{}}\toprule
+ & & \multicolumn{2}{c}{HPC scratch, 32px} & \multicolumn{2}{c}{Historical PC FP32, 128px}\\
+\cmidrule(lr){3-4}\cmidrule(lr){5-6}
+Architecture & Case / seed & Best val. & Test & Val. & Test\\
+\midrule
+ResNet101             & 0139 / 48 & 81.82\% & 81.01\% & 85.88\% & 85.80\%\\
+ResNet34              & 0329 / 48 & 81.66\% & 79.86\% & 82.98\% & 81.82\%\\
+ResNet50              & 0314 / 42 & 81.26\% & 79.97\% & 83.94\% & 84.39\%\\
+ResNet18              & 0312 / 42 & 80.12\% & 78.28\% & 79.16\% & 79.16\%\\
+ShuffleNetV2 x1.0     & 0415 / 42 & 75.56\% & 73.46\% & 75.72\% & 75.64\%\\
+EfficientNet-B0       & 1678 / 48 & 73.30\% & 72.31\% & 83.14\% & 82.73\%\\
+MobileNetV3 Large     & 0237 / 48 & 72.52\% & 71.26\% & 82.04\% & 81.34\%\\
+MobileNetV3 Small     & 0228 / 45 & 64.42\% & 62.48\% & 61.82\% & 62.38\%\\
+\bottomrule\end{tabular}
+\end{center}
+\smallcap{Each HPC row represents the highest observed validation accuracy from one completed run, not a three-seed recipe ranking. Both validation sets contain 5,000 images but use different splits. Both test columns use all 10,000 official CIFAR-100 test images.}
+
+\textbf{What settings did the scratch leaders use?}
+All eight used batch size 128, cosine decay and CutMix ($\alpha=1$, probability 0.5). Seven used SGD (momentum 0.9): initial learning rate 0.10 except ResNet101 (0.03) and ShuffleNetV2 (0.20). SGD weight decay was $5\times10^{-4}$ for the ResNets and $10^{-4}$ for MobileNetV3 and ShuffleNetV2. EfficientNet-B0 used AdamW (learning rate 0.003, weight decay 0.05).
+
+\textbf{What does this table compare?}
+The first table compares two existing model banks on the same official test set: scratch HPC models with CIFAR-adapted stems in PyTorch FP32 at native 32px, and historical ImageNet-initialized PC models in TensorRT FP32 at 128px. The checkpoints were selected on validation, but the banks used different validation splits and training recipes.
+
+\subsection*{ImageNet-pretrained HPC comparison}
+The second table compares validation accuracy on the same HPC classifier split (40,000 training and 5,000 validation images) and test accuracy on the official holdout. For each architecture, the two input sizes reuse one scratch recipe and seed and start from the same ImageNet-initialized weights. W\&B recorded \textbf{16/16 cases and 3,200/3,200 epochs complete (100\%)}.
+
+\begin{center}\small
+\begin{tabular}{@{}lrrrrrr@{}}\toprule
+ & \multicolumn{2}{c}{Scratch 32px} & \multicolumn{2}{c}{Pretrained 32px} & \multicolumn{2}{c}{Pretrained 128px}\\
+\cmidrule(lr){2-3}\cmidrule(lr){4-5}\cmidrule(lr){6-7}
+Architecture & Best val. & Test & Best val. & Test & Best val. & Test\\
+\midrule
+ResNet101          & 81.82\% & 81.01\% & 60.64\% & 59.27\% & 86.24\% & 84.38\%\\
+ResNet34           & 81.66\% & 79.86\% & 66.54\% & 65.01\% & 81.26\% & 80.28\%\\
+ResNet50           & 81.26\% & 79.97\% & 69.12\% & 67.84\% & 82.34\% & 81.37\%\\
+ResNet18           & 80.12\% & 78.28\% & 65.50\% & 63.49\% & 80.84\% & 79.56\%\\
+ShuffleNetV2 x1.0  & 75.56\% & 73.46\% & 56.38\% & 54.96\% & 76.30\% & 75.69\%\\
+EfficientNet-B0    & 73.30\% & 72.31\% & 26.96\% & 25.72\% & 82.62\% & 81.10\%\\
+MobileNetV3 Large  & 72.52\% & 71.26\% & 54.94\% & 53.91\% & 82.90\% & 81.37\%\\
+MobileNetV3 Small  & 64.42\% & 62.48\% & 39.08\% & 40.00\% & 72.30\% & 71.18\%\\
+\bottomrule\end{tabular}
+\end{center}
+\textbf{Why might 128px work better here?}
+ImageNet weights provide learned visual features. Upsampling adds no image detail, but gives the pretrained network more spatial positions after early downsampling, which may help it reuse those features. At 128px, seven of eight models beat scratch on validation and all eight beat scratch on test; at 32px none did. The pretrained models use PC stems rather than CIFAR-adapted stems, so the scratch comparison does not isolate pretraining.
+
+\smallcap{All test scores in the second table are PyTorch FP32 top-1 accuracy over 10,000 official CIFAR-100 images. Checkpoints were selected on validation before test evaluation. Pruning uses only the scratch checkpoints.}
+
+\smallcap{Sources: \href{https://github.com/erenolmez/energy-efficient-edge-ai/blob/9dc335f/progress_reports/2026-11-06/progress_report.tex}{6 November progress report}; \href{https://github.com/erenolmez/energy-efficient-edge-ai/blob/9dc335f/progress_reports/2026-10-29/runtime_explanations.tex}{29 October runtime follow-up}; archived PC TensorRT results; HPC W\&B snapshots; held-out evaluation job 2141241.}
+\ifdefined\RoutedProgressUpdate
+\newpage
+\input{pruning_class_section.tex}
+\fi
+\end{document}
