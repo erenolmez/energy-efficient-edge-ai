@@ -1,0 +1,41 @@
+\heading{Pruning: best and worst classes at every level}
+For each architecture and requested pruning level, the \textcolor{navy}{best class is on top} and the worst class is below. Percentages are per-class accuracy on the official CIFAR-100 test set. A slash separates classes tied at the same accuracy.
+
+{\small\setlength{\tabcolsep}{4pt}\renewcommand{\arraystretch}{1.12}
+\newcommand{\classpair}[2]{\textcolor{navy}{#1}\newline #2}
+\begin{tabularx}{\linewidth}{@{}l*{5}{>{\raggedright\arraybackslash}X}@{}}\toprule
+Architecture & p10 & p20 & p30 & p40 & p50\\
+\midrule
+ResNet18 & \classpair{motorcycle (97\%)}{seal (26\%)} & \classpair{motorcycle (98\%)}{seal (30\%)} & \classpair{mountain (95\%)}{bowl (40\%)} & \classpair{wardrobe (97\%)}{bear (17\%)} & \classpair{motorcycle (95\%)}{girl (29\%)}\\
+\addlinespace[3pt]
+ResNet34 & \classpair{motorcycle (98\%)}{forest (39\%)} & \classpair{apple / motorcycle (96\%)}{otter (40\%)} & \classpair{orange (97\%)}{oak tree (34\%)} & \classpair{motorcycle / wardrobe (95\%)}{bear (40\%)} & \classpair{apple (92\%)}{man (40\%)}\\
+\addlinespace[3pt]
+ResNet50 & \classpair{motorcycle (96\%)}{seal (38\%)} & \classpair{skunk (96\%)}{seal (30\%)} & \classpair{motorcycle (96\%)}{girl (26\%)} & \classpair{motorcycle / palm tree (94\%)}{seal (35\%)} & \classpair{motorcycle / orange (94\%)}{woman (34\%)}\\
+\addlinespace[3pt]
+ResNet101 & \classpair{orange (98\%)}{man (27\%)} & \classpair{orange / palm tree (94\%)}{bear (30\%)} & \classpair{orange (96\%)}{otter (33\%)} & \classpair{skunk (95\%)}{man / seal (25\%)} & \classpair{motorcycle / orange / wardrobe (93\%)}{otter (33\%)}\\
+\addlinespace[3pt]
+MobileNetV3 Small & \classpair{skyscraper (89\%)}{man (15\%)} & \classpair{road (89\%)}{lizard (19\%)} & \classpair{apple / sunflower (90\%)}{girl / seal (23\%)} & \classpair{wardrobe (90\%)}{seal (11\%)} & \classpair{orange (89\%)}{seal (19\%)}\\
+\addlinespace[3pt]
+MobileNetV3 Large & \classpair{road (94\%)}{woman (24\%)} & \classpair{road (93\%)}{ray (27\%)} & \classpair{wardrobe (92\%)}{lizard (27\%)} & \classpair{road (93\%)}{otter (21\%)} & \classpair{motorcycle / orange / road (91\%)}{otter / seal (23\%)}\\
+\addlinespace[3pt]
+EfficientNet-B0 & \classpair{motorcycle / orange (95\%)}{girl (30\%)} & \classpair{motorcycle / road (91\%)}{seal (20\%)} & \classpair{road (93\%)}{seal / shark (33\%)} & \classpair{wardrobe (94\%)}{seal (27\%)} & \classpair{road (92\%)}{seal (19\%)}\\
+\bottomrule\end{tabularx}\par
+\vspace{12pt}
+\begin{tabularx}{\linewidth}{@{}l*{4}{>{\raggedright\arraybackslash}X}@{}}\toprule
+Architecture & p60 & p70 & p80 & p90\\
+\midrule
+ResNet18 & \classpair{motorcycle / sunflower (96\%)}{girl (31\%)} & \classpair{orange (93\%)}{girl (19\%)} & \classpair{sunflower (93\%)}{lizard / otter (12\%)} & \classpair{wardrobe (92\%)}{mouse (5\%)}\\
+\addlinespace[3pt]
+ResNet34 & \classpair{road (95\%)}{otter (30\%)} & \classpair{motorcycle (97\%)}{otter (18\%)} & \classpair{wardrobe (91\%)}{otter (14\%)} & \classpair{orange / wardrobe (92\%)}{otter (10\%)}\\
+\addlinespace[3pt]
+ResNet50 & \classpair{sunflower (95\%)}{man (28\%)} & \classpair{lawn mower (95\%)}{bear (35\%)} & \classpair{sunflower (92\%)}{squirrel (21\%)} & \classpair{motorcycle (91\%)}{otter (21\%)}\\
+\addlinespace[3pt]
+ResNet101 & \classpair{lawn mower (94\%)}{boy / girl / possum (35\%)} & \classpair{wardrobe (96\%)}{otter (18\%)} & \classpair{orange (87\%)}{otter (12\%)} & \classpair{motorcycle / plain (89\%)}{otter (6\%)}\\
+\addlinespace[3pt]
+MobileNetV3 Small & \classpair{plain (84\%)}{otter (7\%)} & \classpair{sunflower (84\%)}{beaver (8\%)} & \classpair{road (87\%)}{seal (4\%)} & \classpair{sunflower (91\%)}{otter (10\%)}\\
+\addlinespace[3pt]
+MobileNetV3 Large & \classpair{road (91\%)}{otter (18\%)} & \classpair{skyscraper (86\%)}{woman (5\%)} & \classpair{orange / plain (86\%)}{squirrel (14\%)} & \classpair{orange (92\%)}{seal (18\%)}\\
+\addlinespace[3pt]
+EfficientNet-B0 & \classpair{motorcycle / orange / plain (91\%)}{girl (20\%)} & \classpair{wardrobe (90\%)}{otter (8\%)} & \classpair{wardrobe (91\%)}{seal (16\%)} & \classpair{orange (88\%)}{otter (0\%)}\\
+\bottomrule\end{tabularx}\par
+}

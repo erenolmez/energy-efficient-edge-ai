@@ -51,18 +51,4 @@ EfficientNet-B0 & \cellcolor{teal!60}95 & \cellcolor{teal!57}91 & \cellcolor{tea
 \textbf{Where do models disagree most?}
 ResNet50 and MobileNetV3 Small had the largest gaps: raccoon at p10 (86\% vs.\ 40\%) and turtle at p50 (79\% vs.\ 26\%). These gaps do not establish a routing benefit.
 
-\textbf{Which class names change at higher pruning levels?}\par
-{\footnotesize\setlength{\tabcolsep}{3pt}\renewcommand{\arraystretch}{1.05}
-\newcommand{\classpair}[2]{\textcolor{navy}{#1}\newline #2}
-\begin{tabularx}{\linewidth}{@{}l*{4}{>{\raggedright\arraybackslash}X}@{}}\toprule
-Architecture & p30 & p50 & p70 & p90\\
-\midrule
-ResNet18 & \classpair{mountain}{bowl} & \classpair{motorcycle}{girl} & \classpair{orange}{girl} & \classpair{wardrobe}{mouse}\\
-ResNet34 & \classpair{orange}{oak tree} & \classpair{apple}{man} & \classpair{motorcycle}{otter} & \classpair{orange / wardrobe}{otter}\\
-ResNet50 & \classpair{motorcycle}{girl} & \classpair{motorcycle / orange}{woman} & \classpair{lawn mower}{bear} & \classpair{motorcycle}{otter}\\
-ResNet101 & \classpair{orange}{otter} & \classpair{motorcycle / orange / wardrobe}{otter} & \classpair{wardrobe}{otter} & \classpair{motorcycle / plain}{otter}\\
-MobileNetV3 Small & \classpair{apple / sunflower}{girl / seal} & \classpair{orange}{seal} & \classpair{sunflower}{beaver} & \classpair{sunflower}{otter}\\
-MobileNetV3 Large & \classpair{wardrobe}{lizard} & \classpair{motorcycle / orange / road}{otter / seal} & \classpair{skyscraper}{woman} & \classpair{orange}{seal}\\
-EfficientNet-B0 & \classpair{road}{seal / shark} & \classpair{road}{seal} & \classpair{wardrobe}{otter} & \classpair{orange}{otter}\\
-\bottomrule\end{tabularx}\par}
-\smallcap{Each cell lists the best class(es) in navy on top and the worst class(es) below. Slashes indicate ties. The heatmaps above give the scores.}
+\smallcap{Page 4 lists the best and worst class names for every pruning level.}
