@@ -47,3 +47,20 @@ class ComplementarityTests(unittest.TestCase):
 
 if __name__ == '__main__':
     unittest.main()
+
+
+class ExecutionStrategyTests(unittest.TestCase):
+    def test_per_image_pays_batch_one_cost_and_concurrent_uses_ratio(self):
+        from hpc.complementarity_execution import evaluate
+        labels = np.repeat(np.arange(4), 8)
+        correct = np.ones((2, 32), dtype=bool)
+        sizes = np.array([1, 8, 16])
+        curves = {'latency': (sizes, np.array([[10., 40., 70.], [1., 4., 7.]]))}
+        costs = {'latency': {b: curves['latency'][1][:, i] / b for i, b in enumerate(sizes)}}
+        conc = dict(seq_latency_ms=10.0, conc_latency_ms=5.0)
+        r = evaluate(correct, labels, [0, 1], costs, curves, 16, 2, np.random.default_rng(0), 0.0, 0, conc)
+        seq = r['debatch sequential']['oracle']['savings_pct']['latency']
+        self.assertAlmostEqual(seq, 90.0)  # all to cheap model: 7 vs 70 ms
+        self.assertAlmostEqual(r['per-image (batch 1)']['oracle']['savings_pct']['latency'],
+                               100 * (1 - 16 / 70))
+        self.assertAlmostEqual(r['debatch concurrent']['oracle']['savings_pct']['latency'], 95.0)
