@@ -20,6 +20,12 @@ SCRATCH_FLASH="${SCRATCH_FLASH:-/mnt/beegfs/eolmez}"
 HPC_PYTHON="${HPC_PYTHON:-${SCRATCH_FLASH}/envs/edge-ai/bin/python}"
 STUDY_BASE="${STUDY_BASE:-${SCRATCH_FLASH}/clean_classifier_study}"
 CIFAR_DATA="${CIFAR_DATA:-${SCRATCH_FLASH}/datasets/cifar100}"
+# TensorRT, ONNX and NVML live in a separate --no-deps overlay directory so the shared edge-ai
+# environment (used by jobs 1 and 2) is never modified. It is prepended to PYTHONPATH for
+# this job only.
+TRT_OVERLAY="${TRT_OVERLAY:-${SCRATCH_FLASH}/envs/trt-overlay}"
+test -d "$TRT_OVERLAY/tensorrt"
+export PYTHONPATH="${TRT_OVERLAY}${PYTHONPATH:+:${PYTHONPATH}}"
 test -x "$HPC_PYTHON"
 test -d "$CIFAR_DATA/cifar-100-python"
 test -f "$STUDY_BASE/split_seed42.json"
@@ -30,6 +36,7 @@ out="${A40_OUT:-${STUDY_BASE}/a40_engines_v1}"
 hostname; date -u; echo "CUDA_VISIBLE_DEVICES=${CUDA_VISIBLE_DEVICES:-unset}"
 nvidia-smi --query-gpu=index,name,uuid,pci.bus_id,memory.total,driver_version --format=csv
 git rev-parse HEAD
+echo "PYTHONPATH=$PYTHONPATH"
 "$HPC_PYTHON" -c "import torch, tensorrt, onnx, pynvml; print('torch', torch.__version__, 'cuda', torch.version.cuda, 'tensorrt', tensorrt.__version__, 'onnx', onnx.__version__)"
 srun --ntasks=1 "$HPC_PYTHON" -m hpc.a40_engines run \
     --base "$STUDY_BASE" --data "$CIFAR_DATA" --output "$out" ${A40_ARGS:-}
