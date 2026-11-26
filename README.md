@@ -1,26 +1,35 @@
 # Energy-Efficient Edge AI
 
-This repository contains the experiments for an MSc thesis on input-aware
-inference on NVIDIA Jetson Orin Nano. The current study asks whether a small
-router can select a pre-trained model before inference and reduce measured
-energy or latency without exceeding an accuracy limit.
+This MSc thesis asks when a lightweight router can choose one classifier for a
+CIFAR-100 batch and reduce end-to-end latency or GPU energy without exceeding
+an accuracy-loss budget. Latency and energy are separate objectives. Classifier
+training and development screening run on HPC; deployment measurements report
+the specific PC or Jetson hardware and runtime used.
 
-The first completed experiments use CIFAR-100 and a distilled ResNet-18 family
-with structured pruning. The next architecture study adds ResNet-34/50/101,
-MobileNetV3-Small/Large, EfficientNet-B0 and ShuffleNetV2 1.0x. Energy and
-latency are treated as separate objectives. Deployment
-claims use complete Jetson measurements, including input analysis, routing,
-transfers, synchronization, and selected-model inference.
+## Start here
 
-## Current result
+- [Read the latest published report (24 November 2026, PDF)](progress_reports/2026-11-24/progress_report.pdf)
+- [Find the experiment code and reproduction notes](progress_reports/2026-11-24/README.md)
+- [See the historical distilled ResNet-18 Jetson results](jetson_tests/reports/jetson_batch_routers_2026_10_03/README.md)
 
-The PC architecture study has trained eight CIFAR-100 baselines and recovered
-63 pruned variants across seven supported architectures. All 71 FP32 sources
-have ONNX exports. See [PC architecture results](pc_tests/model_pipeline/TASK4_PC_RESULTS.md)
-for export checks, accuracy screening and the deployment preparation status.
-FP16 and INT8 targets are defined, but their conversions and hardware results
-are pending. The Jetson results below belong to the earlier distilled
-ResNet-18 study and must not be mixed with the new architecture baselines.
+## Latest published results
+
+The [24 November report](progress_reports/2026-11-24/) covers the PC batch-routing
+comparison against fixed ResNet101, the HPC scratch and ImageNet-initialized
+classifier comparison, and structured pruning with per-class evaluation. It
+reports 16 completed ImageNet-initialized evaluations (eight architectures at
+32×32 and 128×128) and 63 pruning cases across seven scratch-trained architectures.
+These are distinct from the earlier PC pruning and ONNX export bank documented in
+the [PC architecture results](pc_tests/model_pipeline/TASK4_PC_RESULTS.md).
+PC measurements and HPC classifier evaluations are not Jetson deployment results.
+
+**Follow-up work (not in the published report):** a separate PC benchmark
+compares six router variants on the frozen 128×128 HPC model bank. HPC
+development screening compares router architectures and the data used to
+estimate class profiles. These are separate from the planned A40 end-to-end
+comparison; no A40 latency or energy results are claimed here.
+
+## Historical: distilled ResNet-18 on Jetson
 
 Under a maximum accuracy loss of 0.5 percentage points, static `p10` is the
 best tested deployment. Across batches 32, 64, and 128 it saves 8.80--10.13%
@@ -30,40 +39,21 @@ The tested dynamic routers do not recover their own overhead at this limit.
 Dynamic routing becomes competitive under looser constraints. Its clearest
 advantage is a small energy improvement over the best eligible static model at
 a 1.5-point allowance for batches 64 and 128. See the
-[latest Jetson report](jetson_tests/reports/jetson_batch_routers_2026_10_03/README.md)
+[Jetson batch-router report](jetson_tests/reports/jetson_batch_routers_2026_10_03/README.md)
 for the complete tables and figures.
 
 ## Repository layout
 
-```text
-architecture_tests/resnet_pruning/  ResNet-34/50 structural pruning check
-model_pipeline/                      Shared architecture, data and seed definitions
-pc_tests/model_pipeline/             CIFAR-100 baseline training
-pc_tests/router_benchmark/           Router training and PC-side comparison
-jetson_tests/                        TensorRT, power, static and routed benchmarks
-progress_reports/                    Dated LaTeX reports and compiled PDFs
-tests/                               Environment-independent unit tests
-```
-
-All runtime routers receive only the input image. Candidate predictions and
-measured Jetson costs are used offline for training and policy calibration;
-candidate classifiers are not run before the routing decision.
-
-## Main experiment
-
-The current batch study uses:
-
-- FP32 `p0`, `p10`, `p20`, and `p30` inference models;
-- a gradient stump, decision tree, logistic regression, XGBoost, PyTorch
-  TinyCNN, and FP16 TensorRT TinyCNN;
-- batches 32, 64, and 128;
-- accuracy allowances of 0.5, 1.0, 1.5, and 2.0 percentage points;
-- separate energy and latency calibration;
-- the same fixed, stratified 2,000 CIFAR-100 images for every system.
-
-The Jetson instructions are in [jetson_tests/README.md](jetson_tests/README.md).
-The PC training protocol is in
-[pc_tests/router_benchmark/README.md](pc_tests/router_benchmark/README.md).
+| Path | What belongs there |
+| --- | --- |
+| [`model_pipeline/`](model_pipeline/) | **Shared model and data library:** architecture definitions, data, naming, and reproducibility. |
+| [`pc_tests/model_pipeline/`](pc_tests/model_pipeline/README.md) | **PC experiments and GPU runtime:** [router implementations](pc_tests/model_pipeline/routers/), [TensorRT and measurement helpers](pc_tests/model_pipeline/runtime/), and [experiment runners](pc_tests/model_pipeline/experiments/). Root-level compatibility scripts keep old commands working. |
+| [`hpc/`](hpc/) | **Slurm training and evaluation:** [scratch classifier sweep protocol](hpc/FULL_FACTORIAL_PROTOCOL.md), [ImageNet comparison trainer](hpc/train_imagenet_comparison.py), held-out evaluation, and pruning. |
+| [`jetson_tests/`](jetson_tests/README.md) | **Jetson hardware experiments:** TensorRT inference, controlled power and clock settings, and static and routed measurements. |
+| [`pc_tests/router_benchmark/`](pc_tests/router_benchmark/README.md) | **Historical PC router benchmark:** the distilled FP32 ResNet-18 pruning family, not the newer eight-architecture bank. |
+| [`architecture_tests/resnet_pruning/`](architecture_tests/resnet_pruning/) | **Pruning feasibility checks** for ResNet-34/50; not the main experiment or the software test suite. |
+| [`tests/`](tests/) | **Software tests:** policy, data, protocol, runtime helper, and provenance checks. |
+| [`progress_reports/`](progress_reports/README.md) | **Advisor-facing reports:** dated PDFs, LaTeX sources, figures, and evidence links. |
 
 ## Progress reports
 

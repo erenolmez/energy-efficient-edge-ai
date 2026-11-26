@@ -1,4 +1,10 @@
-# Classifier pipeline
+# PC routing experiments (Python package: `pc_tests.model_pipeline`)
+
+This directory contains PC-specific routing, TensorRT runtime, measurements and
+analysis. It is distinct from the [shared classifier library](../../model_pipeline/)
+at the repository root, which defines common models, data and reproducibility.
+The two directories are not duplicate implementations. Their import paths remain
+stable for frozen studies; use the distinct display names above in documentation.
 
 ## Start here: organized source layout
 
@@ -19,8 +25,13 @@ stay in the repository's `tests/` directory.
 | `reports/` | Small numerical evidence and study-specific documentation | `random_b64/`, `random_b128/`, `p80_b8_32_64_128/` |
 | `provenance/` | Original-to-organized source hashes and verification | `structure_refactor.json` |
 
-**Status.** Correctness routing is the latest implemented routing method.
-Random selection and fixed p80 are completed controls; p90 and scalar routing
+For the **published November batch-routing comparison**, start with the
+[24 November report and experiment links](../../progress_reports/2026-11-24/README.md).
+The separate [historical PC router benchmark](../router_benchmark/README.md)
+uses the distilled ResNet-18 pruning family, not the multi-architecture bank.
+
+**Controls in this pipeline.** Random selection and fixed p80 are completed
+controls; p90 and scalar routing
 are historical controls, not obsolete results to delete. Extra correctness
 families have source implementations but are not completed measured comparisons.
 The adaptable shared scorer and Deep Sets are proposals, not implemented studies.

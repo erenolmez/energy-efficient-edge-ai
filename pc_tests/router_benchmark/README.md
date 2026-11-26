@@ -1,4 +1,9 @@
-# PC input-only router benchmark
+# Historical PC input-only router benchmark: distilled ResNet-18
+
+This is the earlier single-architecture pruning study. For the later PC
+router implementations, see [PC experiments and GPU runtime](../model_pipeline/README.md).
+For the newer multi-architecture batch comparison, see the
+[24 November report](../../progress_reports/2026-11-24/README.md).
 
 This directory contains the PC-side training and comparison code for 22
 input-only routing methods. Every method is evaluated against the same
