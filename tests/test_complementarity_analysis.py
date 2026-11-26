@@ -2,7 +2,7 @@ import unittest
 
 import numpy as np
 
-from hpc.complementarity_analysis import cost_oracle, make_batches, oracle_choice
+from hpc.complementarity_analysis import cost_oracle, debatch_eval, make_batches, oracle_choice
 
 
 class ComplementarityTests(unittest.TestCase):
@@ -29,6 +29,20 @@ class ComplementarityTests(unittest.TestCase):
         for batch in coherent:
             self.assertEqual(len(set(labels[batch])), 2)
         self.assertIsNone(make_batches(labels, 64, rng, coherent=2))
+
+    def test_debatch_costs_sub_batches_and_respects_budget(self):
+        labels = np.repeat(np.arange(4), 8)
+        correct = np.zeros((2, 32), dtype=bool)
+        correct[0] = True             # expensive reference always right
+        correct[1, :16] = True        # cheap model right on half
+        sizes = np.array([1, 8, 16])
+        curves = {'latency': (sizes, np.array([[10., 40., 70.], [1., 4., 7.]]))}
+        costs = {'latency': {b: curves['latency'][1][:, i] / b for i, b in enumerate(sizes)}}
+        r = debatch_eval(correct, labels, [0, 1], costs, curves, 16, 3,
+                         np.random.default_rng(0), 0.0, ref=0)
+        self.assertAlmostEqual(r['oracle']['accuracy'], 100.0)
+        self.assertGreater(r['oracle']['savings_pct']['latency'], 0)
+        self.assertAlmostEqual(r['budget']['accuracy'], 100.0)
 
 
 if __name__ == '__main__':

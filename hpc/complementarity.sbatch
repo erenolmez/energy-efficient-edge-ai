@@ -5,7 +5,7 @@
 #SBATCH --cpus-per-task=4
 #SBATCH --gres=gpu:1
 #SBATCH --mem=24G
-#SBATCH --time=01:00:00
+#SBATCH --time=01:30:00
 #SBATCH --output=complementarity-%j.log
 # Development analysis: predictions on classifier-validation, router-train and
 # router-calibration only (never the official test set), then CPU-side oracle analysis.

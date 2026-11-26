@@ -27,6 +27,8 @@ import numpy as np
 
 ROLES = ("classifier_validation", "router_train", "router_calibration")
 BATCHES = (1, 8, 16, 32, 64, 128)
+# Probe sizes also cover the sub-batch sizes that batch-debatch routing produces.
+PROBE = (1, 2, 4, 8, 12, 16, 24, 32, 48, 64, 96, 128)
 REFERENCE = "resnet101"
 
 
@@ -151,7 +153,7 @@ def collect(args):
         print(json.dumps(dict(event="energy_unavailable", reason=repr(exc))), flush=True)
     gpu = torch.cuda.get_device_name()
     rows = []
-    for b in BATCHES:
+    for b in PROBE:
         x = torch.randn(b, 3, size, size, device="cuda")
         for name, model in zip(names, models):
             with torch.inference_mode(), torch.autocast("cuda", dtype=torch.float16):
@@ -183,21 +185,34 @@ def collect(args):
 # ----------------------------------------------------------------------------- analyze
 
 def load_costs(path, names):
-    """Return {objective: {batch: per-image cost array over models}} and metadata."""
+    """Return ({objective: {batch: per-image cost over models}},
+               {objective: (sizes, batch-cost matrix models x sizes)}, metadata)."""
     data = load_json(path)
-    out = {}
+    out, curves = {}, {}
     for objective, key in (("latency", "latency_ms"), ("energy", "energy_mj")):
-        table = {}
-        for b in BATCHES:
+        sizes, matrix = [], []
+        for b in sorted({r["batch"] for r in data["rows"]}):
             vals = []
             for name in names:
                 row = [r for r in data["rows"] if r["model"] == name and r["batch"] == b]
-                vals.append(None if not row or row[0].get(key) is None else row[0][key] / b)
+                vals.append(None if not row or row[0].get(key) is None else row[0][key])
             if all(v is not None for v in vals):
-                table[b] = np.asarray(vals, dtype=float)
+                sizes.append(b)
+                matrix.append(vals)
+        if not sizes:
+            continue
+        matrix = np.asarray(matrix, dtype=float).T  # models x sizes, cost of one batch
+        curves[objective] = (np.asarray(sizes), matrix)
+        table = {b: matrix[:, sizes.index(b)] / b for b in BATCHES if b in sizes}
         if table:
             out[objective] = table
-    return out, data.get("meta", {})
+    return out, curves, data.get("meta", {})
+
+
+def batch_cost(curve, model, n):
+    """Cost of one sub-batch of n images on `model`, linear interpolation between probes."""
+    sizes, matrix = curve
+    return float(np.interp(n, sizes, matrix[model]))
 
 
 def make_batches(labels, b, rng, coherent=None):
@@ -300,6 +315,83 @@ def analyze_role(correct, labels, names, costs, b, repeats, rng, coherent, budge
     return result
 
 
+def pick_subset(correct, k, unit, names, rule):
+    """Choose k models on the fit split. 'coverage': the k-subset whose per-image oracle
+    is right most often (ties: cheaper). 'usage': the k models the all-model per-image
+    oracle uses most when it routes each image to its cheapest correct model."""
+    from itertools import combinations
+    m = len(names)
+    if rule == "coverage":
+        best = max(combinations(range(m), k),
+                   key=lambda s: (correct[list(s)].any(0).sum(), -unit[list(s)].sum()))
+        return sorted(best)
+    choice = per_image_choice(correct, np.arange(m), unit, 0.0)
+    has = correct.any(0)
+    counts = np.bincount(choice[has], minlength=m)
+    return sorted(np.argsort(-counts, kind="stable")[:k].tolist())
+
+
+def per_image_choice(correct, subset, unit, lam):
+    """Per image, maximize correct - lam*unit cost within `subset`; ties go to the cheaper model."""
+    subset = np.asarray(subset)
+    u = unit[subset] / unit.max()
+    score = correct[subset].astype(float) - (lam + 1e-6) * u[:, None]
+    return subset[score.argmax(0)]
+
+
+def debatch_eval(correct, labels, subset, costs, curves, b, repeats, rng, budget_pp, ref):
+    """Batch-debatch: route each image of an incoming batch of b to its own model, run one
+    sub-batch per chosen model (sequentially), reassemble. Cost of an incoming batch =
+    sum of each model's probed cost at its sub-batch size; scatter/gather and model
+    switching are not included (all eight resident)."""
+    if not costs:
+        return None
+    unit = costs["latency"][b] if "latency" in costs else next(iter(costs.values()))[b]
+    m = correct.shape[0]
+    acc = {"oracle": [], "budget": []}
+    save = {(o, t): [] for o in curves for t in acc}
+    models_used = {t: [] for t in acc}
+    share = {t: [] for t in acc}
+    for _ in range(repeats):
+        batches = make_batches(labels, b, rng)
+        flat = batches.ravel()
+        c = correct[:, flat]
+        ref_correct = c[ref].sum()
+        target = ref_correct - budget_pp / 100 * len(flat)
+        picks = {"oracle": per_image_choice(c, subset, unit, 0.0)}
+        idx = np.arange(len(flat))
+        oracle_correct = c[picks["oracle"], idx].sum()
+        if oracle_correct >= target:
+            # Exact for per-image linear costs: an extra error is only worth taking by sending
+            # a correctly routed image to the subset's cheapest model; take the largest savings.
+            cheapest = min(subset, key=lambda j: unit[j])
+            ch = picks["oracle"].copy()
+            saving = np.where(c[ch, idx], unit[ch] - unit[cheapest], 0.0)
+            allowed = int(np.floor(oracle_correct - target + 1e-9))
+            order = np.argsort(-saving, kind="stable")[:allowed]
+            order = order[saving[order] > 0]
+            ch[order] = cheapest
+            picks["budget"] = ch
+        for tag, ch in picks.items():
+            acc[tag].append(100 * c[ch, np.arange(len(flat))].mean())
+            per_batch = ch.reshape(batches.shape)
+            sizes = np.stack([(per_batch == j).sum(1) for j in range(m)], 1)  # batches x models
+            models_used[tag].append((sizes > 0).sum(1).mean())
+            share[tag].append(sizes.sum(0) / sizes.sum())
+            for o, curve in curves.items():
+                total = sum(batch_cost(curve, j, n) for row in sizes for j, n in enumerate(row) if n)
+                save[(o, tag)].append(100 * (1 - total / (len(batches) * batch_cost(curve, ref, b))))
+    out = {}
+    for tag in acc:
+        if not acc[tag]:
+            out[tag] = None
+            continue
+        out[tag] = dict(accuracy=float(np.mean(acc[tag])), models_per_batch=float(np.mean(models_used[tag])),
+                        share=np.mean(share[tag], 0).round(4).tolist(),
+                        savings_pct={o: float(np.mean(save[(o, tag)])) for o in curves})
+    return out
+
+
 def per_class(correct, labels, names):
     ref = names.index(REFERENCE)
     acc = np.stack([[correct[j, labels == c].mean() for c in range(100)] for j in range(len(names))]) * 100
@@ -312,7 +404,7 @@ def analyze(args):
     roles = [str(x) for x in data["roles"]]
     require(REFERENCE in names, "ResNet101 missing from predictions")
     correct, labels, role = data["correct"].astype(bool), data["label"].astype(int), data["role"]
-    costs, meta = load_costs(args.costs, names) if args.costs else ({}, {})
+    costs, curves, meta = load_costs(args.costs, names) if args.costs else ({}, {}, {})
     ref = names.index(REFERENCE)
     rng = np.random.default_rng(args.seed)
     views = {
@@ -425,6 +517,52 @@ def analyze(args):
     lines.append("ResNet101's 10 weakest classes on the fit split (class: R101 acc / best model acc): " +
                  ", ".join(f"{c}: {acc_fit[ref, c]:.0f}/{acc_fit[:, c].max():.0f} {names[acc_fit[:, c].argmax()]}"
                            for c in weakest))
+    # Batch-debatch routing (co-advisor proposal). Subsets chosen on val+router_train only.
+    fit_mask = views["val+router_train (8k, context)"]
+    unit_fit = (costs["latency"][1] if "latency" in costs else
+                next(iter(costs.values()))[1] if costs else np.ones(len(names)))
+    subsets = {}
+    for rule in ("coverage", "usage"):
+        for k in args.debatch_k:
+            subsets[f"top-{k} by {rule}"] = pick_subset(correct[:, fit_mask], k, unit_fit, names, rule)
+    subsets["all 8"] = list(range(len(names)))
+    lines += ["", "## Batch-debatch routing (upper bound)", "",
+              "Each incoming batch is split; every image goes to its own model; one sub-batch per "
+              "chosen model runs in sequence; outputs are reassembled. Oracle = cheapest model in the "
+              "subset that is right (labels known). Budget variant = per-image cost-aware oracle "
+              f"within -{args.budget_pp}pp of ResNet101 (cost per image approximated at the incoming "
+              "batch size, then costed exactly). Cost = sum of probed cost at each sub-batch size, "
+              "interpolated between probe sizes. Scatter/gather and launch gaps between sub-batches "
+              "beyond what the probe captures, and the router itself, are NOT included. Subsets picked on val+router_train, "
+              "scored on calibration.", ""]
+    report["debatch"] = {}
+    if not costs:
+        lines.append("No costs given, so batch-debatch costs are skipped.")
+    cal_c, cal_y = correct[:, views["router_calibration (2k)"]], labels[views["router_calibration (2k)"]]
+    for label, subset in subsets.items():
+        sub_names = ", ".join(names[j] for j in subset)
+        lines += [f"### {label}: {sub_names}", "",
+                  f"Per-image oracle accuracy on calibration: {100 * cal_c[subset].any(0).mean():.2f}% "
+                  f"(ResNet101 {100 * cal_c[ref].mean():.2f}%).", ""]
+        if not costs:
+            continue
+        header = "| B | oracle acc | models/batch |" + "".join(f" {o} save |" for o in curves)
+        header += f" budget acc |" + "".join(f" {o} save @-{args.budget_pp}pp |" for o in curves)
+        lines += [header, "|---" * (header.count("|") - 1) + "|"]
+        report["debatch"][label] = dict(models=[names[j] for j in subset], batches={})
+        for b in BATCHES:
+            r = debatch_eval(cal_c, cal_y, subset, costs, curves, b, 1 if b == 1 else args.repeats,
+                             rng, args.budget_pp, ref)
+            report["debatch"][label]["batches"][b] = r
+            o_, bu = r["oracle"], r["budget"]
+            row = f"| {b} | {o_['accuracy']:.2f} | {o_['models_per_batch']:.2f} |"
+            row += "".join(f" {o_['savings_pct'][o]:.1f}% |" for o in curves)
+            if bu:
+                row += f" {bu['accuracy']:.2f} |" + "".join(f" {bu['savings_pct'][o]:.1f}% |" for o in curves)
+            else:
+                row += " infeasible |" + " - |" * len(curves)
+            lines.append(row)
+        lines.append("")
     report["per_class"] = dict(fit_accuracy=acc_fit.round(2).tolist(), cal_accuracy=acc_cal.round(2).tolist(),
                                winners=[names[j] for j in winners], class_lookup_oracle_cal=float(class_oracle))
     args.output.mkdir(parents=True, exist_ok=True)
@@ -451,6 +589,7 @@ def main(argv=None):
     a.add_argument("--coherent", type=int, nargs="*", default=[4, 8],
                    help="also test batches drawn from k classes each (stream locality)")
     a.add_argument("--top", type=int, default=15)
+    a.add_argument("--debatch-k", type=int, nargs="*", default=[3])
     a.add_argument("--seed", type=int, default=0)
     args = p.parse_args(argv)
     collect(args) if args.action == "collect" else analyze(args)
