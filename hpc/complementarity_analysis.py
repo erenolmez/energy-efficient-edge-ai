@@ -172,13 +172,57 @@ def collect(args):
                 e1 = energy_fn() if energy_fn else None
             # NVML's counter has coarse (~ms, ~mJ) granularity; total over many iterations.
             energy = (e1 - e0) / args.iters if energy_fn else None
-            rows.append(dict(model=name, batch=b, latency_ms=1000 * float(np.median(times)),
+            rows.append(dict(precision="autocast", model=name, batch=b, latency_ms=1000 * float(np.median(times)),
                              wall_ms=1000 * wall / args.iters, energy_mj=energy))
             print(json.dumps(rows[-1]), flush=True)
+    # Extra fixed baseline: ResNet101 in static FP16 (half weights and inputs, no autocast),
+    # alongside ResNet101 under FP16 autocast. Same images, same probe.
+    import copy
+    r101 = models[names.index(REFERENCE)]
+    r101_half = copy.deepcopy(r101).half().eval()
+    static_pred = {"autocast": np.zeros(n, dtype=np.int16), "static_fp16": np.zeros(n, dtype=np.int16)}
+    offset = 0
+    with torch.inference_mode():
+        for x, _ in loader:
+            x = x.cuda(non_blocking=True)
+            with torch.autocast("cuda", dtype=torch.float16):
+                la = r101(x).float()
+            lh = r101_half(x.half()).float()
+            require(bool(la.isfinite().all()) and bool(lh.isfinite().all()), "Non-finite ResNet101 FP16 logits")
+            static_pred["autocast"][offset:offset + len(x)] = la.argmax(1).cpu().numpy()
+            static_pred["static_fp16"][offset:offset + len(x)] = lh.argmax(1).cpu().numpy()
+            offset += len(x)
+    fp32_pred = pred[names.index(REFERENCE)]
+    baseline = dict(model=REFERENCE, accuracy={})
+    for mode, pr in (("fp32", fp32_pred), *static_pred.items()):
+        ok = pr == labels
+        baseline["accuracy"][mode] = {r: round(100 * float(ok[role_id == i].mean()), 3)
+                                      for i, r in enumerate(ROLES)}
+        baseline["accuracy"][mode]["agreement_with_fp32_pct"] = round(100 * float((pr == fp32_pred).mean()), 3)
+    print(json.dumps(dict(event="resnet101_precision_baselines", **baseline)), flush=True)
+    for b in PROBE:
+        x = torch.randn(b, 3, size, size, device="cuda", dtype=torch.float16)
+        with torch.inference_mode():
+            for _ in range(args.warmup):
+                r101_half(x)
+            torch.cuda.synchronize()
+            times = []
+            e0 = energy_fn() if energy_fn else None
+            for _ in range(args.iters):
+                t0 = time.perf_counter()
+                r101_half(x)
+                torch.cuda.synchronize()
+                times.append(time.perf_counter() - t0)
+            e1 = energy_fn() if energy_fn else None
+        rows.append(dict(precision="static_fp16", model=REFERENCE, batch=b,
+                         latency_ms=1000 * float(np.median(times)),
+                         energy_mj=(e1 - e0) / args.iters if energy_fn else None))
+        print(json.dumps(rows[-1]), flush=True)
     meta = dict(gpu=gpu, precision="PyTorch CUDA FP16 autocast, all eight models resident, "
                 "synthetic input, model forward only", warmup=args.warmup, iters=args.iters,
                 label="SCREENING PROXY: not the A40 end-to-end benchmark", receipts=receipts,
-                job=os.environ.get("SLURM_JOB_ID"), test_evaluated=False)
+                job=os.environ.get("SLURM_JOB_ID"), test_evaluated=False,
+                resnet101_baselines=baseline)
     (args.output / "costs.json").write_text(json.dumps(dict(meta=meta, rows=rows), indent=2))
 
 
@@ -188,6 +232,7 @@ def load_costs(path, names):
     """Return ({objective: {batch: per-image cost over models}},
                {objective: (sizes, batch-cost matrix models x sizes)}, metadata)."""
     data = load_json(path)
+    data["rows"] = [r for r in data["rows"] if r.get("precision", "autocast") == "autocast"]
     out, curves = {}, {}
     for objective, key in (("latency", "latency_ms"), ("energy", "energy_mj")):
         sizes, matrix = [], []
@@ -517,6 +562,37 @@ def analyze(args):
     lines.append("ResNet101's 10 weakest classes on the fit split (class: R101 acc / best model acc): " +
                  ", ".join(f"{c}: {acc_fit[ref, c]:.0f}/{acc_fit[:, c].max():.0f} {names[acc_fit[:, c].argmax()]}"
                            for c in weakest))
+    # Fixed ResNet101 baselines: FP16 autocast (the cost basis everywhere else) vs static FP16.
+    if args.costs:
+        raw = load_json(args.costs)
+        base = raw.get("meta", {}).get("resnet101_baselines")
+        static = {r["batch"]: r for r in raw["rows"] if r.get("precision") == "static_fp16"}
+        auto = {r["batch"]: r for r in raw["rows"]
+                if r.get("precision", "autocast") == "autocast" and r["model"] == REFERENCE}
+        if base and static:
+            lines += ["", "## Fixed ResNet101: FP16 autocast vs static FP16", ""]
+            for mode, accs in base["accuracy"].items():
+                lines.append(f"- {mode}: calibration {accs['router_calibration']:.2f}%, "
+                             f"val {accs['classifier_validation']:.2f}%, router-train {accs['router_train']:.2f}%, "
+                             f"top-1 agreement with FP32 {accs['agreement_with_fp32_pct']:.2f}%")
+            lines += ["", "| B | autocast ms/img | static ms/img | latency change | autocast mJ/img | "
+                      "static mJ/img | energy change |", "|---|---|---|---|---|---|---|"]
+            for b in BATCHES:
+                a_, s_ = auto.get(b), static.get(b)
+                if not a_ or not s_:
+                    continue
+                row = (f"| {b} | {a_['latency_ms']/b:.3f} | {s_['latency_ms']/b:.3f} | "
+                       f"{100*(s_['latency_ms']/a_['latency_ms']-1):+.1f}% |")
+                if a_.get("energy_mj") is not None and s_.get("energy_mj") is not None:
+                    row += (f" {a_['energy_mj']/b:.2f} | {s_['energy_mj']/b:.2f} | "
+                            f"{100*(s_['energy_mj']/a_['energy_mj']-1):+.1f}% |")
+                else:
+                    row += " - | - | - |"
+                lines.append(row)
+            lines.append("\nAll routing savings above are against the autocast ResNet101; compare them "
+                         "with the static column to see how much of a saving plain FP16 alone gives.")
+            report["resnet101_baselines"] = dict(accuracy=base["accuracy"], static=static, autocast=auto)
+
     # Batch-debatch routing (co-advisor proposal). Subsets chosen on val+router_train only.
     fit_mask = views["val+router_train (8k, context)"]
     unit_fit = (costs["latency"][1] if "latency" in costs else
