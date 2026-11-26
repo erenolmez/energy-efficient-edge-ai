@@ -4,16 +4,27 @@
 #SBATCH --ntasks=1
 #SBATCH --cpus-per-task=4
 #SBATCH --gres=gpu:1
-#SBATCH --mem=24G
+#SBATCH --mem=16G
 #SBATCH --time=01:30:00
+#SBATCH --partition=gpu_a40
+#SBATCH --account=eolmez
+#SBATCH --qos=normal
+#SBATCH --exclude=compute-5-11,compute-7-13
 #SBATCH --output=complementarity-%j.log
 # Development analysis: predictions on classifier-validation, router-train and
 # router-calibration only (never the official test set), then CPU-side oracle analysis.
 set -euo pipefail
 : "${SLURM_JOB_ID:?Submit through the scheduler}"
-: "${HPC_PYTHON:?Set the absolute path to the project Python executable}"
-: "${STUDY_BASE:?Set the clean_classifier_study directory}"
-: "${CIFAR_DATA:?Set the CIFAR-100 root used by the classifier training}"
+# Defaults follow the cluster setup used for the earlier HPC jobs; override by exporting.
+# Partition: gpu_a40 by default (cost probe on the target GPU); for a faster start use
+# `sbatch --partition=gpu_a100 ...` (the probe then reports A100 costs, labelled by GPU name).
+SCRATCH_FLASH="${SCRATCH_FLASH:-/mnt/beegfs/eolmez}"
+HPC_PYTHON="${HPC_PYTHON:-${SCRATCH_FLASH}/envs/edge-ai/bin/python}"
+STUDY_BASE="${STUDY_BASE:-${SCRATCH_FLASH}/clean_classifier_study}"
+CIFAR_DATA="${CIFAR_DATA:-${SCRATCH_FLASH}/datasets/cifar100}"
+test -x "$HPC_PYTHON"
+test -d "$CIFAR_DATA/cifar-100-python"
+test -f "$STUDY_BASE/split_seed42.json"
 cd "${SLURM_SUBMIT_DIR:?Submit from the repository root}"
 test -f hpc/complementarity_analysis.py
 export PYTHONUNBUFFERED=1 OMP_NUM_THREADS=4
