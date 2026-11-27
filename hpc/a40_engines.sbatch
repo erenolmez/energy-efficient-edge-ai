@@ -17,27 +17,19 @@
 set -euo pipefail
 : "${SLURM_JOB_ID:?Submit through the scheduler}"
 SCRATCH_FLASH="${SCRATCH_FLASH:-/mnt/beegfs/eolmez}"
-HPC_PYTHON="${HPC_PYTHON:-${SCRATCH_FLASH}/envs/edge-ai/bin/python}"
 STUDY_BASE="${STUDY_BASE:-${SCRATCH_FLASH}/clean_classifier_study}"
 CIFAR_DATA="${CIFAR_DATA:-${SCRATCH_FLASH}/datasets/cifar100}"
-# TensorRT, ONNX and NVML live in a separate --no-deps overlay directory so the shared edge-ai
-# environment (used by jobs 1 and 2) is never modified. It is prepended to PYTHONPATH for
-# this job only.
-TRT_OVERLAY="${TRT_OVERLAY:-${SCRATCH_FLASH}/envs/trt-overlay}"
-test -d "$TRT_OVERLAY/tensorrt"
-export PYTHONPATH="${TRT_OVERLAY}${PYTHONPATH:+:${PYTHONPATH}}"
-test -x "$HPC_PYTHON"
-test -d "$CIFAR_DATA/cifar-100-python"
-test -f "$STUDY_BASE/split_seed42.json"
 cd "${SLURM_SUBMIT_DIR:?Submit from the repository root}"
 test -f hpc/a40_engines.py
+# Overlays (timm 1.0.28, TensorRT) on PYTHONPATH + import preflight; edge-ai env untouched.
+source hpc/a40_engines_env.sh
+test -d "$CIFAR_DATA/cifar-100-python"
+test -f "$STUDY_BASE/split_seed42.json"
 export PYTHONUNBUFFERED=1 OMP_NUM_THREADS=4
 out="${A40_OUT:-${STUDY_BASE}/a40_engines_v1}"
 hostname; date -u; echo "CUDA_VISIBLE_DEVICES=${CUDA_VISIBLE_DEVICES:-unset}"
 nvidia-smi --query-gpu=index,name,uuid,pci.bus_id,memory.total,driver_version --format=csv
 git rev-parse HEAD
-echo "PYTHONPATH=$PYTHONPATH"
-"$HPC_PYTHON" -c "import torch, tensorrt, onnx, pynvml; print('torch', torch.__version__, 'cuda', torch.version.cuda, 'tensorrt', tensorrt.__version__, 'onnx', onnx.__version__)"
 srun --ntasks=1 "$HPC_PYTHON" -m hpc.a40_engines run \
     --base "$STUDY_BASE" --data "$CIFAR_DATA" --output "$out" ${A40_ARGS:-}
 date -u
