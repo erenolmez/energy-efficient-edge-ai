@@ -95,15 +95,16 @@ def evaluate_choices(correct, batchings, choices, costs_b):
     return float(np.mean(acc)), float(np.mean(cost)), np.asarray(acc)
 
 
-def lock_router(prob, correct, batchings, costs_b, ref, target_acc, lambdas=LAMBDAS):
-    """Cheapest lam meeting target_acc on calibration. Returns dict or None if infeasible."""
+def lock_router(prob, correct, batchings, costs_b, ref, target_acc, lambdas=LAMBDAS, min_share=0.0):
+    """Cheapest lam whose mean calibration accuracy is >= target_acc AND whose accuracy is >=
+    target_acc in at least `min_share` of the shuffled batchings. None if infeasible."""
     norm = costs_b / costs_b[ref]
     mean_prob = [prob[:, batches].mean(2) for batches in batchings]  # models x n_batches
     best = None
     for lam in lambdas:
         choices = [(mp - lam * norm[:, None]).argmax(0) for mp in mean_prob]
         acc, cost, per = evaluate_choices(correct, batchings, choices, costs_b)
-        if acc >= target_acc and (best is None or cost < best["cost"] - 1e-12):
+        if acc >= target_acc and (per >= target_acc).mean() >= min_share - 1e-12 and (best is None or cost < best["cost"] - 1e-12):
             share = np.bincount(np.concatenate(choices), minlength=len(costs_b))
             best = dict(lam=float(lam), accuracy=acc, cost=cost, per_repeat_accuracy=per,
                         share=share / share.sum())
@@ -126,7 +127,8 @@ def lock(args):
     policy = dict(meta=dict(stage="B2 policy lock on router-calibration (2k); test not read",
                             budget_pp=args.budget_pp, repeats=args.repeats, seed=args.seed,
                             classifier_costs="A40 TensorRT FP16 pipeline (stage A, job %s)" % a["meta"]["device"]["job"],
-                            models=names, reference=REFERENCE, lambdas=len(LAMBDAS)),
+                            models=names, reference=REFERENCE, lambdas=len(LAMBDAS),
+                            min_repeat_share=args.min_repeat_share),
                   locked={})
     lines = ["# Job 3 stage B2: policies locked on router-calibration (2k)", "",
              "CALIBRATION (policy locking), not held-out results. Classifier correctness = deployed TensorRT "
@@ -163,7 +165,7 @@ def lock(args):
             lines.append(f"| {objective} | fixed {names[cheapest_fixed]} | - | {fixed_acc[cheapest_fixed]:.2f} | - | "
                          f"{save(fixed_cost):.1f}% | - | fallback baseline | - |")
             for rname, (prob, rcost) in routers.items():
-                res = lock_router(prob, correct, batchings, cb, ref, target)
+                res = lock_router(prob, correct, batchings, cb, ref, target, min_share=args.min_repeat_share)
                 r_overhead = rcost[objective].get(b)
                 key = f"{rname}|{objective}|{b}"
                 family = rname.rsplit("-s", 1)[0] if rname.rsplit("-s", 1)[-1].isdigit() else rname
@@ -177,7 +179,8 @@ def lock(args):
                     continue
                 total = res["cost"] + (r_overhead or 0.0) * nb
                 routed = total < fixed_cost
-                srow.append(dict(routed=routed, saving=save(total), accuracy=res["accuracy"]))
+                srow.append(dict(routed=routed, saving=save(total), accuracy=res["accuracy"],
+                                 router_latency=rcost["latency"].get(b)))
                 meet = float((res["per_repeat_accuracy"] >= target).mean())
                 share = {names[j]: round(float(s), 4) for j, s in enumerate(res["share"]) if s > 0}
                 policy["locked"][key] = dict(
@@ -212,6 +215,35 @@ def lock(args):
             lines.append(f"| {family} | {objective} | {b} | {routed}/{len(rows)} | {med('accuracy')} | "
                          f"{med('saving')}{'%' if ok else ''} |")
         lines.append("")
+        # Pre-registered winner rule (fixed before the costed lock was seen).
+        fams = sorted({f for f, _, _ in summary} - set(args.exclude_from_selection))
+        ranking = []
+        for f in fams:
+            cells = [rows for (ff, _, _), rows in summary.items() if ff == f]
+            per_cell = [float(np.median([r["saving"] if (r and r["routed"]) else 0.0 for r in rows]))
+                        if all(r and r["routed"] for r in rows) else 0.0 for rows in cells]
+            full = sum(all(r and r["routed"] for r in rows) for rows in cells)
+            rl = [r["router_latency"] for rows in cells for r in rows if r and r.get("router_latency") is not None]
+            ranking.append(dict(family=f, score=float(np.mean(per_cell)), cells_routed_all_seeds=full,
+                                cells=len(cells), mean_router_ms=float(np.mean(rl)) if rl else None))
+        ranking.sort(key=lambda r: (-r["score"], r["mean_router_ms"] if r["mean_router_ms"] is not None else 0.0))
+        qualified = [r for r in ranking if r["cells_routed_all_seeds"] > 0]
+        policy["selection"] = dict(
+            rule="score = mean over (objective, B) cells of the median-over-seeds calibration saving, "
+                 f"{cost_note}; a cell counts 0 unless all seeds ROUTE; feasibility requires the "
+                 f"mean and >= {args.min_repeat_share:.0%} of repeats within budget; ties -> cheaper router; "
+                 f"excluded (controls): {', '.join(args.exclude_from_selection) or 'none'}",
+            ranking=ranking, winner=qualified[0]["family"] if qualified else None,
+            runners_up=[r["family"] for r in qualified[1:]])
+        lines += ["## Pre-registered winner selection", "", policy["selection"]["rule"] + ".", "",
+                  "| rank | router | score (mean saving %) | cells routed on all seeds | mean router ms |",
+                  "|---|---|---|---|---|"]
+        for i, r in enumerate(ranking, 1):
+            ms = "-" if r["mean_router_ms"] is None else f"{r['mean_router_ms']:.3f}"
+            lines.append(f"| {i} | {r['family']} | {r['score']:.2f} | {r['cells_routed_all_seeds']}/{r['cells']} | {ms} |")
+        win = policy["selection"]["winner"]
+        lines += ["", f"WINNER (whole-batch): {win}" if win else "No router qualifies: FALLBACK to fixed ResNet101.",
+                  "Runners-up go to the held-out run labelled as runners-up." if win else "", ""]
     if not routers:
         lines += ["No router score files given: only fixed classifiers and the labels-known bound are shown.", ""]
     args.output.mkdir(parents=True, exist_ok=True)
@@ -228,6 +260,10 @@ def main(argv=None):
     p.add_argument("--budget-pp", type=float, default=1.0)
     p.add_argument("--repeats", type=int, default=50)
     p.add_argument("--seed", type=int, default=0)
+    p.add_argument("--min-repeat-share", type=float, default=0.8,
+                   help="locked lam must meet the budget in at least this share of repeats")
+    p.add_argument("--exclude-from-selection", nargs="*", default=["lookup-res32-t48k"],
+                   help="control variants reported but never selected as the winner")
     lock(p.parse_args(argv))
 
 

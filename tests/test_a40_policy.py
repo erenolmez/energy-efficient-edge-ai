@@ -21,6 +21,12 @@ class LockRouterTests(unittest.TestCase):
         self.assertGreaterEqual(res["accuracy"], 90.0)
         self.assertLess(res["cost"], 8 * 10.0)
 
+    def test_repeat_share_requirement_is_enforced(self):
+        prob = self.correct.astype(float) * 0.8 + 0.1
+        res = lock_router(prob, self.correct, self.batchings, self.costs, 0, target_acc=90.0, min_share=1.0)
+        self.assertIsNotNone(res)
+        self.assertTrue((res["per_repeat_accuracy"] >= 90.0).all())
+
     def test_infeasible_target_returns_none(self):
         prob = np.full((2, 64), 0.5)
         prob[0] = 0.4  # router always prefers the cheap model
