@@ -1,18 +1,19 @@
 #!/bin/bash
-#SBATCH --job-name=a40-routers
+#SBATCH --job-name=a40-rcost
 #SBATCH --nodes=1
 #SBATCH --ntasks=1
 #SBATCH --cpus-per-task=4
 #SBATCH --gres=gpu:1
 #SBATCH --mem=32G
-#SBATCH --time=02:00:00
-#SBATCH --partition=gpu_a40
+#SBATCH --time=00:30:00
+#SBATCH --partition=gpu_a40,gpu_a40_ext
 #SBATCH --account=eolmez
 #SBATCH --qos=normal
 #SBATCH --exclude=compute-5-11,compute-7-13
-#SBATCH --output=a40-routers-%j.log
-# Job 3, stage B1: router calibration scores, TensorRT router engines and A40 router costs,
-# then the stage B2 policy lock (CPU). Needs stage A (a40_engines_v1). Never opens the test set.
+#SBATCH --output=a40-rcost-%j.log
+# Job 3, stage B1 cost phase (A40 only): router TensorRT engines, parity and A40 router costs on
+# top of the score phase (hpc/a40_router_scores.sbatch), then the costed stage B2 policy lock.
+# Needs stage A and the score phase output. Never opens the test set.
 set -euo pipefail
 : "${SLURM_JOB_ID:?Submit through the scheduler}"
 SCRATCH_FLASH="${SCRATCH_FLASH:-/mnt/beegfs/eolmez}"
@@ -30,11 +31,14 @@ for f in evidence/labels.npy evidence/images.npy evidence/bank.json code/hpc_rou
     test -e "$SCREEN/$f" || { echo "Missing $SCREEN/$f" >&2; exit 1; }
 done
 export PYTHONUNBUFFERED=1 OMP_NUM_THREADS=4
+scores_from="${SCORES_FROM:-${STUDY_BASE}/a40_router_scores_v1}"
+test -f "$scores_from/routers.json"
 out="${ROUTERS_OUT:-${STUDY_BASE}/a40_routers_v1}"
 hostname; date -u; nvidia-smi --query-gpu=index,name,uuid,memory.total,driver_version --format=csv
 git rev-parse HEAD
 srun --ntasks=1 "$HPC_PYTHON" -m hpc.a40_routers --base "$STUDY_BASE" --data "$CIFAR_DATA" \
-    --screen "$SCREEN" --stage-a "$STAGE_A" --output "$out"
+    --screen "$SCREEN" --stage-a "$STAGE_A" --output "$out" \
+    --phase cost --scores-from "$scores_from"
 "$HPC_PYTHON" -m hpc.a40_policy --stage-a "$STAGE_A" --scores "$out"/scores/*.npz \
     --output "${STUDY_BASE}/a40_policy_v1"
 date -u

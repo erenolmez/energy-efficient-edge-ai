@@ -1,6 +1,12 @@
 """Job 3, stage B1: router scores on router-calibration and router costs on the A40.
 
-GPU (Slurm). Never opens the test set. Reuses the frozen routers from the development screen
+Two phases, never opening the test set:
+  --phase score  any GPU (or CPU): train the val+3k router, score router-calibration, save
+                 scores without router costs (enough for an accuracy-only policy lock).
+  --phase cost   A40 only, --scores-from <score output>: rebuild the same routers, build their
+                 TensorRT engines (engines are GPU-specific, so they are built here), check parity,
+                 measure router costs, and re-save the score phase's probabilities with costs.
+ Reuses the frozen routers from the development screen
 (router_arch_screen_v1: results/<task>-<arch>-s<seed>.pt, trained on router-train 3k against
 the bank's PyTorch autocast correctness in evidence/) and trains one new variant, the direct
 TinyCNN 16x16 on val+3k (classifier-validation 5k + router-train 3k), with the screen's recipe
@@ -74,19 +80,25 @@ def run(args):
     from torch import nn
     from torch.nn import functional as F
     from torchvision.datasets import CIFAR100
-    import tensorrt as trt
-    import pynvml
+    cost_phase = args.phase == "cost"
+    if cost_phase:
+        import tensorrt as trt
+        import pynvml
 
     from hpc.clean_protocol import validate_split
     from hpc.scratch_recipes import make_plan
 
     require(os.environ.get("SLURM_JOB_ID"), "Run on a Slurm allocation, not a login node")
-    require(torch.cuda.is_available(), "CUDA allocation required")
+    require(torch.cuda.is_available() or not cost_phase, "The cost phase needs the A40")
+    DEV = "cuda" if torch.cuda.is_available() else "cpu"
+    if cost_phase:
+        require(args.scores_from is not None and (args.scores_from / "routers.json").exists(),
+                "--scores-from must point at a completed score phase")
     torch.backends.cuda.matmul.allow_tf32 = False
     torch.backends.cudnn.allow_tf32 = False
     out = args.output
     out.mkdir(parents=True, exist_ok=False)
-    for d in ("scores", "engines", "trained"):
+    for d in ("scores", "engines") if cost_phase else ("scores", "trained"):
         (out / d).mkdir()
     screen, evidence, stage_a = args.screen, args.screen / "evidence", args.stage_a
 
@@ -168,8 +180,8 @@ def run(args):
     scratch = checked_plan(args.base / "scratch32_full_factorial_v1" / "plan.json")
     require(all(np.allclose(plan[k], scratch[k]) for k in ("normalization_mean", "normalization_std")),
             "Router normalization differs from the classifiers' (stage A) normalization")
-    mu = torch.tensor(plan["normalization_mean"], device="cuda").view(1, 3, 1, 1)
-    sd = torch.tensor(plan["normalization_std"], device="cuda").view(1, 3, 1, 1)
+    mu = torch.tensor(plan["normalization_mean"], device=DEV).view(1, 3, 1, 1)
+    sd = torch.tensor(plan["normalization_std"], device=DEV).view(1, 3, 1, 1)
 
     # ---- the new direct val+3k TinyCNN 16x16, screen recipe
     ev_images = np.load(evidence / "images.npy", mmap_mode="r", allow_pickle=False)
@@ -177,19 +189,27 @@ def run(args):
     def screen_inputs_16(ix):
         outp = []
         for idx in np.array_split(ix, max(1, len(ix) // 75)):
-            x = torch.as_tensor(np.asarray(ev_images[idx]), device="cuda").permute(0, 3, 1, 2).float()
+            x = torch.as_tensor(np.asarray(ev_images[idx]), device=DEV).permute(0, 3, 1, 2).float()
             outp.append(F.adaptive_avg_pool2d(x.div_(255).sub_(mu).div_(sd), (16, 16)))
         return torch.cat(outp)
 
     fit = np.concatenate([val, tr])
-    xfit = screen_inputs_16(fit)
-    tfit = torch.as_tensor(correct[fit][:, np.argsort(perm)], device="cuda")  # heads use bank order
-    splits = int(round(SCREEN_RECIPE["splits_per_3k"] * len(fit) / len(tr)))
     trained = {}
-    for seed in SEEDS:
+    if cost_phase:  # reuse the score phase's val+3k routers; never retrain
+        prior = json.loads((args.scores_from / "routers.json").read_text())
+        require(prior["split_sha256"] == split["sha256"] and prior["screen_code_sha256"] == code_sha,
+                "Score phase provenance differs")
+        for r in prior["routers"]:
+            if r["router"] == "direct-tiny16-val3k":
+                require(sha256(r["checkpoint"]) == r["checkpoint_sha256"], "val+3k router changed")
+                trained[r["seed"]] = Path(r["checkpoint"])
+    xfit = screen_inputs_16(fit) if not cost_phase else None
+    tfit = torch.as_tensor(correct[fit][:, np.argsort(perm)], device=DEV)  # heads use bank order
+    splits = int(round(SCREEN_RECIPE["splits_per_3k"] * len(fit) / len(tr)))
+    for seed in (SEEDS if not cost_phase else ()):
         rng = np.random.default_rng(seed)
         torch.manual_seed(seed)
-        net = model("tiny16", "correctness").cuda()
+        net = model("tiny16", "correctness").to(DEV)
         opt = torch.optim.Adam(net.parameters(), lr=SCREEN_RECIPE["lr"])
         for _ in range(SCREEN_RECIPE["epochs"]):
             for idx in np.array_split(rng.permutation(len(fit)), splits):
@@ -213,7 +233,7 @@ def run(args):
                           align_corners=False)
         return y.round_().clamp_(0, 255).div_(255).sub_(mu).div_(sd).contiguous()
 
-    perm_index = torch.as_tensor(perm, device="cuda")  # stage A column i <- bank column perm[i]
+    perm_index = torch.as_tensor(perm, device=DEV)  # stage A column i <- bank column perm[i]
 
     class Score(nn.Module):
         """Per-image P(correct) for the eight classifiers, in stage A order. Heads were trained
@@ -226,9 +246,9 @@ def run(args):
             self.register_buffer("sd", sd.clone())
             self.register_buffer("perm", perm_index.clone())
             if tab is not None:
-                self.register_buffer("table", torch.as_tensor(tab, dtype=torch.float32, device="cuda"))
+                self.register_buffer("table", torch.as_tensor(tab, dtype=torch.float32, device=DEV))
             if mix is not None:
-                self.register_buffer("mix", mix.softmax(0).to("cuda"))
+                self.register_buffer("mix", mix.softmax(0).to(DEV))
 
         def forward(self, x):
             # 16x16: x is the normalized GPU-resized 128px batch; 32x32: float 0..255 NCHW 32px.
@@ -250,10 +270,10 @@ def run(args):
             return self.score(x).mean(0, keepdim=True)
 
     # ---- build all routers
-    raw_cal = torch.as_tensor(ds.data[cal], device="cuda")  # (2000,32,32,3) uint8
+    raw_cal = torch.as_tensor(ds.data[cal], device=DEV)  # (2000,32,32,3) uint8
     x128 = torch.cat([prepare128(c) for c in raw_cal.split(128)])
     x32 = raw_cal.permute(0, 3, 1, 2).float().contiguous()
-    logger = trt.Logger(trt.Logger.WARNING)
+    logger = trt.Logger(trt.Logger.WARNING) if cost_phase else None
     import inspect
     export_kw = dict(input_names=["input"], output_names=["score"], opset_version=17,
                      dynamic_axes={"input": {0: "batch"}})
@@ -277,7 +297,7 @@ def run(args):
                 require(meta_json["code_sha256"] == code_sha, f"Screen code changed since {path}")
             net = model(arch, task)
             net.load_state_dict(ck["state"], strict=True)
-            net = net.cuda().eval()
+            net = net.to(DEV).eval()
             tab = tables[tab_key] if kind in ("lookup", "blended") else None
             require(kind != "blended" or ck.get("mix") is not None, f"Blended router without mix: {path}")
             score = Score(net, kind, arch, tab, ck.get("mix") if kind == "blended" else None).eval()
@@ -288,6 +308,16 @@ def run(args):
                     f"Router probabilities out of range: {rname}")
             key = f"{rname}-s{seed}"
             scores[key] = prob.clip(0, 1)
+            entry = dict(router=rname, seed=seed, kind=kind, arch=arch, table=tab_key,
+                         checkpoint=str(path), checkpoint_sha256=sha256(path),
+                         parameters=sum(p.numel() for p in net.parameters()),
+                         mix=None if ck.get("mix") is None else ck["mix"].softmax(0).tolist(),
+                         scored_on=DEV if DEV == "cpu" else torch.cuda.get_device_name(0),
+                         input="normalized resized 128px, avg-pooled to 16x16" if arch == "tiny16"
+                               else "native 32px, normalized")
+            if not cost_phase:
+                manifest.append(entry)
+                continue
             # TensorRT FP32 engine: batch-mean scores, one static profile per batch size
             onnx_path, eng_path = out / "engines" / f"{key}.onnx", out / "engines" / f"{key}.engine"
             shape = (1, 3, 128, 128) if arch == "tiny16" else (1, 3, 32, 32)
@@ -309,15 +339,23 @@ def run(args):
             blob = builder.build_serialized_network(network, config)
             require(blob is not None, f"Router engine build failed: {key}")
             eng_path.write_bytes(bytes(blob))
-            manifest.append(dict(router=rname, seed=seed, kind=kind, arch=arch, table=tab_key,
-                                 checkpoint=str(path), checkpoint_sha256=sha256(path),
-                                 parameters=sum(p.numel() for p in net.parameters()),
-                                 mix=None if ck.get("mix") is None else ck["mix"].softmax(0).tolist(),
-                                 engine=str(eng_path), engine_sha256=sha256(eng_path),
-                                 input="normalized GPU-resized 128px, avg-pooled to 16x16 in-engine"
-                                       if arch == "tiny16" else "native 32px, normalized in-engine"))
+            manifest.append(dict(entry, engine=str(eng_path), engine_sha256=sha256(eng_path)))
             print(json.dumps(dict(event="router_built", **manifest[-1])), flush=True)
             del builder, network, parser, config, blob
+
+    if not cost_phase:
+        for key, prob in scores.items():
+            np.savez_compressed(out / "scores" / f"{key}.npz", index=cal, models=np.array(names),
+                                correct_prob=prob)
+        write(out / "routers.json", dict(
+            phase="score", device=manifest[0]["scored_on"], job=os.environ.get("SLURM_JOB_ID"),
+            split_sha256=split["sha256"], screen_code_sha256=code_sha, routers=manifest,
+            tables={k: v.tolist() for k, v in tables.items()}, table_columns=names,
+            saved_val3k_table_sha256=saved_sha,
+            label="CALIBRATION router scores (stage B1, score phase); no router costs yet; test not opened",
+            test_evaluated=False))
+        print("Stage B1 score phase complete:", len(scores), "score files (no router cost)", flush=True)
+        return
 
     # ---- TensorRT runner, parity, and A40 router cost
     stream = torch.cuda.Stream()
@@ -416,15 +454,23 @@ def run(args):
             print(json.dumps(dict(event="router_cost", **row)), flush=True)
         del eng
     cost_of = {(c["router"], c["batch"]): c for c in costs}
-    for key, prob in scores.items():
+    drift = {}
+    for key, prob_a40 in scores.items():
         rname, seed = key.rsplit("-s", 1)
+        # The lock uses the score phase's probabilities, so the accuracy-only and costed locks
+        # see identical scores; the A40 re-computation is reported as drift.
+        prior_file = np.load(args.scores_from / "scores" / f"{key}.npz", allow_pickle=False)
+        require(np.array_equal(prior_file["index"], cal), f"Score phase images differ: {key}")
+        prob = prior_file["correct_prob"]
+        drift[key] = float(np.abs(prob - prob_a40).max())
         np.savez_compressed(out / "scores" / f"{key}.npz", index=cal, models=np.array(names),
                             correct_prob=prob, router_cost_batches=np.array(BATCHES),
                             router_latency_ms=np.array([cost_of[(rname, b)]["latency_ms"] for b in BATCHES]),
                             router_energy_mj=np.array([cost_of[(rname, b)]["energy_mj"] for b in BATCHES]))
     write(out / "routers.json", dict(
         gpu=gpu, nvml_match=method, job=os.environ.get("SLURM_JOB_ID"), split_sha256=split["sha256"],
-        screen_code_sha256=code_sha, routers=manifest, parity=parity,
+        screen_code_sha256=code_sha, routers=manifest, parity=parity, score_phase=str(args.scores_from),
+        max_abs_drift_score_phase_vs_a40=drift,
         tables={k: v.tolist() for k, v in tables.items()}, table_columns=names,
         saved_val3k_table_sha256=saved_sha,
         label="CALIBRATION scores and A40 router costs (stage B1); test not opened", test_evaluated=False))
@@ -442,6 +488,9 @@ def main(argv=None):
     p.add_argument("--repeats", type=int, default=3)
     p.add_argument("--min-seconds", type=float, default=2.0)
     p.add_argument("--allow-other-gpu", action="store_true")
+    p.add_argument("--phase", choices=("score", "cost"), required=True,
+                   help="score: any GPU or CPU, no costs; cost: A40, engines + router costs")
+    p.add_argument("--scores-from", type=Path, default=None, help="cost phase: the score phase output")
     run(p.parse_args(argv))
 
 
