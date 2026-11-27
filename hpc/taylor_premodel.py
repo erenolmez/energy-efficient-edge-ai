@@ -45,7 +45,9 @@ Minimal adaptations to our setup (stated in the outputs):
     routers. Router latency = measured single-thread CPU feature extraction + KNN per batch on this
     node; router energy is written as 0 (GPU energy excludes the CPU router, a lower bound).
 
-Correctness targets for fitting come from router_arch_screen_v1/evidence (as for every other
+Images are native 32x32 CIFAR-100 train pixels (cifar-100-python pickle under --data; the
+evidence images.npy is the 128px resize and is not used). Correctness targets for fitting come
+from router_arch_screen_v1/evidence (as for every other
 router); calibration accuracy for policies comes from stage A's deployed TensorRT predictions.
 The official test set is never opened (the split's namespace is official_train only).
 """
@@ -250,10 +252,7 @@ def select_features(x, correct, chain, fallback, seed):
 # ---------------------------------------------------------------- run
 def run(args):
     t0 = time.time()
-    out = args.output
-    out.mkdir(parents=True, exist_ok=False)
-    (out / "scores").mkdir()
-    ev = load_evidence(args.base, args.evidence)
+    ev = load_evidence(args.base, args.evidence, args.data)
     names, correct, images, cal = ev["names"], ev["correct"].astype(bool), ev["images"], ev["cal"]
     fit = ev["fits"]["val3k"]
     a = load_stage_a(args.stage_a)
@@ -263,6 +262,23 @@ def run(args):
     names = a["names"]
     ref = names.index(REFERENCE)
     require(np.array_equal(np.sort(a["index"]), np.sort(cal)), "Stage A calibration images differ")
+    require(np.array_equal(a["label"], ev["labels"][a["index"]]), "Stage A labels differ from evidence labels")
+    if args.dry_run:
+        print("DRY RUN (nothing written)")
+        print("stage A models:", names, "calibration images:", len(a["index"]))
+        for o in ("latency", "energy"):
+            print(f"A40 {o} at B={COST_B}:", {n: round(float(c), 3) for n, c in zip(names, a["costs"][o][COST_B])})
+        print("stage A TRT calibration accuracy:", {n: round(float(c), 4) for n, c in zip(names, a["correct"].mean(1))})
+        print("evidence calibration accuracy:", {n: round(float(c), 4) for n, c in zip(names, correct[cal].mean(0))})
+        thr = keypoint_threshold(images, fit[:200])
+        x = np.stack([raw_features(images[i], thr) for i in cal[:20]])
+        print("29 features on 20 images:", x.shape, "finite", bool(np.isfinite(x).all()))
+        print("feature means:", dict(zip(FEATURES, np.round(x.mean(0), 4).tolist())))
+        print("DRY RUN OK")
+        return
+    out = args.output
+    out.mkdir(parents=True, exist_ok=False)
+    (out / "scores").mkdir()
 
     kp_thr = keypoint_threshold(images, fit)
     t = time.time()
@@ -439,8 +455,10 @@ def main(argv=None):
     p = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     p.add_argument("--base", type=Path, required=True)
     p.add_argument("--evidence", type=Path, required=True)
+    p.add_argument("--data", type=Path, required=True, help="CIFAR-100 root (holds cifar-100-python/)")
     p.add_argument("--stage-a", type=Path, required=True)
     p.add_argument("--output", type=Path, required=True)
+    p.add_argument("--dry-run", action="store_true", help="load and check every input, write nothing")
     p.add_argument("--repeats", type=int, default=50)
     p.add_argument("--budget-pp", type=float, default=1.0)
     run(p.parse_args(argv))

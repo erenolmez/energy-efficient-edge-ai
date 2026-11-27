@@ -27,7 +27,10 @@ def test_premodel_quick(tmp_path, monkeypatch):
     sa = make_stage_a(tmp_path, ev)
     monkeypatch.setattr(tp, "SEEDS", (42,))
     out = tmp_path / "out"
-    tp.main(["--base", str(tmp_path), "--evidence", str(ev), "--stage-a", str(sa), "--output", str(out),
+    common = ["--base", str(tmp_path), "--evidence", str(ev), "--data", str(tmp_path / "cifar"), "--stage-a", str(sa)]
+    tp.main(common + ["--output", str(tmp_path / "unused"), "--dry-run"])
+    assert not (tmp_path / "unused").exists()
+    tp.main(["--base", str(tmp_path), "--evidence", str(ev), "--data", str(tmp_path / "cifar"), "--stage-a", str(sa), "--output", str(out),
              "--repeats", "3"])
     r = json.loads((out / "results.json").read_text())
     assert len(r["feature_sets"]["sel-s42"]["selected"]) == 7

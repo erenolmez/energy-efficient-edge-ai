@@ -5,8 +5,9 @@ frozen HPC classifiers (ResNet18/34/50/101, MobileNetV3 Small/Large, EfficientNe
 ShuffleNetV2) is correct as well as the TinyCNN 16x16 direct-correctness router does?
 
 Data (all from router_arch_screen_v1/evidence, the same correctness targets the routers used):
-  images.npy  (50000, 32, 32, 3) uint8, official CIFAR-100 *train* order
-  labels.npy  (50000,)
+  labels.npy  (50000,), official CIFAR-100 *train* order (images.npy there is the 128px resize;
+              the routers and these features use native 32x32 pixels, read from the CIFAR-100
+              python pickle under --data and checked against labels.npy)
   <architecture>.npy  per-model predicted class for all 50k train images
   split.json / bank.json, checked against <base>/split_seed42.json
 The split namespace is official_train; the official 10k test set is never opened.
@@ -85,7 +86,16 @@ def load_feature_module():
     return module, path
 
 
-def load_evidence(base, evidence):
+def load_cifar_train(data):
+    """Native 32x32 uint8 RGB (50000, 32, 32, 3) and fine labels from cifar-100-python/train."""
+    import pickle
+    with open(Path(data) / "cifar-100-python" / "train", "rb") as f:
+        d = pickle.load(f, encoding="bytes")
+    x = np.asarray(d[b"data"], dtype=np.uint8).reshape(-1, 3, 32, 32).transpose(0, 2, 3, 1)
+    return np.ascontiguousarray(x), np.asarray(d[b"fine_labels"], dtype=np.int64)
+
+
+def load_evidence(base, evidence, data):
     sys.path.insert(0, str(ROOT))
     from hpc.clean_protocol import validate_split
 
@@ -100,9 +110,10 @@ def load_evidence(base, evidence):
     preds = np.stack([np.load(evidence / f"{n}.npy", allow_pickle=False) for n in names], axis=-1)
     require(preds.shape == (len(labels), 8), f"Prediction shape {preds.shape}")
     correct = (preds == labels[:, None]).astype(np.float32)
-    images = np.load(evidence / "images.npy", mmap_mode="r", allow_pickle=False)
-    require(images.shape == (len(labels), 32, 32, 3) and images.dtype == np.uint8,
-            f"Unexpected images.npy {images.shape} {images.dtype}")
+    require(labels.shape == (50000,), f"Unexpected labels.npy shape {labels.shape}")
+    images, cifar_labels = load_cifar_train(data)
+    require(images.shape == (50000, 32, 32, 3), f"Unexpected CIFAR train array {images.shape}")
+    require(np.array_equal(cifar_labels, labels), "CIFAR-100 train labels differ from evidence labels.npy")
     ids = {k: np.asarray(v, dtype=np.int64) for k, v in split["indices"].items()}
     fits = {"val3k": np.concatenate([ids["classifier_validation"], ids["router_train"]]),
             "3k": ids["router_train"]}
@@ -111,7 +122,7 @@ def load_evidence(base, evidence):
         require(not np.intersect1d(f, cal).size, "Fit and calibration sets overlap")
     hashes = {f"{n}.npy": sha256(evidence / f"{n}.npy") for n in names}
     hashes["labels.npy"] = sha256(evidence / "labels.npy")
-    return dict(split=split, names=names, correct=correct, images=images, fits=fits, cal=cal,
+    return dict(split=split, names=names, labels=labels, correct=correct, images=images, fits=fits, cal=cal,
                 hashes=hashes)
 
 
@@ -256,6 +267,23 @@ def markdown(result):
     return "\n".join(lines)
 
 
+def dry_run_report(ev, fm, args):
+    names, correct, cal = ev["names"], ev["correct"], ev["cal"]
+    print("DRY RUN (nothing written)")
+    print("models:", names)
+    print("fit sizes:", {k: len(v) for k, v in ev["fits"].items()}, "calibration:", len(cal))
+    print("calibration accuracy:", {n: round(float(a), 4) for n, a in zip(names, correct[cal].mean(0))})
+    print("val+3k accuracy:", {n: round(float(a), 4) for n, a in zip(names, correct[ev["fits"]["val3k"]].mean(0))})
+    for feat in ("compact", "texture"):
+        x = extract(ev["images"], cal[:20], feat, fm)
+        print(f"{feat}: shape {x.shape}, finite {bool(np.isfinite(x).all())}")
+    if args.router_scores and Path(args.router_scores).is_dir():
+        print("router scores:", sorted(p.name for p in Path(args.router_scores).glob("*.npz")))
+    else:
+        print("router scores: none (that table will be skipped)")
+    print("DRY RUN OK")
+
+
 def run(args):
     t0 = time.time()
     fm, fm_path = load_feature_module()
@@ -265,9 +293,12 @@ def run(args):
     except ImportError:
         have_xgb, xgb_version = False, None
     import sklearn
+    ev = load_evidence(args.base, args.evidence, args.data)
+    if args.dry_run:
+        dry_run_report(ev, fm, args)
+        return
     out = args.output
     out.mkdir(parents=True, exist_ok=False)
-    ev = load_evidence(args.base, args.evidence)
     names, correct, images, cal = ev["names"], ev["correct"], ev["images"], ev["cal"]
     methods = make_methods(have_xgb, args.threads, args.quick)
     feature_sets = sorted({m[0] for m in methods.values()})
@@ -343,7 +374,10 @@ def main(argv=None):
     p = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     p.add_argument("--base", type=Path, required=True, help="clean_classifier_study (holds split_seed42.json)")
     p.add_argument("--evidence", type=Path, required=True, help="router_arch_screen_v1/evidence")
+    p.add_argument("--data", type=Path, required=True, help="CIFAR-100 root (holds cifar-100-python/)")
     p.add_argument("--output", type=Path, required=True)
+    p.add_argument("--dry-run", action="store_true", help="load and check every input, extract a few "
+                   "features, write nothing (login-node check)")
     p.add_argument("--router-scores", type=Path, help="optional a40_routers_v1/scores to score alongside")
     p.add_argument("--threads", type=int, default=int(os.environ.get("SLURM_CPUS_PER_TASK", 4)))
     p.add_argument("--no-timing", dest="timing", action="store_false")

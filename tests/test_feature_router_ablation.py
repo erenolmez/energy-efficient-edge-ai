@@ -21,14 +21,18 @@ def make_evidence(tmp_path):
     (ev / "split.json").write_text(json.dumps({"sha256": split["sha256"]}))
     (ev / "bank.json").write_text(json.dumps([{"architecture": n} for n in NAMES]))
     np.save(ev / "labels.npy", labels)
-    images = np.lib.format.open_memmap(ev / "images.npy", mode="w+", dtype=np.uint8,
-                                       shape=(50000, 32, 32, 3))
+    images = np.zeros((50000, 32, 32, 3), np.uint8)
     used = np.concatenate([split["indices"][k] for k in
                            ("classifier_validation", "router_train", "router_calibration")])
     brightness = rng.integers(0, 256, size=50000)
     images[used] = np.clip(brightness[used, None, None, None]
                            + rng.integers(-20, 20, size=(len(used), 32, 32, 3)), 0, 255)
-    images.flush()
+    # native 32px pixels live in the CIFAR-100 python pickle (evidence images.npy is the 128px resize)
+    import pickle
+    (tmp_path / "cifar" / "cifar-100-python").mkdir(parents=True)
+    with open(tmp_path / "cifar" / "cifar-100-python" / "train", "wb") as f:
+        pickle.dump({b"data": images.transpose(0, 3, 1, 2).reshape(50000, -1),
+                     b"fine_labels": labels.tolist()}, f)
     # Correctness depends on brightness, so features should beat the constant baseline.
     for j, n in enumerate(NAMES):
         p_ok = 0.3 + 0.6 * (brightness / 255) * (0.5 + j / 16)
@@ -40,7 +44,10 @@ def make_evidence(tmp_path):
 def test_quick_run(tmp_path):
     ev = make_evidence(tmp_path)
     out = tmp_path / "out"
-    fra.main(["--base", str(tmp_path), "--evidence", str(ev), "--output", str(out), "--quick", "--threads", "2"])
+    fra.main(["--base", str(tmp_path), "--evidence", str(ev), "--data", str(tmp_path / "cifar"), "--dry-run",
+              "--output", str(tmp_path / "unused")])
+    assert not (tmp_path / "unused").exists()
+    fra.main(["--base", str(tmp_path), "--evidence", str(ev), "--data", str(tmp_path / "cifar"), "--output", str(out), "--quick", "--threads", "2"])
     result = json.loads((out / "results.json").read_text())
     s = result["summary"]
     assert result["score_size"] == 2000 and result["fit_sets"] == {"val3k": 8000, "3k": 3000}
