@@ -17,8 +17,11 @@ Router inputs:
                      hand-made-feature routers. Router latency per batch = measured single-thread
                      CPU feature extraction (median ms/image x B) + predictor time per batch (both
                      from that run's results.json, HPC Sapphire Rapids CPU).
-CPU routers add latency but no GPU energy; their energy column excludes the router (the CPU's own
-energy is not measured), so their energy savings are an upper bound. This is calibration (policy
+CPU routers (feature routers, and score files with router latency but zero router energy, e.g.
+Taylor) are charged an estimated CPU energy = router ms x --cpu-watts (default 9.4 W: the Xeon
+Gold 6442Y's 225 W TDP / 24 cores, one single-threaded core at full load; not measured). Any
+policy that routes for energy while its latency is worse than fixed ResNet101 is labelled
+ROUTE (energy only, latency +X%), because it would not save end-to-end time. This is calibration (policy
 locking), not a held-out result.
 """
 from __future__ import annotations
@@ -35,7 +38,7 @@ from hpc.complementarity_analysis import make_batches
 FEATURE_METHODS = ("texture_xgb_cond", "compact_hgb_cond", "compact_logistic")
 
 
-def feature_routers(directory, names, index, methods):
+def feature_routers(directory, names, index, methods, cpu_w):
     """name -> (models x n prob in stage A order, {'latency': {B: ms}, 'energy': {B: 0}}, note)."""
     directory = Path(directory)
     res = json.loads((directory / "results.json").read_text())
@@ -61,7 +64,8 @@ def feature_routers(directory, names, index, methods):
         lat = {b: per_img * b + pred[str(b)]["median_ms_per_batch"] for b in BATCHES}
         name = f"{method}-{fit}" + ("" if seed == "None" else f"-s{seed}")
         out[name] = (z[key][rows][:, cols].T.astype(float).clip(0, 1),
-                     {"latency": lat, "energy": {b: 0.0 for b in BATCHES}}, "CPU features (energy excl.)")
+                     {"latency": lat, "energy": {b: lat[b] * cpu_w for b in BATCHES}},
+                     f"CPU features, energy est. {cpu_w:g} W")
     return out
 
 
@@ -78,9 +82,13 @@ def run(args):
     for path in args.scores:
         prob, rcost = load_scores(path, names, a["index"])
         has = bool(rcost["latency"])
-        routers[Path(path).stem] = (prob, rcost, "A40 router cost" if has else "router cost NOT included")
+        note = "A40 router cost" if has else "router cost NOT included"
+        if has and not any(rcost["energy"].values()):  # CPU router: latency measured, energy not
+            rcost["energy"] = {b: ms * args.cpu_watts for b, ms in rcost["latency"].items()}
+            note = f"CPU router, energy est. {args.cpu_watts:g} W"
+        routers[Path(path).stem] = (prob, rcost, note)
     if args.feature_ablation and Path(args.feature_ablation).is_dir():
-        routers.update(feature_routers(args.feature_ablation, names, a["index"], args.feature_methods))
+        routers.update(feature_routers(args.feature_ablation, names, a["index"], args.feature_methods, args.cpu_watts))
     require(routers, "No routers given")
     rng = np.random.default_rng(args.seed)
     L = ["# Routed accuracy, latency and energy (router-calibration 2k, policy locking)", "",
@@ -134,12 +142,15 @@ def run(args):
                                energy_saving=100 * (1 - tot["energy"] / ref_cost["energy"]),
                                router_ms_per_batch=rcost["latency"].get(b),
                                share={names[k]: float(s) for k, s in enumerate(share) if s > 0},
-                               reason=None if routed else "not cheaper than the fixed fallback, router cost included")
+                               reason=None if routed else "not cheaper than the fixed fallback, router cost included",
+                               latency_regression=bool(routed and tot["latency"] > ref_cost["latency"]))
                 records.append(rec)
                 summary.setdefault((rec["family"], o, b), []).append(rec)
                 if "accuracy" in rec:
                     sel = ", ".join(f"{m} {100 * s:.0f}%" for m, s in sorted(rec["share"].items(), key=lambda kv: -kv[1]))
                     dec = "ROUTE" if rec["decision"] == "route" else f"FALLBACK {names[fixed]}"
+                    if rec["decision"] == "route" and o == "energy" and rec["latency_saving"] < 0:
+                        dec = f"ROUTE (energy only, latency +{-rec['latency_saving']:.0f}%)"
                     L.append(f"| {rname} | {o} | {dec} | {rec['accuracy']:.2f} | {rec['delta_pp']:+.2f} | "
                              f"{rec['latency_saving']:.1f}% | {rec['energy_saving']:.1f}% | "
                              f"{100 * rec['repeats_in_budget']:.0f}% | {sel} | {note} |")
@@ -147,15 +158,19 @@ def run(args):
                     L.append(f"| {rname} | {o} | FALLBACK {names[fixed]} (budget infeasible) | - | - | - | - | - | - | {note} |")
         L.append("")
     L += ["## Summary per router family (median over training seeds; routed numbers only where it routes)", "",
-          "| router | locked for | B | routes / seeds | accuracy % | vs RN101 pp | latency saving | energy saving |",
-          "|---|---|---|---|---|---|---|---|"]
+          "| router | locked for | B | routes / seeds | accuracy % | vs RN101 pp | latency saving | energy saving | note |",
+          "|---|---|---|---|---|---|---|---|---|"]
     for (fam, o, b), rows in sorted(summary.items()):
         ok = [r for r in rows if r["decision"] == "route"]
         med = lambda k, f="{:.2f}": f.format(np.median([r[k] for r in ok])) if ok else "-"
         L.append(f"| {fam} | {o} | {b} | {len(ok)}/{len(rows)} | {med('accuracy')} | {med('delta_pp', '{:+.2f}')} | "
-                 f"{med('latency_saving', '{:.1f}%')} | {med('energy_saving', '{:.1f}%')} |")
-    L += ["", "Energy savings for CPU-feature routers exclude the router's CPU energy (upper bound). "
-          "Footnote: correctness Brier is in each router's own results file.", ""]
+                 f"{med('latency_saving', '{:.1f}%')} | {med('energy_saving', '{:.1f}%')} | "
+                 f"{'energy only: slower than RN101' if any(r.get('latency_regression') for r in ok) else ''} |")
+    L += ["", f"CPU routers are charged router ms x {args.cpu_watts:g} W of estimated CPU energy (TDP share of one "
+          "core, not measured); GPU idle power while the router runs is not added, so energy savings stay "
+          "optimistic. 'Energy only' rows save GPU+CPU energy on paper but are slower than fixed ResNet101 "
+          "end to end, so they are not a routing win. Footnote: correctness Brier is in each router's own "
+          "results file.", ""]
     args.output.mkdir(parents=True, exist_ok=True)
     (args.output / "routed_report.json").write_text(json.dumps(records, indent=1, default=float) + "\n")
     (args.output / "routed_report.md").write_text("\n".join(L) + "\n")
@@ -172,6 +187,8 @@ def main(argv=None):
     p.add_argument("--budget-pp", type=float, default=1.0)
     p.add_argument("--repeats", type=int, default=50)
     p.add_argument("--seed", type=int, default=0)
+    p.add_argument("--cpu-watts", type=float, default=225 / 24,
+                   help="estimated CPU power of a single-threaded router (W); default Gold 6442Y TDP/cores")
     run(p.parse_args(argv))
 
 
