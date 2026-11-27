@@ -133,6 +133,7 @@ def lock(args):
              f"FP16 GPU-pipeline predictions; costs = A40 pipeline medians from stage A. Budget: within "
              f"-{args.budget_pp} pp of fixed ResNet101 on the same {args.repeats} shuffled batchings per B. "
              "Savings are vs fixed ResNet101 TensorRT FP16 (not PyTorch autocast).", ""]
+    summary = {}
     for b in BATCHES:
         batchings = [make_batches(labels, b, rng) for _ in range(args.repeats)]
         nb = len(batchings[0])
@@ -165,7 +166,10 @@ def lock(args):
                 res = lock_router(prob, correct, batchings, cb, ref, target)
                 r_overhead = rcost[objective].get(b)
                 key = f"{rname}|{objective}|{b}"
+                family = rname.rsplit("-s", 1)[0] if rname.rsplit("-s", 1)[-1].isdigit() else rname
+                srow = summary.setdefault((family, objective, b), [])
                 if res is None:
+                    srow.append(None)
                     policy["locked"][key] = dict(decision="fallback", fixed=names[cheapest_fixed],
                                                  reason="no lam meets the calibration budget")
                     lines.append(f"| {objective} | {rname} | - | infeasible | - | - | - | "
@@ -173,6 +177,7 @@ def lock(args):
                     continue
                 total = res["cost"] + (r_overhead or 0.0) * nb
                 routed = total < fixed_cost
+                srow.append(dict(routed=routed, saving=save(total), accuracy=res["accuracy"]))
                 meet = float((res["per_repeat_accuracy"] >= target).mean())
                 share = {names[j]: round(float(s), 4) for j, s in enumerate(res["share"]) if s > 0}
                 policy["locked"][key] = dict(
@@ -189,6 +194,19 @@ def lock(args):
                     racc, rcost_, _ = matched_random(res["share"], correct, batchings, cb, rng)
                     lines.append(f"| {objective} | matched random ({rname}) | - | {racc:.2f} | - | "
                                  f"{save(rcost_ + (r_overhead or 0.0) * nb):.1f}% | as router | control | same shares |")
+        lines.append("")
+    if summary:
+        lines += ["## Summary across training seeds", "",
+                  "Per router family: seeds locked as ROUTE (others fall back), and median calibration "
+                  "accuracy and saving over the seeds that met the budget (router cost included).", "",
+                  "| router | objective | B | route / seeds | median accuracy | median saving |",
+                  "|---|---|---|---|---|---|"]
+        for (family, objective, b), rows in sorted(summary.items()):
+            ok = [r for r in rows if r is not None]
+            routed = sum(r["routed"] for r in ok)
+            med = lambda k: f"{np.median([r[k] for r in ok]):.2f}" if ok else "-"
+            lines.append(f"| {family} | {objective} | {b} | {routed}/{len(rows)} | {med('accuracy')} | "
+                         f"{med('saving')}{'%' if ok else ''} |")
         lines.append("")
     if not routers:
         lines += ["No router score files given: only fixed classifiers and the labels-known bound are shown.", ""]
