@@ -5,14 +5,13 @@
 #SBATCH --cpus-per-task=8
 #SBATCH --mem=16G
 #SBATCH --time=01:00:00
-#SBATCH --partition=gpu_a40
+#SBATCH --partition=cpu_sapphire
 #SBATCH --account=eolmez
 #SBATCH --qos=normal
 #SBATCH --output=feature-routers-%j.log
 # Development screening, CPU only (no GPU requested): hand-made image features vs the TinyCNN
 # correctness router on the eight-model HPC bank. Fits on val+3k (and 3k as a control), scores on
-# router-calibration 2k. Never opens the test set. Override the partition with
-# `sbatch --partition=<cpu partition> hpc/feature_router_ablation.sbatch` if one exists.
+# router-calibration 2k. Never opens the test set.
 set -euo pipefail
 : "${SLURM_JOB_ID:?Submit through the scheduler}"
 SCRATCH_FLASH="${SCRATCH_FLASH:-/mnt/beegfs/eolmez}"
@@ -26,8 +25,10 @@ test -f "$STUDY_BASE/split_seed42.json"
 for f in images.npy labels.npy split.json bank.json; do
     test -e "$SCREEN/evidence/$f" || { echo "Missing $SCREEN/evidence/$f" >&2; exit 1; }
 done
-# Extra Python packages may live in a --no-deps overlay; set FEATURE_DEPS=<dir> to use one.
-[[ -n "${FEATURE_DEPS:-}" ]] && export PYTHONPATH="${FEATURE_DEPS}${PYTHONPATH:+:${PYTHONPATH}}"
+# scikit-learn/scipy/xgboost come from a pip --target overlay; the edge-ai env is never modified.
+FEATURE_DEPS="${FEATURE_DEPS:-${SCRATCH_FLASH}/envs/feature-overlay}"
+test -d "$FEATURE_DEPS/sklearn" || { echo "Missing overlay: $FEATURE_DEPS" >&2; exit 1; }
+export PYTHONPATH="${FEATURE_DEPS}${PYTHONPATH:+:${PYTHONPATH}}"
 "$HPC_PYTHON" -c "import numpy, sklearn; print('numpy', numpy.__version__, 'sklearn', sklearn.__version__)"
 "$HPC_PYTHON" -c "import xgboost; print('xgboost', xgboost.__version__)" \
     || echo "xgboost unavailable: running the sklearn HistGradientBoosting fallback only"
