@@ -6,13 +6,14 @@
 #SBATCH --gres=gpu:1
 #SBATCH --mem=32G
 #SBATCH --time=00:30:00
-#SBATCH --partition=gpu_v100,gpu_a100,gpu_h200,gpu_a40,gpu_a40_ext
+#SBATCH --partition=gpu_v100
 #SBATCH --account=eolmez
 #SBATCH --qos=normal
 #SBATCH --exclude=compute-5-11,compute-7-13
 #SBATCH --output=rscore-%j.log
 # Job 3, stage B1 score phase: any GPU (not tied to the A40). Trains the val+3k router, scores
 # router-calibration, then runs an accuracy-only policy lock (router cost counted as zero).
+# One partition only (the account association rejects lists); override with sbatch -p.
 # Never opens the test set. Follow with hpc/a40_routers.sbatch (A40) for router costs.
 set -euo pipefail
 : "${SLURM_JOB_ID:?Submit through the scheduler}"

@@ -6,7 +6,7 @@
 #SBATCH --gres=gpu:1
 #SBATCH --mem=32G
 #SBATCH --time=00:30:00
-#SBATCH --partition=gpu_a40,gpu_a40_ext
+#SBATCH --partition=gpu_a40
 #SBATCH --account=eolmez
 #SBATCH --qos=normal
 #SBATCH --exclude=compute-5-11,compute-7-13
