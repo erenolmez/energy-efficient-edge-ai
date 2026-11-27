@@ -25,6 +25,17 @@ CIFAR_DATA="${CIFAR_DATA:-${SCRATCH_FLASH}/datasets/cifar100}"
 test -x "$HPC_PYTHON"
 test -d "$CIFAR_DATA/cifar-100-python"
 test -f "$STUDY_BASE/split_seed42.json"
+# The 128px checkpoints were trained with timm 1.0.28 from a --no-deps overlay
+# ($SCRATCH_FLASH/cache/imgcmp-deps.*), not from the edge-ai env itself. Reuse that overlay
+# read-only so the env other jobs use is never modified. Override with IMGCMP_DEPS=<dir>.
+if [[ -z "${IMGCMP_DEPS:-}" ]]; then
+    for d in "$SCRATCH_FLASH"/cache/imgcmp-deps.*; do
+        if [[ -d "$d/timm" && -n "$(ls -d "$d"/timm-1.0.28.dist-info 2>/dev/null)" ]]; then IMGCMP_DEPS="$d"; break; fi
+    done
+fi
+: "${IMGCMP_DEPS:?No timm 1.0.28 overlay found under $SCRATCH_FLASH/cache; set IMGCMP_DEPS}"
+export PYTHONPATH="$IMGCMP_DEPS${PYTHONPATH:+:$PYTHONPATH}"
+"$HPC_PYTHON" -B -c 'import timm, sys; print("timm", timm.__version__, timm.__file__); sys.exit(timm.__version__ != "1.0.28")'
 cd "${SLURM_SUBMIT_DIR:?Submit from the repository root}"
 test -f hpc/complementarity_execution.py
 export PYTHONUNBUFFERED=1 OMP_NUM_THREADS=4
