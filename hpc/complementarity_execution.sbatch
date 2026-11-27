@@ -36,6 +36,11 @@ fi
 : "${IMGCMP_DEPS:?No timm 1.0.28 overlay found under $SCRATCH_FLASH/cache; set IMGCMP_DEPS}"
 export PYTHONPATH="$IMGCMP_DEPS${PYTHONPATH:+:$PYTHONPATH}"
 "$HPC_PYTHON" -B -c 'import timm, sys; print("timm", timm.__version__, timm.__file__); sys.exit(timm.__version__ != "1.0.28")'
+# GPU energy needs pynvml (nvidia-ml-py), installed --no-deps in the TRT overlay. Required:
+# the job stops here rather than silently reporting latency only.
+NVML_OVERLAY="${NVML_OVERLAY:-${SCRATCH_FLASH}/envs/trt-overlay}"
+export PYTHONPATH="$PYTHONPATH:$NVML_OVERLAY"
+"$HPC_PYTHON" -B -c 'import pynvml, torch; pynvml.nvmlInit(); h = pynvml.nvmlDeviceGetHandleByIndex(0); print("NVML energy counter mJ", pynvml.nvmlDeviceGetTotalEnergyConsumption(h), "| torch", torch.__version__, torch.__file__)'
 cd "${SLURM_SUBMIT_DIR:?Submit from the repository root}"
 test -f hpc/complementarity_execution.py
 export PYTHONUNBUFFERED=1 OMP_NUM_THREADS=4

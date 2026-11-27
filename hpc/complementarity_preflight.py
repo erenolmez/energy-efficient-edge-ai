@@ -31,8 +31,11 @@ for name in ("numpy", "torch", "torchvision", "timm"):
     check(f"import {name}", lambda n=name: getattr(importlib.import_module(n), "__version__", ""))
 check("timm is 1.0.28", lambda: (importlib.import_module("timm").__version__ == "1.0.28") or (_ for _ in ()).throw(
     RuntimeError(importlib.import_module("timm").__version__)))
-check("import pynvml (optional: without it, latency only, no energy)",
-      lambda: importlib.import_module("pynvml").__name__, optional=True)
+check("import pynvml (required for GPU energy)", lambda: importlib.import_module("pynvml").__file__)
+check("torch and numpy still come from the env, not an overlay",
+      lambda: "/envs/edge-ai/" in importlib.import_module("torch").__file__
+      and "/envs/edge-ai/" in importlib.import_module("numpy").__file__ and "yes"
+      or (_ for _ in ()).throw(RuntimeError(importlib.import_module("torch").__file__)))
 for mod in ("hpc.clean_protocol", "hpc.full_factorial_protocol", "hpc.train_imagenet_comparison",
             "model_pipeline.models", "hpc.complementarity_analysis", "hpc.complementarity_execution"):
     check(f"import {mod}", lambda m=mod: importlib.import_module(m) and "")
