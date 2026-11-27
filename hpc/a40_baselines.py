@@ -215,9 +215,8 @@ def run(args):
                 cis = [c["bootstrap"][k]["saving_ci"] for k in c.get("bootstrap", {}) if family(k) == f]
                 beats = d > 0 and len(cis) == n and all(lo > (msave or 0.0) for lo, _ in cis)
                 cols.append(f"{med:.1f}% ({d:+.1f}{' BEATS' if beats else ''})")
-            lines.append(f"| {b} | {mtxt} | {fmt(msave)} | "
-                         f"{'-' if not mci else f'{mci['saving_ci'][0]:.1f}..{mci['saving_ci'][1]:.1f}'} | "
-                         + " | ".join(cols) + " |")
+            ci_txt = "-" if not mci else "{:.1f}..{:.1f}".format(*mci["saving_ci"])
+            lines.append(f"| {b} | {mtxt} | {fmt(msave)} | {ci_txt} | " + " | ".join(cols) + " |")
         lines.append("")
     lines += ["## Saving vs budget (median over seeds; '-' = a seed falls back to the best-fixed row at that budget)", ""]
     for objective in OBJECTIVES:
