@@ -196,9 +196,13 @@ def lock(args):
                                  f"{save(rcost_ + (r_overhead or 0.0) * nb):.1f}% | as router | control | same shares |")
         lines.append("")
     if summary:
+        costed = [bool(rc["latency"]) for _, rc in routers.values()]
+        cost_note = ("router cost included" if all(costed) else
+                     "router cost NOT included (counted as zero; accuracy-only lock)" if not any(costed) else
+                     "router cost included only where measured; see the per-B tables")
         lines += ["## Summary across training seeds", "",
                   "Per router family: seeds locked as ROUTE (others fall back), and median calibration "
-                  "accuracy and saving over the seeds that met the budget (router cost included).", "",
+                  f"accuracy and saving over the seeds that met the budget ({cost_note}).", "",
                   "| router | objective | B | route / seeds | median accuracy | median saving |",
                   "|---|---|---|---|---|---|"]
         for (family, objective, b), rows in sorted(summary.items()):
