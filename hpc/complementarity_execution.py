@@ -286,7 +286,7 @@ def analyze(args):
     roles = [str(x) for x in data["roles"]]
     correct, labels, role = data["correct"].astype(bool), data["label"].astype(int), data["role"]
     ref = names.index(REFERENCE)
-    costs, curves, meta = load_costs(args.costs, names)
+    costs, curves, meta = load_costs(args.costs, names, args.precision)
     raw = load_json(args.costs)
     conc = {(r["subset"], r["batch"]): r for r in raw.get("concurrent", [])}
     fit = np.isin(role, [roles.index("classifier_validation"), roles.index("router_train")])
@@ -295,7 +295,8 @@ def analyze(args):
     rng = np.random.default_rng(args.seed)
     fmt = lambda v: "-" if v is None else f"{v:.1f}%"
     lines = ["# Debatch execution strategies (development analysis, no test data)", "",
-             f"Costs: {meta.get('label')} on {meta.get('gpu')} ({meta.get('precision')}).",
+             f"Costs: {meta.get('label')} on {meta.get('gpu')} ({meta.get('precision') or meta.get('level')}; "
+             f"rows: {args.precision}).",
              "Routing = cheapest correct model (labels known): upper bounds. Savings vs fixed ResNet101 "
              "at the same batch size, same GPU. Model sets chosen on val+router_train, scored on "
              f"router-calibration. Budget = within -{args.budget_pp}pp of ResNet101. Router, "
@@ -354,6 +355,8 @@ def main(argv=None):
     a.add_argument("--budget-pp", type=float, default=1.0)
     a.add_argument("--debatch-k", type=int, nargs="*", default=[3])
     a.add_argument("--seed", type=int, default=0)
+    a.add_argument("--precision", default="autocast",
+                   help="cost rows to use: autocast (job 2 probe) or trt_fp16 (job 3 A40 TensorRT costs)")
     args = p.parse_args(argv)
     run(args) if args.action == "run" else analyze(args)
 

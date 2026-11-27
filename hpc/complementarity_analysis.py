@@ -228,11 +228,12 @@ def collect(args):
 
 # ----------------------------------------------------------------------------- analyze
 
-def load_costs(path, names):
+def load_costs(path, names, precision="autocast"):
     """Return ({objective: {batch: per-image cost over models}},
                {objective: (sizes, batch-cost matrix models x sizes)}, metadata)."""
     data = load_json(path)
-    data["rows"] = [r for r in data["rows"] if r.get("precision", "autocast") == "autocast"]
+    data["rows"] = [r for r in data["rows"] if r.get("precision", "autocast") == precision]
+    require(data["rows"], f"No {precision} cost rows in {path}")
     out, curves = {}, {}
     for objective, key in (("latency", "latency_ms"), ("energy", "energy_mj")):
         sizes, matrix = [], []
@@ -449,7 +450,7 @@ def analyze(args):
     roles = [str(x) for x in data["roles"]]
     require(REFERENCE in names, "ResNet101 missing from predictions")
     correct, labels, role = data["correct"].astype(bool), data["label"].astype(int), data["role"]
-    costs, curves, meta = load_costs(args.costs, names) if args.costs else ({}, {}, {})
+    costs, curves, meta = load_costs(args.costs, names, args.precision) if args.costs else ({}, {}, {})
     ref = names.index(REFERENCE)
     rng = np.random.default_rng(args.seed)
     views = {
@@ -464,7 +465,7 @@ def analyze(args):
     lines.append(f"Models: {', '.join(names)}. Reference: {REFERENCE}. Budget: {args.budget_pp} pp. "
                  f"Shuffle repeats: {args.repeats}.")
     if meta:
-        lines.append(f"Costs: {meta.get('label')} on {meta.get('gpu')} ({meta.get('precision')}).")
+        lines.append(f"Costs: {meta.get('label')} on {meta.get('gpu')} ({meta.get('precision') or meta.get('level')}; rows: {args.precision}).")
     else:
         lines.append("Costs: none given, so no savings columns.")
     lines.append("Savings are vs fixed ResNet101 at the same batch size; switching cost ignored "
@@ -666,6 +667,8 @@ def main(argv=None):
                    help="also test batches drawn from k classes each (stream locality)")
     a.add_argument("--top", type=int, default=15)
     a.add_argument("--debatch-k", type=int, nargs="*", default=[3])
+    a.add_argument("--precision", default="autocast",
+                   help="cost rows to use: autocast (job 1 probe) or trt_fp16 (job 3 A40 TensorRT costs)")
     a.add_argument("--seed", type=int, default=0)
     args = p.parse_args(argv)
     collect(args) if args.action == "collect" else analyze(args)
