@@ -34,7 +34,7 @@ for f in "$STUDY_BASE/feature_router_ablation_v1/features_compact.npz" "$STUDY_B
 done
 export PYTHONPATH="${FEATURE_DEPS}:${TRT_OVERLAY}${PYTHONPATH:+:${PYTHONPATH}}"
 export PYTHONUNBUFFERED=1 OMP_NUM_THREADS="${SLURM_CPUS_PER_TASK:-4}"
-"$HPC_PYTHON" -c "import torch, numpy, scipy, sklearn, xgboost, pynvml, hpc.fast_feature_routers; print('torch', torch.__version__, 'cuda', torch.cuda.is_available(), 'xgboost', xgboost.__version__)"
+"$HPC_PYTHON" -c "import torch, numpy, scipy, sklearn, xgboost, pynvml, hpc.fast_feature_routers; print('torch', torch.__version__, 'cuda', torch.ones(16, device='cuda').sum().item(), 'xgboost', xgboost.__version__)"
 hostname; date -u; nvidia-smi --query-gpu=index,name,uuid,memory.total,driver_version --format=csv
 git rev-parse HEAD
 srun --ntasks=1 "$HPC_PYTHON" -m hpc.fast_feature_routers --base "$STUDY_BASE" --evidence "$SCREEN/evidence" \
