@@ -30,7 +30,8 @@ import sys
 
 import numpy as np
 
-from hpc.a40_policy import BATCHES, LAMBDAS, OBJECTIVES, REFERENCE, batchings_for, load_scores, load_stage_a, restrict
+from hpc.a40_policy import (BATCHES, LAMBDAS, OBJECTIVES, REFERENCE, batch_scores, batchings_for,
+                            load_folds, load_scores, load_stage_a, restrict)
 from hpc.complementarity_analysis import make_batches
 
 WEIGHTS = np.linspace(0, 1, 201)
@@ -43,7 +44,7 @@ def counts_for(correct, batchings):
 
 def router_path(prob, counts, batchings, norm):
     """Accuracy per repeat (L x R) and per-repeat choices' cost index along the lam grid."""
-    mean_prob = [prob[:, bt].mean(2) for bt in batchings]
+    mean_prob = [batch_scores(prob, bt) for bt in batchings]
     acc = np.zeros((len(LAMBDAS), len(batchings)))
     choices = []
     for li, lam in enumerate(LAMBDAS):
@@ -94,6 +95,7 @@ def run(args):
     names, correct, labels = a["names"], a["correct"], a["label"]
     m, ref = len(names), names.index(REFERENCE)
     routers = {Path(p).stem: load_scores(p, names, a["index"]) for p in args.scores}
+    groups = load_folds(args.scores, a["index"]) if args.group_by_fold else None
     family = lambda k: k.rsplit("-s", 1)[0] if k.rsplit("-s", 1)[-1].isdigit() else k
     costed = all(bool(rc["latency"]) for _, rc in routers.values()) if routers else False
     report = dict(meta=dict(label=f"CALIBRATION baselines ({a['pool']}); test not read", roles=list(a["roles"]),
@@ -109,7 +111,7 @@ def run(args):
     active = []
     for b in BATCHES:
         rng = np.random.default_rng([args.seed, b])
-        batchings = batchings_for(labels, b, rng, args.repeats, args.coherent)
+        batchings = batchings_for(labels, b, rng, args.repeats, args.coherent, groups)
         if batchings is None:
             continue
         active.append(b)
@@ -158,9 +160,14 @@ def run(args):
                     locked = {k: v.get("lam") for k, v in cell["routers"].items() if v["decision"] == "route"}
                     samples = {k: [] for k in list(locked) + (["random_mix"] if mix else [])}
                     for _ in range(args.boot):
-                        draw = boot_rng.integers(0, len(labels), len(labels))
+                        if groups is None:
+                            draw = boot_rng.integers(0, len(labels), len(labels))
+                        else:  # resample within each fold so batches still stay within one fold
+                            draw = np.concatenate([boot_rng.choice(np.flatnonzero(groups == g), (groups == g).sum())
+                                                   for g in np.unique(groups)])
                         bl = labels[draw]
-                        bx = batchings_for(bl, b, boot_rng, args.boot_batchings, args.coherent)
+                        bx = batchings_for(bl, b, boot_rng, args.boot_batchings, args.coherent,
+                                           None if groups is None else groups[draw])
                         if bx is None:  # a resample left too few images of some class for coherent batches
                             continue
                         bts = [draw[x] for x in bx]
@@ -171,7 +178,7 @@ def run(args):
                             over = (rc[objective].get(b) or 0.0) * nb
                             accs, costs = [], []
                             for c, bt in zip(bcounts, bts):
-                                ch = (prob[:, bt].mean(2) - lam * norm[:, None]).argmax(0)
+                                ch = (batch_scores(prob, bt) - lam * norm[:, None]).argmax(0)
                                 accs.append(100 * c[ch, np.arange(len(ch))].sum() / bt.size)
                                 costs.append(cb[ch].sum() + over)
                             samples[k].append((save(np.mean(costs)), np.mean(accs) - ref_acc))
@@ -270,6 +277,8 @@ def main(argv=None):
                    help="class-coherent batches: each batch holds images of this many classes")
     p.add_argument("--models", nargs="*", default=None,
                    help="restrict to these classifiers (must include resnet101)")
+    p.add_argument("--group-by-fold", action="store_true",
+                   help="draw every batch within one cross-fit fold (required for set routers)")
     run(p.parse_args(argv))
 
 

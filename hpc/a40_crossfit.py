@@ -65,6 +65,10 @@ NETS = {
     "correctness-wide32": ("correctness", "wide32", False),
     "shared-tiny16": ("shared", "tiny16", False),
     "class-res32": ("class", "res32", False),
+    # new input-only routers (added after the costed cross-fit)
+    "set-tiny16": ("set", "tiny16", False),          # batch-set (DeepSets) router
+    "ordinal-tiny16": ("ordinal", "tiny16", False),  # smallest sufficient model
+    "disagree-tiny16": ("disagree", "tiny16", False),  # classifier disagreement (label-free target)
 }
 # cross-fit family: (old 3k/2k family, network, kind, table)
 #   table "fold" = training folds (4k), "valfold" = classifier-validation + training folds,
@@ -77,7 +81,15 @@ CF_ROUTERS = {
     "blended-tiny16-tval4k": ("blended-tiny16-tval3k", "shared-tiny16", "blended", "valfold"),
     "lookup-res32-t4k": ("lookup-res32-t3k", "class-res32", "lookup", "fold"),
     "lookup-res32-tval4k": ("lookup-res32-tval3k", "class-res32", "lookup", "valfold"),
+    "set-tiny16-4k": (None, "set-tiny16", "set", None),
+    "ordinal-tiny16-4k": (None, "ordinal-tiny16", "ordinal", None),
+    "disagree-tiny16-4k": (None, "disagree-tiny16", "disagree", None),
 }
+# A40 router cost source per family (the new routers share the tiny16 encoder; their heads are a few
+# hundred multiply-adds, so direct-tiny16's measured cost is used and flagged as estimated).
+COST_SOURCE = {f: (old if old is not None else "direct-tiny16-3k") for f, (old, *_r) in CF_ROUTERS.items()}
+COST_ESTIMATED = tuple(f for f, (old, *_r) in CF_ROUTERS.items() if old is None)
+SET_BATCHES = (8, 16, 32, 64, 128)
 CONTROLS = ()  # the classifier-train (48k/49k) table control was dropped: it only showed the expected overfit
 ABLATIONS = ("direct-tiny16-val4k", "blended-tiny16-tval4k", "lookup-res32-tval4k")
 
@@ -146,6 +158,34 @@ def auroc(score, positive):
     return float((ranks[positive].sum() - n_pos * (n_pos + 1) / 2) / (n_pos * n_neg))
 
 
+def disagreement(preds):
+    """Label-free target: how much the classifiers disagree on each image, in [0, 1].
+    preds: n x m predicted classes. 0 = all agree, 1 = all different."""
+    preds = np.asarray(preds)
+    m = preds.shape[1]
+    top = np.array([np.bincount(r).max() for r in preds])
+    return (m - top) / (m - 1)
+
+
+def cumulative_targets(correct, order):
+    """Smallest-sufficient-model targets: column k = 1 if any of the k+1 cheapest classifiers
+    (in `order`) is right on the image. Monotone in k."""
+    return np.maximum.accumulate(np.asarray(correct)[:, order], axis=1).astype(np.float32)
+
+
+def fit_logistic(z, y, steps=50):
+    """1-D logistic regression P(y=1 | z) by Newton steps (lightly regularized). Returns (a, b)."""
+    z, y = np.asarray(z, float), np.asarray(y, float)
+    a = b = 0.0
+    for _ in range(steps):
+        p = 1 / (1 + np.exp(-(a * z + b)))
+        w = p * (1 - p) + 1e-9
+        g = np.array([((p - y) * z).sum() + 1e-3 * a, (p - y).sum()])
+        h = np.array([[(w * z * z).sum() + 1e-3, (w * z).sum()], [(w * z).sum(), w.sum()]])
+        a, b = np.array([a, b]) - np.linalg.solve(h, g)
+    return float(a), float(b)
+
+
 def mean_auroc(prob, correct):
     """Mean over classifiers of AUROC(router P(correct), deployed correctness); models x images."""
     vals = [auroc(p, c) for p, c in zip(prob, correct)]
@@ -177,9 +217,39 @@ def router_model(arch, task):
         trunk = [nn.Conv2d(3, 24, 3, padding=1), nn.BatchNorm2d(24), nn.ReLU(), Residual(24),
                  nn.Conv2d(24, c, 3, 2, 1), nn.BatchNorm2d(c), nn.ReLU(), Residual(c),
                  nn.AvgPool2d(2), Residual(c)]
-    return nn.ModuleDict(dict(encoder=nn.Sequential(*trunk, nn.AdaptiveAvgPool2d(1), nn.Flatten()),
+    encoder = nn.Sequential(*trunk, nn.AdaptiveAvgPool2d(1), nn.Flatten())
+    if task == "set":
+        return nn.ModuleDict(dict(encoder=encoder, rho=nn.Sequential(nn.Linear(2 * c, 64), nn.ReLU(), nn.Linear(64, 8))))
+    if task == "ordinal":
+        return nn.ModuleDict(dict(encoder=encoder, ord=OrdinalHead(c, 8)))
+    if task == "disagree":
+        return nn.ModuleDict(dict(encoder=encoder, dis=nn.Linear(c, 1)))
+    return nn.ModuleDict(dict(encoder=encoder,
                               **({"classes": nn.Linear(c, 100)} if task != "correctness" else {}),
                               **({"correct": nn.Linear(c, 8)} if task != "class" else {})))
+
+
+def _ordinal_head_class():
+    import torch
+    from torch import nn
+    from torch.nn import functional as F
+
+    class OrdinalHead(nn.Module):
+        """Cumulative logits g(x) + b_k with b increasing in k (CORAL-style), so the predicted
+        P(one of the k+1 cheapest classifiers is right) never decreases with k."""
+        def __init__(self, c, k):
+            super().__init__()
+            self.lin = nn.Linear(c, 1)
+            self.raw = nn.Parameter(torch.zeros(k))
+
+        def forward(self, h):
+            b = torch.cat([self.raw[:1], self.raw[:1] + torch.cumsum(F.softplus(self.raw[1:]), 0)])
+            return self.lin(h) + b
+    return OrdinalHead
+
+
+def OrdinalHead(c, k):
+    return _ordinal_head_class()(c, k)
 
 
 def train_net(task, arch, x, t, y, table, seed, epochs=RECIPE["epochs"]):
@@ -190,16 +260,38 @@ def train_net(task, arch, x, t, y, table, seed, epochs=RECIPE["epochs"]):
     from torch.nn import functional as F
     rng = np.random.default_rng(seed)
     torch.manual_seed(seed)
-    net = router_model(arch, task)
+    dev = x.device
+    net = router_model(arch, task).to(dev)
+    t, y = t.to(dev), y.to(dev)
     opt = torch.optim.Adam(net.parameters(), lr=RECIPE["lr"])
-    mix = nn.Parameter(torch.zeros(2)) if task == "shared" else None
+    mix = nn.Parameter(torch.zeros(2, device=dev)) if task == "shared" else None
     if mix is not None:
         opt.add_param_group(dict(params=[mix]))
-    tab = torch.as_tensor(table, dtype=torch.float32) if task == "shared" else None
+    tab = torch.as_tensor(table, dtype=torch.float32, device=dev) if task == "shared" else None
     net.train()
+    if task == "set":
+        # Sampled batches of the deployment sizes; target = each classifier's accuracy on the batch.
+        for _ in range(epochs * minibatches(len(x))):
+            b = min(int(rng.choice(SET_BATCHES)), len(x))
+            idx = rng.choice(len(x), b, replace=False)
+            h = net["encoder"](x[idx])
+            q = net["rho"](torch.cat([h.mean(0), h.max(0).values])).sigmoid()
+            loss = F.binary_cross_entropy(q, t[idx].mean(0))
+            opt.zero_grad()
+            loss.backward()
+            opt.step()
+        net.eval()
+        return net, None
     for _ in range(epochs):
         for idx in np.array_split(rng.permutation(len(x)), minibatches(len(x))):
             h = net["encoder"](x[idx])
+            if task in ("ordinal", "disagree"):
+                q = (net["ord"](h) if task == "ordinal" else net["dis"](h)).sigmoid()
+                loss = F.binary_cross_entropy(q, t[idx])
+                opt.zero_grad()
+                loss.backward()
+                opt.step()
+                continue
             log = net["classes"](h) if "classes" in net else None
             q = net["correct"](h).sigmoid() if "correct" in net else None
             if mix is not None:
@@ -218,21 +310,36 @@ def train_net(task, arch, x, t, y, table, seed, epochs=RECIPE["epochs"]):
 
 
 def score_net(net, mix, kind, x, table=None):
-    """Per-image P(correct), n x 8 in the network's (bank) column order."""
+    """Per-image scores, n x 8 in the network's (bank) column order: P(correct) for direct, blended
+    and lookup; cumulative P(cheap enough) in cost order for ordinal; n x 1 predicted disagreement
+    for disagree; n x c embeddings for set."""
     import torch
     out = []
     with torch.inference_mode():
         for xx in x.split(256):
             h = net["encoder"](xx)
+            if kind == "set":
+                out.append(h)
+                continue
+            if kind in ("ordinal", "disagree"):
+                out.append((net["ord"](h) if kind == "ordinal" else net["dis"](h)).sigmoid())
+                continue
             if kind == "lookup":
-                q = net["classes"](h).softmax(-1) @ torch.as_tensor(table, dtype=torch.float32)
+                q = net["classes"](h).softmax(-1) @ torch.as_tensor(table, dtype=torch.float32, device=h.device)
             else:
                 q = net["correct"](h).sigmoid()
                 if kind == "blended":
                     mw = mix.softmax(0)
-                    q = mw[0] * q + mw[1] * (net["classes"](h).softmax(-1) @ torch.as_tensor(table, dtype=torch.float32))
+                    q = mw[0] * q + mw[1] * (net["classes"](h).softmax(-1) @ torch.as_tensor(table, dtype=torch.float32, device=h.device))
             out.append(q)
-    return torch.cat(out).numpy().astype(np.float64).clip(0, 1)
+    res = torch.cat(out).float().cpu().numpy().astype(np.float64)
+    return res if kind == "set" else res.clip(0, 1)
+
+
+def set_head(net):
+    """numpy (w1, b1, w2, b2) of a set router's head, output columns in bank order."""
+    l1, l2 = net["rho"][0], net["rho"][2]
+    return tuple(v.detach().float().cpu().numpy().astype(np.float64) for v in (l1.weight, l1.bias, l2.weight, l2.bias))
 
 
 def crossfit(data, seeds=SEEDS, epochs=RECIPE["epochs"], folds_to_run=None, log=print, deploy_dir=None):
@@ -244,7 +351,10 @@ def crossfit(data, seeds=SEEDS, epochs=RECIPE["epochs"], folds_to_run=None, log=
     import torch
     pool, val, ctrain = data["pool"], data["val"], data["ctrain"]
     labels, correct, fold, rows = data["labels"], data["correct"], data["fold"], data["rows"]
-    oof = {f: {s: np.full((len(pool), 8), np.nan) for s in seeds} for f in CF_ROUTERS}
+    order = np.asarray(data["cost_order"])  # bank columns, cheapest first
+    dis = data["disagreement"]              # 50k label-free targets
+    oof = {f: {s: (dict(embed=None, heads={}) if CF_ROUTERS[f][2] == "set" else np.full((len(pool), 8), np.nan))
+               for s in seeds} for f in CF_ROUTERS}
     timing = []
     fold_ids = list(range(FOLDS)) if folds_to_run is None else list(folds_to_run)
     for seed in seeds:
@@ -256,9 +366,14 @@ def crossfit(data, seeds=SEEDS, epochs=RECIPE["epochs"], folds_to_run=None, log=
                       "all": class_table(correct, labels, np.concatenate([ctrain, val, fit_pool]))}
             for net_name, (task, arch, add_val) in NETS.items():
                 fit = np.concatenate([val, fit_pool]) if add_val else fit_pool
-                r = torch.as_tensor(np.array([rows[int(i)] for i in fit]))
+                r = torch.as_tensor(np.array([rows[int(i)] for i in fit]), device=data["train_x"][arch].device)
                 x = data["train_x"][arch][r]
-                t = torch.as_tensor(correct[fit], dtype=torch.float32)
+                if task == "ordinal":
+                    t = torch.as_tensor(cumulative_targets(correct[fit], order))
+                elif task == "disagree":
+                    t = torch.as_tensor(dis[fit], dtype=torch.float32)[:, None]
+                else:
+                    t = torch.as_tensor(correct[fit], dtype=torch.float32)
                 y = torch.as_tensor(labels[fit], dtype=torch.long)
                 t0 = time.perf_counter()
                 net, mix = train_net(task, arch, x, t, y, tables["fold"], seed, epochs)
@@ -266,17 +381,39 @@ def crossfit(data, seeds=SEEDS, epochs=RECIPE["epochs"], folds_to_run=None, log=
                 timing.append(dict(seed=seed, fold=f, net=net_name, images=len(fit), seconds=dt))
                 log(json.dumps(dict(event="trained", **timing[-1])))
                 if f == "full":
-                    torch.save(dict(state=net.state_dict(), mix=mix,
+                    torch.save(dict(state={k: v.cpu() for k, v in net.state_dict().items()},
+                                    mix=None if mix is None else mix.cpu(),
+                                    head=set_head(net) if task == "set" else None,
                                     meta=dict(task=task, architecture=arch, seed=seed, fit="pool5k" + ("+val5k" if add_val else ""),
                                               images=len(fit), minibatches_per_epoch=minibatches(len(fit)),
                                               epochs=epochs, **{k: v for k, v in RECIPE.items() if k != "epochs"},
                                               tables={k: v.tolist() for k, v in tables.items()})),
                                Path(deploy_dir) / f"{net_name}-s{seed}.pt")
                     continue
-                xs = data["score_x"][arch][torch.as_tensor(np.flatnonzero(held))]
+                dev = data["score_x"][arch].device
+                xs = data["score_x"][arch][torch.as_tensor(np.flatnonzero(held), device=dev)]
                 for fam, (_, nname, kind, tkey) in CF_ROUTERS.items():
-                    if nname == net_name:
-                        oof[fam][seed][held] = score_net(net, mix, kind, xs, tables.get(tkey))
+                    if nname != net_name:
+                        continue
+                    sc = score_net(net, mix, kind, xs, tables.get(tkey))
+                    if kind == "set":
+                        o = oof[fam][seed]
+                        if o["embed"] is None:
+                            o["embed"] = np.full((len(pool), sc.shape[1]), np.nan)
+                        o["embed"][held] = sc
+                        o["heads"][int(f)] = set_head(net)
+                    elif kind == "ordinal":
+                        q = np.empty_like(sc)
+                        q[:, order] = sc  # cost-rank column k -> its classifier's bank column
+                        oof[fam][seed][held] = q
+                    elif kind == "disagree":
+                        # map predicted disagreement to each classifier's P(correct), fitted on the
+                        # training folds only (in-sample predictions there; never the held-out fold)
+                        d_fit = score_net(net, mix, kind, data["score_x"][arch][torch.as_tensor(np.flatnonzero(~held), device=dev)])[:, 0]
+                        coef = [fit_logistic(d_fit, correct[fit_pool][:, j]) for j in range(correct.shape[1])]
+                        oof[fam][seed][held] = np.stack([1 / (1 + np.exp(-(a_ * sc[:, 0] + b_))) for a_, b_ in coef], 1)
+                    else:
+                        oof[fam][seed][held] = sc
     return oof, timing
 
 
@@ -326,6 +463,11 @@ def run_train(args):
     sd = torch.tensor(plan["normalization_std"]).view(1, 3, 1, 1)
     preds = [np.load(evidence / f"{a}.npy", allow_pickle=False) for a in bank_names]
     correct = np.stack([p == labels for p in preds], axis=-1).astype(np.float32)  # 50k x 8, bank order
+    dis = disagreement(np.stack(preds, axis=-1)).astype(np.float32)  # label-free, 50k
+    # classifiers cheapest first, by the stage A A40 TensorRT pipeline latency at B=128
+    lat = {r["model"]: r["latency_ms"] for r in json.loads((stage_a / "costs_pipeline.json").read_text())["rows"]
+           if r["variant"] == "trt_fp16" and r["batch"] == 128}
+    cost_order = sorted(range(len(bank_names)), key=lambda j: lat[bank_names[j]])
     perm = [bank_names.index(n) for n in names]  # stage A column i <- bank column perm[i]
 
     ids = split["indices"]
@@ -366,8 +508,13 @@ def run_train(args):
     score_x = {"tiny16": chunks(pool, lambda c: prepare128(ds.data[c])), "wide32": s32, "res32": s32}
     print(json.dumps(dict(event="inputs_ready", seconds=time.perf_counter() - t0,
                           shapes={k: list(v.shape) for k, v in train_x.items()})), flush=True)
+    dev = "cuda" if torch.cuda.is_available() else "cpu"
+    train_x = {k: v.to(dev) for k, v in train_x.items()}
+    score_x = {k: v.to(dev) for k, v in score_x.items()}
+    print(json.dumps(dict(event="device", device=dev if dev == "cpu" else torch.cuda.get_device_name(0))), flush=True)
     data = dict(pool=pool, val=val, ctrain=ctrain, labels=labels, correct=correct, fold=fold, rows=rows,
-                train_x=train_x, score_x=score_x)
+                train_x=train_x, score_x=score_x, cost_order=cost_order, disagreement=dis)
+    print(json.dumps(dict(event="cost_order", cheapest_first=[bank_names[j] for j in cost_order])), flush=True)
 
     if args.dry_run:
         _, timing = crossfit(data, seeds=(SEEDS[0],), epochs=1, folds_to_run=[0])
@@ -390,20 +537,31 @@ def run_train(args):
     batches = (8, 16, 32, 64, 128)
     manifest = []
     for fam, (old, net_name, kind, tkey) in CF_ROUTERS.items():
+        src = COST_SOURCE[fam]
         for seed in SEEDS:
-            prob = oof[fam][seed]
-            require(np.isfinite(prob).all(), f"Missing out-of-fold scores: {fam} s{seed}")
-            prob = prob[:, perm]  # bank order -> stage A order
             extra = {}
             if costs is not None:
-                require(all((old, b) in costs for b in batches), f"No A40 cost for {old}")
+                require(all((src, b) in costs for b in batches), f"No A40 cost for {src}")
                 extra = dict(router_cost_batches=np.array(batches),
-                             router_latency_ms=np.array([costs[(old, b)]["latency_ms"] for b in batches]),
-                             router_energy_mj=np.array([costs[(old, b)]["energy_mj"] for b in batches]))
+                             router_latency_ms=np.array([costs[(src, b)]["latency_ms"] for b in batches]),
+                             router_energy_mj=np.array([costs[(src, b)]["energy_mj"] for b in batches]))
             path = args.output / "scores" / f"{fam}-s{seed}.npz"
-            np.savez_compressed(path, index=pool, models=np.array(names), correct_prob=prob, fold=fold, **extra)
+            if kind == "set":
+                o = oof[fam][seed]
+                require(o["embed"] is not None and np.isfinite(o["embed"]).all() and len(o["heads"]) == FOLDS,
+                        f"Missing out-of-fold set embeddings: {fam} s{seed}")
+                hs = [o["heads"][g] for g in range(FOLDS)]
+                np.savez_compressed(path, index=pool, models=np.array(names), fold=fold, set_embed=o["embed"],
+                                    set_w1=np.stack([h[0] for h in hs]), set_b1=np.stack([h[1] for h in hs]),
+                                    set_w2=np.stack([h[2][perm] for h in hs]), set_b2=np.stack([h[3][perm] for h in hs]),
+                                    **extra)
+            else:
+                prob = oof[fam][seed]
+                require(np.isfinite(prob).all(), f"Missing out-of-fold scores: {fam} s{seed}")
+                np.savez_compressed(path, index=pool, models=np.array(names), correct_prob=prob[:, perm], fold=fold, **extra)
             manifest.append(dict(router=fam, seed=seed, old_family=old, network=net_name, kind=kind, table=tkey,
-                                 scores=str(path), cost_from=old if costs is not None else None))
+                                 scores=str(path), cost_from=src if costs is not None else None,
+                                 cost_estimated=fam in COST_ESTIMATED))
     from hpc.a40_engines import write
     write(args.output / "crossfit.json", dict(
         label="CROSS-FIT out-of-fold router scores on the 5k router pool (router-train + router-calibration); "
@@ -590,10 +748,24 @@ def run_report(args):
                   "| cross-fit family | old family | old 3k on cal 2k | cross-fit on cal 2k | cross-fit on pool 5k |",
                   "|---|---|---|---|---|"]
     quality = {}
-    for fam, (old, *_rest) in CF_ROUTERS.items():
+    present = {f: v for f, v in CF_ROUTERS.items() if (cf / "scores" / f"{f}-s{SEEDS[0]}.npz").exists()}
+    # extra routers scored on the same pool and folds elsewhere (e.g. the fast feature routers)
+    extra_files = {}
+    for d in args.extra_scores or []:
+        for path in sorted(Path(d).glob("*.npz")):
+            extra_files.setdefault(family_of(path.stem), []).append(path)
+    for fam, paths in extra_files.items():
+        present[fam] = (None, None, "extra", None)
+
+    def files_of(fam):
+        return extra_files[fam] if fam in extra_files else [cf / "scores" / f"{fam}-s{s}.npz" for s in SEEDS]
+    for fam, (old, _n, kind, _t) in present.items():
+        if kind == "set":
+            quality[fam] = {}
+            out_lines.append(f"| {fam} | - | n/a (scores whole batches) | n/a | n/a |")
+            continue
         a_old, a_cf2, a_cf5 = [], [], []
-        for seed in SEEDS:
-            p_cf = cf / "scores" / f"{fam}-s{seed}.npz"
+        for seed, p_cf in zip(SEEDS * 3, files_of(fam)):
             prob5, _ = load_scores(p_cf, pool_a["names"], pool_a["index"])
             a_cf5.append(mean_auroc(prob5, pool_a["correct"]))
             prob2, _ = load_scores(p_cf, cal_a["names"], cal_a["index"])
@@ -604,17 +776,17 @@ def run_report(args):
         med = lambda v: f"{np.median(v):.3f}" if v else "-"
         quality[fam] = dict(old_cal2k=float(np.median(a_old)) if a_old else None, cf_cal2k=float(np.median(a_cf2)),
                             cf_pool5k=float(np.median(a_cf5)))
-        out_lines.append(f"| {fam} | {old} | {med(a_old)} | {med(a_cf2)} | {med(a_cf5)} |")
+        out_lines.append(f"| {fam} | {old or '-'} | {med(a_old)} | {med(a_cf2)} | {med(a_cf5)} |")
     out_lines += ["", "Per classifier (cross-fit, pool 5k, median over seeds). A constant guess scores 0.500; "
                   "'right' = that classifier's accuracy on the pool.", "",
                   "| cross-fit family | " + " | ".join(pool_a["names"]) + " |", "|---|" + "---|" * len(pool_a["names"])]
     out_lines.append("| (classifier right on) | " + " | ".join(f"{100 * c.mean():.1f}%" for c in pool_a["correct"]) + " |")
-    for fam in CF_ROUTERS:
-        if fam in ABLATIONS:
+    for fam in present:
+        if fam in ABLATIONS or present[fam][2] == "set":
             continue
         per = []
-        for seed in SEEDS:
-            prob5, _ = load_scores(cf / "scores" / f"{fam}-s{seed}.npz", pool_a["names"], pool_a["index"])
+        for p_cf in files_of(fam):
+            prob5, _ = load_scores(p_cf, pool_a["names"], pool_a["index"])
             per.append([auroc(p, c) for p, c in zip(prob5, pool_a["correct"])])
         med_c = np.median(np.array(per, dtype=float), axis=0)
         quality[fam]["per_classifier_pool5k"] = dict(zip(pool_a["names"], med_c.tolist()))
@@ -631,13 +803,13 @@ def run_report(args):
                   "all 3 seeds route). Old families are matched to their cross-fit counterparts.", "",
                   "| cross-fit family | old family | " + " | ".join(n for n, _ in locks) + " |",
                   "|---|---|" + "---|" * len(locks)]
-    for fam, (old, *_rest) in CF_ROUTERS.items():
+    for fam, (old, *_rest) in present.items():
         cols = []
         for n, _ in locks:
             r = ranks[n][0].get(old if n.startswith("old") else fam)
             cols.append("-" if r is None else f"{r['score']:.2f} ({r['cells_routed_all_seeds']}/{r['cells']})")
         tag = " (control)" if fam in CONTROLS else " (ablation)" if fam in ABLATIONS else ""
-        out_lines.append(f"| {fam}{tag} | {old} | " + " | ".join(cols) + " |")
+        out_lines.append(f"| {fam}{tag} | {old or '-'} | " + " | ".join(cols) + " |")
     out_lines.append("| WINNER | | " + " | ".join(str(ranks[n][1]) for n, _ in locks) + " |")
     out_lines.append("")
 
@@ -645,7 +817,7 @@ def run_report(args):
     base_json = cf / "baselines_pool5k" / "baselines.json"
     if pool_policy.exists():
         out_lines += per_cell_tables(pool_policy, base_json if base_json.exists() else None,
-                                     [f for f in CF_ROUTERS if f not in CONTROLS and f not in ABLATIONS],
+                                     [f for f in present if f not in CONTROLS and f not in ABLATIONS],
                                      "cross-fit, pool 5k lock")
     out_lines += ["The cross-fit lock uses out-of-fold scores from fold models (4k each); the deployed router "
                   "would be the copy trained on all 5k (deploy/), which has slightly more data than the models "
@@ -674,6 +846,8 @@ def main(argv=None):
     p.add_argument("--crossfit", type=Path, help="report: the train phase output")
     p.add_argument("--old-policy", type=Path, default=None, help="report: the 3k/2k policy.json to compare with")
     p.add_argument("--old-scores", type=Path, default=None, help="report: the 3k/2k scores/ directory")
+    p.add_argument("--extra-scores", type=Path, nargs="*", default=None,
+                   help="report: directories of extra out-of-fold score files on the same pool and folds")
     args = p.parse_args(argv)
     if args.phase == "train":
         for k in ("base", "data", "screen"):

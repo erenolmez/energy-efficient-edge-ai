@@ -43,11 +43,24 @@ def require(condition, message):
         raise RuntimeError(message)
 
 
-def batchings_for(labels, b, rng, repeats, coherent=None):
+def batchings_for(labels, b, rng, repeats, coherent=None, groups=None):
     """`repeats` batchings of size b: shuffled (i.i.d. stream), or each batch drawn from `coherent`
-    classes (a non-i.i.d. stream). All repeats are cut to the same number of batches. None if
-    class-coherent batches of this size cannot be formed."""
-    out = [make_batches(labels, b, rng, coherent) for _ in range(repeats)]
+    classes (a non-i.i.d. stream). With `groups` (e.g. cross-fit fold ids), every batch is drawn
+    within one group, so a batch never mixes images scored by different fold models (needed by
+    set routers, whose batch score is not an average of per-image scores). All repeats are cut to
+    the same number of batches. None if batches of this size cannot be formed."""
+    def one():
+        if groups is None:
+            return make_batches(labels, b, rng, coherent)
+        parts = []
+        for g in np.unique(groups):
+            idx = np.flatnonzero(groups == g)
+            mb = make_batches(labels[idx], b, rng, coherent)
+            if mb is None or len(mb) == 0:
+                return None
+            parts.append(idx[mb])
+        return rng.permutation(np.concatenate(parts))
+    out = [one() for _ in range(repeats)]
     if any(x is None or len(x) == 0 for x in out):
         return None
     n = min(len(x) for x in out)
@@ -97,10 +110,65 @@ def pool_label(roles, n):
     return " + ".join(r.replace("_", "-") for r in roles) + f" ({n / 1000:g}k)"
 
 
+class SetScorer:
+    """Batch-set router: per-image embeddings (from the fold model that never saw the image) and
+    one small head per fold mapping the batch's pooled embeddings (mean and max) to the predicted
+    batch accuracy of each classifier. Batches must lie within one fold (--group-by-fold)."""
+
+    def __init__(self, embed, fold, heads, cols):
+        self.embed, self.fold, self.heads, self.cols = embed, fold, heads, cols
+
+    def batch(self, bt):
+        bt = np.asarray(bt)
+        f = self.fold[bt]
+        require((f == f[:, :1]).all(), "Set router batches must stay within one fold (use --group-by-fold)")
+        e = self.embed[bt]
+        pooled = np.concatenate([e.mean(1), e.max(1)], axis=1)
+        out = np.empty((len(bt), len(self.cols)))
+        for g in np.unique(f[:, 0]):
+            rows = f[:, 0] == g
+            w1, b1, w2, b2 = self.heads[int(g)]
+            h = np.maximum(pooled[rows] @ w1.T + b1, 0)
+            out[rows] = (1 / (1 + np.exp(-(h @ w2.T + b2))))[:, self.cols]
+        return out.T  # models x n_batches
+
+
+def batch_scores(prob, bt):
+    """models x n_batches predicted batch accuracy: the batch mean of per-image P(correct), or a
+    set router's batch score."""
+    if isinstance(prob, SetScorer):
+        return prob.batch(bt)
+    return prob[:, bt].mean(2)
+
+
+def load_folds(paths, index):
+    """Cross-fit fold id per requested image, from the score files (they must agree)."""
+    fold = None
+    for path in paths:
+        data = np.load(path, allow_pickle=False)
+        if "fold" not in data.files:
+            continue
+        pos = {int(k): i for i, k in enumerate(data["index"])}
+        f = np.array([int(data["fold"][pos[int(k)]]) for k in index])
+        require(fold is None or np.array_equal(fold, f), f"{path}: fold ids differ between score files")
+        fold = f
+    require(fold is not None, "--group-by-fold needs cross-fit score files (with fold ids)")
+    return fold
+
+
 def load_scores(path, names, index):
     data = np.load(path, allow_pickle=False)
     order = [str(x) for x in data["models"]]
     require(set(names) <= set(order), f"{path}: score file lacks some of the classifiers")
+    if "set_embed" in data.files:
+        pos = {int(k): i for i, k in enumerate(data["index"])}
+        require(set(int(k) for k in index) <= set(pos), f"{path}: score file lacks some of the requested images")
+        rows = np.array([pos[int(k)] for k in index])
+        heads = {int(g): (data["set_w1"][g], data["set_b1"][g], data["set_w2"][g], data["set_b2"][g])
+                 for g in range(len(data["set_w1"]))}
+        prob = SetScorer(data["set_embed"][rows].astype(float), data["fold"][rows].astype(int), heads,
+                         [order.index(n) for n in names])
+        return prob, router_costs(data)
     prob = data["correct_prob"].astype(float)
     require(prob.shape == (len(data["index"]), len(order)), f"{path}: bad correct_prob shape")
     require(np.isfinite(prob).all() and prob.min() >= 0 and prob.max() <= 1, f"{path}: probabilities out of range")
@@ -110,12 +178,16 @@ def load_scores(path, names, index):
     require(set(int(k) for k in index) <= set(pos), f"{path}: score file lacks some of the requested images")
     rows = np.array([pos[int(k)] for k in index])
     prob = prob[rows][:, [order.index(n) for n in names]].T  # models x n, stage A order
+    return prob, router_costs(data)
+
+
+def router_costs(data):
     router = {o: {} for o in OBJECTIVES}
     if "router_cost_batches" in data.files:
         for o, key in (("latency", "router_latency_ms"), ("energy", "router_energy_mj")):
             for b, v in zip(data["router_cost_batches"].tolist(), data[key].tolist()):
                 router[o][int(b)] = float(v)
-    return prob, router
+    return router
 
 
 def evaluate_choices(correct, batchings, choices, costs_b):
@@ -131,7 +203,7 @@ def lock_router(prob, correct, batchings, costs_b, ref, target_acc, lambdas=LAMB
     """Cheapest lam whose mean calibration accuracy is >= target_acc AND whose accuracy is >=
     target_acc in at least `min_share` of the shuffled batchings. None if infeasible."""
     norm = costs_b / costs_b[ref]
-    mean_prob = [prob[:, batches].mean(2) for batches in batchings]  # models x n_batches
+    mean_prob = [batch_scores(prob, batches) for batches in batchings]  # models x n_batches
     best = None
     for lam in lambdas:
         choices = [(mp - lam * norm[:, None]).argmax(0) for mp in mean_prob]
@@ -156,12 +228,13 @@ def lock(args):
     for path in args.scores:
         routers[Path(path).stem] = load_scores(path, names, a["index"])
     rng = np.random.default_rng(args.seed)
+    groups = load_folds(args.scores, a["index"]) if args.group_by_fold else None
     policy = dict(meta=dict(stage=f"B2 policy lock on {a['pool']}; test not read", roles=list(a["roles"]),
                             budget_pp=args.budget_pp, repeats=args.repeats, seed=args.seed,
                             classifier_costs="A40 TensorRT FP16 pipeline (stage A, job %s)" % a["meta"]["device"]["job"],
                             models=names, reference=REFERENCE, lambdas=len(LAMBDAS),
                             min_repeat_share=args.min_repeat_share,
-                            classifiers=names,
+                            classifiers=names, batches_within_fold=bool(args.group_by_fold),
                             batches="shuffled" if args.coherent is None else f"class-coherent ({args.coherent} classes per batch)"),
                   locked={})
     lines = [f"# Job 3 stage B2: policies locked on {a['pool']}", "",
@@ -173,7 +246,7 @@ def lock(args):
              "Savings are vs fixed ResNet101 TensorRT FP16 (not PyTorch autocast).", ""]
     summary = {}
     for b in BATCHES:
-        batchings = batchings_for(labels, b, rng, args.repeats, args.coherent)
+        batchings = batchings_for(labels, b, rng, args.repeats, args.coherent, groups)
         if batchings is None:
             lines += [f"## B={b}: skipped (cannot form batches of {args.coherent} classes x {b // args.coherent} images)", ""]
             continue
@@ -310,6 +383,8 @@ def main(argv=None):
                    help="class-coherent batches: each batch holds images of this many classes (non-i.i.d. stream)")
     p.add_argument("--models", nargs="*", default=None,
                    help="restrict the router (and fixed baselines) to these classifiers; must include resnet101")
+    p.add_argument("--group-by-fold", action="store_true",
+                   help="draw every batch within one cross-fit fold (required for set routers)")
     p.add_argument("--exclude-from-selection", nargs="*", default=["lookup-res32-t48k"],
                    help="control variants reported but never selected as the winner")
     lock(p.parse_args(argv))

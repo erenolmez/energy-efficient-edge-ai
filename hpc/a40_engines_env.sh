@@ -25,7 +25,7 @@ import importlib, sys
 mods = ["numpy", "torch", "torch.nn.functional", "torch.onnx", "torch.utils.data", "torchvision",
         "torchvision.transforms", "torchvision.datasets", "PIL", "timm", "onnx", "tensorrt", "pynvml",
         "hpc.clean_protocol", "hpc.full_factorial_protocol", "hpc.scratch_recipes",
-        "hpc.train_imagenet_comparison", "model_pipeline.models", "hpc.a40_engines", "hpc.a40_routers", "hpc.a40_policy", "hpc.a40_baselines", "hpc.a40_crossfit"]
+        "hpc.train_imagenet_comparison", "model_pipeline.models", "hpc.a40_engines", "hpc.a40_routers", "hpc.a40_policy", "hpc.a40_baselines", "hpc.a40_crossfit", "hpc.a40_newrouter_costs"]
 bad = []
 for m in mods:
     try:

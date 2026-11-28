@@ -58,6 +58,7 @@ class CrossfitLoopTests(unittest.TestCase):
         rows = {int(i): r for r, i in enumerate(train_ix)}
         x16, x32 = torch.randn(len(train_ix), 3, 16, 16), torch.randn(len(train_ix), 3, 32, 32)
         data = dict(pool=pool, val=val, ctrain=ctrain, labels=labels, correct=correct,
+                    cost_order=list(range(8)), disagreement=rng.random(len(labels)).astype(np.float32),
                     fold=cf.make_folds(pool, labels, 5, 42), rows=rows,
                     train_x={"tiny16": x16, "wide32": x32, "res32": x32},
                     score_x={"tiny16": torch.randn(len(pool), 3, 16, 16), "wide32": torch.randn(len(pool), 3, 32, 32),
@@ -79,12 +80,51 @@ class CrossfitLoopTests(unittest.TestCase):
         self.assertEqual(set(oof), set(cf.CF_ROUTERS))
         for fam, by_seed in oof.items():
             p = by_seed[42]
+            if cf.CF_ROUTERS[fam][2] == "set":
+                self.assertTrue(np.isfinite(p["embed"]).all())
+                self.assertEqual(sorted(p["heads"]), list(range(5)))
+                continue
             self.assertEqual(p.shape, (len(pool), 8))
             self.assertTrue(np.isfinite(p).all() and p.min() >= 0 and p.max() <= 1, fam)
         # fold fits: 4/5 of the pool (+ validation for the val ablation); deployment: all of it
         fold_fit, full_fit = 4 * len(pool) // 5, len(pool)
         self.assertEqual(sorted(set(sizes)), sorted({fold_fit, fold_fit + len(val), full_fit, full_fit + len(val)}))
         self.assertEqual(len(timing), 6 * len(cf.NETS))
+
+
+class NewRouterHelperTests(unittest.TestCase):
+    def test_disagreement_and_cumulative_targets(self):
+        preds = np.array([[1, 1, 1, 1], [1, 2, 3, 4], [1, 1, 2, 2]])
+        self.assertTrue(np.allclose(cf.disagreement(preds), [0, 1, 2 / 3]))
+        correct = np.array([[0, 1, 0], [0, 0, 0], [1, 0, 0]])
+        self.assertTrue(np.array_equal(cf.cumulative_targets(correct, [2, 0, 1]), [[0, 0, 1], [0, 0, 0], [0, 1, 1]]))
+
+    def test_fit_logistic_recovers_direction(self):
+        rng = np.random.default_rng(0)
+        z = rng.random(4000)
+        y = rng.random(4000) < 1 / (1 + np.exp(-(-4 * z + 2)))
+        a, b = cf.fit_logistic(z, y)
+        self.assertLess(a, -2.5)
+        self.assertGreater(b, 1.0)
+
+    def test_set_scorer_and_within_fold_batches(self):
+        from hpc.a40_policy import SetScorer, batch_scores, batchings_for
+        rng = np.random.default_rng(0)
+        n, c = 200, 4
+        fold = np.repeat(np.arange(5), 40)
+        labels = np.tile(np.arange(10), 20)
+        heads = {g: (rng.normal(size=(6, 2 * c)), rng.normal(size=6), rng.normal(size=(8, 6)), rng.normal(size=8))
+                 for g in range(5)}
+        sc = SetScorer(rng.normal(size=(n, c)), fold, heads, list(range(8)))
+        bts = batchings_for(labels, 8, rng, 3, None, fold)
+        for bt in bts:
+            self.assertTrue((fold[bt] == fold[bt][:, :1]).all())
+            out = batch_scores(sc, bt)
+            self.assertEqual(out.shape, (8, len(bt)))
+            self.assertTrue(((out > 0) & (out < 1)).all())
+        mixed = np.arange(8)[None, :] * 25  # images from different folds in one batch
+        with self.assertRaises(RuntimeError):
+            sc.batch(mixed)
 
 
 class PolicyRolesTests(unittest.TestCase):
