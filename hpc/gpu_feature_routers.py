@@ -146,17 +146,18 @@ class LogisticGPU:
 class KnnGPU:
     """k-NN vote share/regression on scaled features: 'distance' (sklearn weights) or 'uniform'."""
 
-    def __init__(self, train_x, train_y, lo, span, k, weights, device):
+    def __init__(self, train_x, train_y, lo, span, k, weights, device, dtype=np.float32):
         import torch
-        t = lambda a: torch.as_tensor(np.asarray(a, np.float32), device=device)
+        t = lambda a: torch.as_tensor(np.asarray(a, dtype), device=device)
+        self.dtype = torch.float64 if dtype == np.float64 else torch.float32
         self.lo, self.span = t(lo), t(span)
         self.train, self.y = (t(train_x) - self.lo) / self.span, t(train_y)
         self.k, self.weights = k, weights
 
     def __call__(self, x):
         import torch
-        z = (x - self.lo) / self.span
-        d = torch.cdist(z, self.train)
+        z = (x.to(self.dtype) - self.lo) / self.span
+        d = torch.cdist(z, self.train, compute_mode="donot_use_mm_for_euclid_dist")
         dist, idx = d.topk(self.k, dim=1, largest=False)
         y = self.y[idx]  # B, k, 8
         if self.weights == "uniform":
