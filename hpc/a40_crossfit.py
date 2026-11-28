@@ -12,7 +12,7 @@ uses the same 5k pool more fully, without touching any other split:
     correctness, + CE on classes (x0.2 for the shared model), learned mix for blended, seeds
     42/45/48) and scores the held-out 1k. Every pool image gets one out-of-fold P(correct).
   * Per-class tables (lookup/blended) are built from the same 4k (+ classifier-validation for
-    the tval ablations, + classifier-train for the t49k control), never from the held-out fold.
+    the tval ablations), never from the held-out fold. (The classifier-train table control was dropped.)
   * hpc.a40_policy then locks lam on all 5k out-of-fold scores (--roles router_train
     router_calibration) with the usual rule (1 pp, mean and >= 80% of 50 repeats). The same
     scores restricted to the 2k calibration images give a like-for-like comparison with the
@@ -25,7 +25,7 @@ Families (old 3k/2k name in brackets):
   direct-tiny16-4k [direct-tiny16-3k], direct-tiny16-val4k [direct-tiny16-val3k, ablation],
   direct-wide32-4k [direct-wide32-3k], blended-tiny16-t4k [blended-tiny16-t3k],
   blended-tiny16-tval4k [blended-tiny16-tval3k], lookup-res32-t4k [lookup-res32-t3k],
-  lookup-res32-tval4k [lookup-res32-tval3k], lookup-res32-t49k [lookup-res32-t48k, control].
+  lookup-res32-tval4k [lookup-res32-tval3k].
 The val ablations add classifier-validation images, which also chose the classifier checkpoints,
 so they are side ablations, not the main design.
 
@@ -77,9 +77,8 @@ CF_ROUTERS = {
     "blended-tiny16-tval4k": ("blended-tiny16-tval3k", "shared-tiny16", "blended", "valfold"),
     "lookup-res32-t4k": ("lookup-res32-t3k", "class-res32", "lookup", "fold"),
     "lookup-res32-tval4k": ("lookup-res32-tval3k", "class-res32", "lookup", "valfold"),
-    "lookup-res32-t49k": ("lookup-res32-t48k", "class-res32", "lookup", "all"),
 }
-CONTROLS = ("lookup-res32-t49k",)
+CONTROLS = ()  # the classifier-train (48k/49k) table control was dropped: it only showed the expected overfit
 ABLATIONS = ("direct-tiny16-val4k", "blended-tiny16-tval4k", "lookup-res32-tval4k")
 
 
@@ -128,8 +127,30 @@ def minibatches(n):
     return max(1, int(round(RECIPE["minibatches_per_3k"] * n / 3000)))
 
 
-def brier(prob, correct):
-    return float(np.mean((np.asarray(prob, float) - np.asarray(correct, float)) ** 2))
+def auroc(score, positive):
+    """Area under the ROC curve (Mann-Whitney, ties count half). None if one class is missing."""
+    score, positive = np.asarray(score, float), np.asarray(positive, bool)
+    n_pos, n_neg = int(positive.sum()), int((~positive).sum())
+    if n_pos == 0 or n_neg == 0:
+        return None
+    order = np.argsort(score, kind="mergesort")
+    ranks = np.empty(len(score))
+    sorted_scores = score[order]
+    i = 0
+    while i < len(score):  # average ranks over ties
+        j = i
+        while j + 1 < len(score) and sorted_scores[j + 1] == sorted_scores[i]:
+            j += 1
+        ranks[order[i:j + 1]] = (i + j) / 2 + 1
+        i = j + 1
+    return float((ranks[positive].sum() - n_pos * (n_pos + 1) / 2) / (n_pos * n_neg))
+
+
+def mean_auroc(prob, correct):
+    """Mean over classifiers of AUROC(router P(correct), deployed correctness); models x images."""
+    vals = [auroc(p, c) for p, c in zip(prob, correct)]
+    vals = [v for v in vals if v is not None]
+    return float(np.mean(vals)) if vals else float("nan")
 
 
 # ---------------------------------------------------------------- torch parts
@@ -417,6 +438,119 @@ def cell_savings(policy_json):
     return {k: (float(np.median(v)) if all(x is not None for x in v) else None) for k, v in cells.items()}
 
 
+def cell_results(policy_json):
+    """{(family, objective, B): dict(routed, n, accuracy, saving, router_cost)}: medians over seeds,
+    taken only when every seed routes."""
+    locked = json.loads(Path(policy_json).read_text())["locked"]
+    groups = {}
+    for key, v in locked.items():
+        rname, objective, b = key.split("|")
+        groups.setdefault((family_of(rname), objective, int(b)), []).append(v)
+    out = {}
+    for k, rows in groups.items():
+        routed = [r for r in rows if r["decision"] == "route"]
+        ok = len(routed) == len(rows)
+        med = lambda f: float(np.median([r[f] for r in routed])) if ok and routed and routed[0].get(f) is not None else None
+        out[k] = dict(routed=len(routed), n=len(rows), accuracy=med("calibration_accuracy"),
+                      saving=med("calibration_saving_pct"), router_cost=med("router_cost_per_batch"))
+    return out
+
+
+def per_cell_tables(policy_json, baselines_json, families, title):
+    """Accuracy, gap to ResNet101, latency and energy saving, and router cost per (family, B)."""
+    pol = json.loads(Path(policy_json).read_text())
+    ref_acc = {int(b): v["resnet101"] for b, v in pol.get("fixed_accuracy", {}).items()}
+    cells = cell_results(policy_json)
+    mix = {}
+    if baselines_json is not None:
+        for c in json.loads(Path(baselines_json).read_text())["cells"]:
+            if abs(c["budget_pp"] - 1) < 1e-9 and c["random_mix"] is not None:
+                mix[(c["objective"], c["batch"])] = (c["random_mix"], c["target"] + c["budget_pp"])
+    batches = sorted({b for (_, _, b) in cells})
+    lines = [f"## Per-cell results ({title}, 1 pp budget)", "",
+             "Each objective has its own locked lam, so accuracy can differ between the latency and the energy lock. "
+             "acc = calibration accuracy (median over seeds), gap = acc - fixed ResNet101 on the same batchings, "
+             "saving = vs fixed ResNet101 with the router's own A40 cost included (when measured). 'fallback k/3' = "
+             "only k seeds route, so the cell falls back to ResNet101. Random mix: no router, best two-model mix. "
+             "A constant guess (same P(correct) for every image) always picks one model, so it equals the fixed "
+             "ResNet101 row. Oracle: knows each batch's true correctness (upper bound, not deployable).", "",
+             "| policy | B | latency lock: acc (gap) | latency saving | energy lock: acc (gap) | energy saving | "
+             "router ms / batch | router mJ / batch |", "|---|---|---|---|---|---|---|---|"]
+
+    def fmt_cell(c, b):
+        if c is None:
+            return "-", "-"
+        if c["accuracy"] is None:
+            return f"fallback {c['routed']}/{c['n']}", "-"
+        gap = "" if b not in ref_acc else f" ({c['accuracy'] - ref_acc[b]:+.2f})"
+        return f"{c['accuracy']:.2f}{gap}", f"{c['saving']:.1f}%"
+
+    for b in batches:
+        if b in ref_acc:
+            lines.append(f"| fixed ResNet101 | {b} | {ref_acc[b]:.2f} (0) | 0% | {ref_acc[b]:.2f} (0) | 0% | - | - |")
+        row = []
+        for o in ("latency", "energy"):
+            m = mix.get((o, b))
+            row += ["-", "-"] if m is None else [f"{m[0]['accuracy']:.2f} ({m[0]['accuracy'] - m[1]:+.2f})",
+                                                 f"{m[0]['saving']:.1f}%"]
+        if mix:
+            lines.append(f"| random mix (no router) | {b} | " + " | ".join(row) + " | 0 | 0 |")
+        orc = pol.get("oracle", {})
+        if f"latency|{b}" in orc and b in ref_acc:
+            ol, oe = orc[f"latency|{b}"], orc[f"energy|{b}"]
+            lines.append(f"| oracle (labels known, ceiling) | {b} | {ol['accuracy']:.2f} ({ol['accuracy'] - ref_acc[b]:+.2f}) | "
+                         f"{ol['saving']:.1f}% | {oe['accuracy']:.2f} ({oe['accuracy'] - ref_acc[b]:+.2f}) | {oe['saving']:.1f}% | 0 | 0 |")
+        for f in families:
+            la, ls = fmt_cell(cells.get((f, "latency", b)), b)
+            ea, es = fmt_cell(cells.get((f, "energy", b)), b)
+            rl, re_ = cells.get((f, "latency", b)), cells.get((f, "energy", b))
+            rms = "-" if not rl or rl["router_cost"] is None else f"{rl['router_cost']:.3f}"
+            rmj = "-" if not re_ or re_["router_cost"] is None else f"{re_['router_cost']:.1f}"
+            lines.append(f"| {f} | {b} | {la} | {ls} | {ea} | {es} | {rms} | {rmj} |")
+    lines.append("")
+    # head-to-head averages over B
+    lines += [f"### Averages over batch sizes ({title})", "",
+              "| policy | mean latency saving | mean energy saving | mean gap vs ResNet101 (pp) | cells routed |",
+              "|---|---|---|---|---|"]
+    for f in families:
+        sv = {o: [cells[(f, o, b)]["saving"] for b in batches if cells.get((f, o, b)) and cells[(f, o, b)]["saving"] is not None]
+              for o in ("latency", "energy")}
+        gaps = [cells[(f, o, b)]["accuracy"] - ref_acc[b] for o in ("latency", "energy") for b in batches
+                if b in ref_acc and cells.get((f, o, b)) and cells[(f, o, b)]["accuracy"] is not None]
+        routed = sum(1 for o in ("latency", "energy") for b in batches if cells.get((f, o, b)) and cells[(f, o, b)]["saving"] is not None)
+        mean = lambda v: f"{np.mean(v):.1f}%" if v else "-"
+        lines.append(f"| {f} | {mean(sv['latency'])} | {mean(sv['energy'])} | "
+                     f"{(f'{np.mean(gaps):+.2f}' if gaps else '-')} | {routed}/{2 * len(batches)} |")
+    if mix:
+        sv = {o: [mix[(o, b)][0]["saving"] for b in batches if (o, b) in mix] for o in ("latency", "energy")}
+        gaps = [mix[(o, b)][0]["accuracy"] - mix[(o, b)][1] for o in ("latency", "energy") for b in batches if (o, b) in mix]
+        lines.append(f"| random mix (no router) | {np.mean(sv['latency']):.1f}% | {np.mean(sv['energy']):.1f}% | "
+                     f"{np.mean(gaps):+.2f} | - |")
+    lines.append("")
+    # per-seed model selections
+    locked = pol["locked"]
+    lines += [f"### Model selections per seed ({title})", "",
+              "Share of batches sent to each classifier by the locked policy (calibration). ROUTE = cheaper than "
+              "fixed ResNet101 within budget; FALLBACK = the cell runs fixed ResNet101 instead.", "",
+              "| policy | objective | B | seed | decision | acc (gap) | saving | lam | selections |",
+              "|---|---|---|---|---|---|---|---|---|"]
+    for f in families:
+        for o in ("latency", "energy"):
+            for b in batches:
+                for key in sorted(k for k in locked if k.endswith(f"|{o}|{b}") and family_of(k.split("|")[0]) == f):
+                    v = locked[key]
+                    seed = key.split("|")[0].rpartition("-s")[2]
+                    if v.get("lam") is None:
+                        lines.append(f"| {f} | {o} | {b} | {seed} | FALLBACK (budget infeasible) | - | - | - | - |")
+                        continue
+                    gap = "" if b not in ref_acc else f" ({v['calibration_accuracy'] - ref_acc[b]:+.2f})"
+                    sel = ", ".join(f"{k} {100 * x:.0f}%" for k, x in sorted(v["selection_share"].items(), key=lambda kv: -kv[1]))
+                    lines.append(f"| {f} | {o} | {b} | {seed} | {v['decision'].upper()} | {v['calibration_accuracy']:.2f}{gap} | "
+                                 f"{v['calibration_saving_pct']:.1f}% | {v['lam']:.3g} | {sel} |")
+    lines.append("")
+    return lines
+
+
 def run_report(args):
     from hpc.a40_policy import load_scores, load_stage_a
     cf = args.crossfit
@@ -447,29 +581,44 @@ def run_report(args):
         out_lines.append(f"| {n} | {100 * p1:.2f} | {100 * p2:.2f} | {d:+.2f} | {d - 196 * se:+.2f}..{d + 196 * se:+.2f} |")
     out_lines.append("")
 
-    # ---- probability quality: Brier score vs deployed correctness (lower is better)
+    # ---- router quality: AUROC per classifier (can the router tell right from wrong images?)
     cal_a = load_stage_a(args.stage_a, ("router_calibration",))
-    out_lines += ["## Router probability quality (Brier score vs deployed TensorRT correctness; lower is better)", "",
-                  "Same 2k calibration images for both columns: old = trained on router-train 3k; cross-fit = "
-                  "out-of-fold models trained on 4k. 5k column: cross-fit on the whole pool. Median over seeds.", "",
+    out_lines += ["## Router quality: AUROC (0.5 = guessing, 1 = perfect)", "",
+                  "For each classifier: the chance that an image the classifier gets right scores higher than one it "
+                  "gets wrong; mean over the 8 classifiers, median over seeds. Same 2k calibration images for the "
+                  "first two columns (old = trained on router-train 3k; cross-fit = out-of-fold models trained on 4k).", "",
                   "| cross-fit family | old family | old 3k on cal 2k | cross-fit on cal 2k | cross-fit on pool 5k |",
                   "|---|---|---|---|---|"]
     quality = {}
     for fam, (old, *_rest) in CF_ROUTERS.items():
-        b_old, b_cf2, b_cf5 = [], [], []
+        a_old, a_cf2, a_cf5 = [], [], []
         for seed in SEEDS:
             p_cf = cf / "scores" / f"{fam}-s{seed}.npz"
             prob5, _ = load_scores(p_cf, pool_a["names"], pool_a["index"])
-            b_cf5.append(brier(prob5, pool_a["correct"]))
+            a_cf5.append(mean_auroc(prob5, pool_a["correct"]))
             prob2, _ = load_scores(p_cf, cal_a["names"], cal_a["index"])
-            b_cf2.append(brier(prob2, cal_a["correct"]))
+            a_cf2.append(mean_auroc(prob2, cal_a["correct"]))
             if args.old_scores is not None and (args.old_scores / f"{old}-s{seed}.npz").exists():
                 probo, _ = load_scores(args.old_scores / f"{old}-s{seed}.npz", cal_a["names"], cal_a["index"])
-                b_old.append(brier(probo, cal_a["correct"]))
-        med = lambda v: f"{np.median(v):.4f}" if v else "-"
-        quality[fam] = dict(old_cal2k=np.median(b_old) if b_old else None, cf_cal2k=float(np.median(b_cf2)),
-                            cf_pool5k=float(np.median(b_cf5)))
-        out_lines.append(f"| {fam} | {old} | {med(b_old)} | {med(b_cf2)} | {med(b_cf5)} |")
+                a_old.append(mean_auroc(probo, cal_a["correct"]))
+        med = lambda v: f"{np.median(v):.3f}" if v else "-"
+        quality[fam] = dict(old_cal2k=float(np.median(a_old)) if a_old else None, cf_cal2k=float(np.median(a_cf2)),
+                            cf_pool5k=float(np.median(a_cf5)))
+        out_lines.append(f"| {fam} | {old} | {med(a_old)} | {med(a_cf2)} | {med(a_cf5)} |")
+    out_lines += ["", "Per classifier (cross-fit, pool 5k, median over seeds). A constant guess scores 0.500; "
+                  "'right' = that classifier's accuracy on the pool.", "",
+                  "| cross-fit family | " + " | ".join(pool_a["names"]) + " |", "|---|" + "---|" * len(pool_a["names"])]
+    out_lines.append("| (classifier right on) | " + " | ".join(f"{100 * c.mean():.1f}%" for c in pool_a["correct"]) + " |")
+    for fam in CF_ROUTERS:
+        if fam in ABLATIONS:
+            continue
+        per = []
+        for seed in SEEDS:
+            prob5, _ = load_scores(cf / "scores" / f"{fam}-s{seed}.npz", pool_a["names"], pool_a["index"])
+            per.append([auroc(p, c) for p, c in zip(prob5, pool_a["correct"])])
+        med_c = np.median(np.array(per, dtype=float), axis=0)
+        quality[fam]["per_classifier_pool5k"] = dict(zip(pool_a["names"], med_c.tolist()))
+        out_lines.append(f"| {fam} | " + " | ".join(f"{v:.3f}" for v in med_c) + " |")
     out_lines.append("")
 
     # ---- policy comparison: winner-rule scores and per-cell savings
@@ -494,24 +643,15 @@ def run_report(args):
 
     pool_policy = cf / "policy_pool5k" / "policy.json"
     base_json = cf / "baselines_pool5k" / "baselines.json"
-    if pool_policy.exists() and base_json.exists():
-        cells = cell_savings(pool_policy)
-        base = json.loads(base_json.read_text())
-        mix = {(c["objective"], c["batch"]): c["random_mix"] for c in base["cells"] if abs(c["budget_pp"] - 1) < 1e-9}
-        fams = [f for f in CF_ROUTERS if f not in CONTROLS]
-        out_lines += ["## Cross-fit pool 5k lock vs random mix at 1 pp (median saving over seeds; '-' = a seed falls back)", "",
-                      "| objective | B | random mix | " + " | ".join(fams) + " |", "|---|---|---|" + "---|" * len(fams)]
-        for (objective, b) in sorted(mix, key=lambda k: (k[0], k[1])):
-            m = mix[(objective, b)]
-            mtxt = "-" if m is None else f"{m['saving']:.1f}%"
-            cols = ["-" if cells.get((f, objective, b)) is None else f"{cells[(f, objective, b)]:.1f}%" for f in fams]
-            out_lines.append(f"| {objective} | {b} | {mtxt} | " + " | ".join(cols) + " |")
-        out_lines.append("")
+    if pool_policy.exists():
+        out_lines += per_cell_tables(pool_policy, base_json if base_json.exists() else None,
+                                     [f for f in CF_ROUTERS if f not in CONTROLS and f not in ABLATIONS],
+                                     "cross-fit, pool 5k lock")
     out_lines += ["The cross-fit lock uses out-of-fold scores from fold models (4k each); the deployed router "
                   "would be the copy trained on all 5k (deploy/), which has slightly more data than the models "
                   "the lock was measured on.", ""]
     (cf / "crossfit_report.md").write_text("\n".join(out_lines) + "\n")
-    (cf / "crossfit_report.json").write_text(json.dumps(dict(bias=bias, brier=quality,
+    (cf / "crossfit_report.json").write_text(json.dumps(dict(bias=bias, auroc=quality,
                                                               rankings={n: r[0] for n, r in ranks.items()},
                                                               winners={n: r[1] for n, r in ranks.items()}),
                                                          indent=1, default=float) + "\n")

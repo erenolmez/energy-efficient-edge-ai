@@ -19,7 +19,7 @@ Routers (each for seeds 42, 45, 48):
   blended-tiny16-t3k      shared TinyCNN 16x16, learned mix of correctness head and class
                           probabilities x 3k table (as trained)
   blended-tiny16-tval3k   same weights and mix with the val+3k table swapped in (ablation)
-  lookup-res32-t3k / -tval3k / -t48k   Residual32 class probabilities x per-class table
+  lookup-res32-t3k / -tval3k   Residual32 class probabilities x per-class table (the -t48k control was dropped)
 Tables are 8x100 per-class accuracies from the screen's evidence (autocast predictions), on
 router-train (3k), val+3k, or classifier-train+val+3k (48k, control). Never the calibration set.
 
@@ -57,7 +57,6 @@ ROUTERS = {
     "blended-tiny16-tval3k": ("shared-tiny16", "blended", "val3k"),
     "lookup-res32-t3k": ("class-res32", "lookup", "3k"),
     "lookup-res32-tval3k": ("class-res32", "lookup", "val3k"),
-    "lookup-res32-t48k": ("class-res32", "lookup", "48k"),
 }
 
 

@@ -30,7 +30,7 @@ import sys
 
 import numpy as np
 
-from hpc.a40_policy import BATCHES, LAMBDAS, OBJECTIVES, REFERENCE, load_scores, load_stage_a
+from hpc.a40_policy import BATCHES, LAMBDAS, OBJECTIVES, REFERENCE, batchings_for, load_scores, load_stage_a, restrict
 from hpc.complementarity_analysis import make_batches
 
 WEIGHTS = np.linspace(0, 1, 201)
@@ -90,13 +90,14 @@ def random_mix(counts, batchings, cb, target, min_share, uniforms, m):
 
 
 def run(args):
-    a = load_stage_a(args.stage_a, tuple(args.roles))
+    a = restrict(load_stage_a(args.stage_a, tuple(args.roles)), args.models)
     names, correct, labels = a["names"], a["correct"], a["label"]
     m, ref = len(names), names.index(REFERENCE)
     routers = {Path(p).stem: load_scores(p, names, a["index"]) for p in args.scores}
     family = lambda k: k.rsplit("-s", 1)[0] if k.rsplit("-s", 1)[-1].isdigit() else k
     costed = all(bool(rc["latency"]) for _, rc in routers.values()) if routers else False
     report = dict(meta=dict(label=f"CALIBRATION baselines ({a['pool']}); test not read", roles=list(a["roles"]),
+                            batches="shuffled" if args.coherent is None else f"class-coherent ({args.coherent} classes per batch)",
                             budgets=args.budgets, repeats=args.repeats, min_repeat_share=args.min_repeat_share,
                             boot=args.boot, router_cost_included=costed, models=names), cells=[])
     lines = [f"# Job 3: routers vs random mixing of fixed classifiers (calibration, {a['pool']})", "",
@@ -105,9 +106,13 @@ def run(args):
              f"(mean and >= {args.min_repeat_share:.0%} of {args.repeats} repeats) and A40 TensorRT pipeline "
              "costs for every policy. Savings vs fixed ResNet101. Router cost "
              + ("included." if costed else "NOT included (accuracy-only scores; counted as zero)."), ""]
+    active = []
     for b in BATCHES:
         rng = np.random.default_rng([args.seed, b])
-        batchings = [make_batches(labels, b, rng) for _ in range(args.repeats)]
+        batchings = batchings_for(labels, b, rng, args.repeats, args.coherent)
+        if batchings is None:
+            continue
+        active.append(b)
         nb = len(batchings[0])
         counts = counts_for(correct, batchings)
         uniforms = [rng.random(nb) for _ in batchings]
@@ -155,7 +160,10 @@ def run(args):
                     for _ in range(args.boot):
                         draw = boot_rng.integers(0, len(labels), len(labels))
                         bl = labels[draw]
-                        bts = [draw[make_batches(bl, b, boot_rng)] for _ in range(args.boot_batchings)]
+                        bx = batchings_for(bl, b, boot_rng, args.boot_batchings, args.coherent)
+                        if bx is None:  # a resample left too few images of some class for coherent batches
+                            continue
+                        bts = [draw[x] for x in bx]
                         bcounts = counts_for(correct, bts)
                         ref_acc = np.mean([100 * c[ref].sum() / bt.size for c, bt in zip(bcounts, bts)])
                         for k, lam in locked.items():
@@ -199,7 +207,7 @@ def run(args):
         lines += [f"### {objective}", "",
                   "| B | random mix (models, weight) | mix saving | mix 95% CI | " + " | ".join(fams) + " |",
                   "|---|---|---|---|" + "---|" * len(fams)]
-        for b in BATCHES:
+        for b in active:
             c = get(b, objective, 1.0)
             mx = c["random_mix"]
             mtxt = "-" if mx is None else f"{mx['models'][0]} {mx['weight_first']:.2f} / {mx['models'][1]}"
@@ -222,7 +230,7 @@ def run(args):
     for objective in OBJECTIVES:
         lines += [f"### {objective}", "", "| policy | B | " + " | ".join(f"{x:g} pp" for x in args.budgets) + " |",
                   "|---|---|" + "---|" * len(args.budgets)]
-        for b in BATCHES:
+        for b in active:
             lines.append(f"| best fixed | {b} | " + " | ".join(
                 f"{get(b, objective, x)['best_fixed']} {get(b, objective, x)['best_fixed_saving']:.1f}%"
                 for x in args.budgets) + " |")
@@ -258,6 +266,10 @@ def main(argv=None):
     p.add_argument("--seed", type=int, default=0)
     p.add_argument("--roles", nargs="+", default=["router_calibration"],
                    help="stage A roles; router_train router_calibration = the 5k cross-fit pool")
+    p.add_argument("--coherent", type=int, default=None,
+                   help="class-coherent batches: each batch holds images of this many classes")
+    p.add_argument("--models", nargs="*", default=None,
+                   help="restrict to these classifiers (must include resnet101)")
     run(p.parse_args(argv))
 
 

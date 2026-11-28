@@ -43,6 +43,17 @@ def require(condition, message):
         raise RuntimeError(message)
 
 
+def batchings_for(labels, b, rng, repeats, coherent=None):
+    """`repeats` batchings of size b: shuffled (i.i.d. stream), or each batch drawn from `coherent`
+    classes (a non-i.i.d. stream). All repeats are cut to the same number of batches. None if
+    class-coherent batches of this size cannot be formed."""
+    out = [make_batches(labels, b, rng, coherent) for _ in range(repeats)]
+    if any(x is None or len(x) == 0 for x in out):
+        return None
+    n = min(len(x) for x in out)
+    return [x[:n] for x in out]
+
+
 def load_json(path):
     return json.loads(Path(path).read_text(encoding="utf-8"))
 
@@ -71,6 +82,17 @@ def load_stage_a(stage_a, roles=("router_calibration",)):
                 pool=pool_label(roles, int(cal.sum())))
 
 
+def restrict(a, models):
+    """Stage A data limited to a classifier subset (the router may pick only these). The reference
+    model must stay in. None or empty = all eight."""
+    if not models:
+        return a
+    require(REFERENCE in models and all(m in a["names"] for m in models), f"Bad classifier subset {models}")
+    keep = [a["names"].index(m) for m in models]
+    return dict(a, names=list(models), correct=a["correct"][keep],
+                costs={o: {b: v[keep] for b, v in by_b.items()} for o, by_b in a["costs"].items()})
+
+
 def pool_label(roles, n):
     return " + ".join(r.replace("_", "-") for r in roles) + f" ({n / 1000:g}k)"
 
@@ -78,7 +100,7 @@ def pool_label(roles, n):
 def load_scores(path, names, index):
     data = np.load(path, allow_pickle=False)
     order = [str(x) for x in data["models"]]
-    require(sorted(order) == sorted(names), f"{path}: classifier set differs from stage A")
+    require(set(names) <= set(order), f"{path}: score file lacks some of the classifiers")
     prob = data["correct_prob"].astype(float)
     require(prob.shape == (len(data["index"]), len(order)), f"{path}: bad correct_prob shape")
     require(np.isfinite(prob).all() and prob.min() >= 0 and prob.max() <= 1, f"{path}: probabilities out of range")
@@ -127,7 +149,7 @@ def matched_random(share, correct, batchings, costs_b, rng):
 
 
 def lock(args):
-    a = load_stage_a(args.stage_a, tuple(args.roles))
+    a = restrict(load_stage_a(args.stage_a, tuple(args.roles)), args.models)
     names, correct, labels = a["names"], a["correct"], a["label"]
     ref = names.index(REFERENCE)
     routers = {}
@@ -138,20 +160,28 @@ def lock(args):
                             budget_pp=args.budget_pp, repeats=args.repeats, seed=args.seed,
                             classifier_costs="A40 TensorRT FP16 pipeline (stage A, job %s)" % a["meta"]["device"]["job"],
                             models=names, reference=REFERENCE, lambdas=len(LAMBDAS),
-                            min_repeat_share=args.min_repeat_share),
+                            min_repeat_share=args.min_repeat_share,
+                            classifiers=names,
+                            batches="shuffled" if args.coherent is None else f"class-coherent ({args.coherent} classes per batch)"),
                   locked={})
     lines = [f"# Job 3 stage B2: policies locked on {a['pool']}", "",
              "CALIBRATION (policy locking), not held-out results. Classifier correctness = deployed TensorRT "
              f"FP16 GPU-pipeline predictions; costs = A40 pipeline medians from stage A. Budget: within "
-             f"-{args.budget_pp} pp of fixed ResNet101 on the same {args.repeats} shuffled batchings per B. "
+             f"-{args.budget_pp} pp of fixed ResNet101 on the same {args.repeats} "
+             + ("shuffled" if args.coherent is None else f"class-coherent ({args.coherent} classes per batch)")
+             + " batchings per B. "
              "Savings are vs fixed ResNet101 TensorRT FP16 (not PyTorch autocast).", ""]
     summary = {}
     for b in BATCHES:
-        batchings = [make_batches(labels, b, rng) for _ in range(args.repeats)]
+        batchings = batchings_for(labels, b, rng, args.repeats, args.coherent)
+        if batchings is None:
+            lines += [f"## B={b}: skipped (cannot form batches of {args.coherent} classes x {b // args.coherent} images)", ""]
+            continue
         nb = len(batchings[0])
         fixed_acc = np.array([np.mean([100 * correct[j][bt].mean() for bt in batchings]) for j in range(len(names))])
         target = fixed_acc[ref] - args.budget_pp
         eligible = [j for j in range(len(names)) if fixed_acc[j] >= target]
+        policy.setdefault("fixed_accuracy", {})[str(b)] = {n: float(fixed_acc[j]) for j, n in enumerate(names)}
         lines += [f"## B={b} ({nb} batches per repeat)", "",
                   "Fixed accuracy: " + ", ".join(f"{names[j]} {fixed_acc[j]:.2f}" for j in np.argsort(-fixed_acc)),
                   f"Target accuracy: {target:.2f}. Eligible fixed: " + ", ".join(names[j] for j in eligible), "",
@@ -170,6 +200,8 @@ def lock(args):
                 pick = cost_oracle(counts, cb, counts[ref].sum() - args.budget_pp / 100 * bt.size)
                 oracle_acc.append(100 * counts[pick, np.arange(len(bt))].sum() / bt.size)
                 oracle_cost.append(cb[pick].sum())
+            policy.setdefault("oracle", {})[f"{objective}|{b}"] = dict(accuracy=float(np.mean(oracle_acc)),
+                                                                     saving=float(save(np.mean(oracle_cost))))
             lines.append(f"| {objective} | oracle (labels known, bound) | - | {np.mean(oracle_acc):.2f} | - | "
                          f"{save(np.mean(oracle_cost)):.1f}% | no | context only | - |")
             lines.append(f"| {objective} | fixed {names[cheapest_fixed]} | - | {fixed_acc[cheapest_fixed]:.2f} | - | "
@@ -274,6 +306,10 @@ def main(argv=None):
                    help="stage A roles to lock on; router_train router_calibration = the 5k cross-fit pool")
     p.add_argument("--min-repeat-share", type=float, default=0.8,
                    help="locked lam must meet the budget in at least this share of repeats")
+    p.add_argument("--coherent", type=int, default=None,
+                   help="class-coherent batches: each batch holds images of this many classes (non-i.i.d. stream)")
+    p.add_argument("--models", nargs="*", default=None,
+                   help="restrict the router (and fixed baselines) to these classifiers; must include resnet101")
     p.add_argument("--exclude-from-selection", nargs="*", default=["lookup-res32-t48k"],
                    help="control variants reported but never selected as the winner")
     lock(p.parse_args(argv))
