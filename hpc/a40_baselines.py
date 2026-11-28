@@ -90,16 +90,16 @@ def random_mix(counts, batchings, cb, target, min_share, uniforms, m):
 
 
 def run(args):
-    a = load_stage_a(args.stage_a)
+    a = load_stage_a(args.stage_a, tuple(args.roles))
     names, correct, labels = a["names"], a["correct"], a["label"]
     m, ref = len(names), names.index(REFERENCE)
     routers = {Path(p).stem: load_scores(p, names, a["index"]) for p in args.scores}
     family = lambda k: k.rsplit("-s", 1)[0] if k.rsplit("-s", 1)[-1].isdigit() else k
     costed = all(bool(rc["latency"]) for _, rc in routers.values()) if routers else False
-    report = dict(meta=dict(label="CALIBRATION baselines (router-calibration 2k); test not read",
+    report = dict(meta=dict(label=f"CALIBRATION baselines ({a['pool']}); test not read", roles=list(a["roles"]),
                             budgets=args.budgets, repeats=args.repeats, min_repeat_share=args.min_repeat_share,
                             boot=args.boot, router_cost_included=costed, models=names), cells=[])
-    lines = ["# Job 3: routers vs random mixing of fixed classifiers (calibration)", "",
+    lines = [f"# Job 3: routers vs random mixing of fixed classifiers (calibration, {a['pool']})", "",
              "CALIBRATION, not held-out. Random mix = each batch goes to a fixed classifier drawn at random "
              "(best two-model mix on the lower convex hull), no router. Same shuffled batchings, budget rule "
              f"(mean and >= {args.min_repeat_share:.0%} of {args.repeats} repeats) and A40 TensorRT pipeline "
@@ -256,6 +256,8 @@ def main(argv=None):
     p.add_argument("--boot", type=int, default=200)
     p.add_argument("--boot-batchings", type=int, default=5)
     p.add_argument("--seed", type=int, default=0)
+    p.add_argument("--roles", nargs="+", default=["router_calibration"],
+                   help="stage A roles; router_train router_calibration = the 5k cross-fit pool")
     run(p.parse_args(argv))
 
 

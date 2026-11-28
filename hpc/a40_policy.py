@@ -47,11 +47,14 @@ def load_json(path):
     return json.loads(Path(path).read_text(encoding="utf-8"))
 
 
-def load_stage_a(stage_a):
+def load_stage_a(stage_a, roles=("router_calibration",)):
+    """Stage A correctness and costs for the images of `roles` (default router-calibration).
+    ("router_train", "router_calibration") gives the 5k router pool used by cross-fitting."""
     data = np.load(stage_a / "predictions.npz", allow_pickle=False)
     names = [str(x) for x in data["models"]]
-    roles = [str(x) for x in data["roles"]]
-    cal = data["role"] == roles.index("router_calibration")
+    stored = [str(x) for x in data["roles"]]
+    require(roles and all(r in stored and r != "test" for r in roles), f"Unknown or test role in {roles}")
+    cal = np.isin(data["role"], [stored.index(r) for r in roles])
     correct = (data["pred_trt_fp16_gpu"] == data["label"][None, :])[:, cal]
     costs_raw = load_json(stage_a / "costs_pipeline.json")
     require(costs_raw["meta"]["test_evaluated"] is False, "Stage A cost file is not test-free")
@@ -64,7 +67,12 @@ def load_stage_a(stage_a):
             require(set(row) == set(names), f"Missing {objective} costs at B={b}")
             costs[objective][b] = np.array([row[n] for n in names], dtype=float)
     return dict(names=names, index=data["index"][cal], label=data["label"][cal].astype(int),
-                correct=correct, costs=costs, meta=costs_raw["meta"])
+                correct=correct, costs=costs, meta=costs_raw["meta"], roles=tuple(roles),
+                pool=pool_label(roles, int(cal.sum())))
+
+
+def pool_label(roles, n):
+    return " + ".join(r.replace("_", "-") for r in roles) + f" ({n / 1000:g}k)"
 
 
 def load_scores(path, names, index):
@@ -75,7 +83,9 @@ def load_scores(path, names, index):
     require(prob.shape == (len(data["index"]), len(order)), f"{path}: bad correct_prob shape")
     require(np.isfinite(prob).all() and prob.min() >= 0 and prob.max() <= 1, f"{path}: probabilities out of range")
     pos = {int(k): i for i, k in enumerate(data["index"])}
-    require(set(pos) == set(int(k) for k in index), f"{path}: images differ from router-calibration")
+    # A score file may cover more images (e.g. cross-fit out-of-fold scores on the 5k pool);
+    # only the requested images are used.
+    require(set(int(k) for k in index) <= set(pos), f"{path}: score file lacks some of the requested images")
     rows = np.array([pos[int(k)] for k in index])
     prob = prob[rows][:, [order.index(n) for n in names]].T  # models x n, stage A order
     router = {o: {} for o in OBJECTIVES}
@@ -117,20 +127,20 @@ def matched_random(share, correct, batchings, costs_b, rng):
 
 
 def lock(args):
-    a = load_stage_a(args.stage_a)
+    a = load_stage_a(args.stage_a, tuple(args.roles))
     names, correct, labels = a["names"], a["correct"], a["label"]
     ref = names.index(REFERENCE)
     routers = {}
     for path in args.scores:
         routers[Path(path).stem] = load_scores(path, names, a["index"])
     rng = np.random.default_rng(args.seed)
-    policy = dict(meta=dict(stage="B2 policy lock on router-calibration (2k); test not read",
+    policy = dict(meta=dict(stage=f"B2 policy lock on {a['pool']}; test not read", roles=list(a["roles"]),
                             budget_pp=args.budget_pp, repeats=args.repeats, seed=args.seed,
                             classifier_costs="A40 TensorRT FP16 pipeline (stage A, job %s)" % a["meta"]["device"]["job"],
                             models=names, reference=REFERENCE, lambdas=len(LAMBDAS),
                             min_repeat_share=args.min_repeat_share),
                   locked={})
-    lines = ["# Job 3 stage B2: policies locked on router-calibration (2k)", "",
+    lines = [f"# Job 3 stage B2: policies locked on {a['pool']}", "",
              "CALIBRATION (policy locking), not held-out results. Classifier correctness = deployed TensorRT "
              f"FP16 GPU-pipeline predictions; costs = A40 pipeline medians from stage A. Budget: within "
              f"-{args.budget_pp} pp of fixed ResNet101 on the same {args.repeats} shuffled batchings per B. "
@@ -260,6 +270,8 @@ def main(argv=None):
     p.add_argument("--budget-pp", type=float, default=1.0)
     p.add_argument("--repeats", type=int, default=50)
     p.add_argument("--seed", type=int, default=0)
+    p.add_argument("--roles", nargs="+", default=["router_calibration"],
+                   help="stage A roles to lock on; router_train router_calibration = the 5k cross-fit pool")
     p.add_argument("--min-repeat-share", type=float, default=0.8,
                    help="locked lam must meet the budget in at least this share of repeats")
     p.add_argument("--exclude-from-selection", nargs="*", default=["lookup-res32-t48k"],
