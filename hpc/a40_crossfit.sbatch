@@ -49,7 +49,9 @@ ls "$OLD_SCORES"/*.npz > /dev/null
 test ! -e "$OUT" || { echo "$OUT exists; set CROSSFIT_OUT to a new directory" >&2; exit 1; }
 export PYTHONUNBUFFERED=1 OMP_NUM_THREADS="${SLURM_CPUS_PER_TASK:-16}"
 POOL=(--roles router_train router_calibration)
-CONTROL=(--exclude-from-selection lookup-res32-t49k)
+# Controls and the classifier-validation ablations are reported but never selected as the winner.
+CONTROL=(--exclude-from-selection lookup-res32-t49k direct-tiny16-val4k blended-tiny16-tval4k lookup-res32-tval4k)
+OLD_CONTROL=(--exclude-from-selection lookup-res32-t48k direct-tiny16-val3k blended-tiny16-tval3k lookup-res32-tval3k)
 hostname; date -u; git rev-parse HEAD
 srun --ntasks=1 "$HPC_PYTHON" -m hpc.a40_crossfit --phase train --base "$STUDY_BASE" --data "$CIFAR_DATA" \
     --screen "$SCREEN" --stage-a "$STAGE_A" --output "$OUT" "${COST_ARGS[@]}"
@@ -57,7 +59,7 @@ srun --ntasks=1 "$HPC_PYTHON" -m hpc.a40_crossfit --phase train --base "$STUDY_B
     --output "$OUT/policy_pool5k" > /dev/null
 "$HPC_PYTHON" -m hpc.a40_policy --stage-a "$STAGE_A" --scores "$OUT"/scores/*.npz "${CONTROL[@]}" \
     --output "$OUT/policy_cal2k" > /dev/null
-"$HPC_PYTHON" -m hpc.a40_policy --stage-a "$STAGE_A" --scores "$OLD_SCORES"/*.npz \
+"$HPC_PYTHON" -m hpc.a40_policy --stage-a "$STAGE_A" --scores "$OLD_SCORES"/*.npz "${OLD_CONTROL[@]}" \
     --output "$OUT/policy_old3k2k" > /dev/null
 "$HPC_PYTHON" -m hpc.a40_baselines --stage-a "$STAGE_A" --scores "$OUT"/scores/*.npz "${POOL[@]}" \
     --boot 100 --boot-batchings 3 --output "$OUT/baselines_pool5k" > /dev/null
